@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}
+Log in
+{% endblock title %}
+{% block content %}
+	<form method="POST" action="">
+		{% if error %}
+		<span class="error">{{error}}</span>
+		{% else %}
+		<span>&nbsp;</span>
+		{% endif %}
+		{% csrf_token %}
+		{{ form.as_p }}
+
+		<input type="Submit" value="Go!">
+	</form>
+{% endblock content %}

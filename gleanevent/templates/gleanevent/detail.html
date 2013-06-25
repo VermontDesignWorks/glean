@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}
+Gleaning Details
+{% endblock title %}
+{% block content %}
+{% if glean %}
+<h2>{{glean.title}}</h2>
+<p>{{glean.description}}</p>
+{% else %}
+<p>how'd  you get here?</p>
+{% endif %}
+{% endblock content %}

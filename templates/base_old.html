@@ -1,0 +1,31 @@
+{% load url from future %}
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>A gleaning website</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+  	<div class="nav">
+  		<ul>
+  			<li><a href="{% url 'gleanevent:index' %}">Glean Index</a></li>
+  			<li><a href="{% url 'gleanevent:newglean' %}">New Glean</a></li>
+        <!--<li><a href="{% url 'gleanevent:gleancalendar' %}">Calendar Placeholder</a></li>-->
+  			<li><a href="{% url 'farms:index' %}">Farm Index</a></li>
+  			<li><a href="{% url 'farms:newfarm' %}">New Farm</a></li>
+        <li><a href="{% url 'userprofile:registration' %}">Register a new User</a></li>
+        <li><small><a href="{% url 'userprofile:userdetailentry' %}">second part of registration</a></small></li>
+        <li><a href="{% url 'userprofile:userlogin' %}">Login</a></li>
+
+        <li><a href="{% url 'userprofile:userlogout' %}">Logout</a></li>
+  		</ul>
+    </div>
+	<h1>{% block title %}Gleaning Interface{% endblock %}</h1>
+	<div class="main">
+		{% block content %}
+		Nothing to see here, someone forgot to replace this element in the template...
+		{% endblock content %}
+	</div>
+	<script src="http://code.jquery.com/jquery.js"></script>
+  </body>
+</html>

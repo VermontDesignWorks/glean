@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}
+Details of {{ farm.name }}
+{% endblock title %}
+{% block content %}
+{% if farm %}
+<h2>{{farm.name}}</h2>
+<p>{{farm.description}}</p>
+{% else %}
+<p>how'd  you get here?</p>
+{% endif %}
+{% endblock content %}
