@@ -17,11 +17,15 @@ urlpatterns = patterns('',
 
 	## registration backend
 	#(r'^admin/', include('admin.urls')),
-	(r'^/accounts/change-password/$', 'django.contrib.auth.views.password_change'), 
-	(r'^/accounts/password-changed/$', 'django.contrib.auth.views.password_change_done'),
-	(r'^/accounts/reset-password/$', 'django.contrib.auth.views.password_reset'),
-	(r'^/accounts/password-reset/$', 'django.contrib.auth.views.password_reset_done'),
-	(r'^/accounts/password-reset-confirm/$', 'django.contrib.auth.views.password_reset_confirm'),
+	# url(r'^register/complete/$',
+ #                           'registration/registration_complete.html',
+ #                           name='registration_complete'),
+	# (r'^/accounts/change-password/$', 'django.contrib.auth.views.password_change'), 
+	# (r'^/accounts/password-changed/$', 'django.contrib.auth.views.password_change_done'),
+	# (r'^/accounts/reset-password/$', 'django.contrib.auth.views.password_reset'),
+	# (r'^/accounts/password-reset/$', 'django.contrib.auth.views.password_reset_done'),
+	# (r'^/accounts/password-reset-confirm/$', 'django.contrib.auth.views.password_reset_confirm'),
+	url(r'^accounts/', include('registration.urls')),
 	url(r'^accounts/', include('registration.urls', namespace="registration")),
 
 	# Examples:
