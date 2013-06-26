@@ -7,12 +7,12 @@ from django.contrib.auth.decorators import login_required
 
 from farms.models import Farm, FarmForm
 
-@login_required
+#@login_required
 def index(request):
 	farms_list = Farm.objects.all()
 	return render(request, 'farms/index.html', {'farms':farms_list})
 
-@login_required
+#@login_required
 def newFarm(request):
 	if request.method == "POST":
 		form = FarmForm(request.POST)
@@ -26,7 +26,7 @@ def newFarm(request):
 		form = FarmForm()
 		return render(request, 'farms/new.html', {'form':form})
 
-@login_required
+#@login_required
 def editFarm(request, farm_id):
 	if request.method == "POST":
 		form = FarmForm(request.POST)
@@ -40,7 +40,7 @@ def editFarm(request, farm_id):
 
 	return render(request, 'farms/edit.html', {'form':form, 'farm':farm})
 
-@login_required
+#@login_required
 def detailFarm(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
 	return render(request, 'farms/detail.html', {'farm':farm})
