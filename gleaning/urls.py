@@ -16,8 +16,13 @@ urlpatterns = patterns('',
 	url(r'^users/', include('userprofile.urls', namespace="userprofile")),
 
 	## registration backend
-	#url(r'^accounts/register/$', register, {'backend': 'user_profile.regbackend.RegBackend','form_class': 'UserRegistrationForm'}, name='registration_register'),
-	#url(r'^accounts/*', include('registration.backends.default.urls')),
+	#(r'^admin/', include('admin.urls')),
+	(r'^/accounts/change-password/$', 'django.contrib.auth.views.password_change'), 
+	(r'^/accounts/password-changed/$', 'django.contrib.auth.views.password_change_done'),
+	(r'^/accounts/reset-password/$', 'django.contrib.auth.views.password_reset'),
+	(r'^/accounts/password-reset/$', 'django.contrib.auth.views.password_reset_done'),
+	(r'^/accounts/password-reset-confirm/$', 'django.contrib.auth.views.password_reset_confirm'),
+	url(r'^accounts/', include('registration.urls', namespace="registration")),
 
 	# Examples:
 	# url(r'^$', 'gleaning.views.home', name='home'),

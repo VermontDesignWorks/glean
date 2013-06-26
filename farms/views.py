@@ -34,9 +34,10 @@ def editFarm(request, farm_id):
 			newFarm = Farm(**form.cleaned_data)
 			newFarm.id = farm_id
 			newFarm.save()
-			return HttpResponse(str(newFarm))
+			return HttpResponseRedirect(reverse('farms:index'))
 	farm = get_object_or_404(Farm, pk=farm_id)
 	form = FarmForm(instance = farm)
+
 	return render(request, 'farms/edit.html', {'form':form, 'farm':farm})
 
 @login_required

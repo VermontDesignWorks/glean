@@ -5,8 +5,16 @@ import os
 
 PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
-LOGIN_URL = "/users/login/"
+LOGIN_URL = "/accounts/login"
 LOGOUT_URL = "/"
+
+ACCOUNT_ACTIVATION_DAYS = 7
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'gleaningcollective@gmail.com'
+EMAIL_HOST_PASSWORD = 'salvationfarms_007'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'The Gleaning Collective <gleaningcollective@gmail.com>'
 
 #from django.contrib.auth.models import User
 
@@ -133,14 +141,19 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'django.contrib.humanize',
 
 	# coder installed apps
 	'gleanevent',
 	'farms',
 	'userprofile',
 
-	# Uncomment the next line to enable the admin:
+	# third party apps
+	'registration',
+
+	# admin:
 	'django.contrib.admin',
+
 	# Uncomment the next line to enable admin documentation:
 	# 'django.contrib.admindocs',
 )

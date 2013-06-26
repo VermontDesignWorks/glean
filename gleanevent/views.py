@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django import forms
+from django.contrib.auth.decorators import login_required
 
 from gleanevent.models import GleanEvent, GleanForm
 
@@ -39,6 +40,7 @@ def editGlean(request, glean_id):
 	form = GleanForm(instance = glean)
 	return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean})
 
+@login_required
 def detailGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
 	return render(request, 'gleanevent/detail.html', {'glean':glean})
