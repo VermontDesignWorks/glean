@@ -4,9 +4,10 @@
 New Glean!
 {% endblock title %}
 {% block content %}
-	<form method="post" action="">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<input type="submit" value="Go!">
-	</form>
+
+{% csrf_token %}
+{% include 'specialfields.html' %}
+	
+
+
 {% endblock content %}
