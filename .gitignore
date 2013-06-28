@@ -1,0 +1,5 @@
+gleaning/settings.p*
+*.pyc
+.pyproject
+.project
+.pydevproject

@@ -25,8 +25,8 @@ urlpatterns = patterns('',
 	# (r'^/accounts/reset-password/$', 'django.contrib.auth.views.password_reset'),
 	# (r'^/accounts/password-reset/$', 'django.contrib.auth.views.password_reset_done'),
 	# (r'^/accounts/password-reset-confirm/$', 'django.contrib.auth.views.password_reset_confirm'),
-	url(r'^accounts/', include('registration.urls')),
-	url(r'^accounts/', include('registration.urls', namespace="registration")),
+	url(r'^accounts/', include('registration.backends.default.urls')),
+	url(r'^accounts/', include('registration.backends.default.urls', namespace="registration")),
 
 	# Examples:
 	# url(r'^$', 'gleaning.views.home', name='home'),

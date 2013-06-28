@@ -8,7 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from userprofile.models import Profile, ProfileForm, UserForm, LoginForm
+from userprofile.models import Profile, ProfileForm, UserForm, LoginForm, EmailForm
+from constants import VERMONT_COUNTIES
 
 def userReg(request):
 	if request.user.is_authenticated():
@@ -52,7 +53,7 @@ def userDetailEntry(request):
 		return render(request, 'userprofile/userdetailentry.html', {'form':form, 'error':''})
 
 @login_required
-def userEdit(request):
+def selfEdit(request):
 	if request.method == "POST":
 		form = ProfileForm(request.POST)
 		if form.is_valid():
@@ -85,4 +86,48 @@ def userLists(request):
 
 @login_required
 def userProfile(request, user_id):
-	return HttpResponse('this has nothing so far')
+	user_id_object = get_object_or_404(User, pk=user_id)
+	person = Profile.objects.get(user=user_id_object)
+	return render(request, 'userprofile/detail.html', {'person':person})
+
+def userEdit(request, user_id):
+	person = get_object_or_404(User, pk=user_id)
+	if request.method == 'POST':
+		form = ProfileForm(request.POST)
+		if form.is_valid():
+			try:
+				old_prof = Profile.objects.get(user=person)
+				new_prof = Profile(**form.cleaned_data)
+				new_prof.id = old_prof.id
+				new_prof.user = person
+				new_prof.save()
+				return HttpResponseRedirect(reverse('userprofile:userlists'))
+			except:
+				profile = Profile(**form.cleaned_data)
+				profile.user = person
+				profile.save()
+				return HttpResponseRedirect(reverse('userprofile:userlists'))
+
+	else:
+		person = get_object_or_404(User, pk=user_id)
+		try:
+			profile = Profile.objects.get(user=person)
+			form = ProfileForm(instance = profile)
+		except:
+			profile = ''
+			form = ProfileForm()
+		return render(request, 'userprofile/adminedit.html', {'person':person, 'profile':profile, 'form':form})
+
+def emailEdit(request):
+	if request.method == 'POST':
+		form = EmailForm(request.POST)
+		if form.is_valid():
+			request.user.email = form.cleaned_data['email']
+			request.user.save()
+			return HttpResponseRedirect(reverse('home'))
+		else:
+			form = EmailForm()
+			return render(request, 'userprofile/emailedit.html', {'error':"That's not a valid address", 'form':form})
+	else:
+		form = EmailForm()
+		return render(request, 'userprofile/emailedit.html',{'form':form})

@@ -52,15 +52,21 @@
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'farms:newfarm' %}">New Farm</a></li>
                         </ul>
                       </li>
+                      <li class="dropdown">
+                        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">User Management <b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:userlists' %}">User Lists</a></li>
+                        </ul>
+                      </li>
                     </ul>
                     <ul class="nav pull-right">
                       <li id="fat-menu" class="dropdown">
                         <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">{% if user.is_anonymous %}User{% else %}{{user.username}}'s{% endif %} Options <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
                           {% if user.is_authenticated %}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:useredit' %}">Edit Profile</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:selfedit' %}">Edit Profile</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_password_change' %}">Change Password</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_logout' %}">Change Email</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:emailedit' %}">Change Email</a></li>
                           <li role="presentation" class="divider"></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_logout' %}">Log Out</a></li>
                           {% else %}

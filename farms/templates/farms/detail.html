@@ -3,10 +3,19 @@
 Details of {{ farm.name }}
 {% endblock title %}
 {% block content %}
-{% if farm %}
+
 <h2>{{farm.name}}</h2>
 <p>{{farm.description}}</p>
-{% else %}
-<p>how'd  you get here?</p>
+<p>{{farm.address1}}</p>
+<p>{{farm.directions}}</p>
+<p>{{farm.instructions}}</p>
+<a class="btn btn-info" href="{% url 'farms:editfarm' farm.id %}">Edit this Farm</a>
+<a class="btn btn-info" href="{% url 'farms:newlocation' farm.id %}">Add a New Location for This Farm</a>
+{% if farm.farmlocation_set.all %}
+	{% for location in farm.farmlocation_set.all %}
+		<p>{{location.name}}</p>
+		<p>{{location.description}}</p>
+		<p>{{location.directions}}</p>
+	{% endfor %}
 {% endif %}
 {% endblock content %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}
+Additional Details
+{% endblock %}
+{% block content %}
+<form method="POST">
+	<h2>Edit {% if profile.first_name %}{{profile.first_name}} {{profile.last_name}}{% else %}{{person.username}}{% endif %}'s Details</h2>
+	{% if error %}
+	<span>{{error}}</span>
+	{% else %}
+	<span>&nbsp;</span>
+	{% endif %}
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" value="Go!">
+</form>
+{% endblock %}
