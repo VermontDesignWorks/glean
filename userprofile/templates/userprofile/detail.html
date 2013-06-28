@@ -13,6 +13,6 @@
 <p>{{person.county3}}</p>
 
 <div class="span3">
-	<a class="btn btn-info" href="{% url 'userprofile:useredit' person.id %}">Edit this Profile</a>
+	<a class="btn btn-info" href="{% url 'userprofile:useredit' person.user.id %}">Edit this Profile</a>
 </div>
 {% endblock content %}
