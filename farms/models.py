@@ -36,3 +36,13 @@ class FarmForm(ModelForm):
 	class Meta:
 		model = Farm
 		exclude = ['farmers']
+
+class FarmLocation(models.Model):
+	farm = models.ForeignKey(Farm, blank=True, editable=False, null=True)
+	name = models.CharField(max_length=200)
+	description = models.TextField(blank=True)
+	directions = models.TextField(blank=True)
+
+class LocationForm(ModelForm):
+	class Meta:
+		model = FarmLocation
