@@ -28,6 +28,7 @@ def newFarm(request):
 
 #@login_required
 def editFarm(request, farm_id):
+	farm = get_object_or_404(Farm, pk=farm_id)
 	if request.method == "POST":
 		form = FarmForm(request.POST)
 		if form.is_valid():
@@ -35,7 +36,8 @@ def editFarm(request, farm_id):
 			newFarm.id = farm_id
 			newFarm.save()
 			return HttpResponseRedirect(reverse('farms:index'))
-	farm = get_object_or_404(Farm, pk=farm_id)
+		else:
+			return render(request, 'farms/edit.html', {'form':form, 'farm':farm, 'error':'form needs some work'})
 	form = FarmForm(instance = farm)
 
 	return render(request, 'farms/edit.html', {'form':form, 'farm':farm})
