@@ -4,7 +4,8 @@
 Welcome to the Gleaning Interface!
 {% endblock %}
 {% block content %}
-This is a minimalist front page!
-<br />
-{{debug}}
+ {% if gleans %}
+{% for glean in gleans %}
+{{ glean.title }}-{{ glean.date }}
+{% endfor %}
 {% endblock %}
