@@ -6,13 +6,13 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.contrib.auth.decorators import user_passes_test
 from gleanevent import models
-<<<<<<< HEAD
+#<<<<<<< HEAD
 from gleanevent.models import models
 from datetime import datetime, timedelta
-=======
+#=======
 from userprofile.models import Profile
 from gleanevent.models import GleanEvent
->>>>>>> Tim
+#>>>>>>> Tim
 
 def home(request):
 	try:

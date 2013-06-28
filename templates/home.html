@@ -11,11 +11,8 @@ Welcome to the Gleaning Interface!
 <a href="{% url 'gleanevent:detailglean' glean.id %}">{{ glean.title }}</a> - {{glean.date}}
 </li>
 {% endfor %}
-<<<<<<< HEAD
 </ul>
 {% else %}
 <span>No gleans :(</span>
-=======
->>>>>>> Tim
 {% endif %}
 {% endblock %}

@@ -1,3 +1,4 @@
+<form method="POST" action="{{action}}">
 {%for field in form %}
 	{% if field.id_for_label == "id_date" %}
   			<div class="input-append datetimechoser">
@@ -11,4 +12,5 @@
 	{% endif %}
 	
 {% endfor %}
-
+<input type=submit value="{% if submit_value %}{{submit_value}}{% else %}Go!{% endif %}" />
+</form>
