@@ -8,7 +8,7 @@ Welcome to the Gleaning Interface!
 <ul>
 {% for glean in gleans %}
 <li>
-<a href="{% url 'gleanevent:detailglean' glean.id %}">{{ glean.title }}</a> - <a href="{% url 'gleanevent:editglean' glean.id %}">edit</a>
+<a href="{% url 'gleanevent:detailglean' glean.id %}">{{ glean.title }}</a> - {{glean.date}}
 </li>
 {% endfor %}
 </ul>
