@@ -64,7 +64,7 @@
                           {% if user.is_authenticated %}
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:selfedit' %}">Edit Profile</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_password_change' %}">Change Password</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_logout' %}">Change Email</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:emailedit' %}">Change Email</a></li>
                           <li role="presentation" class="divider"></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_logout' %}">Log Out</a></li>
                           {% else %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}Change your Email{% endblock title %}
+
+{% block content %}
+<form method="post" action="">
+	{% if error %}{{error}}<br />{% else %}&nbsp;<br />{% endif %}
+	{% csrf_token %}
+	{{form.as_p}}
+	<input type="submit" value="Change my Email Address">
+</form>
+{% endblock content %}
+
+{% block related-content %}
+Be sure to double check your spelling!
+{% endblock related-content %}

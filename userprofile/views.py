@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from userprofile.models import Profile, ProfileForm, UserForm, LoginForm
+from userprofile.models import Profile, ProfileForm, UserForm, LoginForm, EmailForm
 from constants import VERMONT_COUNTIES
 
 def userReg(request):
@@ -117,3 +117,17 @@ def userEdit(request, user_id):
 			profile = ''
 			form = ProfileForm()
 		return render(request, 'userprofile/adminedit.html', {'person':person, 'profile':profile, 'form':form})
+
+def emailEdit(request):
+	if request.method == 'POST':
+		form = EmailForm(request.POST)
+		if form.is_valid():
+			request.user.email = form.cleaned_data['email']
+			request.user.save()
+			return HttpResponseRedirect(reverse('home'))
+		else:
+			form = EmailForm()
+			return render(request, 'userprofile/emailedit.html', {'error':"That's not a valid address", 'form':form})
+	else:
+		form = EmailForm()
+		return render(request, 'userprofile/emailedit.html',{'form':form})
