@@ -7,7 +7,7 @@ New User Registration
 	<form method="post" action="">
 		{{error}}
 		{% csrf_token %}
-		{{ form.as_p }}
+		{% include 'specialfields.html' %}
 		<input type="submit" value="Go!"><br />
 	</form>
 	{{user}}

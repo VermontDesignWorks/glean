@@ -5,9 +5,11 @@ New Glean!
 {% endblock title %}
 {% block content %}
 
+<form action="/glean/new/" method="post">
 {% csrf_token %}
 {% include 'specialfields.html' %}
-	
+<input type="submit" value="Submit" />
+</form>
 
 
 {% endblock content %}

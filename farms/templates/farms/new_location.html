@@ -6,7 +6,7 @@ New Location for {{farm.name}}!
 {% block content %}
 	<form method="post" action="">
 		{% csrf_token %}
-		{{ form.as_p }}
+		{% include 'specialfields.html' %}
 		<input type="submit" value="Go!">
 	</form>
 {% endblock content %}

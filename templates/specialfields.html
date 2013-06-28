@@ -1,8 +1,7 @@
-<form method="POST" action="{{action}}">
 {%for field in form %}
 	{% if field.id_for_label == "id_date" %}
   			<div class="input-append datetimechoser">
-    			<label for="{{ field.id_for_label }}"> {{ field.label_tag }} <input id="{{ field.id }}" maxlength=200 name=" {{ field.name }}" data-format="MM/dd/yyyy HH:mm:ss PP" type="text"></input>
+    			<label for="{{ field.id_for_label }}"> {{ field.label_tag }} <input id="{{ field.id }}" maxlength=200 name="{{ field.name }}" data-format="MM/dd/yyyy hh:mm:ss" type="text"></input>
     		<span class="add-on">
      			 <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
     		</span>
@@ -12,5 +11,3 @@
 	{% endif %}
 	
 {% endfor %}
-<input type=submit value="{% if submit_value %}{{submit_value}}{% else %}Go!{% endif %}" />
-</form>
