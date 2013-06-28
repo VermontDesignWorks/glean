@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}User Lists{% endblock title %}
+{% block content %}
+<h2>A list of Users</h2>
+<ul>
+{% for person in users %}
+<li><a href="{% url 'userprofile:userprofile' person.id %}">{{person.username}}{% if person.first_name and person.last_name %} - {{person.first_name}} {{person.last_name}}{% endif %}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

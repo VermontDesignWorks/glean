@@ -1,0 +1,25 @@
+{% load url from future %}
+{% block login %}
+<h1>Log in</h1>
+
+{% if form.errors %}
+<p class="error">Please correct the errors below:</p>
+{% endif %}
+
+<form method="post" action="?next={{ next|default:"/" }}">{% csrf_token %}
+<dl>
+<dt><label for="id_username">Username:</label>{% if form.username.errors %} <span class="error">{{ form.username.errors|join:", " }}</span>{% endif %}</dt>
+<dd>{{ form.username }}</dd>
+<dt><label for="id_password">Password:</label>{% if form.password.errors %} <span class="error">{{ form.password.errors|join:", " }}</span>{% endif %}</dt>
+<dd>{{ form.password }}</dd>
+<dt><input type="submit" value="Log in" /></dt>
+</dl>
+</form>
+{% endblock login %}
+
+{% block content-related %}
+<div class="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+         If you don't have an account, you can <a href="{% url 'registration:registration_register' %}">sign up</a> for one.
+      </div>
+{% endblock %}

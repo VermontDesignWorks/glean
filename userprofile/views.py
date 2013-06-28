@@ -37,51 +37,52 @@ def userDetailEntry(request):
 	if request.method == "POST":
 		form = ProfileForm(request.POST)
 		if form.is_valid():
-			profile = Profile(**form.cleaned_data)
-			profile.user = request.user
-			profile.save()
-			return HttpResponseRedirect(reverse('userprofile:userhome'))
+			try:
+				profile = Profile.objects.get(user=request.user)
+			except:
+				profile = Profile(**form.cleaned_data)
+				profile.user = request.user
+				profile.save()
+			#return HttpResponse(str(profile.user))
+			return HttpResponseRedirect(reverse('home'))
 		else:
 			return render(request, 'userprofile/userdetailentry.html', {'form':form, 'error':"form wasn't valid"})
 	else:
 		form = ProfileForm
 		return render(request, 'userprofile/userdetailentry.html', {'form':form, 'error':''})
 
-
-
-def userLogin(request):
-	if request.user.is_authenticated():
-		return HttpResponseRedirect(reverse('userprofile:userhome'))
+@login_required
+def userEdit(request):
 	if request.method == "POST":
-		form = LoginForm(request.POST)
+		form = ProfileForm(request.POST)
 		if form.is_valid():
-			user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-			if user is not None:
-				if user.is_active:
-					login(request, user)
-					return HttpResponseRedirect(reverse('userprofile:userhome'))
-				else:
-					return render(request, 'userprofile/login.html', {'form':form, 'error':'Account is Disabled'})					
-			else:
-				return render(request, 'userprofile/login.html', {'form':form, 'error':'Username or Password is incorrect'})					
+			try:
+				old_prof = Profile.objects.get(user=request.user)
+				new_prof = Profile(**form.cleaned_data)
+				new_prof.id = old_prof.id
+				new_prof.user = request.user
+				new_prof.save()
+				return HttpResponseRedirect(reverse('home'))
+			except:
+				profile = Profile(**form.cleaned_data)
+				profile.user = request.user
+				profile.save()
+				return HttpResponseRedirect(reverse('home'))
 		else:
-			return render(request, 'userprofile/login.html', {'form':form, 'error':'Form was filled out incorrectly'})					
+			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':"form wasn't valid (try filling in more stuff)"})
 	else:
-		form = LoginForm()
-		return render(request, 'userprofile/login.html', {'form':form, 'error':''})					
+		try:
+			profile = Profile.objects.get(user=request.user)
+		except:
+			return HttpResponseRedirect(reverse('userprofile:userdetailentry'))
+		form = ProfileForm(instance = profile)
+		#return HttpResponse('test')
+		return render(request, 'userprofile/userEdit.html', {'form':form, 'error':''})
 
-def userLogout(request):
-	logout(request)
-	return HttpResponseRedirect(reverse('home'))
-
-@login_required
-def userHome(request):
-	return render(request, 'userprofile/home.html')
-
-@login_required
-def userProfile(request):
-	return HttpResponse('this has nothing so far')
+def userLists(request):
+	users = Profile.objects.all()
+	return render(request, 'userprofile/userLists.html', {'users':users, 'error':''})
 
 @login_required
-def editProfile(request):
+def userProfile(request, user_id):
 	return HttpResponse('this has nothing so far')

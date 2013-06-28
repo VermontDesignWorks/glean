@@ -5,9 +5,13 @@ from django.views import generic
 from django.contrib.auth.decorators import user_passes_test
 from gleanevent import models
 
-#def extremes(user):
-#	return user.username == 'AnonymousUser' or user.reverse_to_userprofile.detailed()
-
-#@user_passes_test(extremes)
 def home(request):
-	return render(request, 'home.html')
+	from userprofile.models import Profile
+	try:
+		prof = Profile.objects.get(user=request.user)
+	except:
+		if not request.user.is_anonymous():
+			return HttpResponseRedirect(reverse('userprofile:userdetailentry'))
+		else:
+			return render(request, 'home.html', {'debug':str(request.user.is_anonymous())})
+	return render(request, 'home.html', {'debug':str(prof)})

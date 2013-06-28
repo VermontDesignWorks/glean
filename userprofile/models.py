@@ -11,7 +11,9 @@ from django.conf import settings
 def_max_length = 255
 
 class Profile(models.Model):
-	user = models.ForeignKey(User, blank=True, unique=True, editable=False, primary_key=True)
+	user = models.ForeignKey(User, blank=True, unique=True, editable=False)
+	first_name = models.CharField(max_length=20)
+	last_name = models.CharField(max_length=20)
 	address = models.CharField(max_length=200, blank=True)
 	city = models.CharField(max_length=200, blank=True)
 	county1 = models.CharField(max_length=200,

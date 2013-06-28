@@ -53,12 +53,17 @@
                     </ul>
                     <ul class="nav pull-right">
                       <li id="fat-menu" class="dropdown">
-                        <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">{% if user.username %}{{user.username}}'s{% else %}User{% endif %} Options <b class="caret"></b></a>
+                        <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">{% if user.is_anonymous %}User{% else %}{{user.username}}'s{% endif %} Options <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
                           {% if user.is_authenticated %}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_logout' %}">Logout</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:useredit' %}">Edit Profile</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_password_change' %}">Change Password</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_logout' %}">Change Email</a></li>
+                          <li role="presentation" class="divider"></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_logout' %}">Log Out</a></li>
                           {% else %}
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_login' %}">Login</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_password_reset' %}">Reset Password</a></li>
                           <li role="presentation" class="divider"></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:registration_register' %}">Register New User</a></li>
 
@@ -75,7 +80,7 @@
   <div class="container">
     <div class="row-fluid">
       {% block body %}
-      <div class="span2">   
+      <!--<div class="span2">   
         <ul class="nav nav-tabs nav-stacked">
           <li class="mystacked">
             <a href="#">Home</a>
@@ -83,17 +88,21 @@
           <li class="mystacked"><a href="#">Away</a></li>
           <li class="mystacked"><a href="#">Neutral</a></li>
         </ul>
-      </div>
-
+      </div>-->
+      
       <div class="span10">
         
           {% block content %}
           {% endblock content %}
       </div>
-      {% endblock body %}
-      </div>
+              <div class="span2">
+              {% block content-related %}{% endblock %}
+              
+              {% endblock body %}
+              </div>
     </div>
   </div>
+</div>
 <div class="footer navbar-fixed-bottom">
   <small>(c) Salvation Farms</small>
 </div>
