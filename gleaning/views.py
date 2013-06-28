@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.contrib.auth.decorators import user_passes_test
 from gleanevent import models
+from gleanevent.models import models
+from datetime import datetime, timedelta
 
 def home(request):
 	from userprofile.models import Profile
