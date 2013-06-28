@@ -19,6 +19,8 @@
         <link rel="stylesheet" href="{% static 'initializr/css/main.css' %}">
  
         <script src="{% static 'initializr/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js' %}"></script>
+        
+        <link rel="stylesheet" href="{% static 'datetimepicker/css/bootstrap-datetimepicker.min.css' %}">
 
     </head>
     <body>
@@ -116,8 +118,11 @@
           <script src="{% static 'initializr/js/vendor/bootstrap.min.js' %}"></script>
 
           <script src="{% static 'initializr/js/main.js' %}"></script>
+          <script src="{% static 'datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
 
-          
+          <script>
+              {% include 'specialfieldsscripts.html' %}
+          </script>
 
       </body>
   </html>

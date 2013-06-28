@@ -31,7 +31,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
 	'default': {
-		'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+		'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
 		'NAME': 'glean',                      # Or path to database file if using sqlite3.
 		'USER': 'glean',                      # Not used with sqlite3.
 		'PASSWORD': 'salvationfarms_007',                  # Not used with sqlite3.
@@ -128,7 +128,7 @@ ROOT_URLCONF = 'gleaning.urls'
 WSGI_APPLICATION = 'gleaning.wsgi.application'
 
 TEMPLATE_DIRS = (
-	"/home/gregor/Documents/django/gleaning/templates"
+	"/Users/joshualucier/salvation_farms/glean/templates"
 	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
 	# Always use forward slashes, even on Windows.
 	# Don't forget to use absolute paths, not relative paths.
