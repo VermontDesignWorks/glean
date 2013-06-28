@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
 {% block title %}
-Gleaning Details
+{{person.first_name}} {{person.last_name}}
 {% endblock title %}
 {% block content %}
-{% if glean %}
-<h2>{{glean.title}}</h2>
-<p>{{glean.description}}</p>
-{% else %}
-<p>how'd  you get here?</p>
-{% endif %}
+<h2>{{person.first_name}} {{person.last_name}}</h2>
+<p>{{person.address}}</p>
+<p>{{person.city}}</p>
+<h4>{{person.first_name}} {{person.last_name}}'s counties</h4>
+<p>{{counties}}</p>
+<p>{{person.county1}}</p>
+<p>{{person.county2}}</p>
+<p>{{person.county3}}</p>
+
+<div class="span3">
+	<a class="btn btn-info" href="{% url 'userprofile:useredit' person.id %}">Edit this Profile</a>
+</div>
 {% endblock content %}

@@ -1,12 +1,15 @@
+from datetime import datetime, timedelta
+
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.contrib.auth.decorators import user_passes_test
 from gleanevent import models
+from userprofile.models import Profile
+from gleanevent.models import GleanEvent
 
 def home(request):
-	from userprofile.models import Profile
 	try:
 		prof = Profile.objects.get(user=request.user)
 	except:
