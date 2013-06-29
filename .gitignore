@@ -4,7 +4,11 @@ gleaning/settings.p*
 .pyproject
 .project
 .pydevproject
+.idea*
+.idea/*
 =======
+.idea*
+.idea/*
 *.pyc
 *.project
 *.*project
