@@ -19,6 +19,7 @@ class GleanEvent(models.Model):
 	title = models.CharField(max_length=200)
 	address_one = models.CharField(max_length=200)
 	address_two = models.CharField(max_length=200, blank=True)
+
 	town = models.CharField(max_length=25, blank=True)
 	date = models.DateTimeField('Date and Time', blank=True, null=True)
 	description = models.CharField(max_length=500, blank=True)

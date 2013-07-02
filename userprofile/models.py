@@ -12,6 +12,7 @@ def_max_length = 255
 
 class Profile(models.Model):
 	user = models.ForeignKey(User, blank=True, unique=True, editable=False)
+	access = models.CharField(max_length=20, choices=ACCESS_LEVELS, default="VO", editable=False)
 	first_name = models.CharField(max_length=20)
 	last_name = models.CharField(max_length=20)
 	address = models.CharField(max_length=200, blank=True)
