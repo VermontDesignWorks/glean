@@ -14,6 +14,7 @@ urlpatterns = patterns('',
 	url(r'^glean/', include('gleanevent.urls', namespace="gleanevent")),
 	url(r'^farms/', include('farms.urls', namespace="farms")),
 	url(r'^users/', include('userprofile.urls', namespace="userprofile")),
+	url(r'^announce/', include('announce.urls', namespace="announce")),
 
 	## registration backend
 	#(r'^admin/', include('admin.urls')),

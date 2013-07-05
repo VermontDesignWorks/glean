@@ -21,7 +21,7 @@ def newFarm(request):
 			newFarm.save()
 			return HttpResponseRedirect(reverse('farms:detailfarm', args=(newFarm.id,) ))
 		else:
-			return HttpResponse('you totally messed something up')
+			return render(request, 'farms/new.html', {'form':form, 'error':'Your Farm Form Was Not Valid'})
 	else:
 		form = FarmForm()
 		return render(request, 'farms/new.html', {'form':form})
@@ -69,9 +69,17 @@ def newLocation(request, farm_id):
 
 def editLocation(request, farm_id, location_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
-	location = get_object_or_404(Farm, pk=location_id)
+	location = get_object_or_404(FarmLocation, pk=location_id)
 	if request.method == 'POST':
-		pass
+		form = LocationForm(request.POST)
+		if form.is_valid():
+			new_save = FarmLocation(**form.cleaned_data)
+			new_save.id = location_id
+			new_save.farm = farm
+			new_save.save()
+			return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
+		else:
+			return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'error':'Form Had an Error'})
 	else:
 		form = LocationForm(instance = location)
-		return renter(request, 'farms/edit_location.html', {'form':form, 'farm':farm})
+		return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm})

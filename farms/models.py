@@ -43,6 +43,10 @@ class FarmLocation(models.Model):
 	description = models.TextField(blank=True)
 	directions = models.TextField(blank=True)
 
+	def __unicode__(self):
+		return self.name
+
+
 class LocationForm(ModelForm):
 	class Meta:
 		model = FarmLocation

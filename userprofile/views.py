@@ -11,27 +11,27 @@ from django.contrib.auth.decorators import login_required
 from userprofile.models import Profile, ProfileForm, UserForm, LoginForm, EmailForm
 from constants import VERMONT_COUNTIES
 
-def userReg(request):
-	if request.user.is_authenticated():
-		return HttpResponseRedirect(reverse('userprofile:userhome'))
-	if request.method =="POST":
-		form = UserForm(request.POST)
-		if form.is_valid():
-			if form.cleaned_data['password'] == form.cleaned_data['verify']:
-				if not User.objects.filter(username=form.cleaned_data['username']):
-					newUser = User.objects.create_user(form.cleaned_data['username'],
-													form.cleaned_data['email'],
-													form.cleaned_data['password'])
-					user = authenticate(username=form.cleaned_data['username'],password=form.cleaned_data['password'])
-					login(request, user)
-					return HttpResponseRedirect(reverse('userprofile:userdetailentry'))
-				else:
-					error = "that username is already Taken"
-			else:
-				error = "your passwords didn't match"
-		return render(request, 'userprofile/registration.html', {'form':form, 'error':error})
-	form = UserForm()
-	return render(request, 'userprofile/registration.html', {'form':form, 'user':'request.method != post'})
+# def userReg(request):
+# 	if request.user.is_authenticated():
+# 		return HttpResponseRedirect(reverse('userprofile:userhome'))
+# 	if request.method =="POST":
+# 		form = UserForm(request.POST)
+# 		if form.is_valid():
+# 			if form.cleaned_data['password'] == form.cleaned_data['verify']:
+# 				if not User.objects.filter(username=form.cleaned_data['username']):
+# 					newUser = User.objects.create_user(form.cleaned_data['username'],
+# 													form.cleaned_data['email'],
+# 													form.cleaned_data['password'])
+# 					user = authenticate(username=form.cleaned_data['username'],password=form.cleaned_data['password'])
+# 					login(request, user)
+# 					return HttpResponseRedirect(reverse('userprofile:userdetailentry'))
+# 				else:
+# 					error = "that username is already Taken"
+# 			else:
+# 				error = "your passwords didn't match"
+# 		return render(request, 'userprofile/registration.html', {'form':form, 'error':error})
+# 	form = UserForm()
+# 	return render(request, 'userprofile/registration.html', {'form':form, 'user':'request.method != post'})
 
 @login_required
 def userDetailEntry(request):
@@ -44,7 +44,6 @@ def userDetailEntry(request):
 				profile = Profile(**form.cleaned_data)
 				profile.user = request.user
 				profile.save()
-			#return HttpResponse(str(profile.user))
 			return HttpResponseRedirect(reverse('home'))
 		else:
 			return render(request, 'userprofile/userdetailentry.html', {'form':form, 'error':"form wasn't valid"})
@@ -70,6 +69,8 @@ def selfEdit(request):
 				profile.save()
 				return HttpResponseRedirect(reverse('home'))
 		else:
+			profile = Profile(**form.cleaned_data)
+			form = ProfileForm(instance = profile)
 			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':"form wasn't valid (try filling in more stuff)"})
 	else:
 		try:
