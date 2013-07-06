@@ -3,19 +3,40 @@
 Details of {{ farm.name }}
 {% endblock title %}
 {% block content %}
-
-<h2>{{farm.name}}</h2>
-<p>{{farm.description}}</p>
-<p>{{farm.address1}}</p>
-<p>{{farm.directions}}</p>
-<p>{{farm.instructions}}</p>
-<a class="btn btn-info" href="{% url 'farms:editfarm' farm.id %}">Edit this Farm</a>
-<a class="btn btn-info" href="{% url 'farms:newlocation' farm.id %}">Add a New Location for This Farm</a>
+<div class="row-fluid">
+	<div class="span9">
+		<h2>{{farm.name}}</h2>
+		<p>{{farm.description}}</p>
+		<p>{{farm.address1}}</p>
+		<p>{{farm.directions}}</p>
+		<p>{{farm.instructions}}</p>
+		<a class="btn btn-info" href="{% url 'farms:editfarm' farm.id %}">Edit this Farm</a>
+		<a class="btn btn-info" href="{% url 'farms:newlocation' farm.id %}">Add a New Location for This Farm</a>
+	</div>
+	{% if farm.gleanevent_set.all %}
+	
+<div class="span3">
+	<h4>Recent Gleans</h4>
+	<ul>
+{% for glean in farm.gleanevent_set.all %}
+<li class=""><a href="{% url 'gleanevent:detailglean' glean.id %}">{{glean.title}}</a></li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+</div>
 {% if farm.farmlocation_set.all %}
+<br />
+<h2>Farm Locations</h2>
+<div class="row-fluid">
 	{% for location in farm.farmlocation_set.all %}
-		<p>{{location.name}}</p>
-		<p>{{location.description}}</p>
-		<p>{{location.directions}}</p>
+		<div class="span3">
+			<h3>{{location.name}} - <a href="{% url 'farms:editlocation' farm.id location.id %}">edit</a></h3>
+
+			<p>{{location.description}}</p>
+			<p>{{location.directions}}</p>
+		</div>
 	{% endfor %}
+</div>
 {% endif %}
 {% endblock content %}

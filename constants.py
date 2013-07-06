@@ -14,6 +14,8 @@ VERMONT_COUNTIES = (
 	( '13', 'Windsor' ),
 )
 
+ACCESS_LIST = ['A', 'ED', 'MC', 'V']
+
 ACCESS_LEVELS = (
 	('FA', 'Farmer'),
 	('MO', 'MemberOrganization'),

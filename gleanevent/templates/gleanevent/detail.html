@@ -6,15 +6,36 @@ Gleaning Details
 
 <div class="span3">
 	<h2>{{glean.title}}</h2>
+  <h3>{{glean.date}}</h3>
+  <a href="{% url 'announce:announceglean' glean.id %}" class="btn btn-danger">
+    Announce This Glean!
+  </a>
+  <br />
+  <br /> 
+  <a href="{% url 'gleanevent:editglean' glean.id %}"class="btn btn-warning">
+    Edit This Glean!
+  </a>
+  {% if glean.farm %}
+  <h3>{{glean.farm}}</h3>
+  {% endif %}
+  
+  {% if glean.description %}
 	<p>{{glean.description}}</p>
-
-	<h4>Location</h4>
-	<p>{{glean.address_one}}</p>
-	{% if glean.address_two %}<p>{{glean.address_two}}</p>{% endif %}
-	<p>{{glean.town}}</p>
+  {% endif %}
+  <h4>Location</h4>
+  <p>{{glean.address_one}}</p>
+  <p>{{glean.address_two}}</p>
+  <p>{{glean.town}}</p>
 	<h4>Useful Information</h4>
-	<p>{{glean.farm.directions}}</p>
-	<p>{{glean.farm.instructions}}</p>
+  {% if glean.directions %}
+  <p>{{glean.directions}}</p>
+  {% elif glean.farm_location %}
+  <p>{{glean.farm_location.directions}}</p>
+  {% else %}
+  No directions :(
+  {% endif %}
+  <br />
+  <p>{{glean.instructions}}</p>
 
 </div>
 <style type="text/css">
@@ -34,6 +55,10 @@ Gleaning Details
         };
         var map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
+        var marker = new google.maps.Marker({
+          position: map.getCenter(),
+          map: map,
+  });
       }
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>

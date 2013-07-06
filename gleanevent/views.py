@@ -48,3 +48,7 @@ def detailGlean(request, glean_id):
 def gleanCalendar(request):
 	gleans = GleanEvent.objects.all()
 	return render(request, 'gleanevent/calendar.html', {'gleans':gleans})
+
+def announceGlean(request, glean_id):
+	glean = get_object_or_404(GleanEvent, pk=glean_id)
+	return render(request, 'gleanevent/announce.html', {'glean':glean})

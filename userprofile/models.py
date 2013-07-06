@@ -12,6 +12,7 @@ def_max_length = 255
 
 class Profile(models.Model):
 	user = models.ForeignKey(User, blank=True, unique=True, editable=False)
+	access = models.CharField(max_length=20, choices=ACCESS_LEVELS, default="VO", editable=False)
 	first_name = models.CharField(max_length=20)
 	last_name = models.CharField(max_length=20)
 	address = models.CharField(max_length=200, blank=True)
@@ -36,6 +37,11 @@ class Profile(models.Model):
 	eclast_name = models.CharField(max_length=200, blank=True)
 	ecphone = models.CharField(max_length=200, blank=True)
 	ecrelationship = models.CharField(max_length=200, blank=True)
+	accepts_email = models.BooleanField(default=True, editable=False)
+	mo_emails_only = models.BooleanField(default=False)
+	member_organization = models.CharField(max_length=200, blank=True)
+
+
 		
 	def __unicode__(self):
 		return u'%s %s' % (self.user, self.address)
