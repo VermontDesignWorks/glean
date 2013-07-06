@@ -20,8 +20,8 @@ def home(request):
 		if not request.user.is_anonymous():
 			return HttpResponseRedirect(reverse('userprofile:userdetailentry'))
 		else:
-			day5 = datetime.datetime.now()+datetime.timedelta(days=5)
+			lastday = datetime.datetime.now()+datetime.timedelta(days=7)
 			day1 = datetime.datetime.now()
-	        gleans = list(GleanEvent.objects.filter(date__gte=day1,date__lte=day5))
+	        gleans = list(GleanEvent.objects.filter(date__gte=day1,date__lte=lastday))
 	        return render(request, 'home.html',{'gleans' : gleans})
 	
