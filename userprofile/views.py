@@ -11,39 +11,17 @@ from django.contrib.auth.decorators import login_required
 from userprofile.models import Profile, ProfileForm, UserForm, LoginForm, EmailForm
 from constants import VERMONT_COUNTIES
 
-# def userReg(request):
-# 	if request.user.is_authenticated():
-# 		return HttpResponseRedirect(reverse('userprofile:userhome'))
-# 	if request.method =="POST":
-# 		form = UserForm(request.POST)
-# 		if form.is_valid():
-# 			if form.cleaned_data['password'] == form.cleaned_data['verify']:
-# 				if not User.objects.filter(username=form.cleaned_data['username']):
-# 					newUser = User.objects.create_user(form.cleaned_data['username'],
-# 													form.cleaned_data['email'],
-# 													form.cleaned_data['password'])
-# 					user = authenticate(username=form.cleaned_data['username'],password=form.cleaned_data['password'])
-# 					login(request, user)
-# 					return HttpResponseRedirect(reverse('userprofile:userdetailentry'))
-# 				else:
-# 					error = "that username is already Taken"
-# 			else:
-# 				error = "your passwords didn't match"
-# 		return render(request, 'userprofile/registration.html', {'form':form, 'error':error})
-# 	form = UserForm()
-# 	return render(request, 'userprofile/registration.html', {'form':form, 'user':'request.method != post'})
-
 @login_required
 def userDetailEntry(request):
 	if request.method == "POST":
 		form = ProfileForm(request.POST)
 		if form.is_valid():
-			try:
-				profile = Profile.objects.get(user=request.user)
-			except:
-				profile = Profile(**form.cleaned_data)
-				profile.user = request.user
-				profile.save()
+			if not Profile.objects.filter(user=request.user).exists():
+				new_save = form.save(commit=False)
+				new_save.user = request.user
+				new_save.save()
+			else:
+				form = ProfileForm(request.POST, Profile.objects.filter(user=request.user).get())
 			return HttpResponseRedirect(reverse('home'))
 		else:
 			return render(request, 'userprofile/userdetailentry.html', {'form':form, 'error':"form wasn't valid"})
@@ -54,32 +32,21 @@ def userDetailEntry(request):
 @login_required
 def selfEdit(request):
 	if request.method == "POST":
-		form = ProfileForm(request.POST)
+		form = ProfileForm(request.POST, instance=Profile.objects.get(user=request.user))
 		if form.is_valid():
-			try:
-				old_prof = Profile.objects.get(user=request.user)
-				new_prof = Profile(**form.cleaned_data)
-				new_prof.id = old_prof.id
-				new_prof.user = request.user
-				new_prof.save()
-				return HttpResponseRedirect(reverse('home'))
-			except:
-				profile = Profile(**form.cleaned_data)
-				profile.user = request.user
-				profile.save()
-				return HttpResponseRedirect(reverse('home'))
+			new_save = form.save()
+			return HttpResponseRedirect(reverse('home'))
 		else:
-			profile = Profile(**form.cleaned_data)
-			form = ProfileForm(instance = profile)
 			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':"form wasn't valid (try filling in more stuff)"})
 	else:
-		try:
+		if Profile.objects.filter(user=request.user).exists():
 			profile = Profile.objects.get(user=request.user)
-		except:
-			return HttpResponseRedirect(reverse('userprofile:userdetailentry'))
-		form = ProfileForm(instance = profile)
-		#return HttpResponse('test')
-		return render(request, 'userprofile/userEdit.html', {'form':form, 'error':''})
+			form = ProfileForm(instance = profile)
+			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':''})
+		else:
+			form = ProfileForm()
+			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':''})
+
 
 def userLists(request):
 	users = Profile.objects.all()

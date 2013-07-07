@@ -6,6 +6,7 @@ from django import forms
 
 from constants import ACCESS_LEVELS, VERMONT_COUNTIES, AGE_RANGES
 from django.conf import settings
+from counties.models import County
 
 
 def_max_length = 255
@@ -17,18 +18,7 @@ class Profile(models.Model):
 	last_name = models.CharField(max_length=20)
 	address = models.CharField(max_length=200, blank=True)
 	city = models.CharField(max_length=200, blank=True)
-	county1 = models.CharField(max_length=200,
-								choices=VERMONT_COUNTIES,
-								blank=True,
-								)
-	county2 = models.CharField(max_length=200,
-								choices=VERMONT_COUNTIES,
-								blank=True,
-								)
-	county3 = models.CharField(max_length=200,
-								choices=VERMONT_COUNTIES,
-								blank=True,
-								)
+	counties = models.ManyToManyField(County, blank=True, null=True)
 	age = models.CharField(max_length=200,
 							choices=AGE_RANGES,
 							blank=True)

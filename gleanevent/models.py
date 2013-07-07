@@ -10,6 +10,7 @@ from django.forms.fields import ChoiceField
 from constants import VERMONT_COUNTIES
 
 from farms.models import Farm, FarmLocation
+from counties.models import County
 
 
 # Create your models here.
@@ -37,6 +38,7 @@ class GleanEvent(models.Model):
 	#rsvped = models.ManyToManyField(User, null=True, blank=True, related_name ="rsvped")
 	attending_volunteers = models.ManyToManyField(User, null=True, blank=True, related_name="attending_voluntters")
 	officiated_by = models.ManyToManyField(User, blank=True, related_name="officiated_by")
+	counties = models.ManyToManyField(County, blank=True, null=True)
 
 	#member_organization = models.ForeignKey('MemberOrganization')
 	

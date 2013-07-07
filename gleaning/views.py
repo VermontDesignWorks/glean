@@ -11,6 +11,10 @@ from gleanevent.models import GleanEvent
 def home(request):
 	try:
 		prof = Profile.objects.get(user=request.user)
+		lastday = datetime.datetime.now()+datetime.timedelta(days=7)
+		day1 = datetime.datetime.now()
+		gleans = list(GleanEvent.objects.filter(date__gte=day1,date__lte=lastday))
+		return render(request, 'home.html',{'gleans' : gleans})
 	except:
 		if not request.user.is_anonymous():
 			return HttpResponseRedirect(reverse('userprofile:userdetailentry'))

@@ -5,6 +5,7 @@ New Location for {{farm.name}}!
 {% endblock title %}
 {% block content %}
 	<form method="post" action="">
+		{{error}}
 		{% csrf_token %}
 		{% include 'specialfields.html' %}
 		<input type="submit" value="Go!">

@@ -17,9 +17,10 @@ def newFarm(request):
 	if request.method == "POST":
 		form = FarmForm(request.POST)
 		if form.is_valid():
-			newFarm = Farm(**form.cleaned_data)
-			newFarm.save()
-			return HttpResponseRedirect(reverse('farms:detailfarm', args=(newFarm.id,) ))
+			#newFarm = Farm(**form.cleaned_data)
+			#newFarm.save()
+			new_save = form.save()
+			return HttpResponseRedirect(reverse('farms:detailfarm', args=(new_save.id,) ))
 		else:
 			return render(request, 'farms/new.html', {'form':form, 'error':'Your Farm Form Was Not Valid'})
 	else:
@@ -30,11 +31,12 @@ def newFarm(request):
 def editFarm(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
 	if request.method == "POST":
-		form = FarmForm(request.POST)
+		form = FarmForm(request.POST, instance=farm)
 		if form.is_valid():
-			newFarm = Farm(**form.cleaned_data)
-			newFarm.id = farm_id
-			newFarm.save()
+			#newFarm = Farm(**form.cleaned_data)
+			#newFarm.id = farm_id
+			#newFarm.save()
+			new_save = form.save()
 			return HttpResponseRedirect(reverse('farms:index'))
 		else:
 			return render(request, 'farms/edit.html', {'form':form, 'farm':farm, 'error':'form needs some work'})
@@ -52,14 +54,16 @@ def newLocation(request, farm_id):
 	if request.method == 'POST':
 		form = LocationForm(request.POST)
 		if form.is_valid():
-			new_location = FarmLocation(**form.cleaned_data)
-			try:
-				same_title = FarmLocation.objects.get(name=form.cleaned_data.name)
-				return render(request, 'farms/new_location.html', {'form':form, 'farm':farm, 'error':'Already a location by that name'})	
-			except:
-				new_location.farm = farm
-				new_location.save()
+			#new_location = FarmLocation(**form.cleaned_data)
+			if not FarmLocation.objects.filter(name=form.cleaned_data['name'], farm=farm).exists():
+				#.farm = farm
+				#new_location.save()
+				new_save = form.save(commit=False)
+				new_save .farm=farm
+				new_save.save()
 				return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
+			else:
+				return render(request, 'farms/new_location.html', {'form':form, 'farm':farm, 'error':'That Location Name is Taken'})	
 
 		else:
 			return render(request, 'farms/new_location.html', {'form':form, 'farm':farm, 'error':'Form was incorrectly filled out'})
@@ -71,12 +75,13 @@ def editLocation(request, farm_id, location_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
 	location = get_object_or_404(FarmLocation, pk=location_id)
 	if request.method == 'POST':
-		form = LocationForm(request.POST)
+		form = LocationForm(request.POST, instance=location)
 		if form.is_valid():
-			new_save = FarmLocation(**form.cleaned_data)
-			new_save.id = location_id
-			new_save.farm = farm
-			new_save.save()
+			#new_save = FarmLocation(**form.cleaned_data)
+			#new_save.id = location_id
+			#new_save.farm = farm
+			#new_save.save()
+			new_save = form.save()
 			return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
 		else:
 			return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'error':'Form Had an Error'})
