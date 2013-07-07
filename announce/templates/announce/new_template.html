@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+	New Template
+{% endblock title %}
+{% block content %}
+
+<h1>New Template</h1>
+<div class="row-fluid">
+	<div class="span6">
+		<h3>Write your custom template!</h3>
+		<h4>It will automatically be saved to your organization</h4>
+		<form method="post" action="">
+			{% csrf_token %}
+			{{error}}
+			{{form.as_p}}
+			<input type="submit" value="Go!" />
+		</form>
+	</div>
+	<div class="span6">
+		<h4>To edit in content where you'd like, use the following keywords:</h4>
+		<ul>
+			<li>{% templatetag openvariable %}content{% templatetag closevariable %} - for your message content</li>
+			<li>{% templatetag openvariable %}glean.title{% templatetag closevariable %} - for the glean's title</li>
+			<li>{% templatetag openvariable %}glean.description{% templatetag closevariable %} - for the glean's title</li>
+			<li>{% templatetag openvariable %}rsvp{% templatetag closevariable %} - for the RSVP link</li>
+			<li>{% templatetag openvariable %}info{% templatetag closevariable %} - for the Glean's Detail Page Link</li>
+			<li>{% templatetag openvariable %}unsubscribe{% templatetag closevariable %} - for the Unsubscribe Link</li>
+		</ul>
+	</div>
+</div>
+{% endblock content %}

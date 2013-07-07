@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}Announcement for {{glean.title}}
+{% endblock title %}
+{% block content %}
+<h2>Announcement for "{{glean.title}}"</h2>
+{% if announcement.sent %}
+<h4>Sent!</h4>
+{% else %}
+<a href="{% url 'announce:editannounce' announcement.id %}" class="btn btn-info">Edit Message</a>
+<a href="{% url 'announce:edittemplate' announcement.template.id %}" class="btn btn-warning">Edit Template</a>
+<form method="POST" action="" style="display:inline-block;">{% csrf_token %}<input type="submit" class="btn btn-danger" value="SEND!"></form>
+<br />
+
+{% endif %}
+	<div class="span4" style="border:#444 1px solid; min-height:520px;">{{test|safe}}</div>
+	<div class="span4">
+		<h3>Users Invited</h3>
+		<ul>
+			{% for recipient in recipients %}
+			<li>{{recipient.first_name}} {{recipient.last_name}} - {{recipient.user.username}}</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endblock content %}

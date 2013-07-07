@@ -11,6 +11,8 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.conf import settings
 
+from counties.models import County
+
 
 # Create your models here.
 class Farm(models.Model):
@@ -27,6 +29,8 @@ class Farm(models.Model):
 	direction = models.TextField(blank=True)
 	instructions = models.TextField(blank=True)
 	farmers = models.ManyToManyField(User, blank=True, null=True)
+	counties = models.ManyToManyField(County, blank=True, null=True)
+
 
 
 	def __unicode__(self):
@@ -42,6 +46,7 @@ class FarmLocation(models.Model):
 	name = models.CharField(max_length=200)
 	description = models.TextField(blank=True)
 	directions = models.TextField(blank=True)
+	counties = models.ManyToManyField(County, blank=True, null=True)
 
 	def __unicode__(self):
 		return self.name
@@ -50,3 +55,16 @@ class FarmLocation(models.Model):
 class LocationForm(ModelForm):
 	class Meta:
 		model = FarmLocation
+
+class Contact(models.Model):
+	farm = models.ForeignKey(Farm, blank=True, editable=False, null=True)
+	first_name = models.CharField(max_length=20, blank=True)
+	last_name = models.CharField(max_length=20, blank=True)
+	relation = models.CharField(max_length=20, blank=True)
+	phone = models.CharField(max_length=20, blank=True)
+	glean_contact = models.BooleanField(default=False)
+	email = models.EmailField(blank=True)
+
+class ContactForm(ModelForm):
+	class Meta:
+		model = Contact

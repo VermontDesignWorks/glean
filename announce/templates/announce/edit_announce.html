@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}Announcement for {{announce.subject}}
+{% endblock title %}
+{% block content %}
+<h1>Edit this Announcement before it goes out!</h1>
+{% if announcement.sent == True %}
+<h4>No further edits allowed, the announcement has already been sent</h4>
+{% else %}
+<div class="row-fluid">
+	<div class="span6">
+		<form method="post" action="">
+			{% csrf_token %}
+			{{form.as_p}}
+			<input type="submit" value="Go!" />
+		</form>
+	</div>
+	<div class="span6">
+		<h3>Intended Recipients</h3>
+		<ul>
+		{% for recipient in recipients %}
+		<li>{{recipient.first_name}} {{recipient.last_name}} - {{recipient.user.username}} - {{recipient.user.email}}</li>
+		{% endfor %}
+		</ul>
+	</div>	
+</div>
+{% endif %}
+{% endblock content %}

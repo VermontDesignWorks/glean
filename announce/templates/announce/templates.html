@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+Announcement Index
+{% endblock title %}
+
+{% block content %}
+<div class="span6">
+	{% if templates %}
+		<ul>
+			{% for template in templates %}
+				<li>
+					<a href="{% url 'announce:detailtemplate' template.id %}">{{ template.template_name }}</a> - <a href="{% url 'announce:edittemplate' template.id %}" class="btn btn-warning">Edit Template</a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<span>No templates :(</span>
+	{% endif %}
+</div>
+<div class="span6">
+	<a class="btn btn-info" href="{% url 'announce:newtemplate' %}" >New Template</a>
+</div>
+{% endblock content %} 

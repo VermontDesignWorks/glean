@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+Detail for Template - {{template.template_name}}
+{% endblock title %}
+{% block content %}
+<h1>Viewing the Template "{{template.template_name}}"</h1>
+<h5>HTML Email is tricky buisness! What you see is not necessarily what you get!</h5>
+	<div width="400px">{{template.body | safe}}</div>
+{% endblock content %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+Edit Template {{template.template_name}}
+{% endblock title %}
+{% block content %}
+<h1>Edit Template "{{template.template_name}}"</h1>
+	<form method="post" action="">
+		{% csrf_token %}
+		{{form.as_p}}
+		<input type="submit" value="Go!">
+	</form>
+{% endblock content %}
