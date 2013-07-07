@@ -1,14 +1,32 @@
 {% load gleanevent_extras %}
+<div class="gleanersForm">
 {%for field in form %}
 	{% ifnotequal field.auto_id|dater -1 %}
-  			<div class="input-append datetimechoser">
+  			<div class="span4"><div class="input-append datetimechoser">
     			<label for="{{ field.id_for_label }}"> {{ field.label_tag }} <input id="{{ field.auto_id }}" maxlength=200 name="{{ field.name }}" data-format="MM/dd/yyyy hh:mm:ss" type="text"></input>
     		<span class="add-on">
      			 <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
     		</span>
   	   		</div>
-	{% else %}
-	   <p><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>{{ field }}</p>
+  	   		</div>
+  	{% else %}   		
+	
+		{% ifequal field.field.widget|klass 'TextInput' %}
+    	<div class="span4"><label for="{{ field.id_for_label }}"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label></label><input id="{{ field.autoid }}" maxlength="25" name="{{ field.name }}" type="text" /></div>
+		{% else %}
+			{% ifequal field.field.widget|klass 'Select' %}
+			<div class="span4"><label for="{{ field.id_for_label }}"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label></label><select id="{{ field.autoid }}" name="{{ field.name }}">
+				
+				{% for key, value in field.field.choices %}
+    					
+             	<option value="{{ key }}">{{ value }}</option>
+				{% endfor %}
+			</select></div>
+			{% else %}
+			<div class="span4"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>{{ field }}</div>
+			{% endifequal %}
+		{% endifequal %}
 	{% endifnotequal %}
 	
 {% endfor %}
+</div>
