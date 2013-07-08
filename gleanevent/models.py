@@ -18,24 +18,25 @@ from counties.models import County
 
 class GleanEvent(models.Model):
 	title = models.CharField(max_length=200)
-	address_one = models.CharField(max_length=200)
-	address_two = models.CharField(max_length=200, blank=True)
+	address_one = models.CharField("Address (line one)", max_length=200, blank=True)
+	address_two = models.CharField("Address (line one)", max_length=200, blank=True)
+	city = models.CharField("City", max_length=25, blank=True)
+	state = models.CharField("State (Two Letter Abbreviation)", max_length=2, blank=True)
 
-	town = models.CharField(max_length=25, blank=True)
 	date = models.DateTimeField('Date and Time', blank=True, null=True)
 	description = models.TextField(blank=True)
 	crops = models.CharField(max_length=200, blank=True)
 
 	directions = models.TextField(blank=True, null=True)
-	instructions = models.TextField(blank=True, null=True)
-
+	volunteers_needed = models.IntegerField(blank = True)
+	duration = models.IntegerField(blank=True)
 
 	farm = models.ForeignKey(Farm, blank=True, null=True)
 	farm_location = models.ForeignKey(FarmLocation, blank=True, null=True)
 
 	created_by = models.ManyToManyField(User, editable=False,  related_name="created_by")
 	invited_volunteers = models.ManyToManyField(User, null=True, blank=True, related_name="invited_volunteers")
-	#rsvped = models.ManyToManyField(User, null=True, blank=True, related_name ="rsvped")
+	rsvped = models.ManyToManyField(User, null=True, blank=True, related_name ="rsvped")
 	attending_volunteers = models.ManyToManyField(User, null=True, blank=True, related_name="attending_voluntters")
 	officiated_by = models.ManyToManyField(User, blank=True, related_name="officiated_by")
 	counties = models.ManyToManyField(County, blank=True, null=True)

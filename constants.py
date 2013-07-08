@@ -23,6 +23,28 @@ ACCESS_LEVELS = (
 	('GC', 'GleaningCoordinator'),
 )
 
+LINE_TYPE = (
+	('C', 'Cell'),
+	('O', 'Office'),
+	('F', 'Fax'),
+)
+
+PHONE_TYPE = (
+	('C', 'Cell'),
+	('O', 'Office'),
+)
+
+FARM_TYPE = (
+	('1', 'Vegetable'),
+	('2', 'Livestock'),
+	('3', 'Mixed'),
+)
+
+PREFERRED_CONTACT = (
+	('1', 'Email'),
+	('2', 'Phone'),
+)
+
 AGE_RANGES = ( 
 	( '1', 'under 15'),
 	( '2', '16-20'), 
