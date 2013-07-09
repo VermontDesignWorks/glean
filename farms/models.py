@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.utils import timezone
 import datetime
 from django.forms.fields import ChoiceField
-from constants import VERMONT_COUNTIES, LINE_TYPE, PHONE_TYPE, PREFERRED_CONTACT
+from constants import VERMONT_COUNTIES, LINE_TYPE, PHONE_TYPE, PREFERRED_CONTACT, FARM_TYPE
 
 from django.forms import ModelForm
 
@@ -17,7 +17,7 @@ from counties.models import County
 # Create your models here.
 class Farm(models.Model):
 	name = models.CharField(max_length=200)
-	farm_type = models.CharField(max_length=20)
+	farm_type = models.CharField(choices=FARM_TYPE, max_length=20)
 	description = models.TextField(blank=True)
 
 	physical_address_one = models.CharField('Physical Address (line one)', max_length=200, blank=True)
@@ -31,15 +31,15 @@ class Farm(models.Model):
 	mailing_city = models.CharField('Mailing Address (City)', max_length=200, blank=True)
 	mailing_state = models.CharField('Mailing Address (State, Two Letter Code)', max_length=2, blank=True)
 
-	phone_1 = models.CharField('primary phone', max_length=200, blank=True)
-	phone_1_type = models.CharField(choices=LINE_TYPE,max_length=10,blank=True)
-	phone_2 = models.CharField('secondary phone', max_length=200, blank=True)
-	phone_2_type = models.CharField(choices=LINE_TYPE,max_length=10,blank=True)
+	phone_1 = models.CharField('Primary phone', max_length=200, blank=True)
+	phone_1_type = models.CharField('Primary Phone Type',choices=LINE_TYPE,max_length=10,blank=True)
+	phone_2 = models.CharField('Secondary phone', max_length=200, blank=True)
+	phone_2_type = models.CharField('Secondary Phone Type', choices=LINE_TYPE,max_length=10,blank=True)
 
-	email = models.CharField(max_length=200, blank=True)
-	direction = models.TextField(blank=True)
-	instructions = models.TextField(blank=True)
-	farmers = models.ManyToManyField(User, blank=True, null=True)
+	email = models.CharField("The Farm's Email", max_length=200, blank=True)
+	direction = models.TextField("Directions", blank=True)
+	instructions = models.TextField("Instructions", blank=True)
+	farmers = models.ManyToManyField(User, blank=True, null=True, editable=False)
 	counties = models.ManyToManyField(County, blank=True, null=True)
 
 
@@ -69,14 +69,14 @@ class LocationForm(ModelForm):
 
 class Contact(models.Model):
 	farm = models.ForeignKey(Farm, blank=True, editable=False, null=True)
-	first_name = models.CharField(max_length=20, blank=True)
-	last_name = models.CharField(max_length=20, blank=True)
-	relation = models.CharField(max_length=20, blank=True)
-	phone = models.CharField(max_length=20, blank=True)
-	phone_type = models.CharField(choices=PHONE_TYPE, max_length=2, blank=True)
-	glean_contact = models.BooleanField(default=False)
-	email = models.EmailField(blank=True)
-	preferred = models.CharField(choices=PREFERRED_CONTACT, max_length=1, blank=True, default='1')
+	first_name = models.CharField("First Name", max_length=20, blank=True)
+	last_name = models.CharField("Last Name", max_length=20, blank=True)
+	relation = models.CharField("Relationship to Farm", max_length=20, blank=True)
+	email = models.EmailField("Email", blank=True, null=True)
+	phone = models.CharField("Primary Phone", max_length=20, blank=True)
+	phone_type = models.CharField("Phone Type", choices=PHONE_TYPE, max_length=2, blank=True)
+	glean_contact = models.BooleanField("Should this person be contacted about gleans?", default=False)
+	preferred = models.CharField("How Does this person Prefer to be Contacted?",choices=PREFERRED_CONTACT, max_length=1, blank=True, default='1')
 
 class ContactForm(ModelForm):
 	class Meta:
