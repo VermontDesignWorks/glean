@@ -28,8 +28,8 @@ class GleanEvent(models.Model):
 	crops = models.CharField(max_length=200, blank=True)
 
 	directions = models.TextField(blank=True, null=True)
-	volunteers_needed = models.IntegerField(blank = True)
-	duration = models.IntegerField(blank=True)
+	volunteers_needed = models.IntegerField(blank = True, default=0)
+	duration = models.IntegerField(blank=True, default=1)
 
 	farm = models.ForeignKey(Farm, blank=True, null=True)
 	farm_location = models.ForeignKey(FarmLocation, blank=True, null=True)
