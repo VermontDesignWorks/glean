@@ -12,3 +12,24 @@ def klass(ob):
 def dater(my_string):
     my_test = (my_string.find("date") or my_string.find("Date"))
     return my_test
+
+
+@register.filter('newrow')
+def newrow(my_iteration):
+    counter = 1
+    rowlength = 3
+    while counter <= my_iteration:
+        if counter == my_iteration:
+            return True
+        counter = counter + rowlength
+    return False
+
+@register.filter('endrow')
+def endrow(my_iteration):
+    counter = 3
+    rowlength = 3
+    while counter <= my_iteration:
+        if counter == my_iteration:
+            return True
+        counter = counter + rowlength
+    return False

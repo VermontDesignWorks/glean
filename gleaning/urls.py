@@ -16,6 +16,7 @@ urlpatterns = patterns('',
 	url(r'^users/', include('userprofile.urls', namespace="userprofile")),
 	url(r'^announce/', include('announce.urls', namespace="announce")),
 	url(r'^counties/', include('counties.urls', namespace="counties")),
+	url(r'^testdata/', include('testdata.urls', namespace="testdata")),
 
 	## registration backend
 	#(r'^admin/', include('admin.urls')),
