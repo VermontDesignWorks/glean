@@ -60,7 +60,7 @@ class FarmLocation(models.Model):
 	counties = models.ManyToManyField(County, blank=True, null=True)
 
 	def __unicode__(self):
-		return self.farm + ' - ' + self.name
+		return self.farm.name + ' - ' + self.name
 
 
 class LocationForm(ModelForm):
