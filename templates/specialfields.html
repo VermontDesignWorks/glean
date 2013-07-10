@@ -1,5 +1,5 @@
 {% load gleanevent_extras %}
-<div class="gleanersForm">
+<h1>{{ form|klass|formname }}</h1>
 {%for field in form %}
 	{% if forloop.counter|newrow %}
 		<div class="row-fluid">
@@ -34,4 +34,3 @@
 		</div>
 	{% endif %}
 {% endfor %}
-</div>

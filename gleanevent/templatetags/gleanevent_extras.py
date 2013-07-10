@@ -24,6 +24,7 @@ def newrow(my_iteration):
         counter = counter + rowlength
     return False
 
+
 @register.filter('endrow')
 def endrow(my_iteration):
     counter = 3
@@ -33,3 +34,9 @@ def endrow(my_iteration):
             return True
         counter = counter + rowlength
     return False
+
+
+@register.filter('formname')
+def formname(my_text):
+    my_text = 'New ' + my_text.split('Form')[0]
+    return my_text
