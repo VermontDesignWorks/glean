@@ -1,12 +1,18 @@
 {% load gleanevent_extras %}
-<h1>{{ form|klass|formname }}</h1>
+<h1>
+{% if editmode %}
+{{ form|klass|formname:'Edit '}}
+{% else %}
+{{ form|klass|formname:'New ' }}
+{% endif %}
+</h1>
 {%for field in form %}
 	{% if forloop.counter|newrow %}
 		<div class="row-fluid">
 	{% endif %}
 	{% ifnotequal field.auto_id|dater -1 %}
   			<div class="span4"><div class="input-append datetimechoser"> 
-    			<label for="{{ field.id_for_label }}"> {{ field.label_tag }} <input id="{{ field.auto_id }}" maxlength=200 name="{{ field.name }}" data-format="MM/dd/yyyy hh:mm:ss" type="text"></input>
+    			<label for="{{ field.id_for_label }}"> {{ field.label_tag }} <input id="{{ field.auto_id }}" maxlength=200 name="{{ field.name }}" data-format="MM/dd/yyyy hh:mm:ss" type="text" value="{{ field.value }}"></input>
     		<span class="add-on">
      			 <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
     		</span>
@@ -14,10 +20,10 @@
   	   		</div>
   	{% else %}   		
 	
-		{% ifequal field.field.widget|klass 'TextInput' %}
+		{% comment %} {% ifequal field.field.widget|klass 'TextInput' %}
     	<div class="span4"><label for="{{ field.id_for_label }}"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label></label><input id="{{ field.autoid }}" maxlength="25" name="{{ field.name }}" type="text" /></div>
-		{% else %}
-			{% ifequal field.field.widget|klass 'Select' %}
+		{% else %} {% endcomment %}
+			{% comment %}{% ifequal field.field.widget|klass 'Select' %}
 			<div class="span4"><label for="{{ field.id_for_label }}"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label></label><select id="{{ field.autoid }}" name="{{ field.name }}">
 				
 				{% for key, value in field.field.choices %}
@@ -25,10 +31,10 @@
              	<option value="{{ key }}">{{ value }}</option>
 				{% endfor %}
 			</select></div>
-			{% else %}
+			{% else %} {% endcomment %}
 			<div class="span4"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>{{ field }}</div>
-			{% endifequal %}
-		{% endifequal %}
+		 {#	{% endifequal %} #}
+		 {# {% endifequal %} #}
 	{% endifnotequal %}
 	{% if forloop.counter|endrow %}
 		</div>

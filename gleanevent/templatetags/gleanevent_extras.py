@@ -37,6 +37,6 @@ def endrow(my_iteration):
 
 
 @register.filter('formname')
-def formname(my_text):
-    my_text = 'New ' + my_text.split('Form')[0]
+def formname(my_text,add_text):
+    my_text = add_text + my_text.split('Form')[0]
     return my_text

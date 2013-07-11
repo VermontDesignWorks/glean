@@ -35,9 +35,9 @@ def editTemplate(request, template_id):
 				return HttpResponseRedirect(reverse('announce:templates'))
 			else:
 				form = PartialTemplateForm(instance=newTemplate)
-				return render(request, 'announce/edit_template.html', {'form':form, 'template':template, 'error':'Need a {{content}} tag!'})
+				return render(request, 'announce/edit_template.html', {'form':form, 'template':template, 'error':'Need a {{content}} tag!', 'editmode':True})
 		else:
-			return render(request, 'announce/edit_template.html', {'form':form, 'template':template, 'error':'Form was not valid'})
+			return render(request, 'announce/edit_template.html', {'form':form, 'template':template, 'error':'Form was not valid', 'editmode':True})
 	else:		
 		form = PartialTemplateForm(instance=template)
 		return render(request, 'announce/edit_template.html', {'form':form, 'template':template})
@@ -129,12 +129,12 @@ def editAnnounce(request, announce_id):
 			newAnnounce.save()
 			return HttpResponseRedirect(reverse('announce:detailannounce', args=(newAnnounce.id,)))
 		else:
-			return render(request, 'announce/edit_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients})
+			return render(request, 'announce/edit_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients, 'editmode':True})
 	else:
 		templates = Template.objects.all()
 		form = AnnouncementForm(instance=announce)
 		recipients = recipients_placeholder_code()
-		return render(request, 'announce/edit_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients})
+		return render(request, 'announce/edit_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients, 'editmode':True})
 
 
 def detailAnnounce(request, announce_id):

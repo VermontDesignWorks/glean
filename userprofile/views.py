@@ -37,15 +37,15 @@ def selfEdit(request):
 			new_save = form.save()
 			return HttpResponseRedirect(reverse('home'))
 		else:
-			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':"form wasn't valid (try filling in more stuff)"})
+			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':"form wasn't valid (try filling in more stuff)",'editmode':True})
 	else:
 		if Profile.objects.filter(user=request.user).exists():
 			profile = Profile.objects.get(user=request.user)
 			form = ProfileForm(instance = profile)
-			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':''})
+			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':'','editmode':True})
 		else:
 			form = ProfileForm()
-			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':''})
+			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':'','editmode':True})
 
 
 def userLists(request):
@@ -84,7 +84,7 @@ def userEdit(request, user_id):
 		except:
 			profile = ''
 			form = ProfileForm()
-		return render(request, 'userprofile/adminedit.html', {'person':person, 'profile':profile, 'form':form})
+		return render(request, 'userprofile/adminedit.html', {'person':person, 'profile':profile, 'form':form, 'editmode':True})
 
 def emailEdit(request):
 	if request.method == 'POST':
@@ -95,7 +95,7 @@ def emailEdit(request):
 			return HttpResponseRedirect(reverse('home'))
 		else:
 			form = EmailForm()
-			return render(request, 'userprofile/emailedit.html', {'error':"That's not a valid address", 'form':form})
+			return render(request, 'userprofile/emailedit.html', {'error':"That's not a valid address", 'form':form, 'editmode':True})
 	else:
 		form = EmailForm()
 		return render(request, 'userprofile/emailedit.html',{'form':form})

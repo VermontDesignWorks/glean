@@ -40,7 +40,7 @@ def editGlean(request, glean_id):
 			new_save = form.save()
 			return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(new_save.id,) ))
 	form = GleanForm(instance = glean)
-	return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean})
+	return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean , 'editmode':True})
 
 @login_required
 def detailGlean(request, glean_id):
