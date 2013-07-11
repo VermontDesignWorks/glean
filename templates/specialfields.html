@@ -7,26 +7,27 @@
 {% endif %}
 </h1>
 {%for field in form %}
-	{% if forloop.counter|newrow %}
-		<div class="row-fluid">
-	{% endif %}
-	{% ifnotequal field.auto_id|dater -1 %}
-  			<div class="span4"><div class="input-append datetimechoser"> 
-    			<label for="{{ field.id_for_label }}"> {{ field.label_tag }} <input id="{{ field.auto_id }}" maxlength=200 name="{{ field.name }}" data-format="MM/dd/yyyy hh:mm:ss" type="text" value="{{ field.value }}"></input>
-    		<span class="add-on">
-     			 <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-    		</span>
-  	   		</div>
-  	   		</div>
-  	{% else %}   		
-  		{% ifequal field.auto_id "id_duration" %} 
-					<div class="span4"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label><input id="{{ field.autoid }}" maxlength="25" name="{{ field.name }}" type="number" value="{{ field.value }}" /></div>
-		{% else %}
-					<div class="span4"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>{{ field }}</div>
-		{% endifequal %}
+{% if forloop.counter|newrow %}
+<div class="row-fluid">
+{% endif %}
+{% ifnotequal field.auto_id|dater -1 %}
+   <div class="span4"><div class="input-append datetimechoser">
+     <label for="{{ field.id_for_label }}"> {{ field.label_tag }} <input id="{{ field.auto_id }}" maxlength=200 name="{{ field.name }}" data-format="MM/dd/yyyy hh:mm:ss" type="text" value="{{ field.value }}"></input>
+     <span class="add-on">
+      <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+     </span>
+   </div>
+   </div>
+{% else %}
+   {% ifequal field.auto_id "id_duration" %}
+	<div class="span4"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label><input id="{{ field.autoid }}" maxlength="25" name="{{ field.name }}" type="number" value="{{ field.value }}" /></div>
+	{% else %}
+	<div class="span4"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>{{ field }}</div>
+{% endifequal %}
 
-	{% endifnotequal %}
-	{% if forloop.counter|endrow %}
-		</div>
-	{% endif %}
+{% endifnotequal %}
+{% if forloop.counter|endrow %}
+</div>
+{% endif %}
 {% endfor %}
+
