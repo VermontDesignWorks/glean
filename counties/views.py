@@ -37,10 +37,10 @@ def editCounty(request, county_id):
 			new_save.save()
 			return HttpResponseRedirect(reverse('counties:index'))
 		else:
-			return render(request, 'counties/edit_county.html', {'form':form, 'county':county, 'error':'form needs some work'})
+			return render(request, 'counties/edit_county.html', {'form':form, 'county':county, 'error':'form needs some work', 'editmode':True})
 	form = CountyForm(instance = county)
 
-	return render(request, 'counties/edit_county.html', {'form':form, 'county':county})
+	return render(request, 'counties/edit_county.html', {'form':form, 'county':county, 'editmode':True})
 
 def detailCounty(request, county_id):
 	county = get_object_or_404(County, pk=county_id)

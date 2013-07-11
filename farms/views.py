@@ -39,10 +39,10 @@ def editFarm(request, farm_id):
 			new_save = form.save()
 			return HttpResponseRedirect(reverse('farms:index'))
 		else:
-			return render(request, 'farms/edit.html', {'form':form, 'farm':farm, 'error':'form needs some work'})
+			return render(request, 'farms/edit.html', {'form':form, 'farm':farm, 'error':'form needs some work', 'editmode':True})
 	form = FarmForm(instance = farm)
 
-	return render(request, 'farms/edit.html', {'form':form, 'farm':farm})
+	return render(request, 'farms/edit.html', {'form':form, 'farm':farm, 'editmode':True})
 
 #@login_required
 def detailFarm(request, farm_id):
@@ -84,10 +84,10 @@ def editLocation(request, farm_id, location_id):
 			new_save = form.save()
 			return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
 		else:
-			return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'error':'Form Had an Error'})
+			return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'error':'Form Had an Error', 'editmode':True})
 	else:
 		form = LocationForm(instance = location)
-		return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm})
+		return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'editmode':True})
 
 def newContact(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
@@ -117,7 +117,7 @@ def editContact(request, farm_id, contact_id):
 			new_save.save()
 			return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
 		else:
-			return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'error':'Form Had an Error'})
+			return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'error':'Form Had an Error','editmode':True})
 	else:
 		form = ContactForm(instance = contact)
-		return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm})
+		return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'editmode':True})
