@@ -32,7 +32,12 @@
 				{% endfor %}
 			</select></div>
 			{% else %} {% endcomment %}
-			<div class="span4"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>{{ field }}</div>
+			
+				{% ifequal field.autoid 'id_duration' %} 
+					<div class="span4"><label for="{{ field.id_for_label }}"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label></label><input id="{{ field.autoid }}" maxlength="25" name="{{ field.name }}" type="number" value="{{ field.value }}" /></div>
+				{% else %}
+					<div class="span4"><label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>{{ field }}</div>
+				{% endifequal %}
 		 {#	{% endifequal %} #}
 		 {# {% endifequal %} #}
 	{% endifnotequal %}
