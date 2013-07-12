@@ -8,4 +8,9 @@
 <a href="{% url 'counties:editcounty' county.id %}" class="btn btn-warning">edit</a>
 <p>{{county.description}}</p>
 <p>{{county.towns}}</p>
+<ul>
+{% for person in county.people.all %}
+<li>{{person.first_name}} {{person.last_name}}</li>
+{% endfor %}
+</ul>
 {% endblock %}

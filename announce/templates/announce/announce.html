@@ -15,8 +15,11 @@
 	<div class="span6">
 		<h3>Intended Recipients</h3>
 		<ul>
-		{% for recipient in recipients %}
-		<li>{{recipient.first_name}} {{recipient.last_name}} - {{recipient.user.username}} - {{recipient.user.email}}</li>
+		{% for county in source.counties.all %}
+		<li><a href="{% url 'counties:detailcounty' county.id %}">{{county}}</a></li>
+		<ul>
+			<li>{{county.people.count}} Recipient{% if county.people.count > 1 %}s{% endif %}</li>
+		</ul>
 		{% endfor %}
 		</ul>
 	</div>	

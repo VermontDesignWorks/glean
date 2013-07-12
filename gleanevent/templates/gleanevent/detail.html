@@ -12,6 +12,16 @@ Gleaning Details
   </a>
   <br />
   <br /> 
+  <a href="{% url 'gleanevent:confirmlink' glean.id %}" class="btn btn-success">
+    RSVP to this glean!
+  </a>
+  <br />
+  <br /> 
+  <a href="{% url 'gleanevent:denylink' glean.id %}" class="btn btn-danger">
+    Un-RSVP to this glean
+  </a>
+  <br />
+  <br /> 
   <a href="{% url 'gleanevent:editglean' glean.id %}"class="btn btn-warning">
     Edit This Glean!
   </a>
@@ -22,6 +32,10 @@ Gleaning Details
   {% if glean.description %}
 	<p>{{glean.description}}</p>
   {% endif %}
+  <h4>Volunteers</h4>
+  <p>RSVP'ed:{{glean.rsvped.count}}</p>
+  <p>unRSVP'ed:{{glean.not_rsvped.count}}</p>
+  <p>Required:{{glean.volunteers_needed}}</p>
   <h4>Location</h4>
   <p>{{glean.address_one}}</p>
   <p>{{glean.address_two}}</p>

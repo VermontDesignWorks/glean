@@ -16,7 +16,7 @@ class Profile(models.Model):
 	last_name = models.CharField("Last Name", max_length=20)
 	address = models.CharField("Address (line one)", max_length=200, blank=True)
 	city = models.CharField("City", max_length=200, blank=True)
-	counties = models.ManyToManyField(County, blank=True, null=True)
+	counties = models.ManyToManyField(County, blank=True, null=True, related_name='people')
 	age = models.CharField("Age", max_length=200,
 							choices=AGE_RANGES,
 							blank=True)
@@ -30,7 +30,9 @@ class Profile(models.Model):
 	eclast_name = models.CharField("Emergency Contact Last Name", max_length=200, blank=True)
 	ecphone = models.CharField("Emergency Contact Phone", max_length=200, blank=True)
 	ecrelationship = models.CharField("Relationship", max_length=200, blank=True)
+	
 	accepts_email = models.BooleanField(default=True, editable=False)
+	unsubscribe_key = models.CharField("Unsubscribe key, for emails", max_length=30, blank=True, null=True, editable=False)
 			
 	def __unicode__(self):
 		return u'%s %s' % (self.user, self.address)

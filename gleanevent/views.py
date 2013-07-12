@@ -54,3 +54,21 @@ def gleanCalendar(request):
 def announceGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
 	return render(request, 'gleanevent/announce.html', {'glean':glean})
+
+def confirmLink(request, glean_id):
+	glean = get_object_or_404(GleanEvent, pk=glean_id)
+	if request.user not in glean.rsvped.all():
+		glean.rsvped.add(request.user)
+		if request.user in glean.not_rsvped.all():
+			glean.not_rsvped.remove(request.user)
+		glean.save()
+	return render(request, 'gleanevent/confirm.html', {'glean':glean})
+
+def denyLink(request, glean_id):
+	glean = get_object_or_404(GleanEvent, pk=glean_id)
+	if request.user not in glean.not_rsvped.all():
+		glean.not_rsvped.add(request.user)
+		if request.user in glean.rsvped.all():
+			glean.rsvped.remove(request.user)
+		glean.save()
+	return render(request, 'gleanevent/deny.html', {'glean':glean})

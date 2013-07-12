@@ -17,8 +17,12 @@
 	<div class="span4">
 		<h3>Users Invited</h3>
 		<ul>
-			{% for recipient in recipients %}
-			<li>{{recipient.first_name}} {{recipient.last_name}} - {{recipient.user.username}}</li>
+			{% for county in announcement.glean.counties.all %}
+			<li>{{county}}</li>
+			<ul>{% for person in county.people.all %}
+					<li>{{person.first_name}} {{person.last_name}} - {{person.user.email}}</li>
+				{% endfor %}
+			</ul>
 			{% endfor %}
 		</ul>
 	</div>

@@ -17,6 +17,5 @@ urlpatterns = patterns('',
 	url(r'^templates/edit/(?P<template_id>\d+)', views.editTemplate, name='edittemplate'),
 
 	#=================# RSVP & Sub Urls #=================#
-	url(r'^rsvp/(?P<key>\w+)$', views.rsvpLink, name='rsvplink'),
 	url(r'^unsubscribe/(?P<key>\w+)$', views.unsubscribeLink, name='unsubscribelink'),
 )

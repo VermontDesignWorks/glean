@@ -37,6 +37,7 @@ class GleanEvent(models.Model):
 	created_by = models.ManyToManyField(User, editable=False,  related_name="created_by")
 	invited_volunteers = models.ManyToManyField(User, null=True, blank=True, related_name="invited_volunteers")
 	rsvped = models.ManyToManyField(User, null=True, blank=True, related_name ="rsvped")
+	not_rsvped = models.ManyToManyField(User, null=True, blank=True, related_name ="not_rsvped")
 	attending_volunteers = models.ManyToManyField(User, null=True, blank=True, related_name="attending_voluntters")
 	officiated_by = models.ManyToManyField(User, blank=True, related_name="officiated_by")
 	counties = models.ManyToManyField(County, blank=True, null=True)

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+RSVP Confirmation
+{% endblock title %}
+{% block content %}
+	<h1>Thanks for volunteering! We'll see you at the glean!</h1>
+	<p><a href="{% url 'gleanevent:detailglean' glean.id %}">Head back to the glean page</a></p>
+{% endblock content %}

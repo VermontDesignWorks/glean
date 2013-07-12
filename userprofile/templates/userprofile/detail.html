@@ -7,8 +7,10 @@
 <p>{{person.address}}</p>
 <p>{{person.city}}</p>
 <h4>{{person.first_name}} {{person.last_name}}'s counties</h4>
-<p>{{counties}}</p>
-<p>{{person.county1}}</p>
+<p>{% for county in person.counties.all %}</p>
+<p>{{county}}</p>
+{% endfor %}
+<p>{{person.counties}}</p>
 <p>{{person.county2}}</p>
 <p>{{person.county3}}</p>
 
