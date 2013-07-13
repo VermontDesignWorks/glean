@@ -8,8 +8,9 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django import forms
 from django.contrib.auth.decorators import login_required
+from django.forms.models import modelformset_factory
 
-from gleanevent.models import GleanEvent, GleanForm
+from gleanevent.models import GleanEvent, GleanForm, PostGlean, PostGleanForm
 
 def index(request):
 	gleaning_events_list = GleanEvent.objects.all()
@@ -72,3 +73,26 @@ def denyLink(request, glean_id):
 			glean.rsvped.remove(request.user)
 		glean.save()
 	return render(request, 'gleanevent/deny.html', {'glean':glean})
+
+def postGlean(request, glean_id):
+	if request.method == 'POST':
+		pass
+	else:
+		glean = get_object_or_404(GleanEvent, pk=glean_id)
+		all = glean.rsvped.all()
+		forms = modelformset_factory(PostGlean, extra=len(all)+3)
+		forms = forms(queryset=PostGlean.objects.none())
+		initial = []
+		for person in glean.rsvped.all():
+			prof = person.profile_set.get()
+			initial.append({'first_name':prof.first_name,
+							'last_name':prof.last_name})
+		#return HttpResponse(str(initial))
+		forms=forms(initial=initial)
+
+	# for person in glean.rsvped.all():
+	# 	form = PostGleanForm()
+	# 	form.glean = glean
+	# 	form.first_name = person.profile_set.get().first_name
+	# 	forms.append(form)
+	return render(request, 'gleanevent/postglean.html', {'glean':glean, 'forms':forms})

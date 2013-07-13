@@ -8,7 +8,7 @@
 		{% csrf_token %}
 {% for form in forms %}
 	
-		{{form}}
+		{{form.as_table}}
 		
 {% endfor %}
 <input type="submit" value="Go!">
