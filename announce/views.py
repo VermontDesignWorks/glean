@@ -143,7 +143,7 @@ def detailAnnounce(request, announce_id):
 	body = weave_template_and_body_and_glean(announcement.template, announcement, announcement.glean)
 	glean = announcement.glean
 	source = primary_source(announcement.glean)
-	if request.method == 'POST':
+	if request.method == 'POST' and announcement.sent == False:
 		mail_from_source(source, body, announcement)
 		# mailed = []
 		# for county in source.counties.all():
@@ -151,6 +151,8 @@ def detailAnnounce(request, announce_id):
 		# 		if recipient not in mailed:
 		# 			send_mail(announcement.title, test, 'Salvation Farms', [recipient.user.email], fail_silently=False)
 		# 			mailed.append(recipient)
+		announcement.sent = True
+		announcement.save()
 		return HttpResponseRedirect(reverse('announce:detailannounce', args=(announce_id,)))
 	else:
 		
@@ -162,20 +164,23 @@ def Announcements(request):
 
 def announceGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
-	if request.method == 'POST':
-		form = AnnouncementForm(request.POST)
-		if form.is_valid():
-			newAnnounce = Announcement(**form.cleaned_data)
-			newAnnounce.glean = glean
-			newAnnounce.save()
-			return HttpResponseRedirect(reverse('announce:detailannounce', args=(newAnnounce.id,)))
+	if not glean.happened():
+		if request.method == 'POST':
+			form = AnnouncementForm(request.POST)
+			if form.is_valid():
+				newAnnounce = Announcement(**form.cleaned_data)
+				newAnnounce.glean = glean
+				newAnnounce.save()
+				return HttpResponseRedirect(reverse('announce:detailannounce', args=(newAnnounce.id,)))
+			else:
+				HttpResponse('form was not vaild')
 		else:
-			HttpResponse('form was not vaild')
+			templates = Template.objects.all()
+			form = AnnouncementForm()
+			source = primary_source(glean)
+			return render(request, 'announce/announce.html', {'glean':glean, 'templates':templates, 'form':form, 'source':source})
 	else:
-		templates = Template.objects.all()
-		form = AnnouncementForm()
-		source = primary_source(glean)
-		return render(request, 'announce/announce.html', {'glean':glean, 'templates':templates, 'form':form, 'source':source})
+		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id)))
 
 def editAnnounce(request, announce_id):
 	announce = get_object_or_404(Announcement, pk=announce_id)

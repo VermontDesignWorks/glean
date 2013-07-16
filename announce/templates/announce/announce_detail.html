@@ -9,7 +9,10 @@
 {% else %}
 <a href="{% url 'announce:editannounce' announcement.id %}" class="btn btn-info">Edit Message</a>
 <a href="{% url 'announce:edittemplate' announcement.template.id %}" class="btn btn-warning">Edit Template</a>
-<form method="POST" action="" style="display:inline-block;">{% csrf_token %}<input type="submit" class="btn btn-danger" value="SEND!"></form>
+<form method="POST" action="" style="display:inline-block;">{% csrf_token %}
+	<button class="btn btn-danger" data-loading-text="Sending...">Send!!</button>
+	<input type="submit" class="btn btn-danger" value="  SEND!!  " data-loading-text="Sending...">
+</form>
 <br />
 
 {% endif %}

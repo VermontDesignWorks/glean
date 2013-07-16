@@ -4,7 +4,7 @@ from django import forms
 #from registration.forms import RegistrationForm
 #from registration.backends.default import DefaultBackend
 
-from constants import ACCESS_LEVELS, VERMONT_COUNTIES, AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT
+from constants import ACCESS_LEVELS, VERMONT_COUNTIES, AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, STATES
 from django.conf import settings
 from counties.models import County
 
@@ -16,6 +16,7 @@ class Profile(models.Model):
 	last_name = models.CharField("Last Name", max_length=20)
 	address = models.CharField("Address (line one)", max_length=200, blank=True)
 	city = models.CharField("City", max_length=200, blank=True)
+	state = models.CharField("State", max_length=2, choices=STATES)
 	counties = models.ManyToManyField(County, blank=True, null=True, related_name='people')
 	age = models.CharField("Age", max_length=200,
 							choices=AGE_RANGES,

@@ -1,0 +1,17 @@
+Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
+
+Release 0.0.3 - "This One"
+*Base Glean System works
+*Base userprofile/user system works
+*Farm/Farmlocation data models and views are together
+*County system is operational
+*Email Template Handlers are working
+*Email Announce system is at 90%
+*User RSVP/un-RSVP system is operational
+*Post-Glean Data Entry is operational
+*Future Gleans listed on home page
+*some permissions are implemented
+
+Notes: This is our first named release, so I thought I'd do us a favor and name it something terrible obscure like "This One". Legit, right?
+
+That's all the mucking about I have time for, back to coding. Enjoy poking around this release!

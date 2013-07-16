@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.utils import timezone
 import datetime
 from django.forms.fields import ChoiceField
-from constants import VERMONT_COUNTIES, LINE_TYPE, PHONE_TYPE, PREFERRED_CONTACT, FARM_TYPE
+from constants import VERMONT_COUNTIES, LINE_TYPE, PHONE_TYPE, PREFERRED_CONTACT, FARM_TYPE, STATES
 
 from django.forms import ModelForm
 
@@ -29,7 +29,7 @@ class Farm(models.Model):
 	mailing_address_one = models.CharField('Mailing Address (line one)', max_length=200, blank=True)
 	mailing_address_two = models.CharField('Mailing Address (line two)',max_length=200, blank=True)
 	mailing_city = models.CharField('Mailing Address (City)', max_length=200, blank=True)
-	mailing_state = models.CharField('Mailing Address (State, Two Letter Code)', max_length=2, blank=True)
+	mailing_state = models.CharField('Mailing Address (State)',choices=STATES, max_length=2, blank=True)
 
 	phone_1 = models.CharField('Primary phone', max_length=200, blank=True)
 	phone_1_type = models.CharField('Primary Phone Type',choices=LINE_TYPE,max_length=10,blank=True)

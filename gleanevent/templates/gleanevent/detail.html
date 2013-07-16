@@ -7,6 +7,7 @@ Gleaning Details
 <div class="span3">
 	<h2>{{glean.title}}</h2>
   <h3>{{glean.date}}</h3>
+  {% if not glean.happened %}
   <a href="{% url 'announce:announceglean' glean.id %}" class="btn btn-danger">
     Announce This Glean!
   </a>
@@ -25,6 +26,15 @@ Gleaning Details
   <a href="{% url 'gleanevent:editglean' glean.id %}"class="btn btn-warning">
     Edit This Glean!
   </a>
+  {% endif %}
+  {% if glean.happened and not glean.data_entered %}
+  <br />
+  <br />
+  <a href="{% url 'gleanevent:postglean' glean.id %}" class="btn btn-danger">
+    Enter Post Glean Data!
+  </a>
+  {% endif %}
+  
   {% if glean.farm %}
   <h3>{{glean.farm}}</h3>
   {% endif %}
