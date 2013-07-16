@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% load gleanevent_extras %}
+{% block title %}
+Post Glean Report
+{% endblock title %}
+{% block content %}
+
+<form action="/glean/new/" method="post">
+{% csrf_token %}
+{% include 'specialfields.html' %}
+<input type="submit" value="Submit" />
+</form>
+
+
+{% endblock content %}

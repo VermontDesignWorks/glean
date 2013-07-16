@@ -10,7 +10,7 @@ from django import forms
 from django.contrib.auth.decorators import login_required
 from django.forms.models import modelformset_factory
 
-from gleanevent.models import GleanEvent, GleanForm, PostGlean, PostGleanForm
+from gleanevent.models import GleanEvent, GleanForm, PostGlean# PostGleanForm
 
 def index(request):
 	gleaning_events_list = GleanEvent.objects.all()
@@ -81,7 +81,7 @@ def postGlean(request, glean_id):
 		glean = get_object_or_404(GleanEvent, pk=glean_id)
 		all = glean.rsvped.all()
 		forms = modelformset_factory(PostGlean, extra=len(all)+3)
-		forms = forms(queryset=PostGlean.objects.none())
+		forms(queryset=PostGlean.objects.none())
 		initial = []
 		for person in glean.rsvped.all():
 			prof = person.profile_set.get()
@@ -89,10 +89,4 @@ def postGlean(request, glean_id):
 							'last_name':prof.last_name})
 		#return HttpResponse(str(initial))
 		forms=forms(initial=initial)
-
-	# for person in glean.rsvped.all():
-	# 	form = PostGleanForm()
-	# 	form.glean = glean
-	# 	form.first_name = person.profile_set.get().first_name
-	# 	forms.append(form)
 	return render(request, 'gleanevent/postglean.html', {'glean':glean, 'forms':forms})
