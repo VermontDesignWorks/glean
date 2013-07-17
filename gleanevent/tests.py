@@ -19,7 +19,8 @@ class SimpleTest(TestCase):
         self.assertEqual(1 + 1, 2)
 
 class GleanEventTests(TestCase):
-	def test_upcomming_event(self):
+	def test_happened(self):
 		now = timezone.now()
 		upcomming_glean = GleanEvent(date = now + datetime.timedelta(days=5))
-		self.assertEqual(upcomming_glean.upcomming_event(), True)
+		upcomming_glean.save()
+		self.assertEqual(upcomming_glean.happened(), False)

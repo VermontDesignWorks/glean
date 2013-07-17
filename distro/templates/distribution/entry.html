@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}Distribution Entry Forms
+{% endblock title %}
+{% block content %}
+<form method="get">
+	<label target="extra">Lines Needed</label>
+	<input type="text" name="extra" value="{{lines|default:'0'}}">
+	<input type="submit" value="Render New Form">
+</form>
+<form method="post" action="">
+		{% csrf_token %}
+		<table>
+{{form.as_table}}
+		</table>
+<input type="submit" value="Go!">
+	</form>
+{% endblock content %}

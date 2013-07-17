@@ -1,5 +1,11 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.0.5 - "The Ugly One"
+*Added Distro system. Was surprisingly easy
+*Cleaned up some errors with the edit/userprofile thingie
+*Very nearly wrote a test
+*Didn't actually write a test
+
 Release 0.0.4 - "That One"
 *Added Member Organizations
 *Linked MO's to User Profiles, GleanEvents, and Templates, mostly in the background
