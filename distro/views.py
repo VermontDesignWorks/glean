@@ -1,6 +1,7 @@
 # Create your views here.
 import time
 import datetime
+import csv
 
 
 from django.shortcuts import get_object_or_404, render
@@ -26,35 +27,37 @@ def entry(request):
 	else:
 		form = DistroFormSet(queryset=Distro.objects.none())
 		return render(request, 'distribution/entry.html', {'form':form, 'lines':lines})
+
+def download(request):
+	response = HttpResponse(mimetype='text/csv')
+	response['Content-Disposition'] = 'attachment; filename=distribution.csv'
+
+	# Create the CSV writer using the HttpResponse as the "file."
+	writer = csv.writer(response)
+	writer.writerow(['Date', 'Farm', 'Crops', 'Pounds', 'Other', 'Containers', 'Recipient Site', 'Pickup/DropOff', 'Farm Delivery or Field Glean'])
+
+ #    date = models.DateField()
+	# farm = models.ForeignKey(Farm, null=True, blank=True)
+	# crops = models.CharField(max_length=50, blank=True, null=True)
+	# pounds = models.CharField(max_length=5, default=0)
+	# other = models.CharField(max_length=50, blank=True, null=True)
+	# containers = models.CharField(max_length=20, blank=True, null=True)
+	# recipient = models.ForeignKey(Site, verbose_name = "Recipient Site")
+	# del_or_pick = models.CharField(max_length=2, choices=d_or_p, default='d')
+	# field_or_farm = models.CharField(max_length=1, choices=g_or_p, default='g')
+
+	group = Distro.objects.all()
 	
-	# 	count = len(glean.rsvped.all())
-	# 	unrsvped = int(request.GET.get('extra', 0))
-	# 	if int(unrsvped) > 100:
-	# 		unrsvped = 100
-	# 	PostGleanFormSet = modelformset_factory(PostGlean, extra=count+unrsvped)
-	# 	#formset = PostGleanFormSet(queryset=PostGlean.objects.none())
-		
-	# 	if request.method == 'POST':
-	# 		formset = PostGleanFormSet(request.POST)
-	# 		instances = formset.save(commit=False)
-	# 		for i in range(count):
-	# 			instances[i].glean= glean
-	# 			instances[i].user = glean.rsvped.all()[i]
-	# 			#instances[i].save()
-	# 		for instance in instances:
-	# 			if not hasattr(instance, 'glean'):
-	# 				instance.glean = glean
-	# 			instance.save()
-	# 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
-	# 	else:
-	# 		#formset = PostGleanFormSet(queryset=PostGlean.objects.none())
-	# 		initial = []
-	# 		for person in glean.rsvped.all():
-	# 			prof = person.profile_set.get()
-	# 			initial.append({'first_name':prof.first_name,
-	# 							'last_name':prof.last_name})
-	# 		#return HttpResponse(str(initial))
-	# 		forms=PostGleanFormSet(initial=initial, queryset=PostGlean.objects.none())
-	# 		return render(request, 'gleanevent/postglean.html', {'glean':glean, 'forms':forms})
-	# else:
-	# 	return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
+	group.filter(member_organization=request.user.profile_set.get().member_organization)
+	for line in group:
+		writer.writerow([line.date,
+			line.farm,
+			line.crops,
+			line.pounds,
+			line.other,
+			line.containers,
+			line.recipient,
+			line.del_or_pick,
+			line.field_or_farm])
+
+	return response

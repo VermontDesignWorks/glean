@@ -20,6 +20,7 @@ urlpatterns = patterns('',
 	url(r'^memberorganizations/', include('memberorgs.urls', namespace="memorgs")),
 	url(r'^recipientsite/', include('recipientsite.urls', namespace="site")),
 	url(r'^distribution/', include('distro.urls', namespace="distro")),
+	url(r'^comments/', include('django.contrib.comments.urls')),
 
 	## registration backend
 	#(r'^admin/', include('admin.urls')),

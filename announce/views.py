@@ -16,18 +16,22 @@ from gleanevent.models import GleanEvent
 from userprofile.models import Profile
 
 from django.core.mail import send_mail
+from django.core.mail import EmailMessage
+from django.contrib.sites.models import Site
 
 
 def recipients_placeholder_code():
 	return Profile.objects.all()
 
 def primary_source(glean):
-	if hasattr(glean,'counties'):
+	if glean.counties.all():
 		return glean
-	elif hasattr(glean.farm_location.counties):
+	elif glean.farm_location and glean.farm_location.counties.all():
 		return glean.farm_location
-	elif hasattr(glean.farm.counties):
+	elif glean.farm and glean.farm.counties.all():
 		return glean.farm
+	else:
+		return glean
 
 
 
@@ -80,7 +84,8 @@ def detailTemplate(request, template_id):
 #==================== Announce Logic ====================#
 
 def weave_template_and_body_and_glean(template, announcement, glean):
-	glean_link = "<a href='" + str(reverse('gleanevent:detailglean', args=(glean.id,))) + "'>Glean Info</a>"
+	site = Site.objects.get(pk=1)
+	glean_link = "<a href='" + site.domain + str(reverse('gleanevent:detailglean', args=(glean.id,))) + "'>Glean Info</a>"
 	replace = {
 		'{{content}}':announcement.message,
 		'{{glean.title}}':glean.title, 
@@ -101,6 +106,7 @@ def weave_template_and_body_and_glean(template, announcement, glean):
 	return returnable
 
 def weave_unsubscribe(body, userprofile):
+	site = Site.objects.get(pk=1)
 	returnable = body
 	key = '{{unsubscribe}}'
 	if userprofile.unsubscribe_key:
@@ -111,7 +117,7 @@ def weave_unsubscribe(body, userprofile):
 			value += random.choice('abcdefghijklmnopqrstuvwvyz')
 		userprofile.unsubscribe_key = value
 		userprofile.save()
-	value = "<a href='" + str(reverse('announce:unsubscribelink', args=(value,)))+"'>Unsubscribe</a>"
+	value = "<a href='" + site.domain+ str(reverse('announce:unsubscribelink', args=(value,)))+"'>Unsubscribe</a>"
 
 	if body.find(key) != -1:
 		try:
@@ -128,12 +134,22 @@ def mail_from_source(source, body, announcement):
 	mailed = []
 	for county in source.counties.all():
 		for recipient in county.people.all():
-			if recipient not in mailed and recipient.accepts_email:
+			
+			if recipient not in mailed and recipient.accepts_email and recipient.preferred_method == '1':
+				mailed.append(recipient)
 				text = weave_unsubscribe(body,recipient)
-				send_mail(announcement.title, text, 'Salvation Farms', [recipient.user.email], fail_silently=False)
+				msg = EmailMessage(announcement.title, text, 'Salvation Farms', [recipient.user.email])
+				msg.content_subtype = "html"
+				msg.send()
+				#send_mail(announcement.title, text, 'Salvation Farms', [recipient.user.email], fail_silently=False)
 				if recipient not in announcement.glean.invited_volunteers.all():
 					announcement.glean.invited_volunteers.add(recipient.user)
-				mailed.append(recipient)
+				if recipient not in announcement.email_recipients.all():
+					announcement.email_recipients.add(recipient.user)
+			elif recipient.preferred_method == '2' and recipient.accepts_email:
+				if recipient not in announcement.phone_recipients.all():
+					announcement.phone_recipients.add(recipient.user)
+	announcement.save()
 	announcement.glean.save()
 
 #==================== Announce System ====================#
@@ -145,18 +161,18 @@ def detailAnnounce(request, announce_id):
 	source = primary_source(announcement.glean)
 	if request.method == 'POST' and announcement.sent == False:
 		mail_from_source(source, body, announcement)
-		# mailed = []
-		# for county in source.counties.all():
-		# 	for recipient in county.people.all():
-		# 		if recipient not in mailed:
-		# 			send_mail(announcement.title, test, 'Salvation Farms', [recipient.user.email], fail_silently=False)
-		# 			mailed.append(recipient)
 		announcement.sent = True
+		announcement.sent_by = request.user
 		announcement.save()
 		return HttpResponseRedirect(reverse('announce:detailannounce', args=(announce_id,)))
 	else:
-		
 		return render(request, 'announce/announce_detail.html', {'announcement':announcement, 'test':body, 'glean':glean, 'source':source})
+
+def phoneAnnounce(request, announce_id):
+	announcement = get_object_or_404(Announcement, pk=announce_id)
+	glean = announcement.glean
+	source = primary_source(announcement.glean)
+	return render(request, 'announce/phone.html', {'announcement':announcement, 'glean':glean, 'source':source})
 
 def Announcements(request):
 	announcements = Announcement.objects.all()

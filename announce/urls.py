@@ -9,6 +9,7 @@ urlpatterns = patterns('',
 	url(r'^(?P<glean_id>\d+)/new/$', views.announceGlean, name='announceglean'),
 	url(r'^(?P<announce_id>\d+)/$', views.detailAnnounce, name='detailannounce'),
 	url(r'^(?P<announce_id>\d+)/edit$', views.editAnnounce, name='editannounce'),
+	url(r'^(?P<announce_id>\d+)/phone$', views.phoneAnnounce, name='phoneannounce'),
 
 	#==================# Template Urls #==================#
 	url(r'^templates/$', views.Templates, name='templates'),

@@ -17,10 +17,11 @@ VERMONT_COUNTIES = (
 ACCESS_LIST = ['A', 'ED', 'MC', 'V']
 
 ACCESS_LEVELS = (
-	('FA', 'Farmer'),
-	('MO', 'MemberOrganization'),
+	('AD', 'Salvation Farms Administrator'),
+	('MO', 'Member Organization Executive Director'),
+	('MC', 'Gleaning Coordinator'),
 	('VO', 'Volunteer'),
-	('GC', 'GleaningCoordinator'),
+	
 )
 
 LINE_TYPE = (

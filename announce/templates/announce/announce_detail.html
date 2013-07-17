@@ -17,15 +17,7 @@
 {% endif %}
 	<div class="span4" style="border:#444 1px solid; min-height:520px;">{{test|safe}}</div>
 	<div class="span4">
-		<h3>Users Invited</h3>
-		<ul>
-			{% for county in announcement.glean.counties.all %}
-			<li>{{county}}</li>
-			<ul>{% for person in county.people.all %}
-					<li>{{person.first_name}} {{person.last_name}} - {{person.user.email}}</li>
-				{% endfor %}
-			</ul>
-			{% endfor %}
-		</ul>
-	</div>
+		{% include 'recipients.html' %}
+		
+	</div>	
 {% endblock content %}

@@ -18,6 +18,7 @@ from announce.models import Template
 
 from farms.models import Farm, FarmLocation
 from memberorgs.models import MemOrg
+from recipientsite.models import Site
 
 county_quant = 7
 user_quant = 20
@@ -33,7 +34,7 @@ def index(request):
 	for i in range(memberorg_quant):
 		new = MemOrg(name="MemberOrg"+str(i), description="This is the "+str(i)+"th member org in our gleaning collective!", counties = "A bunch of counties are covered by us, including {insert counties here}")
 		new.save()
-		newTemp = Template(template_name="Default template", body="{{content}}{{glean.title}}{{glean.description}}{{rsvp}}{{info}}{{unsubscribe}}", member_organization=new)
+		newTemp = Template(template_name="Default template", body="<html><body>{{content}}{{glean.title}}{{glean.description}}{{rsvp}}{{info}}{{unsubscribe}}</body></html>", member_organization=new)
 		newTemp.save()
 	for i in range(recipient_sites):
 		new = Site(name="Site" + str(i), address_one = "515 Main Street", city="Morrisville", state="VT", zipcode="01771")
@@ -54,10 +55,6 @@ def index(request):
 		county = County.objects.get(name='County'+str(choice1))
 		userprof.counties.add(county)
 		userprof.save()
-	## Template Logic added to MemOrg ##
-	# for i in range(template_quant):
-	# 	new = Template(template_name="template"+str(1), body="{{content}}{{glean.title}}{{glean.description}}{{rsvp}}{{info}}{{unsubscribe}}")
-	# 	new.save()
 	my_user = 0
 	my_county = 0
 	for i in range(farm_quant):

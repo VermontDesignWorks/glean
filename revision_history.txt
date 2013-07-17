@@ -1,5 +1,16 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.0.6 - "Still Ugly"
+*Cleaned up Distro System
+*Added Download to CSV button.
+ (It works)
+*Completely overhauled the Announce System
+ (it works too!)
+*Turned on the template-less Comments system
+*Set up glean/rsvp/unrsvp/dataentry time requirements
+*Added a bunch to the soon to be overhauled base.html
+*Added a phone list! That was fun.
+
 Release 0.0.5 - "The Ugly One"
 *Added Distro system. Was surprisingly easy
 *Cleaned up some errors with the edit/userprofile thingie

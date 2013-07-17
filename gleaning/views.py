@@ -7,6 +7,7 @@ from django.views import generic
 from django.contrib.auth.decorators import user_passes_test
 from userprofile.models import Profile
 from gleanevent.models import GleanEvent
+from django.contrib.sites.models import Site
 
 def home(request):
 	try:
