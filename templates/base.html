@@ -72,6 +72,20 @@
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'announce:templates' %}">Email Templates</a></li>
                         </ul>
                       </li>
+                      <li class="dropdown">
+                        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Member Organizations <b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:index' %}">Index</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:newmemorg' %}">New Member Org</a></li>
+                        </ul>
+                      </li>
+                      <li class="dropdown">
+                        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Sites <b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'site:index' %}">Index</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'site:newsite' %}">New Site</a></li>
+                        </ul>
+                      </li>
                     </ul>
                     <ul class="nav pull-right">
                       <li id="fat-menu" class="dropdown">

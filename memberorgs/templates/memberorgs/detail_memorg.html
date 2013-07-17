@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load url from future %}
 {% block title %}
-{{county.name}} Details
+{{memorg.name}} Details
 {% endblock %}
 {% block content %}
-<h1>{{county.name}} Details</h1>
-<a href="{% url 'counties:editcounty' county.id %}" class="btn btn-warning">edit</a>
-<p>{{county.description}}</p>
+<h1>{{memorg.name}} Details</h1>
+<a href="{% url 'memorgs:editmemorg' memorg.id %}" class="btn btn-warning">edit</a>
+<p>{{memorg.description}}</p>
 <ul>
-{% for person in county.user_set.all %}
+{% for person in memorg.user_set.all %}
 <li>{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}}</li>
 {% endfor %}
 </ul>

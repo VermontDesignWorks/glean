@@ -8,7 +8,7 @@ class County(models.Model):
 	name = models.CharField(max_length=200)
 	description = models.TextField(blank=True)
 	towns = models.TextField(max_length=200, blank=True)
-	state = models.CharField(choices=STATES, max_length=2)
+	state = models.CharField(choices=STATES, max_length=2, default='VT')
 	
 	def __unicode__(self):
 		return self.name

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+Member Organization Index
+{% endblock title %}
+
+{% block content %}
+<h1>Member Organization Index</h1>
+{% if memorgs %}
+<ul>
+{% for memorg in memorgs %}
+<li>
+<a href="{% url 'memorgs:detailmemorg' memorg.id %}">{{ memorg.name }}</a> - <a href="{% url 'memorgs:editmemorg' memorg.id %}">edit</a>
+</li>
+{% endfor %}
+</ul>
+{% else %}
+<span>No memorgs :(</span>
+{% endif %}
+{% endblock content %} 

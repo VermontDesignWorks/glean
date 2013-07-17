@@ -4,14 +4,15 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 
 from gleanevent.models import GleanEvent
+from memberorgs.models import MemOrg
 
 
 class Template(models.Model):
-	template_name = models.CharField(max_length=40, unique=True)
-	#member_organization = models.ManyToManyField(Group, editable=False, blank=True, null=True)
+	template_name = models.CharField(max_length=40)
+	member_organization = models.ForeignKey(MemOrg, editable=False)
 	body = models.TextField()
 	def __unicode__(self):
-		return self.template_name# self.member_organization + self.template_name
+		return self.member_organization.name + ' - ' + self.template_name
 
 class TemplateForm(ModelForm):
 	class Meta:
@@ -30,6 +31,7 @@ class Announcement(models.Model):
 	message = models.TextField()
 	template = models.ForeignKey(Template, blank=True, null=True)
 	sent = models.BooleanField(default=False, editable=False)
+	sent_by = models.ForeignKey(User, editable=False, null=True)
 
 	def __unicode__(self):
 		return self.datetime.strftime('%y:%m:%d %H:%M:%S') + ' ' + self.glean.title + ' ' + self.title

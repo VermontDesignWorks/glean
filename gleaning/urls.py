@@ -17,6 +17,9 @@ urlpatterns = patterns('',
 	url(r'^announce/', include('announce.urls', namespace="announce")),
 	url(r'^counties/', include('counties.urls', namespace="counties")),
 	url(r'^testdata/', include('testdata.urls', namespace="testdata")),
+	url(r'^memberorganizations/', include('memberorgs.urls', namespace="memorgs")),
+	url(r'^recipientsite/', include('recipientsite.urls', namespace="site")),
+	url(r'^distribution/', include('distro.urls', namespace="distro")),
 
 	## registration backend
 	#(r'^admin/', include('admin.urls')),

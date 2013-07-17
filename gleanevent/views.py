@@ -22,7 +22,9 @@ def newGlean(request):
 		if form.is_valid():
 			#newGlean = GleanEvent(**form.cleaned_data)
 			#newGlean.save()
-			new_save = form.save()
+			new_save = form.save(commit=False)
+			new_save.member_organization = request.user.profile_set.get().member_organization
+			new_save.save()
 			return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(new_save.id,) ))
 		return HttpResponse('form was not valid')
 			
@@ -35,14 +37,15 @@ def editGlean(request, glean_id):
 	if not glean.happened():
 		if request.method == "POST":
 			form = GleanForm(request.POST, instance = glean)
+			#return HttpResponse('texst2')
 			if form.is_valid():
-				#newGlean = GleanEvent(**form.cleaned_data)
-				#newGlean.id = glean_id
-				#newGlean.save()
 				new_save = form.save()
 				return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(new_save.id,) ))
-		form = GleanForm(instance = glean)
-		return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean , 'editmode':True})
+			else:
+				return HttpResponse(str(form.errors))
+		else:
+			form = GleanForm(instance = glean)
+			return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':'this is bullshit man'})
 	else:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 

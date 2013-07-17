@@ -5,11 +5,7 @@ Additional Details
 {% block content %}
 <form method="POST">
 	<h2>Edit your user details</h2>
-	{% if error %}
-	<span>{{error}}</span>
-	{% else %}
-	<span>&nbsp;</span>
-	{% endif %}
+	<span>{{form.errors}}&nbsp;</span>
 	{% csrf_token %}
 	{% include 'specialfields.html' %}
 	<input type="submit" value="Go!">

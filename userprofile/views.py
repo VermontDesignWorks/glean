@@ -59,32 +59,23 @@ def userProfile(request, user_id):
 	return render(request, 'userprofile/detail.html', {'person':person})
 
 def userEdit(request, user_id):
-	person = get_object_or_404(User, pk=user_id)
+	user_id_object = get_object_or_404(User, pk=user_id)
+	person = Profile.objects.get(user=user_id_object)
 	if request.method == 'POST':
-		form = ProfileForm(request.POST)
+		form = ProfileForm(request.POST, person)
 		if form.is_valid():
-			try:
-				old_prof = Profile.objects.get(user=person)
-				new_prof = Profile(**form.cleaned_data)
-				new_prof.id = old_prof.id
-				new_prof.user = person
-				new_prof.save()
-				return HttpResponseRedirect(reverse('userprofile:userlists'))
-			except:
-				profile = Profile(**form.cleaned_data)
-				profile.user = person
-				profile.save()
-				return HttpResponseRedirect(reverse('userprofile:userlists'))
+			new_save = form.save(commit=False)
+			new_save.user = user_id_object
+			new_save.id = person.id
+			new_save.save()
+			return HttpResponseRedirect(reverse('userprofile:userlists'))
+		else:
+			
+			return render(request, 'userprofile/adminedit.html', {'person':person, 'profile':person, 'form':form})			
 
 	else:
-		person = get_object_or_404(User, pk=user_id)
-		try:
-			profile = Profile.objects.get(user=person)
-			form = ProfileForm(instance = profile)
-		except:
-			profile = ''
-			form = ProfileForm()
-		return render(request, 'userprofile/adminedit.html', {'person':person, 'profile':profile, 'form':form, 'editmode':True})
+		form = ProfileForm(instance=person)
+		return render(request, 'userprofile/adminedit.html', {'person':person, 'profile':person, 'form':form})
 
 def emailEdit(request):
 	if request.method == 'POST':
@@ -95,7 +86,7 @@ def emailEdit(request):
 			return HttpResponseRedirect(reverse('home'))
 		else:
 			form = EmailForm()
-			return render(request, 'userprofile/emailedit.html', {'error':"That's not a valid address", 'form':form, 'editmode':True})
+			return render(request, 'userprofile/emailedit.html', {'error':"That's not a valid address", 'form':form})
 	else:
 		form = EmailForm()
 		return render(request, 'userprofile/emailedit.html',{'form':form})

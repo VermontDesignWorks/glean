@@ -39,10 +39,10 @@ def editFarm(request, farm_id):
 			new_save = form.save()
 			return HttpResponseRedirect(reverse('farms:index'))
 		else:
-			return render(request, 'farms/edit.html', {'form':form, 'farm':farm, 'error':'form needs some work', 'editmode':True})
+			return render(request, 'farms/edit.html', {'form':form, 'farm':farm, 'error':'form needs some work'})
 	form = FarmForm(instance = farm)
 
-	return render(request, 'farms/edit.html', {'form':form, 'farm':farm, 'editmode':True})
+	return render(request, 'farms/edit.html', {'form':form, 'farm':farm})
 
 #@login_required
 def detailFarm(request, farm_id):

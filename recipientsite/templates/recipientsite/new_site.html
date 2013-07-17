@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load url from future %}
 {% block title %}
-Edit {{Farm.name}}
+New Recipient Site
 {% endblock title %}
 {% block content %}
-{{form.errors}}
+
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'specialfields.html' %}

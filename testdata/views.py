@@ -17,33 +17,47 @@ from userprofile.models import Profile
 from announce.models import Template
 
 from farms.models import Farm, FarmLocation
+from memberorgs.models import MemOrg
 
 county_quant = 7
 user_quant = 20
 template_quant = 1
 farm_quant = 7
 loc_divinto_farms = 15
+memberorg_quant = 3
+recipient_sites = 3
 
 def index(request):
 	if County.objects.filter(name='County1').exists():
 		return HttpResponse("<a href='/'>Go home.</a>")
+	for i in range(memberorg_quant):
+		new = MemOrg(name="MemberOrg"+str(i), description="This is the "+str(i)+"th member org in our gleaning collective!", counties = "A bunch of counties are covered by us, including {insert counties here}")
+		new.save()
+		newTemp = Template(template_name="Default template", body="{{content}}{{glean.title}}{{glean.description}}{{rsvp}}{{info}}{{unsubscribe}}", member_organization=new)
+		newTemp.save()
+	for i in range(recipient_sites):
+		new = Site(name="Site" + str(i), address_one = "515 Main Street", city="Morrisville", state="VT", zipcode="01771")
+		new.save()
 	for i in range(county_quant):
 		new = County(name="County"+str(i),description="County"+str(i), towns="Town"+str(i))
 		new.save()
 	for i in range(user_quant):
 		name = 'name' + str(i)
+		choices2 = range(memberorg_quant)
+		choice2 = choices2.pop(random.choice(choices2))
+		memorg = MemOrg.objects.get(name="MemberOrg"+str(choice2))
 		person = User.objects.create_user(name, 'Cheekio@gmail.com', '463597')
-		userprof = Profile(user=person, first_name = 'firsty'+str(i),last_name='lasty'+str(i))
+		userprof = Profile(user=person, first_name = 'firsty'+str(i),last_name='lasty'+str(i), member_organization=memorg)
 		userprof.save()
 		choices = range(county_quant)
 		choice1 = choices.pop(random.choice(choices))
 		county = County.objects.get(name='County'+str(choice1))
-		
 		userprof.counties.add(county)
 		userprof.save()
-	for i in range(template_quant):
-		new = Template(template_name="template"+str(1), body="{{content}}{{glean.title}}{{glean.description}}{{rsvp}}{{info}}{{unsubscribe}}")
-		new.save()
+	## Template Logic added to MemOrg ##
+	# for i in range(template_quant):
+	# 	new = Template(template_name="template"+str(1), body="{{content}}{{glean.title}}{{glean.description}}{{rsvp}}{{info}}{{unsubscribe}}")
+	# 	new.save()
 	my_user = 0
 	my_county = 0
 	for i in range(farm_quant):

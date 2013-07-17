@@ -1,5 +1,13 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.0.4 - "That One"
+*Added Member Organizations
+*Linked MO's to User Profiles, GleanEvents, and Templates, mostly in the background
+*Added Recipient Sites, new/edit/view/index (that should be an acronym, Nevi or inev or something)
+*...updated this file? It's been a long day.
+*testdata is updated to reflect the changes
+*some minor model reworking
+
 Release 0.0.3 - "This One"
 *Base Glean System works
 *Base userprofile/user system works

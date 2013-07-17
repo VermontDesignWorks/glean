@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+{{site.name}} Details
+{% endblock %}
+{% block content %}
+<h1>{{site.name}} Details</h1>
+<a href="{% url 'site:editsite' site.id %}" class="btn btn-warning">edit</a>
+<p>{{site.description}}</p>
+<p>{{site.address_one}}</p>
+<p>{{site.address_two}}</p>
+<p>{{site.city}}, {{site.state}} {{site.zip}}</p>
+<ul>
+</ul>
+{% endblock %}

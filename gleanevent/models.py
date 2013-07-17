@@ -11,6 +11,7 @@ from constants import VERMONT_COUNTIES, STATES
 
 from django.contrib.auth.models import User
 from farms.models import Farm, FarmLocation
+from memberorgs.models import MemOrg
 from counties.models import County
 
 
@@ -44,7 +45,7 @@ class GleanEvent(models.Model):
 	officiated_by = models.ManyToManyField(User, blank=True, related_name="officiated_by")
 	counties = models.ManyToManyField(County, blank=True, null=True)
 
-	#member_organization = models.ForeignKey('MemberOrganization')
+	member_organization = models.ForeignKey(MemOrg, editable=False, blank=True)
 	
 	def __unicode__(self):
 		return unicode(self.date) + self.title
