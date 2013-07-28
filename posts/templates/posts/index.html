@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+Blog Post Index
+{% endblock title %}
+
+{% block content %}
+<h1>Blog Post Index</h1>
+{% if blog_posts %}
+<ul>
+{% for post in blog_posts %}
+<li>
+<a href="{% url 'posts:detailpost' post.id %}">{{ post.title }}</a> - <a href="{% url 'posts:editpost' post.id %}">edit</a>
+</li>
+{% endfor %}
+</ul>
+{% else %}
+<span>No Posts :(</span>
+{% endif %}
+{% endblock content %} 

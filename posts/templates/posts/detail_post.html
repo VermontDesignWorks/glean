@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+{{post.name}} Details
+{% endblock %}
+{% block content %}
+<h1>{{post.name}} Details</h1>
+<p><small>posted {{post.datetime}} by {{post.created_by}}</small></p>
+<a href="{% url 'posts:editpost' post.id %}" class="btn btn-warning">edit</a>
+<p>{{post.body}}</p>
+<ul>
+{% for person in memorg.user_set.all %}
+<li>{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}}</li>
+{% endfor %}
+</ul>
+{% endblock %}

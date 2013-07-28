@@ -24,6 +24,7 @@ from recipientsite.models import RecipientSite
 from announce.models import Announcement
 from distro.models import Distro
 from gleanevent.models import GleanEvent, PostGlean
+from posts.models import Post
 
 county_quant = 7
 user_quant = 20
@@ -55,8 +56,8 @@ def groupsAndPerms(request):
 	if not ed.permissions.all():
 		
 
-		mo_list = [Announcement, Template, Distro, GleanEvent, Farm, PostGlean, RecipientSite, Profile, MemOrg]
-		uni_list = [Announcement, Template, Distro, GleanEvent, Farm, FarmLocation, Contact, PostGlean, RecipientSite, Profile, MemOrg, County]
+		mo_list = [Announcement, Template, Distro, GleanEvent, Farm, PostGlean, RecipientSite, Profile, MemOrg, Post]
+		uni_list = [Announcement, Template, Distro, GleanEvent, Farm, FarmLocation, Contact, PostGlean, RecipientSite, Profile, MemOrg, County, Post]
 
 		mc = Group.objects.get(name="Member Organization Glean Coordinator")
 		sal = Group.objects.get(name="Salvation Farms Administrator")

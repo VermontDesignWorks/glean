@@ -1,5 +1,9 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Beta 0.0.7.5 - "Jim Bond"
+*Half implemented the blog post app
+*Mucked up some more models
+
 Release 0.0.7 - "James Bond"
 *Added permission groups
 *Implemented Salvation Farms group Permissions

@@ -11,8 +11,10 @@ class Template(models.Model):
 	template_name = models.CharField(max_length=40)
 	member_organization = models.ForeignKey(MemOrg, editable=False)
 	body = models.TextField()
+	
 	def __unicode__(self):
 		return self.member_organization.name + ' - ' + self.template_name
+
 	class Meta:
 		permissions = (
 			("auth", "Member Organization Level Permissions"),
