@@ -10,12 +10,19 @@ from django import forms
 from django.contrib.auth.decorators import login_required
 from django.forms.models import modelformset_factory
 
+from django.contrib.auth.decorators import permission_required
+
 from gleanevent.models import GleanEvent, GleanForm, PostGlean# PostGleanForm
 
+@permission_required('gleanevent.auth')
 def index(request):
-	gleaning_events_list = GleanEvent.objects.all()
+	if request.user.has_perm('gleanevent.uniauth'):
+		gleaning_events_list = GleanEvent.objects.all()
+	else:
+		gleaning_events_list = GleanEvent.objects.filter(member_organization=request.user.profile_set.get().member_organization)
 	return render(request, 'gleanevent/index.html', {'gleans':gleaning_events_list})
 
+@permission_required('gleanevent.auth')
 def newGlean(request):
 	if request.method == "POST":
 		form = GleanForm(request.POST)
@@ -23,6 +30,7 @@ def newGlean(request):
 			#newGlean = GleanEvent(**form.cleaned_data)
 			#newGlean.save()
 			new_save = form.save(commit=False)
+			new_save.created_by = request.user
 			new_save.member_organization = request.user.profile_set.get().member_organization
 			new_save.save()
 			return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(new_save.id,) ))
@@ -32,8 +40,11 @@ def newGlean(request):
 		form = GleanForm()
 		return render(request, 'gleanevent/new.html', {'form':form})
 
+@permission_required('gleanevent.auth')
 def editGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
+	if glean.member_organization != request.user.profile_set.get().member_organization and u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
+		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 	if not glean.happened():
 		if request.method == "POST":
 			form = GleanForm(request.POST, instance = glean)
@@ -42,10 +53,10 @@ def editGlean(request, glean_id):
 				new_save = form.save()
 				return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(new_save.id,) ))
 			else:
-				return HttpResponse(str(form.errors))
+				return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':form.errors})
 		else:
 			form = GleanForm(instance = glean)
-			return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':'this is bullshit man'})
+			return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':''})
 	else:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 
@@ -54,14 +65,15 @@ def detailGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
 	return render(request, 'gleanevent/detail.html', {'glean':glean})
 
-def gleanCalendar(request):
-	gleans = GleanEvent.objects.all()
-	return render(request, 'gleanevent/calendar.html', {'gleans':gleans})
+# def gleanCalendar(request):
+# 	gleans = GleanEvent.objects.all()
+# 	return render(request, 'gleanevent/calendar.html', {'gleans':gleans})
 
-def announceGlean(request, glean_id):
-	glean = get_object_or_404(GleanEvent, pk=glean_id)
-	return render(request, 'gleanevent/announce.html', {'glean':glean})
+# def announceGlean(request, glean_id):
+# 	glean = get_object_or_404(GleanEvent, pk=glean_id)
+# 	return render(request, 'gleanevent/announce.html', {'glean':glean})
 
+@login_required
 def confirmLink(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
 	if not glean.happened():
@@ -74,6 +86,7 @@ def confirmLink(request, glean_id):
 	else:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 
+@login_required
 def denyLink(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
 	if not glean.happened():
@@ -86,8 +99,11 @@ def denyLink(request, glean_id):
 	else:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 
+@permission_required('gleanevent.auth')
 def postGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
+	if glean.member_organization != request.user.profile_set.get().member_organization and u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
+		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 	if not glean.data_entered() and glean.happened():
 		count = len(glean.rsvped.all())
 		unrsvped = int(request.GET.get('extra', 0))

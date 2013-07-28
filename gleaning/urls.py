@@ -20,7 +20,10 @@ urlpatterns = patterns('',
 	url(r'^memberorganizations/', include('memberorgs.urls', namespace="memorgs")),
 	url(r'^recipientsite/', include('recipientsite.urls', namespace="site")),
 	url(r'^distribution/', include('distro.urls', namespace="distro")),
-	url(r'^comments/', include('django.contrib.comments.urls')),
+	url(r'^posts/', include('posts.urls', namespace="posts")),
+
+	
+
 
 	## registration backend
 	#(r'^admin/', include('admin.urls')),
@@ -32,6 +35,9 @@ urlpatterns = patterns('',
 	# (r'^/accounts/reset-password/$', 'django.contrib.auth.views.password_reset'),
 	# (r'^/accounts/password-reset/$', 'django.contrib.auth.views.password_reset_done'),
 	# (r'^/accounts/password-reset-confirm/$', 'django.contrib.auth.views.password_reset_confirm'),
+
+	url(r'^comments/', include('django.contrib.comments.urls')),
+
 	url(r'^accounts/', include('registration.backends.default.urls')),
 	url(r'^accounts/', include('registration.backends.default.urls', namespace="registration")),
 

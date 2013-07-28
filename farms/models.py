@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 from counties.models import County
+from memberorgs.models import MemOrg
 
 
 # Create your models here.
@@ -42,7 +43,13 @@ class Farm(models.Model):
 	farmers = models.ManyToManyField(User, blank=True, null=True, editable=False)
 	counties = models.ManyToManyField(County, blank=True, null=True)
 
+	member_organization = models.ManyToManyField(MemOrg, editable=False)
 
+	class Meta:
+		permissions = (
+			("auth", "Member Organization Level Permissions"),
+			("uniauth", "Universal Permission Level"),
+		)
 
 	def __unicode__(self):
 		return self.name
@@ -62,6 +69,12 @@ class FarmLocation(models.Model):
 	def __unicode__(self):
 		return self.farm.name + ' - ' + self.name
 
+	class Meta:
+		permissions = (
+			("auth", "Member Organization Level Permissions"),
+			("uniauth", "Universal Permission Level"),
+		)
+
 
 class LocationForm(ModelForm):
 	class Meta:
@@ -77,6 +90,12 @@ class Contact(models.Model):
 	phone_type = models.CharField("Phone Type", choices=PHONE_TYPE, max_length=2, blank=True)
 	glean_contact = models.BooleanField("Should this person be contacted about gleans?", default=False)
 	preferred = models.CharField("How Does this person Prefer to be Contacted?",choices=PREFERRED_CONTACT, max_length=1, blank=True, default='1')
+	class Meta:
+		permissions = (
+			("auth", "Member Organization Level Permissions"),
+			("uniauth", "Universal Permission Level"),
+		)
+
 
 class ContactForm(ModelForm):
 	class Meta:

@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load url from future %}
-{% block title %}
+{% block title %}Edit Glean
 {% endblock title %}
 {% block content %}
-{{error}}
+<h1>Edit Glean</h1>
+{{form.errors}}
 	<form method="post" action="">
 		{% csrf_token %}
-		{% include 'specialfields.html' %}
+		{{form.as_p}}
 		<input type="submit" value="Go!">
 	</form>
 {% endblock content %}

@@ -3,16 +3,18 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
-from django.contrib.auth.decorators import login_required
+
+
+from django.contrib.auth.decorators import permission_required
 
 from counties.models import County, CountyForm
 
-
+@permission_required('counties.uniauth')
 def index(request):
 	counties_list = County.objects.all()
 	return render(request, 'counties/index.html', {'counties':counties_list})
 
-#@login_required
+@permission_required('counties.uniauth')
 def newCounty(request):
 	if request.method == "POST":
 		form = CountyForm(request.POST)
@@ -26,7 +28,7 @@ def newCounty(request):
 		form = CountyForm()
 		return render(request, 'counties/new_county.html', {'form':form})
 
-#@login_required
+@permission_required('counties.uniauth')
 def editCounty(request, county_id):
 	county = get_object_or_404(County, pk=county_id)
 	if request.method == "POST":
@@ -42,6 +44,7 @@ def editCounty(request, county_id):
 
 	return render(request, 'counties/edit_county.html', {'form':form, 'county':county, 'editmode':True})
 
+@permission_required('counties.uniauth')
 def detailCounty(request, county_id):
 	county = get_object_or_404(County, pk=county_id)
 	return render(request, 'counties/detail_county.html', {'county':county})

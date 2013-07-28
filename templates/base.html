@@ -32,12 +32,13 @@
   <div class="row-fluid">
     <div class="span12">
 
-            
+
               <div id="navbar-example" class="navbar navbar-static">
                 <div class="navbar-inner">
                   <div class="container" style="width: auto;">
                     <a class="brand" href="/">The Gleaning Interface</a>
                     <ul class="nav" role="navigation">
+                      {% if 'gleanevent.auth' in perms %}
                       <li class="dropdown">
                         <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Gleans <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
@@ -45,6 +46,8 @@
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'gleanevent:newglean' %}">New Glean</a></li>
                         </ul>
                       </li>
+                      {% endif %}
+                      {% if 'farms.auth' in perms %}
                       <li class="dropdown">
                         <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">Farms <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
@@ -52,6 +55,8 @@
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'farms:newfarm' %}">New Farm</a></li>
                         </ul>
                       </li>
+                      {% endif %}
+                      {% if 'counties.auth' in perms %}
                       <li class="dropdown">
                         <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">Counties <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
@@ -59,12 +64,16 @@
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'counties:newcounty' %}">New County</a></li>
                         </ul>
                       </li>
+                      {% endif %}
+                      {% if 'userprofile.auth' in perms %}
                       <li class="dropdown">
                         <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">User Management <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:userlists' %}">User Lists</a></li>
                         </ul>
                       </li>
+                      {% endif %}
+                      {% if 'announce.auth' in perms %}
                       <li class="dropdown">
                         <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Announcements <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
@@ -72,13 +81,23 @@
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'announce:templates' %}">Email Templates</a></li>
                         </ul>
                       </li>
-                      <li class="dropdown">
-                        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Member Orgs <b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:index' %}">Index</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:newmemorg' %}">New Member Org</a></li>
-                        </ul>
-                      </li>
+                      {% endif %}
+                      {% if 'memberorgs.auth' in perms %}
+                      
+                        {% if 'announce.uniauth' in perms %}
+                        <li class="dropdown">
+                          <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Member Orgs <b class="caret"></b></a>
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:index' %}">Index</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:newmemorg' %}">New Member Org</a></li>
+                          </ul>
+                        </li>
+                          {% else %}
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:index' %}">Member Organization</a></li>
+                          {% endif %}
+                      
+                      {% endif %}
+                      {% if 'recipientsite.auth' in perms %}
                       <li class="dropdown">
                         <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Sites <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
@@ -86,6 +105,8 @@
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'site:newsite' %}">New Site</a></li>
                         </ul>
                       </li>
+                      {% endif %}
+                      {% if 'distro.auth' in perms %}
                       <li class="dropdown">
                         <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Distro <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
@@ -93,6 +114,7 @@
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'distro:download' %}">Download</a></li>
                         </ul>
                       </li>
+                      {% endif %}
                     </ul>
                     <ul class="nav pull-right">
                       <li id="fat-menu" class="dropdown">

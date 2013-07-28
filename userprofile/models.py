@@ -27,6 +27,7 @@ class Profile(models.Model):
 	mo_emails_only = models.BooleanField(default=False)
 	preferred_method = models.CharField(choices=PREFERRED_CONTACT, max_length=1, default='1')
 	member_organization = models.ForeignKey(MemOrg)
+	secondary_member_organizations = models.ManyToManyField(MemOrg, related_name="secondary_member_organization", null=True, editable=False)
 
 	ecfirst_name = models.CharField("Emergency Contact First Name", max_length=200, blank=True)
 	eclast_name = models.CharField("Emergency Contact Last Name", max_length=200, blank=True)
@@ -38,6 +39,12 @@ class Profile(models.Model):
 			
 	def __unicode__(self):
 		return u'%s %s' % (self.user, self.address)
+
+	class Meta:
+		permissions = (
+			("auth", "Member Organization Level Permissions"),
+			("uniauth", "Universal Permission Level"),
+		)
 
 class ProfileForm(forms.ModelForm):
 	class Meta:

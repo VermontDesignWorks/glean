@@ -12,6 +12,12 @@ class MemOrg(models.Model):
 	def __unicode__(self):
 		return self.name
 
+	class Meta:
+		permissions = (
+			("auth", "Member Organization Level Permissions"),
+			("uniauth", "Universal Permission Level"),
+		)
+
 class MemOrgForm(ModelForm):
 	class Meta:
 		model = MemOrg

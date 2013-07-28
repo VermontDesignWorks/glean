@@ -5,6 +5,14 @@ Welcome to the Gleaning Interface!
 {% endblock %}
 {% block content %}
 
+Test data!
+
+<p>{{user.groups}}</p>
+
+<p>|</p>
+<p>{{perms.gleanevent}}</p>
+<p>|</p>
+
 {% if gleans %}
 <ul>
 {% for glean in gleans %}

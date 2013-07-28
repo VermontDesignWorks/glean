@@ -6,14 +6,25 @@ Announcement Index
 
 {% block content %}
 <div class="span6">
+
 	{% if templates %}
-		<ul>
-			{% for template in templates %}
-				<li>
-					<a href="{% url 'announce:detailtemplate' template.id %}">{{ template.template_name }}</a> - <a href="{% url 'announce:edittemplate' template.id %}" class="btn btn-warning">Edit Template</a>
-				</li>
-			{% endfor %}
-		</ul>
+		{% if 'announce.uniauth' in perms %}
+			<ul>
+				{% for template in templates %}
+					<li>
+						<a href="{% url 'announce:detailtemplate' template.id %}">{{template.member_organization}} - {{ template.template_name }}</a> - <a href="{% url 'announce:edittemplate' template.id %}" class="btn btn-warning">Edit Template</a>
+					</li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			<ul>
+				{% for template in templates %}
+					<li>
+						<a href="{% url 'announce:detailtemplate' template.id %}">{{ template.template_name }}</a> - <a href="{% url 'announce:edittemplate' template.id %}" class="btn btn-warning">Edit Template</a>
+					</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
 	{% else %}
 		<span>No templates :(</span>
 	{% endif %}

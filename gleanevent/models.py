@@ -37,7 +37,7 @@ class GleanEvent(models.Model):
 	farm = models.ForeignKey(Farm, blank=True, null=True)
 	farm_location = models.ForeignKey(FarmLocation, blank=True, null=True)
 
-	created_by = models.ManyToManyField(User, editable=False,  related_name="created_by")
+	created_by = models.ForeignKey(User, editable=False, related_name="created_by")
 	invited_volunteers = models.ManyToManyField(User, null=True, blank=True, related_name="invited_volunteers")
 	rsvped = models.ManyToManyField(User, null=True, blank=True, related_name ="rsvped", editable=False)
 	not_rsvped = models.ManyToManyField(User, null=True, blank=True, related_name ="not_rsvped", editable=False)
@@ -59,6 +59,12 @@ class GleanEvent(models.Model):
 			return True
 		return False
 
+	class Meta:
+		permissions = (
+			("auth", "Member Organization Level Permissions"),
+			("uniauth", "Universal Permission Level"),
+		)
+
 class GleanForm(ModelForm):
 	class Meta:
 		model = GleanEvent
@@ -74,6 +80,7 @@ class PostGlean(models.Model):
 	group = models.CharField(max_length=40, blank=True, null=True)
 	members = models.CharField(max_length=20, blank=True, null=True)
 	notes = models.CharField(max_length=200, blank=True, null=True)
+
 	def __unicode__(self):
 		returnable = unicode(self.glean.date)
 		if hasattr(self, 'user') and self.user:
@@ -86,6 +93,12 @@ class PostGlean(models.Model):
 			returnable += ' - (unregistered)'
 
 		return returnable
+
+	class Meta:
+		permissions = (
+			("auth", "Member Organization Level Permissions"),
+			("uniauth", "Universal Permission Level"),
+		)
 
 
 class PostGleanForm(ModelForm):

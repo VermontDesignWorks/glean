@@ -7,6 +7,8 @@ from django.views import generic
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 
 from userprofile.models import Profile, ProfileForm, UserForm, LoginForm, EmailForm
 from counties.models import County
@@ -16,9 +18,12 @@ import random
 from userprofile.models import Profile
 from announce.models import Template
 
-from farms.models import Farm, FarmLocation
+from farms.models import Farm, FarmLocation, Contact
 from memberorgs.models import MemOrg
-from recipientsite.models import Site
+from recipientsite.models import RecipientSite
+from announce.models import Announcement
+from distro.models import Distro
+from gleanevent.models import GleanEvent, PostGlean
 
 county_quant = 7
 user_quant = 20
@@ -27,6 +32,64 @@ farm_quant = 7
 loc_divinto_farms = 15
 memberorg_quant = 3
 recipient_sites = 3
+
+def delete(request):
+	for announce in Announcement.objects.all():
+		announce.delete()
+
+def groupsAndPerms(request):
+	if not Group.objects.all():
+		vol = Group(name="Volunteer")
+		vol.save()
+		ed = Group(name="Member Organization Executive Director")
+		ed.save()
+		mc = Group(name="Member Organization Glean Coordinator")
+		mc.save()
+		sal = Group(name="Salvation Farms Administrator")
+		sal.save()
+		salc = Group(name="Salvation Farms Coordinator")
+		salc.save()
+
+
+	ed = Group.objects.get(name="Member Organization Executive Director")
+	if not ed.permissions.all():
+		
+
+		mo_list = [Announcement, Template, Distro, GleanEvent, Farm, PostGlean, RecipientSite, Profile, MemOrg]
+		uni_list = [Announcement, Template, Distro, GleanEvent, Farm, FarmLocation, Contact, PostGlean, RecipientSite, Profile, MemOrg, County]
+
+		mc = Group.objects.get(name="Member Organization Glean Coordinator")
+		sal = Group.objects.get(name="Salvation Farms Administrator")
+		salc = Group.objects.get(name="Salvation Farms Coordinator")
+
+		for model in mo_list:
+			content_type = ContentType.objects.get_for_model(model)
+			perm = Permission.objects.get(codename='auth', content_type=content_type)
+			ed.permissions.add(perm)
+			mc.permissions.add(perm)
+			sal.permissions.add(perm)
+			salc.permissions.add(perm)
+		for model in uni_list:
+			content_type = ContentType.objects.get_for_model(model)
+			perm = Permission.objects.get(codename='uniauth', content_type=content_type)
+			sal.permissions.add(perm)
+			salc.permissions.add(perm)
+		
+		# for model in mo_list:
+		# 	ed.permissions.add(model.moauth)
+
+
+		# for model in uni_list:
+		# 	content_type = ContentType.objects.get_for_model(model)
+		# 	moauth = Permission.objects.create(	codename="uniauth",
+		# 										name="Universal Authorization and Permissions",
+		# 										content_type=content_type)
+		
+		
+		return HttpResponse("perms and users are made")
+	else:
+		return HttpResponse("perms and users are already made")
+
 
 def index(request):
 	if County.objects.filter(name='County1').exists():
@@ -37,7 +100,10 @@ def index(request):
 		newTemp = Template(template_name="Default template", body="<html><body>{{content}}{{glean.title}}{{glean.description}}{{rsvp}}{{info}}{{unsubscribe}}</body></html>", member_organization=new)
 		newTemp.save()
 	for i in range(recipient_sites):
-		new = Site(name="Site" + str(i), address_one = "515 Main Street", city="Morrisville", state="VT", zipcode="01771")
+		choices2 = range(memberorg_quant)
+		choice2 = choices2.pop(random.choice(choices2))
+		memorg = MemOrg.objects.get(name="MemberOrg"+str(choice2))
+		new = RecipientSite(name="RecipientSite" + str(i), address_one = "515 Main Street", city="Morrisville", state="VT", zipcode="01771",member_organization=memorg)
 		new.save()
 	for i in range(county_quant):
 		new = County(name="County"+str(i),description="County"+str(i), towns="Town"+str(i))
@@ -47,7 +113,19 @@ def index(request):
 		choices2 = range(memberorg_quant)
 		choice2 = choices2.pop(random.choice(choices2))
 		memorg = MemOrg.objects.get(name="MemberOrg"+str(choice2))
-		person = User.objects.create_user(name, 'Cheekio@gmail.com', '463597')
+		person = User.objects.create_user(name, 'Cheekio@gmail.com', 'password')
+		if name == "name0":
+			vol = Group.objects.get(name="Salvation Farms Administrator")
+			person.groups.add(vol)
+			vol = None
+		elif name == "name1":
+			vol = Group.objects.get(name="Member Organization Executive Director")
+			person.groups.add(vol)
+			vol = None
+		else:
+			vol = Group.objects.get(name="Volunteer")
+			person.groups.add(vol)
+			vol = None
 		userprof = Profile(user=person, first_name = 'firsty'+str(i),last_name='lasty'+str(i), member_organization=memorg)
 		userprof.save()
 		choices = range(county_quant)
@@ -62,7 +140,12 @@ def index(request):
 			my_user = 0
 		if my_county >= county_quant:
 			my_county = 0
+		choices2 = range(memberorg_quant)
+		choice2 = choices2.pop(random.choice(choices2))
+		memorg = MemOrg.objects.get(name="MemberOrg"+str(choice2))
 		new = Farm(name="farm"+str(i),farm_type=FARM_TYPE[0][1],description="generic farm",physical_address_one="36 maple street",physical_city="Morrisville",physical_state="VT",physical_is_mailing=True,phone_1='8025786266',email="Joshua.Lucier@gmail.com",direction="Many different directions",instructions="many instructions")
+		new.save()
+		new.member_organization.add(memorg)
 		new.save()
 		new.farmers.add(User.objects.all()[my_user])
 		new.counties.add(County.objects.all()[my_county])

@@ -8,8 +8,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django import forms
-from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 
 from announce.models import Template, TemplateForm, Announcement, AnnouncementForm, PartialTemplateForm
 from gleanevent.models import GleanEvent
@@ -19,9 +20,7 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMessage
 from django.contrib.sites.models import Site
 
-
-def recipients_placeholder_code():
-	return Profile.objects.all()
+#==================== Recipient Logic ====================#
 
 def primary_source(glean):
 	if glean.counties.all():
@@ -33,14 +32,20 @@ def primary_source(glean):
 	else:
 		return glean
 
-
-
 #==================== Template System ====================#
 
+#== Template Index  View==#
+@permission_required('announce.auth')
 def Templates(request):
-	templates = Template.objects.all()
+	
+	if request.user.has_perm('announce.uniauth'):
+		templates = Template.objects.all()
+	else:
+		templates = Template.objects.filter(member_organization=request.user.profile_set.get().member_organization)	
 	return render(request, 'announce/templates.html', {'templates':templates})
 
+#== Template Edit View ==#
+@permission_required('announce.auth')
 def editTemplate(request, template_id):
 	template = get_object_or_404(Template, pk=template_id)
 	if request.method == 'POST':
@@ -59,6 +64,8 @@ def editTemplate(request, template_id):
 		form = PartialTemplateForm(instance=template)
 		return render(request, 'announce/edit_template.html', {'form':form, 'template':template})
 
+#== Create New Template View ==#
+@permission_required('announce.auth')
 def newTemplate(request):
 	if request.method == 'POST':
 		form = TemplateForm(request.POST)
@@ -76,6 +83,8 @@ def newTemplate(request):
 		form = TemplateForm
 		return render(request, 'announce/new_template.html', {'form':form})
 
+#== View for Individual Template ==#
+@permission_required('announce.auth')
 def detailTemplate(request, template_id):
 	template = get_object_or_404(Template, pk=template_id)
 	return render(request, 'announce/template_detail.html', {'template':template})
@@ -83,6 +92,7 @@ def detailTemplate(request, template_id):
 
 #==================== Announce Logic ====================#
 
+#== Combine Template and Message for Emails ==#
 def weave_template_and_body_and_glean(template, announcement, glean):
 	site = Site.objects.get(pk=1)
 	glean_link = "<a href='" + site.domain + str(reverse('gleanevent:detailglean', args=(glean.id,))) + "'>Glean Info</a>"
@@ -105,6 +115,7 @@ def weave_template_and_body_and_glean(template, announcement, glean):
 				returnable = returnable[:start] + value
 	return returnable
 
+#== Final Weave, puts per-user unsubscribe link into email ==#
 def weave_unsubscribe(body, userprofile):
 	site = Site.objects.get(pk=1)
 	returnable = body
@@ -130,6 +141,7 @@ def weave_unsubscribe(body, userprofile):
 			returnable = returnable[:start] + value
 	return returnable
 
+#== Mailing Logic ==#
 def mail_from_source(source, body, announcement):
 	mailed = []
 	for county in source.counties.all():
@@ -154,8 +166,12 @@ def mail_from_source(source, body, announcement):
 
 #==================== Announce System ====================#
 
+#== View for individual Announcement ==#
+@permission_required('announce.auth')
 def detailAnnounce(request, announce_id):
 	announcement = get_object_or_404(Announcement, pk=announce_id)
+	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != announcement.member_organization:
+		return HttpResponseRedirect(reverse('announce:announcements'))
 	body = weave_template_and_body_and_glean(announcement.template, announcement, announcement.glean)
 	glean = announcement.glean
 	source = primary_source(announcement.glean)
@@ -168,26 +184,41 @@ def detailAnnounce(request, announce_id):
 	else:
 		return render(request, 'announce/announce_detail.html', {'announcement':announcement, 'test':body, 'glean':glean, 'source':source})
 
+#== View for Printable Phone List ==#
+@permission_required('announce.auth')
 def phoneAnnounce(request, announce_id):
 	announcement = get_object_or_404(Announcement, pk=announce_id)
+	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != announcement.member_organization:
+		return HttpResponseRedirect(reverse('announce:announcements'))
 	glean = announcement.glean
 	source = primary_source(announcement.glean)
 	return render(request, 'announce/phone.html', {'announcement':announcement, 'glean':glean, 'source':source})
 
+#== Index of All Announcements ==#
+@permission_required('announce.auth')
 def Announcements(request):
-	announcements = Announcement.objects.all()
+	if request.user.has_perm('announce.uniauth'):
+		announcements = Announcement.objects.all()
+	else:
+		announcements= Announcement.objects.filter(member_organization=request.user.profile_set.get().member_organization)
 	return render(request, 'announce/announcements.html', {'announcements':announcements})
+	#return HttpResponse(request.user.profile_set.get().member_organization)
 
+#== New Announcement View ==#
+@permission_required('announce.auth')
 def announceGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
+	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != announce.member_organization:
+		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 	if not glean.happened():
 		if request.method == 'POST':
 			form = AnnouncementForm(request.POST)
 			if form.is_valid():
-				newAnnounce = Announcement(**form.cleaned_data)
-				newAnnounce.glean = glean
-				newAnnounce.save()
-				return HttpResponseRedirect(reverse('announce:detailannounce', args=(newAnnounce.id,)))
+				new_save = form.save(commit=False)
+				new_save.member_organization = glean.member_organization
+				new_save.glean = glean
+				new_save.save()
+				return HttpResponseRedirect(reverse('announce:detailannounce', args=(new_save.id,)))
 			else:
 				HttpResponse('form was not vaild')
 		else:
@@ -198,31 +229,36 @@ def announceGlean(request, glean_id):
 	else:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id)))
 
+#== Edit Announcement View ==#
+@permission_required('announce.auth')
 def editAnnounce(request, announce_id):
 	announce = get_object_or_404(Announcement, pk=announce_id)
+	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != announce.member_organization:
+		return HttpResponseRedirect(reverse('announce:detailannounce', args=(announce_id,)))
 	templates = Template.objects.all()
-	recipients = recipients_placeholder_code()
+	source = primary_source(announce.glean)
 	if request.method == 'POST':
 		form = AnnouncementForm(request.POST)
 		if form.is_valid():
-			newAnnounce = Announcement(**form.cleaned_data)
-			newAnnounce.glean = announce.glean
-			newAnnounce.id = announce.id
-			newAnnounce.datetime = announce.datetime
-			newAnnounce.save()
-			return HttpResponseRedirect(reverse('announce:detailannounce', args=(newAnnounce.id,)))
+			new_save = form.save(commit=False)
+			new_save.member_organization = announce.member_organization
+			new_save.glean = announce.glean
+			new_save.datetime = announce.datetime
+			new_save.id = announce.id
+			new_save.save()
+			return HttpResponseRedirect(reverse('announce:detailannounce', args=(new_save.id,)))
 		else:
-			return render(request, 'announce/edit_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients, 'editmode':True})
+			return render(request, 'announce/edit_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients, 'source':source})
 	else:
 		templates = Template.objects.all()
 		form = AnnouncementForm(instance=announce)
-		recipients = recipients_placeholder_code()
-		return render(request, 'announce/edit_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients, 'editmode':True})
+		return render(request, 'announce/edit_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients, 'source':source})
 
 
 
 #==================== Single Use Links ====================#
 
+#== Unsubscribe 'view' ==#
 def unsubscribeLink(request, key):
 	prof = get_object_or_404(Profile, unsubscribe_key=key)
 	prof.accepts_email = False

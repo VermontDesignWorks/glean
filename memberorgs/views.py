@@ -4,16 +4,21 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
-from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.decorators import permission_required
 
 from memberorgs.models import MemOrg, MemOrgForm
 
-
+@permission_required('memberorgs.auth')
 def index(request):
-	memorgs_list = MemOrg.objects.all()
+	if request.user.has_perm('memberorgs.uniauth'):
+		memorgs_list = MemOrg.objects.all()
+	else:
+		memorg_id = request.user.profile_set.get().member_organization.id
+		return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(memorg_id,)))
 	return render(request, 'memberorgs/index.html', {'memorgs':memorgs_list})
 
-#@login_required
+@permission_required('memberorgs.uniauth')
 def newMemOrg(request):
 	if request.method == "POST":
 		form = MemOrgForm(request.POST)
@@ -27,9 +32,11 @@ def newMemOrg(request):
 		form = MemOrgForm()
 		return render(request, 'memberorgs/new_memorg.html', {'form':form})
 
-#@login_required
+@permission_required('memberorgs.auth')
 def editMemOrg(request, memorg_id):
 	memorg = get_object_or_404(MemOrg, pk=memorg_id)
+	if memorg != request.user.profile_set.get().member_organization and not request.user.has_perm('memberorgs.uniauth'):
+		return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(memorg.id,)))
 	if request.method == "POST":
 		form = MemOrgForm(request.POST)
 		if form.is_valid():

@@ -9,11 +9,14 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django import forms
-from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.decorators import permission_required
+
 from django.forms.models import modelformset_factory
 
 from distro.models import Distro
 
+@permission_required('distro.auth')
 def entry(request):
 	lines = request.GET.get('extra', 0)
 	DistroFormSet = modelformset_factory(Distro, extra=int(lines))
@@ -28,6 +31,7 @@ def entry(request):
 		form = DistroFormSet(queryset=Distro.objects.none())
 		return render(request, 'distribution/entry.html', {'form':form, 'lines':lines})
 
+@permission_required('distro.auth')
 def download(request):
 	response = HttpResponse(mimetype='text/csv')
 	response['Content-Disposition'] = 'attachment; filename=distribution.csv'
@@ -46,9 +50,10 @@ def download(request):
 	# del_or_pick = models.CharField(max_length=2, choices=d_or_p, default='d')
 	# field_or_farm = models.CharField(max_length=1, choices=g_or_p, default='g')
 
-	group = Distro.objects.all()
-	
-	group.filter(member_organization=request.user.profile_set.get().member_organization)
+	if request.user.has_perm('distro.uniauth'):
+		group = Distro.objects.all()
+	else:
+		group = Distro.objects.filter(member_organization=request.user.profile_set.get().member_organization)
 	for line in group:
 		writer.writerow([line.date,
 			line.farm,

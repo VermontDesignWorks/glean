@@ -10,6 +10,11 @@ class County(models.Model):
 	towns = models.TextField(max_length=200, blank=True)
 	state = models.CharField(choices=STATES, max_length=2, default='VT')
 	
+	class Meta:
+		permissions = (
+			("uniauth", "Universal Permission Level"),
+			)
+	
 	def __unicode__(self):
 		return self.name
 

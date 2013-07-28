@@ -4,21 +4,26 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
-from django.contrib.auth.decorators import login_required
 
-from recipientsite.models import Site, SiteForm
+from django.contrib.auth.decorators import permission_required
 
+from recipientsite.models import RecipientSite, SiteForm
 
+@permission_required('recipientsite.auth')
 def index(request):
-	sites_list = Site.objects.all()
+	if request.user.has_perm('recipientsite.uniauth'):
+		sites_list = RecipientSite.objects.all()
+	else:
+		sites_list = RecipientSite.objects.filter(member_organization=request.user.profile_set.get().member_organization)
 	return render(request, 'recipientsite/index.html', {'sites':sites_list})
 
-#@login_required
+@permission_required('recipientsite.auth')
 def newSite(request):
 	if request.method == "POST":
 		form = SiteForm(request.POST)
 		if form.is_valid():
-			new_save = Site(**form.cleaned_data)
+			new_save = form.save(commit=False)
+			new_save.member_organization = request.user.profile_set.get().member_organization
 			new_save.save()
 			return HttpResponseRedirect(reverse('site:detailsite', args=(new_save.id,) ))
 		else:
@@ -27,13 +32,15 @@ def newSite(request):
 		form = SiteForm()
 		return render(request, 'recipientsite/new_site.html', {'form':form})
 
-#@login_required
+@permission_required('recipientsite.auth')
 def editSite(request, site_id):
-	site = get_object_or_404(Site, pk=site_id)
+	site = get_object_or_404(RecipientSite, pk=site_id)
+	if site.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('recipientsite.uniauth'):
+		return HttpResponseRedirect(reverse('site:index'))
 	if request.method == "POST":
 		form = SiteForm(request.POST)
 		if form.is_valid():
-			new_save = Site(**form.cleaned_data)
+			new_save = RecipientSite(**form.cleaned_data)
 			new_save.id = site_id
 			new_save.save()
 			return HttpResponseRedirect(reverse('site:index'))
@@ -43,6 +50,9 @@ def editSite(request, site_id):
 
 	return render(request, 'recipientsite/edit_site.html', {'form':form, 'site':site, 'editmode':True})
 
+@permission_required('recipientsite.auth')
 def detailSite(request, site_id):
-	site = get_object_or_404(Site, pk=site_id)
+	site = get_object_or_404(RecipientSite, pk=site_id)
+	if site.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('recipientsite.uniauth'):
+		return HttpResponseRedirect(reverse('site:index'))
 	return render(request, 'recipientsite/detail_site.html', {'site':site})

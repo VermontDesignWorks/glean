@@ -13,6 +13,11 @@ class Template(models.Model):
 	body = models.TextField()
 	def __unicode__(self):
 		return self.member_organization.name + ' - ' + self.template_name
+	class Meta:
+		permissions = (
+			("auth", "Member Organization Level Permissions"),
+			("uniauth", "Universal Permission Level"),
+		)
 
 class TemplateForm(ModelForm):
 	class Meta:
@@ -33,6 +38,13 @@ class Announcement(models.Model):
 	template = models.ForeignKey(Template, blank=True, null=True)
 	sent = models.BooleanField(default=False, editable=False)
 	sent_by = models.ForeignKey(User, editable=False, null=True)
+	member_organization = models.ForeignKey(MemOrg, editable=False, verbose_name="Member Organization")
+
+	class Meta:
+		permissions = (
+			("auth", "Member Organization Level Permissions"),
+			("uniauth", "Universal Permission Level"),
+		)
 
 	def __unicode__(self):
 		return self.datetime.strftime('%y:%m:%d %H:%M:%S') + ' ' + self.glean.title + ' ' + self.title

@@ -3,23 +3,30 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
+
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 
 from farms.models import Farm, FarmForm, FarmLocation, LocationForm, Contact, ContactForm
 
-#@login_required
+@permission_required('farms.auth')
 def index(request):
-	farms_list = Farm.objects.all()
+	if request.user.has_perm('farms.uniauth'):
+		farms_list = Farm.objects.all()
+	else:
+		farms_list = Farm.objects.filter(member_organization=request.user.profile_set.get().member_organization)
 	return render(request, 'farms/index.html', {'farms':farms_list})
 
-#@login_required
+@permission_required('farms.auth')
 def newFarm(request):
 	if request.method == "POST":
 		form = FarmForm(request.POST)
 		if form.is_valid():
 			#newFarm = Farm(**form.cleaned_data)
 			#newFarm.save()
-			new_save = form.save()
+			new_save = form.save(commit=False)
+			new_save.member_organization = request.user.profile_set.get().member_organization
+			new_save.save()
 			return HttpResponseRedirect(reverse('farms:detailfarm', args=(new_save.id,) ))
 		else:
 			return render(request, 'farms/new.html', {'form':form, 'error':'Your Farm Form Was Not Valid'})
@@ -27,15 +34,14 @@ def newFarm(request):
 		form = FarmForm()
 		return render(request, 'farms/new.html', {'form':form})
 
-#@login_required
+@permission_required('farms.auth')
 def editFarm(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
+	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+		return HttpResponseRedirect(reverse('farms:index'))
 	if request.method == "POST":
 		form = FarmForm(request.POST, instance=farm)
 		if form.is_valid():
-			#newFarm = Farm(**form.cleaned_data)
-			#newFarm.id = farm_id
-			#newFarm.save()
 			new_save = form.save()
 			return HttpResponseRedirect(reverse('farms:index'))
 		else:
@@ -44,13 +50,18 @@ def editFarm(request, farm_id):
 
 	return render(request, 'farms/edit.html', {'form':form, 'farm':farm})
 
-#@login_required
+@permission_required('farms.auth')
 def detailFarm(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
+	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+		return HttpResponseRedirect(reverse('farms:index'))
 	return render(request, 'farms/detail.html', {'farm':farm})
 
+@permission_required('farms.auth')
 def newLocation(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
+	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+		return HttpResponseRedirect(reverse('farms:index'))
 	if request.method == 'POST':
 		form = LocationForm(request.POST)
 		if form.is_valid():
@@ -71,8 +82,11 @@ def newLocation(request, farm_id):
 		form = LocationForm()
 		return render(request, 'farms/new_location.html', {'form':form, 'farm':farm})
 
+@permission_required('farms.auth')
 def editLocation(request, farm_id, location_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
+	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+		return HttpResponseRedirect(reverse('farms:index'))
 	location = get_object_or_404(FarmLocation, pk=location_id)
 	if request.method == 'POST':
 		form = LocationForm(request.POST, instance=location)
@@ -89,8 +103,11 @@ def editLocation(request, farm_id, location_id):
 		form = LocationForm(instance = location)
 		return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'editmode':True})
 
+@permission_required('farms.auth')
 def newContact(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
+	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+		return HttpResponseRedirect(reverse('farms:index'))
 	if request.method == 'POST':
 		form = ContactForm(request.POST)
 		if form.is_valid():
@@ -105,8 +122,11 @@ def newContact(request, farm_id):
 		form = ContactForm()
 		return render(request, 'farms/new_contact.html', {'form':form, 'farm':farm})
 
+@permission_required('farms.auth')
 def editContact(request, farm_id, contact_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
+	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+		return HttpResponseRedirect(reverse('farms:index'))
 	contact = get_object_or_404(Contact, pk=contact_id)
 	if request.method == 'POST':
 		form = ContactForm(request.POST)
