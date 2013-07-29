@@ -1,5 +1,8 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.0.9.0 - "This Ain't Gonna Work (working title)"
+*save before the plunge into custom reg backends
+
 Release 0.0.8 - "Negative Space"
 *Finished Blog Post App, complete with delete functionality (new!)
 *Implemented authorized user comments system, need formatting like /everything else/

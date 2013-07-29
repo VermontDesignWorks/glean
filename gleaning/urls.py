@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-#from registration.views import register
+from registration import views
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -22,22 +22,9 @@ urlpatterns = patterns('',
 	url(r'^distribution/', include('distro.urls', namespace="distro")),
 	url(r'^posts/', include('posts.urls', namespace="posts")),
 
-	
-
-
-	## registration backend
-	#(r'^admin/', include('admin.urls')),
-	# url(r'^register/complete/$',
- #                           'registration/registration_complete.html',
- #                           name='registration_complete'),
-	# (r'^/accounts/change-password/$', 'django.contrib.auth.views.password_change'), 
-	# (r'^/accounts/password-changed/$', 'django.contrib.auth.views.password_change_done'),
-	# (r'^/accounts/reset-password/$', 'django.contrib.auth.views.password_reset'),
-	# (r'^/accounts/password-reset/$', 'django.contrib.auth.views.password_reset_done'),
-	# (r'^/accounts/password-reset-confirm/$', 'django.contrib.auth.views.password_reset_confirm'),
-
 	url(r'^comments/', include('django.contrib.comments.urls')),
 
+#	url(r'^accounts/register/$', register, {'backend': 'user_profile.regbackend.RegBackend','form_class': UserRegistrationForm}, name='registration_register'),
 	url(r'^accounts/', include('registration.backends.default.urls')),
 	url(r'^accounts/', include('registration.backends.default.urls', namespace="registration")),
 
