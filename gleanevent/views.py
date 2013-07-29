@@ -13,6 +13,7 @@ from django.forms.models import modelformset_factory
 from django.contrib.auth.decorators import permission_required
 
 from gleanevent.models import GleanEvent, GleanForm, PostGlean# PostGleanForm
+from announce.models import Announcement
 
 @permission_required('gleanevent.auth')
 def index(request):
@@ -65,13 +66,21 @@ def detailGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
 	return render(request, 'gleanevent/detail.html', {'glean':glean})
 
-# def gleanCalendar(request):
-# 	gleans = GleanEvent.objects.all()
-# 	return render(request, 'gleanevent/calendar.html', {'gleans':gleans})
-
-# def announceGlean(request, glean_id):
-# 	glean = get_object_or_404(GleanEvent, pk=glean_id)
-# 	return render(request, 'gleanevent/announce.html', {'glean':glean})
+#== Delete Glean View ==#
+@permission_required('gleanevent.auth')
+def deleteGlean(request, glean_id):
+	glean = get_object_or_404(GleanEvent, pk=glean_id)
+	if glean.member_organization != request.user.profile_set.get().member_organization and u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
+		return HttpResponseRedirect(reverse('gleanevent:index'))
+	if request.method == 'POST':
+		announces = Announcement.objects.filter(glean=glean)
+		if announces.exists():
+			for announce in announces:
+				announce.delete()
+		glean.delete()
+		return HttpResponseRedirect(reverse('gleanevent:index'))
+	else:
+		return render(request, 'gleanevent/delete.html', {'glean':glean})
 
 @login_required
 def confirmLink(request, glean_id):

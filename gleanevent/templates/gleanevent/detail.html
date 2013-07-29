@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load url from future %}
+{% load comments %}
 {% block title %}
 Gleaning Details
 {% endblock title %}
@@ -67,29 +69,49 @@ Gleaning Details
 
 </div>
 <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map-canvas { height: 100% }
-    </style>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHs-DW2GgXZL0nvZ4xj8q5AhdJQ9sNpaY&sensor=false">
-    </script>
-    <script type="text/javascript">
-      function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(44.554283, -72.601981),
-          zoom: 10,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map-canvas"),
-            mapOptions);
-        var marker = new google.maps.Marker({
-          position: map.getCenter(),
-          map: map,
-  });
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
+  html { height: 100% }
+  body { height: 100%; margin: 0; padding: 0 }
+  #map-canvas { height: 100% }
+</style>
+<script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHs-DW2GgXZL0nvZ4xj8q5AhdJQ9sNpaY&sensor=false">
+</script>
+<script type="text/javascript">
+  function initialize() {
+    var mapOptions = {
+      center: new google.maps.LatLng(44.554283, -72.601981),
+      zoom: 10,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map-canvas"),
+        mapOptions);
+    var marker = new google.maps.Marker({
+      position: map.getCenter(),
+      map: map,
+    });
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>
 <div class="span9" id="map-canvas" style="height:400px;"></div>
+<div class="span9">
+  {% render_comment_list for glean %}
+  
+  {% get_comment_form for glean as form %}
+  {% if user.is_authenticated %}
+    <form action="{% comment_form_target %}" method="POST">
+    {% csrf_token %}
+    {{ form.comment }}
+    {{ form.honeypot }}
+    {{ form.content_type }}
+    {{ form.object_pk }}
+    {{ form.timestamp }}
+    {{ form.security_hash }}
+    <input type="hidden" name="next" value="{% url 'gleanevent:detailglean' glean.id %}" />
+    <input type="submit" value="Post!" id="id_submit" />
+    </form>
+{% else %}
+    <p>Please <a href="{% url 'auth_login' %}">log in</a> to leave a comment.</p>
+{% endif %}
+</div>
 
 {% endblock content %}

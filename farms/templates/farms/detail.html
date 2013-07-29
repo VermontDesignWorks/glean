@@ -12,7 +12,7 @@ Details of {{ farm.name }}
 		<p>{{farm.instructions}}</p>
 		<a class="btn btn-warning" href="{% url 'farms:editfarm' farm.id %}">Edit this Farm</a>
 		<a class="btn btn-info" href="{% url 'farms:newlocation' farm.id %}">Add a New Location for This Farm</a>
-		<a class="btn btn-info" href="{% url 'farms:newcontact' farm.id %}">Create a New Contact For This Farm</a>
+		<a class="btn btn-info" href="{% url 'farms:newcontact' farm.id %}">Create a New Contact For This Farm</a> - <small><a href="{% url 'farms:deletefarm' farm.id %}">(delete)</a></small>
 	</div>
 	{% if farm.gleanevent_set.all %}
 	

@@ -37,7 +37,6 @@ def primary_source(glean):
 #== Template Index  View==#
 @permission_required('announce.auth')
 def Templates(request):
-	
 	if request.user.has_perm('announce.uniauth'):
 		templates = Template.objects.all()
 	else:
@@ -48,6 +47,8 @@ def Templates(request):
 @permission_required('announce.auth')
 def editTemplate(request, template_id):
 	template = get_object_or_404(Template, pk=template_id)
+	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != template.member_organization:
+		return HttpResponseRedirect(reverse('announce:templates'))
 	if request.method == 'POST':
 		form = PartialTemplateForm(request.POST)
 		if form.is_valid():
@@ -88,6 +89,17 @@ def newTemplate(request):
 def detailTemplate(request, template_id):
 	template = get_object_or_404(Template, pk=template_id)
 	return render(request, 'announce/template_detail.html', {'template':template})
+
+#== Delete Template View ==#
+@permission_required('announce.auth')
+def deleteTemplate(request, template_id):
+	template = get_object_or_404(Template, pk=template_id)
+	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != template.member_organization:
+		return HttpResponseRedirect(reverse('announce:templates'))
+	if request.method == 'POST':
+		template.delete()
+		return HttpResponseRedirect(reverse('announce:templates'))
+	return render(request, 'announce/delete_template.html', {'template':template})
 
 
 #==================== Announce Logic ====================#
@@ -184,6 +196,19 @@ def detailAnnounce(request, announce_id):
 	else:
 		return render(request, 'announce/announce_detail.html', {'announcement':announcement, 'test':body, 'glean':glean, 'source':source})
 
+#== Delete Announcement View ==#
+@permission_required('announce.auth')
+def deleteAnnounce(request, announce_id):
+	announce = get_object_or_404(Announcement, pk=announce_id)
+	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != announce.member_organization:
+		return HttpResponseRedirect(reverse('announce:annoucements'))
+	if announce.glean.happened():
+		return HttpResponseRedirect(reverse('announce:annoucements'))
+	if request.method == 'POST':
+		announce.delete()
+		return HttpResponseRedirect(reverse('announce:announcements'))
+	return render(request, 'announce/delete_announce.html', {'announce':announce})
+
 #== View for Printable Phone List ==#
 @permission_required('announce.auth')
 def phoneAnnounce(request, announce_id):
@@ -208,7 +233,7 @@ def Announcements(request):
 @permission_required('announce.auth')
 def announceGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
-	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != announce.member_organization:
+	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != glean.member_organization:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 	if not glean.happened():
 		if request.method == 'POST':

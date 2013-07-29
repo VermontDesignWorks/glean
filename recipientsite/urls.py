@@ -7,4 +7,5 @@ urlpatterns = patterns('',
 	url(r'^new/$', views.newSite, name='newsite'),
 	url(r'^(?P<site_id>\d+)/$', views.detailSite, name='detailsite'),
 	url(r'^(?P<site_id>\d+)/edit/$', views.editSite, name='editsite'),
+	url(r'^(?P<site_id>\d+)/delete/$', views.deleteSite, name='deletesite'),
 )

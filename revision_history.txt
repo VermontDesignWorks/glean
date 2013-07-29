@@ -1,6 +1,17 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
-Beta 0.0.7.5 - "Jim Bond"
+Release 0.0.8 - "Negative Space"
+*Finished Blog Post App, complete with delete functionality (new!)
+*Implemented authorized user comments system, need formatting like /everything else/
+*Added all sorts of fun edit/delete stuff to Distro data entry (modelformsets are awesome)
+*Added delete functionality to gleans
+*Added delete functionality to announcements / templates
+*Added delete functionality to farms
+*Added delete functionality to Recipient Sites
+*Changed Release 0.0.7.5 documentation to reflect it's not a beta
+*Made a snazzy new name to reflect all the deletion work I did (Negative Space)
+
+Release 0.0.7.5 - "Jim Bond"
 *Half implemented the blog post app
 *Mucked up some more models
 

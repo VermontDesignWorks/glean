@@ -40,8 +40,9 @@ def editSite(request, site_id):
 	if request.method == "POST":
 		form = SiteForm(request.POST)
 		if form.is_valid():
-			new_save = RecipientSite(**form.cleaned_data)
+			new_save = form.save(commit=False)
 			new_save.id = site_id
+			new_save.member_organization = site.member_organization
 			new_save.save()
 			return HttpResponseRedirect(reverse('site:index'))
 		else:
@@ -56,3 +57,15 @@ def detailSite(request, site_id):
 	if site.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('recipientsite.uniauth'):
 		return HttpResponseRedirect(reverse('site:index'))
 	return render(request, 'recipientsite/detail_site.html', {'site':site})
+
+#== Delete RecipientSite View ==#
+@permission_required('recipientsite.auth')
+def deleteSite(request, site_id):
+	site = get_object_or_404(RecipientSite, pk=site_id)
+	if site.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('recipientsite.uniauth'):
+		return HttpResponseRedirect(reverse('site:index'))
+	if request.method == 'POST':
+		site.delete()
+		return HttpResponseRedirect(reverse('site:index'))
+	else:
+		return render(request, 'recipientsite/delete_site.html', {'site':site})

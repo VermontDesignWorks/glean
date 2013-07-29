@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+Confirm Farm Delete - {{farm.name}}
+{% endblock title %}
+{% block content %}
+<h1>Delete Farm "{{farm.name}}"?</h1>
+<h5>This action is IRREVERSIBLE! Think carefully before you delete this farm!</h5>
+	<form method="post" action="">
+		{% csrf_token %}
+		<input type="submit" class="btn btn-danger" value="Permanently Delete">
+	</form>
+{% endblock content %}

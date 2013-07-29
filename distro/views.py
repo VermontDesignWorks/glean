@@ -32,6 +32,28 @@ def entry(request):
 		return render(request, 'distribution/entry.html', {'form':form, 'lines':lines})
 
 @permission_required('distro.auth')
+def edit(request):
+	DistroFormSet = modelformset_factory(Distro, extra=0, can_delete=True)
+	date_from = request.GET.get('date_from', datetime.datetime.today())
+	date_until = request.GET.get('date_until', datetime.datetime.today())
+	if request.method == 'POST':
+		formset = DistroFormSet(request.POST)
+		if formset.is_valid():
+			instances = formset.save()
+			queryset = Distro.objects.filter(date__gte=date_from).filter(date__lte=date_until)
+			if not request.user.has_perm('distro.uniauth'):
+				queryset.filter(member_organization=request.user.profile_set.get().member_organization)
+			form = DistroFormSet(queryset=queryset)
+			return render(request, 'distribution/edit.html', {'form':form})
+	else:
+		
+		queryset = Distro.objects.filter(date__gte=date_from).filter(date__lte=date_until)
+		if not request.user.has_perm('distro.uniauth'):
+			queryset.filter(member_organization=request.user.profile_set.get().member_organization)
+		form = DistroFormSet(queryset=queryset)
+		return render(request, 'distribution/edit.html', {'form':form})
+
+@permission_required('distro.auth')
 def download(request):
 	response = HttpResponse(mimetype='text/csv')
 	response['Content-Disposition'] = 'attachment; filename=distribution.csv'

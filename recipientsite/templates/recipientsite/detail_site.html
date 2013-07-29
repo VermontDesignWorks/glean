@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 <h1>{{site.name}} Details</h1>
-<a href="{% url 'site:editsite' site.id %}" class="btn btn-warning">edit</a>
+<a href="{% url 'site:editsite' site.id %}" class="btn btn-warning">edit</a> - <a href="{% url 'site:deletesite' site.id %}"><small>(delete)</small></a>
 <p>{{site.description}}</p>
 <p>{{site.address_one}}</p>
 <p>{{site.address_two}}</p>

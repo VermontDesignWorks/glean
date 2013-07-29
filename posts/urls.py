@@ -7,5 +7,6 @@ urlpatterns = patterns('',
 	url(r'^$', views.index, name='index'),
 	url(r'^new/$', views.newPost, name='newpost'),
 	url(r'^(?P<post_id>\d+)/$', views.detailPost, name='detailpost'),
+	url(r'^(?P<post_id>\d+)/delete$', views.deletePost, name='deletepost'),
 	url(r'^(?P<post_id>\d+)/edit$', views.editPost, name='editpost'),
 )

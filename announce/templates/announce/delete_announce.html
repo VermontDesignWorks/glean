@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+Confirm Announcement Delete - {{announce.title}}
+{% endblock title %}
+{% block content %}
+<h1>Delete Announcement "{{announce.title}}"?</h1>
+<h5>This action is IRREVERSIBLE! Think carefully before you delete this announcement!</h5>
+	<div width="400px">{{announce.message}}</div>
+	<form method="post" action="">
+		{% csrf_token %}
+		<input type="submit" class="btn btn-danger" value="Permanently Delete">
+	</form>
+{% endblock content %}

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load comments %}
 {% load url from future %}
 {% block title %}
 Welcome to the Gleaning Interface!
@@ -22,5 +23,7 @@ Welcome to the Gleaning Interface!
 	{% for post in posts %}
 		<h3><a href="{% url 'posts:detailpost' post.id %}">{{post.title}}</a></h3>
 		<p>{{post.excerpt}}</p>
+		{% get_comment_count for post as comment_count %}
+		<p><small>{{comment_count}} Comment{% if comment_count != 1 %}s{% endif %}</small></p>
 	{% endfor %}
 {% endblock %}

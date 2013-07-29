@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+Detail for Template - {{template.template_name}}
+{% endblock title %}
+{% block content %}
+<h1>Delete Template "{{template.template_name}}"?</h1>
+<h5>This action is IRREVERSIBLE! Think carefully before you delete this template!</h5>
+	<div width="400px">{{template.body | safe}}</div>
+	<form method="post" action="">
+		{% csrf_token %}
+		<input type="submit" class="btn btn-danger" value="Permanently Delete">
+	</form>
+{% endblock content %}

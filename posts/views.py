@@ -73,3 +73,15 @@ def editPost(request, post_id):
 def detailPost(request, post_id):
 	post = get_object_or_404(Post, pk=post_id)
 	return render(request, 'posts/detail_post.html', {'post':post})
+
+#== Delete Post View ==#
+@permission_required('posts.auth')
+def deletePost(request, post_id):
+	post = get_object_or_404(Post, pk=post_id)
+	if post.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('posts.uniauth'):
+		return HttpResponseRedirect(reverse('posts:index'))
+	if request.method == 'POST':
+		post.delete()
+		return HttpResponseRedirect(reverse('posts:index'))
+	else:
+		return render(request, 'posts/delete_post.html', {'post':post})

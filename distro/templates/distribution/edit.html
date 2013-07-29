@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}Distribution Entry Forms
+{% endblock title %}
+{% block content %}
+<form method="get">
+	<div class="input-append datetimechoser">
+		<label for="date_from">From</label> <input id="date_from" maxlength=200 name="date_from" data-format="yyyy-MM-dd" type="text" value="{{date_from}}"></input>
+		<span class="add-on">
+		<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+		</span>
+	</div>
+	<div class="input-append datetimechoser">
+		<label for="date_until">Until</label> <input id="date_until" maxlength=200 name="date_until" data-format="yyyy-MM-dd" type="text" value="{{date_until}}"></input>
+		<span class="add-on">
+		<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+		</span>
+	</div>
+	<input type="submit" value="Render New Form">
+</form>
+
+	<script type="text/javascript">
+	      $(function() {
+				$('.datetimechoser').datetimepicker({
+	  				language: 'en',
+	  				pick12HourFormat: true
+				});
+	      });
+	</script>
+{% if form.errors %}{{form.errors}}{% endif %}
+{% if form %}
+	<form method="post" action="">
+			{% csrf_token %}
+			<table>
+		{{form.as_table}}
+			</table>
+	<input type="submit" value="Go!">
+	</form>
+ {% else %}
+ No Data to Show!
+ {% endif %}
+
+{% endblock content %}
+

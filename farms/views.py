@@ -24,8 +24,8 @@ def newFarm(request):
 		if form.is_valid():
 			#newFarm = Farm(**form.cleaned_data)
 			#newFarm.save()
-			new_save = form.save(commit=False)
-			new_save.member_organization = request.user.profile_set.get().member_organization
+			new_save = form.save()
+			new_save.member_organization.add(request.user.profile_set.get().member_organization)
 			new_save.save()
 			return HttpResponseRedirect(reverse('farms:detailfarm', args=(new_save.id,) ))
 		else:
@@ -56,6 +56,26 @@ def detailFarm(request, farm_id):
 	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
 		return HttpResponseRedirect(reverse('farms:index'))
 	return render(request, 'farms/detail.html', {'farm':farm})
+
+#== Delete Farm View ==#
+@permission_required('farms.auth')
+def deleteFarm(request, farm_id):
+	farm = get_object_or_404(Farm, pk=farm_id)
+	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+		return HttpResponseRedirect(reverse('farms:index'))
+	if request.method == 'POST':
+		contacts = Contact.objects.filter(farm=farm)
+		if contacts.exists():
+			for contact in contacts:
+				contact.delete()
+		locations = FarmLocation.objects.filter(farm=farm)
+		if locations.exists():
+			for location in locations:
+				location.delete()
+		farm.delete()
+		return HttpResponseRedirect(reverse('farms:index'))
+	else:
+		return render(request, 'farms/delete_farm.html', {'farm':farm})
 
 @permission_required('farms.auth')
 def newLocation(request, farm_id):
