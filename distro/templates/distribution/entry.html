@@ -10,9 +10,7 @@
 </form>
 <form method="post" action="">
 		{% csrf_token %}
-		<table>
-{{form.as_table}}
-		</table>
+		{% include 'distribution/distroform.html' %}
 <input type="submit" value="Go!">
 	</form>
 {% endblock content %}

@@ -7,7 +7,7 @@
 {{form.errors}}
 	<form method="post" action="">
 		{% csrf_token %}
-		{{form.as_p}}
+		{% include 'gleanevent/gleanform.html' %}
 		<input type="submit" value="Go!">
 	</form>
 {% endblock content %}

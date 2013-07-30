@@ -3,7 +3,8 @@ import time
 import datetime
 import csv
 
-
+import django.forms
+from django.forms.widgets import TextInput
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -20,6 +21,7 @@ from distro.models import Distro
 def entry(request):
 	lines = request.GET.get('extra', 0)
 	DistroFormSet = modelformset_factory(Distro, extra=int(lines))
+	DistroFormSet.date = forms.CharField(widget=TextInput({"class":"datepicker"}))
 	if request.method == 'POST':
 		formset = DistroFormSet(request.POST)
 		instances = formset.save(commit=False)
@@ -33,9 +35,18 @@ def entry(request):
 
 @permission_required('distro.auth')
 def edit(request):
+	date_from = request.GET.get('date_from', '')
+	date_until = request.GET.get('date_until', '')
+	if date_from:
+		date_from = date_from[6:] + '-' + date_from[:2] + '-' + date_from[3:5]
+	else:
+		date_from = '2013-01-01'
+	if date_until:
+		date_until = date_until[6:] + '-' + date_until[:2] + '-' + date_until[3:5]
+	else:
+		date_until = '3013-01-01'
 	DistroFormSet = modelformset_factory(Distro, extra=0, can_delete=True)
-	date_from = request.GET.get('date_from', datetime.datetime.today())
-	date_until = request.GET.get('date_until', datetime.datetime.today())
+	DistroFormSet.date = forms.CharField(widget=TextInput({"class":"datepicker"}))
 	if request.method == 'POST':
 		formset = DistroFormSet(request.POST)
 		if formset.is_valid():

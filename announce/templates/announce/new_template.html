@@ -12,8 +12,7 @@
 		<h4>It will automatically be saved to your organization</h4>
 		<form method="post" action="">
 			{% csrf_token %}
-			{{error}}
-			{{form.as_p}}
+			{% include 'announce/templateform.html' %}
 			<input type="submit" value="Go!" />
 		</form>
 	</div>
@@ -23,7 +22,6 @@
 			<li>{% templatetag openvariable %}content{% templatetag closevariable %} - for your message content</li>
 			<li>{% templatetag openvariable %}glean.title{% templatetag closevariable %} - for the glean's title</li>
 			<li>{% templatetag openvariable %}glean.description{% templatetag closevariable %} - for the glean's title</li>
-			<li>{% templatetag openvariable %}rsvp{% templatetag closevariable %} - for the RSVP link</li>
 			<li>{% templatetag openvariable %}info{% templatetag closevariable %} - for the Glean's Detail Page Link</li>
 			<li>{% templatetag openvariable %}unsubscribe{% templatetag closevariable %} - for the Unsubscribe Link</li>
 		</ul>

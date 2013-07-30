@@ -5,10 +5,10 @@
 New Glean!
 {% endblock title %}
 {% block content %}
-
+<h1>New Glean Form</h1>
 <form action="/glean/new/" method="post">
 {% csrf_token %}
-{% include 'specialfields.html' %}
+{% include 'gleanevent/gleanform.html' %}
 <input type="submit" value="Submit" />
 </form>
 

@@ -4,9 +4,10 @@
 Edit This Contact for {{farm.name}}
 {% endblock title %}
 {% block content %}
+<h1>Edit Contact</h1>
 	<form method="post" action="">
 		{% csrf_token %}
-		{{form.as_p}}
+		{% include 'farms/farmform.html' %}
 		<input type="submit" value="Go!">
 	</form>
 {% endblock content %}

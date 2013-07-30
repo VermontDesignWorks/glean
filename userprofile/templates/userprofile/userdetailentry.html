@@ -5,13 +5,8 @@ Additional Details
 {% block content %}
 <form method="POST">
 	<h2><strong>REQUIRED</strong> details to participate in a glean!</strong></h2>
-	{% if error %}
-	<span>{{error}}</span>
-	{% else %}
-	<span>&nbsp;</span>
-	{% endif %}
 	{% csrf_token %}
-	{% include 'specialfields.html' %}
+	{% include 'userprofile/profileform.html' %}
 	<input type="submit" value="Go!">
 </form>
 {% endblock %}

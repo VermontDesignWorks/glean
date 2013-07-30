@@ -12,15 +12,13 @@
         <title>{% block title %}{% endblock title %} - The Gleaning Interface</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
-       <link rel="stylesheet" href="{% static 'initializr/css/bootstrap.min.css' %}">
-
+        <link rel="stylesheet" href="{% static 'initializr/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'initializr/css/bootstrap-responsive.min.css' %}">
-
+        <link rel="stylesheet" href="{% static 'initializr/css/datepicker.css' %}">
         <link rel="stylesheet" href="{% static 'initializr/css/main.css' %}">
  
         <script src="{% static 'initializr/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js' %}"></script>
         
-        <link rel="stylesheet" href="{% static 'datetimepicker/css/bootstrap-datetimepicker.min.css' %}">
 
     </head>
     <body>
@@ -179,24 +177,20 @@
 
 
           <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-          <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+          
 
           <script src="{% static 'initializr/js/vendor/bootstrap.min.js' %}"></script>
 
           <script src="{% static 'initializr/js/main.js' %}"></script>
-          <script src="{% static 'datetimepicker/js/bootstrap-datepicker.js' %}"></script>
-            <script type="text/javascript">
-              $(function() {
-                $('.datepicker').bootstrap-datepicker({
-                  language: 'en',
-                  pick12HourFormat: true
-                });
-              });
-            </script>
-          <script src="{% static 'datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+
+          <script src="{% static 'initializr/js/vendor/bootstrap-datepicker.js' %}"></script>
+            
+          <!--script src="{% static 'datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script-->
 
           <script>
-              {% include 'specialfieldsscripts.html' %}
+              $(function() {
+                $('.datepicker').datepicker()
+              });
           </script>
 
       </body>

@@ -14,10 +14,10 @@ from farms.models import Farm, FarmLocation
 from memberorgs.models import MemOrg
 from counties.models import County
 
-
+from django.forms import TextInput
+from cidgets import DatePicker
 
 # Create your models here.
-
 
 class GleanEvent(models.Model):
 	title = models.CharField(max_length=200)
@@ -26,7 +26,8 @@ class GleanEvent(models.Model):
 	city = models.CharField("City", max_length=25, blank=True)
 	state = models.CharField("State",choices=STATES, default="VT", max_length=2, blank=True)
 
-	date = models.DateTimeField('Date and Time', blank=True, null=True)
+	date = models.DateField('Date', blank=True, null=True)
+	time = models.CharField('Time', max_length=10, blank=True, null=True)
 	description = models.TextField(blank=True)
 	crops = models.CharField(max_length=200, blank=True)
 
@@ -54,7 +55,7 @@ class GleanEvent(models.Model):
 		return unicode(self.date) + self.title
 
 	def happened(self):
-		now = timezone.now()
+		now = datetime.date.today()
 		return now > self.date
 
 	def data_entered(self):
@@ -72,6 +73,9 @@ class GleanForm(ModelForm):
 	class Meta:
 		model = GleanEvent
 		exclude = ['invited_volunteers', 'attending_volunteers', 'officiated_by']
+		widgets = {
+			'date': TextInput({'class':'datepicker'}),
+		}
 
 class PostGlean(models.Model):
 	glean = models.ForeignKey(GleanEvent, editable=False)

@@ -277,7 +277,7 @@ def editAnnounce(request, announce_id):
 	else:
 		templates = Template.objects.all()
 		form = AnnouncementForm(instance=announce)
-		return render(request, 'announce/edit_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients, 'source':source})
+		return render(request, 'announce/edit_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'source':source})
 
 
 

@@ -1,0 +1,23 @@
+<div class="distroform">
+
+<table>
+	<tr>
+		{% for field in form.0 %}
+				<td><label for="{{ field.id_for_label }}">{{field.label_tag}}</label></td>
+		{% endfor %}
+	</tr>
+	{% for instance in form %}
+	<tr>
+	{% for field in instance %}
+	<td>
+	{% if field.name == 'datee' %}
+	<input id="{{field.auto_id}}" name="id_form-{{forloop.counter0}}-{{field.name}}" value="{{field.initial}}" class="datepicker" type="text"  />
+	{% else %}
+	{{field}}
+	{% endif %}
+	</td>
+	{% endfor %}
+	</tr>
+	{% endfor %}
+</table>
+</div>

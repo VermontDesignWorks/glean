@@ -6,13 +6,16 @@ Farm Index
 
 {% block content %}
 {% if farms %}
-<ul>
-{% for farm in farms %}
-<li>
-<a href="{% url 'farms:detailfarm' farm.id %}">{{ farm.name }}</a> - <a href="{% url 'farms:editfarm' farm.id %}">edit</a>
-</li>
-{% endfor %}
-</ul>
+<div class="row-fluid">
+	<div class="span4">
+	<ul>
+	{% for farm in farms %}
+	<li><a href="{% url 'farms:detailfarm' farm.id %}">{{ farm.name }}</a> - <a href="{% url 'farms:editfarm' farm.id %}">edit</a></li>
+	{% cycle '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div></div><div class="row-fluid"><div class="span4"><ul>' %}
+	{% endfor %}
+	</ul>
+	</div>
+</div>
 {% else %}
 <span>No farms :(</span>
 {% endif %}

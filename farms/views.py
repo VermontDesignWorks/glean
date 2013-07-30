@@ -12,9 +12,9 @@ from farms.models import Farm, FarmForm, FarmLocation, LocationForm, Contact, Co
 @permission_required('farms.auth')
 def index(request):
 	if request.user.has_perm('farms.uniauth'):
-		farms_list = Farm.objects.all()
+		farms_list = Farm.objects.all().order_by('name')
 	else:
-		farms_list = Farm.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+		farms_list = Farm.objects.filter(member_organization=request.user.profile_set.get().member_organization).order_by('name')
 	return render(request, 'farms/index.html', {'farms':farms_list})
 
 @permission_required('farms.auth')
@@ -118,7 +118,7 @@ def editLocation(request, farm_id, location_id):
 			new_save = form.save()
 			return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
 		else:
-			return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'error':'Form Had an Error', 'editmode':True})
+			return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'error':'Form Had an Error'})
 	else:
 		form = LocationForm(instance = location)
 		return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'editmode':True})
@@ -157,7 +157,7 @@ def editContact(request, farm_id, contact_id):
 			new_save.save()
 			return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
 		else:
-			return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'error':'Form Had an Error','editmode':True})
+			return render(request, 'farms/edit_contact.html', {'form':form, 'farm':farm, 'error':'Form Had an Error'})
 	else:
 		form = ContactForm(instance = contact)
-		return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'editmode':True})
+		return render(request, 'farms/edit_contact.html', {'form':form, 'farm':farm,})

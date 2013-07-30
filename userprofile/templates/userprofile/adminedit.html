@@ -7,7 +7,7 @@ Additional Details
 	<h2>Edit {% if profile.first_name %}{{profile.first_name}} {{profile.last_name}}{% else %}{{person.username}}{% endif %}'s Details</h2>
 	<span>{{form.errors}}&nbsp;</span>
 	{% csrf_token %}
-	{% include 'specialfields.html' %}
+	{% include 'userprofile/profileform.html' %}
 	<input type="submit" value="Go!">
 </form>
 {% endblock %}

@@ -6,7 +6,7 @@ Edit your User Stats
 {% block content %}
 	<form method="post" action="">
 		{% csrf_token %}
-		{% include 'specialfields.html' %}
+		{% include 'userprofile/profileform.html' %}
 		<input type="submit" value="Go!">
 	</form>
 {% endblock content %}

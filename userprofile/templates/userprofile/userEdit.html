@@ -7,7 +7,7 @@ Additional Details
 	<h2>Edit your user details</h2>
 	<span>{{form.errors}}&nbsp;</span>
 	{% csrf_token %}
-	{% include 'specialfields.html' %}
+	{% include 'userprofile/profileform.html' %}
 	<input type="submit" value="Go!">
 </form>
 {% endblock %}

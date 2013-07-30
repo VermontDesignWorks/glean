@@ -15,7 +15,7 @@
 <p><small><a href="{% url 'announce:deleteannounce' announcement.template.id %}" class="">(Delete This Announcement)</a></small></p>
 
 {% endif %}
-	<div class="span4" style="border:#444 1px solid; min-height:520px;">{{test|safe}}</div>
+	<div class="previewpane" style="">{{test|safe}}</div>
 	<div class="span4">
 		{% include 'announce/recipients.html' %}
 	</div>	

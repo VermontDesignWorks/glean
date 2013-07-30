@@ -16,13 +16,21 @@ from announce.models import Announcement
 
 @permission_required('gleanevent.auth')
 def index(request):
-	date_from = request.GET.get('date_from', datetime.datetime.strptime('2012', '%Y'))
-	date_until = request.GET.get('date_until', datetime.datetime.today())
+	date_from = request.GET.get('date_from', '')
+	date_until = request.GET.get('date_until', '')
+	if date_from:
+		date_from = date_from[6:] + '-' + date_from[:2] + '-' + date_from[3:5]
+	else:
+		date_from = '2013-01-01'
+	if date_until:
+		date_until = date_until[6:] + '-' + date_until[:2] + '-' + date_until[3:5]
+	else:
+		date_until = '3013-01-01'
 	if request.user.has_perm('gleanevent.uniauth'):
 		gleaning_events_list = GleanEvent.objects.all()
 	else:
 		gleaning_events_list = GleanEvent.objects.filter(member_organization=request.user.profile_set.get().member_organization)
-	gleaning_events_list.filter(date__gte=date_from).filter(date__lte=date_until)
+	gleaning_events_list = gleaning_events_list.filter(date__gte=date_from).filter(date__lte=date_until)
 	return render(request, 'gleanevent/index.html', {'gleans':gleaning_events_list})
 
 @permission_required('gleanevent.auth')

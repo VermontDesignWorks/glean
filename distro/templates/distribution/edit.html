@@ -4,20 +4,31 @@
 {% endblock title %}
 {% block content %}
 <form method="get">
-	<div class="input-append datetimechoser">
-		<label for="date_from">From</label> <input id="date_from" maxlength=200 name="date_from" data-format="yyyy-MM-dd" type="text" value="{{date_from}}"></input>
-		<span class="add-on">
-		<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-		</span>
-	</div>
-	<div class="input-append datetimechoser">
-		<label for="date_until">Until</label> <input id="date_until" maxlength=200 name="date_until" data-format="yyyy-MM-dd" type="text" value="{{date_until}}"></input>
-		<span class="add-on">
-		<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-		</span>
-	</div>
-	<input type="submit" value="Render New Form">
+	<table>
+		<tr>
+			<td>
+				<label for="date_from">From</label>
+			</td>
+			<td>
+				<input id="date_from" maxlength=200 name="date_from" type="text" value="{{date_from}}" class="datepicker"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label for="date_until">Until</label>
+			</td>
+			<td>
+				<input id="date_until" maxlength=200 name="date_until"  type="text" value="{{date_until}}" class="datepicker"></input>
+			</td>
+		</tr>
+		<tr><td>&nbsp;</td>
+			<td>
+				<input type="submit" value="Render Dates">
+			</td>
+		</tr>
+	</table>
 </form>
+
 
 	<script type="text/javascript">
 	      $(function() {

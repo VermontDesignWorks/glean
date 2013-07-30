@@ -11,7 +11,7 @@
 	<div class="span8">
 		<form method="post" action="">
 			{% csrf_token %}
-			{{form.as_p}}
+			{% include 'announce/announceform.html' %}
 			<input type="submit" value="Go!" />
 		</form>
 	</div>

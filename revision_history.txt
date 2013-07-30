@@ -1,5 +1,9 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.1.1 - "DateTime"
+*Fixed Datetime Forms
+*Prettified a lot of pages
+
 Release 0.1.0 - "Everybody Now"
 *Custom Subclassed Reg System
 *Userprofile in with User registration

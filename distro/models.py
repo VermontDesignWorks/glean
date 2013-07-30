@@ -5,6 +5,7 @@ from django.db import models
 from memberorgs.models import MemOrg
 from farms.models import Farm
 from recipientsite.models import RecipientSite
+from django.forms.widgets import TextInput
 # Create your models here.
 
 class Distro(models.Model):
@@ -39,6 +40,7 @@ class Distro(models.Model):
 			("auth", "Member Organization Level Permissions"),
 			("uniauth", "Universal Permission Level"),
 		)
+	
 
 	def __unicode__(self):
 		return self.member_organization.name + ' ' + self.date.strftime('%Y %m %d - %I:%M:%S %p') #+ ' ' + self.created_by.profile_set.first_name + ' ' + self.created_by.profile_set.last_name
