@@ -1,13 +1,9 @@
 from django.conf.urls import patterns, include, url
-from registration import views
+from customreg import MyRegistrationView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
-
-##registration imports
-#from XXXXX import UserRegistrationForm
-
 
 urlpatterns = patterns('',
 	url(r'^$', 'gleaning.views.home', name="home"),
@@ -25,6 +21,11 @@ urlpatterns = patterns('',
 	url(r'^comments/', include('django.contrib.comments.urls')),
 
 #	url(r'^accounts/register/$', register, {'backend': 'user_profile.regbackend.RegBackend','form_class': UserRegistrationForm}, name='registration_register'),
+	#url(r'^accounts/', include('registration.backends.default.urls'), {'backend': 'userprofile.registration.MyBackEnd'}),
+	url(r'^accounts/register/$',
+                           MyRegistrationView.as_view(),
+                           name='registration_register'),
+	# #url(r'^accounts/', include('userprofile.registration.MyBackEnd.urls')),
 	url(r'^accounts/', include('registration.backends.default.urls')),
 	url(r'^accounts/', include('registration.backends.default.urls', namespace="registration")),
 

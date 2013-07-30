@@ -1,0 +1,10 @@
+<h2>{{glean.title}}</h2>
+<p><small>{{glean.datetime}}</small></p>
+<br />
+<table>
+First name - Last Name - Hours - Group - Members - Notes - Attended
+
+{% for person in glean.rsvped.all %}
+<div style="width:85px;border-bottom:solid #444 1px;">{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}}</div>
+{% endfor %}
+</table>

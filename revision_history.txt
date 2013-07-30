@@ -1,5 +1,14 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.1.0 - "Everybody Now"
+*Custom Subclassed Reg System
+*Userprofile in with User registration
+*Fixed the wonky reset_password baloney
+*Implemented RSVP/Attended tracking logic
+*included User Profile CSV downloads
+*included printable gleanevent sheet
+*moved all the registration templates to userprofile app (where they belong!)
+
 Release 0.0.9.0 - "This Ain't Gonna Work (working title)"
 *save before the plunge into custom reg backends
 

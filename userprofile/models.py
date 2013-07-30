@@ -24,7 +24,7 @@ class Profile(models.Model):
 							blank=True)
 	phone = models.CharField("Primary Phone", max_length=200, blank=True)
 	phone_type = models.CharField("Phone Type", choices=PHONE_TYPE, max_length=1, default='1')
-	mo_emails_only = models.BooleanField(default=False)
+	mo_emails_only = models.BooleanField(default=False, editable=False)
 	preferred_method = models.CharField(choices=PREFERRED_CONTACT, max_length=1, default='1')
 	member_organization = models.ForeignKey(MemOrg)
 	secondary_member_organizations = models.ManyToManyField(MemOrg, related_name="secondary_member_organization", null=True, editable=False)
@@ -33,6 +33,10 @@ class Profile(models.Model):
 	eclast_name = models.CharField("Emergency Contact Last Name", max_length=200, blank=True)
 	ecphone = models.CharField("Emergency Contact Phone", max_length=200, blank=True)
 	ecrelationship = models.CharField("Relationship", max_length=200, blank=True)
+
+	rsvped = models.IntegerField(editable=False, default=0)
+	attended = models.IntegerField(editable=False, default=0)
+	hours = models.DecimalField(editable=False, null=True, max_digits=4, decimal_places=2, default=0)
 	
 	accepts_email = models.BooleanField(default=True, editable=False)
 	unsubscribe_key = models.CharField("Unsubscribe key, for emails", max_length=30, blank=True, null=True, editable=False)
@@ -49,6 +53,11 @@ class Profile(models.Model):
 class ProfileForm(forms.ModelForm):
 	class Meta:
 		model = Profile
+
+class EditProfileForm(forms.ModelForm):
+	class Meta:
+		model = Profile
+		exclude = ('member_organization',)
 
 class UserForm(forms.Form):
 	username = forms.CharField(max_length=20)

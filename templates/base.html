@@ -70,6 +70,7 @@
                         <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">User Management <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:userlists' %}">User Lists</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:download' %}">Download Volunteer Rolls</a></li>
                         </ul>
                       </li>
                       {% endif %}
@@ -183,6 +184,15 @@
           <script src="{% static 'initializr/js/vendor/bootstrap.min.js' %}"></script>
 
           <script src="{% static 'initializr/js/main.js' %}"></script>
+          <script src="{% static 'datetimepicker/js/bootstrap-datepicker.js' %}"></script>
+            <script type="text/javascript">
+              $(function() {
+                $('.datepicker').bootstrap-datepicker({
+                  language: 'en',
+                  pick12HourFormat: true
+                });
+              });
+            </script>
           <script src="{% static 'datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
 
           <script>

@@ -60,7 +60,7 @@ def download(request):
 
 	# Create the CSV writer using the HttpResponse as the "file."
 	writer = csv.writer(response)
-	writer.writerow(['Date', 'Farm', 'Crops', 'Pounds', 'Other', 'Containers', 'Recipient Site', 'Pickup/DropOff', 'Farm Delivery or Field Glean'])
+	writer.writerow(['Farm', 'Crops', 'Pounds', 'Other', 'Containers', 'Recipient Site', 'Pickup/DropOff', 'Farm Delivery or Field Glean'])
 
  #    date = models.DateField()
 	# farm = models.ForeignKey(Farm, null=True, blank=True)

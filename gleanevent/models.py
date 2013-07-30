@@ -39,8 +39,11 @@ class GleanEvent(models.Model):
 
 	created_by = models.ForeignKey(User, editable=False, related_name="created_by")
 	invited_volunteers = models.ManyToManyField(User, null=True, blank=True, related_name="invited_volunteers")
+
 	rsvped = models.ManyToManyField(User, null=True, blank=True, related_name ="rsvped", editable=False)
 	not_rsvped = models.ManyToManyField(User, null=True, blank=True, related_name ="not_rsvped", editable=False)
+	waitlist = models.ManyToManyField(User, null=True, blank=True, related_name="waitlisted", editable=False)
+
 	attending_volunteers = models.ManyToManyField(User, null=True, blank=True, related_name="attending_voluntters")
 	officiated_by = models.ManyToManyField(User, blank=True, related_name="officiated_by")
 	counties = models.ManyToManyField(County, blank=True, null=True)
@@ -71,12 +74,12 @@ class GleanForm(ModelForm):
 		exclude = ['invited_volunteers', 'attending_volunteers', 'officiated_by']
 
 class PostGlean(models.Model):
-	glean=models.ForeignKey(GleanEvent, editable=False)
+	glean = models.ForeignKey(GleanEvent, editable=False)
 	user = models.ForeignKey(User, editable=False, null=True)
 	attended = models.BooleanField(default=False)
 	first_name = models.CharField(max_length=20, blank=True, null=True)
 	last_name = models.CharField(max_length=20, blank=True, null=True)
-	hours = models.IntegerField(default=0)
+	hours = models.IntegerField(default=0, null=True)
 	group = models.CharField(max_length=40, blank=True, null=True)
 	members = models.CharField(max_length=20, blank=True, null=True)
 	notes = models.CharField(max_length=200, blank=True, null=True)
@@ -99,7 +102,6 @@ class PostGlean(models.Model):
 			("auth", "Member Organization Level Permissions"),
 			("uniauth", "Universal Permission Level"),
 		)
-
 
 class PostGleanForm(ModelForm):
 	class Meta:

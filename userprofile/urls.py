@@ -10,4 +10,5 @@ urlpatterns = patterns('',
 	url(r'^(?P<user_id>\d+)/$', views.userProfile, name='userprofile'),
 	url(r'^(?P<user_id>\d+)/edit/$', views.userEdit, name='useredit'),
 	url(r'^change/email/$', views.emailEdit, name='emailedit'),
+	url(r'^download/$', views.download, name='download'),
 )

@@ -1,15 +1,14 @@
 import time
 import datetime
 
-
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django import forms
-from django.contrib.auth.decorators import login_required
 from django.forms.models import modelformset_factory
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 
 from gleanevent.models import GleanEvent, GleanForm, PostGlean# PostGleanForm
@@ -17,10 +16,13 @@ from announce.models import Announcement
 
 @permission_required('gleanevent.auth')
 def index(request):
+	date_from = request.GET.get('date_from', datetime.datetime.strptime('2012', '%Y'))
+	date_until = request.GET.get('date_until', datetime.datetime.today())
 	if request.user.has_perm('gleanevent.uniauth'):
 		gleaning_events_list = GleanEvent.objects.all()
 	else:
 		gleaning_events_list = GleanEvent.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+	gleaning_events_list.filter(date__gte=date_from).filter(date__lte=date_until)
 	return render(request, 'gleanevent/index.html', {'gleans':gleaning_events_list})
 
 @permission_required('gleanevent.auth')
@@ -88,6 +90,9 @@ def confirmLink(request, glean_id):
 	if not glean.happened():
 		if request.user not in glean.rsvped.all():
 			glean.rsvped.add(request.user)
+			profile = request.user.profile_set.get()
+			profile.rsvped += 1
+			profile.save()
 			if request.user in glean.not_rsvped.all():
 				glean.not_rsvped.remove(request.user)
 			glean.save()
@@ -103,6 +108,9 @@ def denyLink(request, glean_id):
 			glean.not_rsvped.add(request.user)
 			if request.user in glean.rsvped.all():
 				glean.rsvped.remove(request.user)
+				profile = request.user.profile_set.get()
+				profile.rsvped -= 1
+				profile.save()
 			glean.save()
 		return render(request, 'gleanevent/deny.html', {'glean':glean})
 	else:
@@ -127,14 +135,18 @@ def postGlean(request, glean_id):
 			for i in range(count):
 				instances[i].glean= glean
 				instances[i].user = glean.rsvped.all()[i]
-				#instances[i].save()
+				if instances[i].attended == True:
+					profile = instances[i].user.profile_set.get()
+					profile.attended += 1
+					if instances[i].hours:
+						profile.hours += instances[i].hours
+					profile.save()
 			for instance in instances:
 				if not hasattr(instance, 'glean'):
 					instance.glean = glean
 				instance.save()
 			return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 		else:
-			#formset = PostGleanFormSet(queryset=PostGlean.objects.none())
 			initial = []
 			for person in glean.rsvped.all():
 				prof = person.profile_set.get()
@@ -145,3 +157,8 @@ def postGlean(request, glean_id):
 			return render(request, 'gleanevent/postglean.html', {'glean':glean, 'forms':forms})
 	else:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
+
+@permission_required('gleanevent.auth')
+def printGlean(request, glean_id):
+	glean = get_object_or_404(GleanEvent, pk=glean_id)
+	return render(request, 'gleanevent/print.html', {'glean':glean})

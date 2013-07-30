@@ -1,4 +1,6 @@
 # Create your views here.
+import csv
+
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -6,9 +8,11 @@ from django.views import generic
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 
-from userprofile.models import Profile, ProfileForm, UserForm, LoginForm, EmailForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
+
+from userprofile.models import Profile, ProfileForm, UserForm, LoginForm, EmailForm, EditProfileForm
 from constants import VERMONT_COUNTIES
 
 @login_required
@@ -32,40 +36,51 @@ def userDetailEntry(request):
 @login_required
 def selfEdit(request):
 	if request.method == "POST":
-		form = ProfileForm(request.POST, instance=Profile.objects.get(user=request.user))
+		instance = Profile.objects.get(user=request.user)
+		form = EditProfileForm(request.POST, instance=instance)
 		if form.is_valid():
-			new_save = form.save()
+			new_save = form.save(commit=False)
+			#new_save.member_organization = instance.member_organization
+			new_save.save()
 			return HttpResponseRedirect(reverse('home'))
 		else:
 			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':"form wasn't valid (try filling in more stuff)",'editmode':True})
 	else:
 		if Profile.objects.filter(user=request.user).exists():
 			profile = Profile.objects.get(user=request.user)
-			form = ProfileForm(instance = profile)
+			form = EditProfileForm(instance = profile)
 			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':'','editmode':True})
 		else:
-			form = ProfileForm()
+			form = EditProfileForm()
 			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':'','editmode':True})
 
-
+@permission_required('userprofile.auth')
 def userLists(request):
-	users = Profile.objects.all()
-	return render(request, 'userprofile/userLists.html', {'users':users, 'error':''})
+	if request.user.has_perm('userprofile.uniauth'):
+		users = Profile.objects.all()
+	else:
+		users = Profile.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+	return render(request, 'userprofile/userLists.html', {'users':users})
 
-@login_required
+@permission_required('userprofile.auth')
 def userProfile(request, user_id):
-	user_id_object = get_object_or_404(User, pk=user_id)
-	person = Profile.objects.get(user=user_id_object)
+	user = get_object_or_404(User, pk=user_id)
+	if user.profile_set.get().member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('userprofile.uniauth'):
+		return HttpResponseRedirect('home')
+	person = Profile.objects.get(user=user)
 	return render(request, 'userprofile/detail.html', {'person':person})
 
+@permission_required('userprofile.auth')
 def userEdit(request, user_id):
-	user_id_object = get_object_or_404(User, pk=user_id)
-	person = Profile.objects.get(user=user_id_object)
+	user = get_object_or_404(User, pk=user_id)
+	if user.profile_set.get().member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('userprofile.uniauth'):
+		return HttpResponseRedirect('home')
+	person = Profile.objects.get(user=user)
 	if request.method == 'POST':
 		form = ProfileForm(request.POST, person)
 		if form.is_valid():
 			new_save = form.save(commit=False)
-			new_save.user = user_id_object
+			new_save.user = user
 			new_save.id = person.id
 			new_save.save()
 			return HttpResponseRedirect(reverse('userprofile:userlists'))
@@ -90,3 +105,63 @@ def emailEdit(request):
 	else:
 		form = EmailForm()
 		return render(request, 'userprofile/emailedit.html',{'form':form})
+
+@permission_required('distro.auth')
+def download(request):
+	response = HttpResponse(mimetype='text/csv')
+	response['Content-Disposition'] = 'attachment; filename=user_profiles.csv'
+
+	# Create the CSV writer using the HttpResponse as the "file."
+	writer = csv.writer(response)
+	writer.writerow([
+	'Username',
+	'Access',
+	'First Name',
+	'Last Name',
+	'Address',
+	'City',
+	'State',
+	'Counties',
+	'Age Bracket',
+	'Phone',
+	'Phone Type',
+	'Primary Member Org',
+	'Primary MO Only',
+	'Contact Method',
+	"Seconary MO's",
+	'EC First',
+	'EC Last',
+	'EC Phone',
+	'EC Relationship',
+	'Accepts Email',
+	])
+
+	if request.user.has_perm('distro.uniauth'):
+		profiles = Profile.objects.all()
+	else:
+		profiles = Profile.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+	for profile in profiles:
+		writer.writerow([
+			profile.user.username,
+			profile.user.groups.all(),
+			profile.last_name,
+			profile.first_name,
+			profile.address,
+			profile.city,
+			profile.state,
+			profile.counties.all(),
+			profile.age,
+			profile.phone,
+			profile.phone_type,
+			profile.member_organization,
+			profile.mo_emails_only,
+			profile.preferred_method,
+			profile.secondary_member_organizations.all(),
+			profile.ecfirst_name,
+			profile.eclast_name,
+			profile.ecphone,
+			profile.ecrelationship,
+			profile.accepts_email,
+			])
+
+	return response
