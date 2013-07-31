@@ -127,7 +127,8 @@ ROOT_URLCONF = 'gleaning.urls'
 WSGI_APPLICATION = 'gleaning.wsgi.application'
 
 TEMPLATE_DIRS = (
-	"/home/gregor/Documents/django/gleaning/templates"
+	os.path.join(PROJECT_DIR, '/templates/'),
+#	"/home/gregor/Documents/django/gleaning/templates"
 	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
 	# Always use forward slashes, even on Windows.
 	# Don't forget to use absolute paths, not relative paths.
@@ -213,3 +214,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+try:
+	import devsettings.py
+except:
+	pass
