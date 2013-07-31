@@ -126,12 +126,10 @@ ROOT_URLCONF = 'gleaning.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'gleaning.wsgi.application'
 
+
+PROJECT_DIR = os.path.dirname(__file__) # this is not Django setting.
 TEMPLATE_DIRS = (
-	os.path.join(PROJECT_DIR, '/templates/'),
-#	"/home/gregor/Documents/django/gleaning/templates"
-	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-	# Always use forward slashes, even on Windows.
-	# Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_DIR, "templates")
 )
 
 INSTALLED_APPS = (
