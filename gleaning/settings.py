@@ -1,6 +1,6 @@
 # Django settings for gleaning project.
 try:
-	import dev-settings
+	import devsettings
 except:
 	import os
 

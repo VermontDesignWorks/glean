@@ -13,5 +13,5 @@ gleaning/settings.p*
 *.project
 *.*project
 sxettings.py
-gleaning/dev-settings.py
+gleaning/devsettings.py
 >>>>>>> 982e3c8c5c99e4f0c380d7ed122c7693d7c8c846
