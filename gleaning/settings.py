@@ -216,6 +216,6 @@ STATICFILES_DIRS = (
 )
 
 try:
-	import devsettings.py
+	import devsettings
 except:
 	pass
