@@ -10,5 +10,21 @@
 {% if 'posts.auth' in perms and user.profile_set.get.member_organization == post.member_organization or 'posts.uniauth' in perms %}<a href="{% url 'posts:editpost' post.id %}" class="btn btn-warning">edit</a> - <a href="{% url 'posts:deletepost' post.id %}"><small>(delete)</small></a>{% endif %}
 <p>{{post.body}}</p>
 {% render_comment_list for post %}
-{% render_comment_form for post %}
+{% get_comment_form for post as form %}
+
+{% if user.is_authenticated %}
+    <form action="{% comment_form_target %}" method="POST">
+    {% csrf_token %}
+    {{ form.comment }}
+    {{ form.honeypot }}
+    {{ form.content_type }}
+    {{ form.object_pk }}
+    {{ form.timestamp }}
+    {{ form.security_hash }}
+    <input type="hidden" name="next" value="{% url 'posts:detailpost' post.id %}" />
+    <input type="submit" value="Post a Comment" id="id_submit" />
+    </form>
+{% else %}
+    <p>Please <a href="{% url 'auth_login' %}">log in</a> to leave a comment.</p>
+{% endif %}
 {% endblock %}

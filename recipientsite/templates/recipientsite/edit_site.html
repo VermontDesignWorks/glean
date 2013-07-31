@@ -4,9 +4,10 @@
 Edit {{site.name}}
 {% endblock title %}
 {% block content %}
+<h2>Edit Recipient Site</h2>
 	<form method="post" action="">
 		{% csrf_token %}
-		{% include 'specialfields.html' %}
+		{% include 'recipientsite/siteform.html' %}
 		<input type="submit" value="Go!">
 	</form>
 {% endblock content %}

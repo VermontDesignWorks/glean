@@ -24,6 +24,10 @@ def entry(request):
 	DistroFormSet.date = forms.CharField(widget=TextInput({"class":"datepicker"}))
 	if request.method == 'POST':
 		formset = DistroFormSet(request.POST)
+		formset.is_valid()
+		#	pass
+		#else:
+	#		return HttpResponse(formset.errors)
 		instances = formset.save(commit=False)
 		for instance in instances:
 			instance.member_organization = request.user.profile_set.get().member_organization
@@ -31,7 +35,8 @@ def entry(request):
 		return HttpResponseRedirect(reverse('distro:entry'))
 	else:
 		form = DistroFormSet(queryset=Distro.objects.none())
-		return render(request, 'distribution/entry.html', {'form':form, 'lines':lines})
+		debug = dir(form)
+		return render(request, 'distribution/entry.html', {'formset':form, 'lines':lines, 'debug':debug})
 
 @permission_required('distro.auth')
 def edit(request):

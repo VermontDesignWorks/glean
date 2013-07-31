@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
 
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
@@ -14,6 +15,9 @@ from django.contrib.auth.decorators import permission_required
 
 from userprofile.models import Profile, ProfileForm, UserForm, LoginForm, EmailForm, EditProfileForm
 from constants import VERMONT_COUNTIES
+
+from django import forms
+from gleaning.customreg import ExtendedRegistrationForm
 
 @login_required
 def userDetailEntry(request):
@@ -106,7 +110,7 @@ def emailEdit(request):
 		form = EmailForm()
 		return render(request, 'userprofile/emailedit.html',{'form':form})
 
-@permission_required('distro.auth')
+@permission_required('userprofile.auth')
 def download(request):
 	response = HttpResponse(mimetype='text/csv')
 	response['Content-Disposition'] = 'attachment; filename=user_profiles.csv'
@@ -136,7 +140,7 @@ def download(request):
 	'Accepts Email',
 	])
 
-	if request.user.has_perm('distro.uniauth'):
+	if request.user.has_perm('userprofile.uniauth'):
 		profiles = Profile.objects.all()
 	else:
 		profiles = Profile.objects.filter(member_organization=request.user.profile_set.get().member_organization)
@@ -165,3 +169,30 @@ def download(request):
 			])
 
 	return response
+
+@permission_required('userprofile.auth')
+def newUser(request):
+	if request.method == 'POST':
+		form = ExtendedRegistrationForm(request.POST)
+		if form.is_valid():
+			new_user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password1'])
+			profile = Profile(first_name=form.cleaned_data['first_name'],
+			last_name=form.cleaned_data['last_name'],
+			address=form.cleaned_data['address'],
+			city=form.cleaned_data['city'],
+			state=form.cleaned_data['state'],
+			age=form.cleaned_data['age'],
+			phone=form.cleaned_data['phone'],
+			phone_type=form.cleaned_data['phone_type'],
+			preferred_method=form.cleaned_data['preferred_method'],
+			ecfirst_name=form.cleaned_data['ecfirst_name'],
+			eclast_name=form.cleaned_data['eclast_name'],
+			ecrelationship=form.cleaned_data['ecrelationship'],
+			user=new_user,
+			member_organization=form.cleaned_data['member_organization'],
+			)
+			profile.save()
+			return HttpResponseRedirect(reverse('userprofile:userlists'))
+	else:
+		form = ExtendedRegistrationForm()
+	return render(request, 'userprofile/newuser.html', {'form':form})

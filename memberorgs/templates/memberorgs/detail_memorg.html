@@ -5,11 +5,15 @@
 {% endblock %}
 {% block content %}
 <h1>{{memorg.name}} Details</h1>
+{% if perms.memberorgs.auth and user.profile_set.get.member_organization == glean.member_organization or perms.memberorgs.uniauth %}
 <a href="{% url 'memorgs:editmemorg' memorg.id %}" class="btn btn-warning">edit</a>
-<p>{{memorg.description}}</p>
+{% endif %}
+{{memorg.description|linebreaks}}
+
+Members:
 <ul>
-{% for person in memorg.user_set.all %}
-<li>{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}}</li>
+{% for person in memorg.profile_set.all %}
+<li>{{person.first_name}} {{person.last_name}}</li>
 {% endfor %}
 </ul>
 {% endblock %}

@@ -1,5 +1,14 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.1.2 - "Prettiest Pangolin"
+*Massive Beautifying Campaign, affecting entire site
+*Calendar Implemented
+*Almost entirely new GleanEvent page
+*Google Maps seems to be working as anticipated
+*unbroke all the Heroku Crap (will re-break later today)
+*Implemented Download logic for pretty much everything
+*Create New Volunteer options added
+
 Release 0.1.1 - "DateTime"
 *Fixed Datetime Forms
 *Prettified a lot of pages

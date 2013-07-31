@@ -1,4 +1,6 @@
 # Create your views here.
+import csv
+
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -161,3 +163,77 @@ def editContact(request, farm_id, contact_id):
 	else:
 		form = ContactForm(instance = contact)
 		return render(request, 'farms/edit_contact.html', {'form':form, 'farm':farm,})
+
+@permission_required('farms.auth')
+def download(request):
+	response = HttpResponse(mimetype='text/csv')
+	response['Content-Disposition'] = 'attachment; filename=farms.csv'
+
+	# Create the CSV writer using the HttpResponse as the "file."
+	writer = csv.writer(response)
+	writer.writerow([
+			'name',
+			'type',
+			'description',
+
+			'physical_address_one',
+			'physical_address_two',
+			'physical_city',
+			'physical_state',
+			'physical_is_mailing',
+
+			'mailing_address_one',
+			'mailing_address_two',
+			'mailing_city',
+			'mailing_state',
+
+			'phone_1',
+			'phone_1_type',
+			'phone_2',
+			'phone_2_type',
+
+			'email',
+			'direction',
+			'instructions',
+			'famers',
+			'counties',
+
+			'member_organization',
+	])
+
+	if request.user.has_perm('farms.uniauth'):
+		farms = Farm.objects.all()
+	else:
+		farms = Farm.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+	for farm in farms:
+		writer.writerow([
+			farm.name,
+			farm.farm_type,
+			farm.description,
+
+			farm.physical_address_one,
+			farm.physical_address_two,
+			farm.physical_city,
+			farm.physical_state,
+			farm.physical_is_mailing,
+
+			farm.mailing_address_one,
+			farm.mailing_address_two,
+			farm.mailing_city,
+			farm.mailing_state,
+
+			farm.phone_1,
+			farm.phone_1_type,
+			farm.phone_2,
+			farm.phone_2_type,
+
+			farm.email,
+			farm.direction,
+			farm.instructions,
+			farm.farmers.all(),
+			farm.counties.all(),
+
+			farm.member_organization.get(),
+			])
+
+	return response

@@ -8,6 +8,7 @@ class MemOrg(models.Model):
 	name = models.CharField(max_length=200)
 	description = models.TextField(blank=True, null=True)
 	counties = models.TextField(blank=True, null=True)
+	created = models.DateTimeField(auto_now_add=True)
 	
 	def __unicode__(self):
 		return self.name

@@ -27,7 +27,7 @@ class Distro(models.Model):
 	date = models.DateField()
 	farm = models.ForeignKey(Farm, null=True, blank=True)
 	crops = models.CharField(max_length=50, blank=True, null=True)
-	pounds = models.CharField(max_length=5, default=0)
+	pounds = models.CharField(max_length=5, blank=True, null=True)
 	other = models.CharField(max_length=50, blank=True, null=True)
 	containers = models.CharField(max_length=20, blank=True, null=True)
 	recipient = models.ForeignKey(RecipientSite, verbose_name = "Recipient Site")

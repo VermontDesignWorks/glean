@@ -12,26 +12,34 @@ from gleanevent.models import GleanEvent
 from django.contrib.sites.models import Site
 from posts.models import Post
 
+from memberorgs.models import MemOrg
+
 from constants import DAYS
-todays_gleans = GleanEvent.objects.filter(date=datetime.date.today())
-l = []
-today = datetime.date.today()
-for i in range(len(DAYS)):
-	debug = timezone.now()+datetime.timedelta(days=i)
-	l.append([debug.strftime('%A') + ' ' + debug.strftime('%d'),
-		GleanEvent.objects.filter(date=datetime.timedelta(days=i)+today)
-		])
 
 def home(request):
 	if not request.user.is_anonymous() and not Profile.objects.filter(user=request.user).exists():
 		return HttpResponseRedirect(reverse('userprofile:userdetailentry'))
+	todays_gleans = GleanEvent.objects.filter(date=datetime.date.today())
+	l = []
+	today = datetime.date.today()
+	for i in range(14):
+		query = GleanEvent.objects.filter(date=today+datetime.timedelta(days=i))
+		more = False
+		if query.count() > 9:
+			query = query[:9]
+			more = True
+		l.append([timezone.now()+datetime.timedelta(days=i),
+			query,
+			more
+			])
 	posts = Post.objects.order_by('datetime')[:10]
 	days = l
-	future = GleanEvent.objects.filter(date__gte=datetime.date.today()+datetime.timedelta(days=7),date__lte=datetime.date.today()+datetime.timedelta(days=14))
-	#debug2 = (debug + datetime.timedelta(days=1)).strftime('%d')
+	two_weeks = datetime.date.today()+datetime.timedelta(days=14)
+	future = GleanEvent.objects.filter(date__gte=two_weeks)
+
 	days = l
-	#debug2 = (debug + datetime.timedelta(days=1)).strftime('%d')
-	return render(request, 'home.html', {'posts':posts, 'days':days, 'future':future})
+	memberorgs = MemOrg.objects.all()
+	return render(request, 'home.html', {'posts':posts, 'days':days, 'future':future, 'two_weeks':two_weeks, 'memberorgs':memberorgs})
 
 	# try:
 	# 	prof = Profile.objects.get(user=request.user)

@@ -4,9 +4,10 @@
 Edit {{post.title}}
 {% endblock title %}
 {% block content %}
+<h3>Edit {{post.title}}</h3>
 	<form method="post" action="">
 		{% csrf_token %}
-		{{form.as_p}}
+		{% include 'posts/postform.html' %}
 		<input type="submit" value="Go!">
 	</form>
 {% endblock content %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}
+Create a New User
+{% endblock %}
+{% block content %}
+<form method="POST">
+	<h2>Input New Volunteers</h2>
+	{% csrf_token %}
+	{% include 'userprofile/profileform.html' %}
+	<input type="submit" value="Create this user!">
+</form>
+{% endblock %}

@@ -27,11 +27,13 @@ class GleanEvent(models.Model):
 	state = models.CharField("State",choices=STATES, default="VT", max_length=2, blank=True)
 
 	date = models.DateField('Date', blank=True, null=True)
-	time = models.CharField('Time', max_length=10, blank=True, null=True)
+	time = models.CharField('Time', max_length=40, blank=True, null=True)
 	description = models.TextField(blank=True)
 	crops = models.CharField(max_length=200, blank=True)
 
 	directions = models.TextField(blank=True, null=True)
+	instructions = models.TextField(blank=True, null=True)
+
 	volunteers_needed = models.IntegerField(blank = True, default=0)
 	duration = models.IntegerField(blank=True, default=1)
 
@@ -62,6 +64,27 @@ class GleanEvent(models.Model):
 		if self.postglean_set.count() != 0:
 			return True
 		return False
+
+	def render_directions(self):
+		if self.directions:
+			return unicode(self.directions)
+		if self.farm_location and hasattr(self.farm_location, 'directions') and self.farm_location.directions:
+			return unicode(self.farm_location.directions)
+		if self.farm and hasattr(self.farm, 'directions') and self.farm.directions:
+			return unicode(self.farm.directions)
+		else:
+			return u"Follow the Map to the Right"
+
+	def render_instructions(self):
+		if self.instructions:
+			return unicode(self.instructions)
+		if self.farm_location and hasattr(self.farm_location, 'instructions') and self.farm_location.instructions:
+			return unicode(self.farm_location.instructions)
+		if self.farm and hasattr(self.farm, 'instructions') and self.farm.instructions:
+			return unicode(self.farm.instructions)
+		else:
+			return u"Show up early and have fun!"
+
 
 	class Meta:
 		permissions = (

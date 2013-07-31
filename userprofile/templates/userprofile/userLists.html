@@ -3,6 +3,8 @@
 {% block title %}User Lists{% endblock title %}
 {% block content %}
 <h2>A list of Users</h2>
+
+
 <ul>
 {% for person in users %}
 <li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.user.username}}{% if person.first_name and person.last_name %} - ({{person.first_name}} {{person.last_name}}){% endif %}</a></li>

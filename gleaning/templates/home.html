@@ -5,35 +5,63 @@
 Welcome to the Gleaning Interface!
 {% endblock %}
 {% block content %}
+<div class="span2">   
 
-<div class="row" style="margin:0 auto; width:1040px;">
+        <ul class="nav nav-tabs nav-stacked">
+        	{%for memorg in memberorgs %}
+	          <li class="mystacked">
+	            <a href="{% url 'memorgs:detailmemorg' memorg.id %}">{{memorg.name}}</a>
+	          </li>
+          	{% endfor %}
+        </ul>
+      </div>
+      <div class="span10">
+<div class="row" id="calendar" style="margin:0 auto;">
 	<style>
-	.day{width:14.158%;border:1px #e5e5e5 solid;float:left;}
+	.day{width:14.158%;border:1px #e5e5e5 solid;float:left;height:250px;}
 	.day + .day{border-left:none;}
-	.day-name {width:100%; margin:0; padding:6px 0 0; height:28px; border-bottom: 1px #e5e5e5 solid; text-align: center;}
+	.day-title {width:100%; margin:0; padding:6px 0 0; height:28px; border-bottom: 1px #e5e5e5 solid; text-align: center;}
+	a.day-name{text-decoration:none; color:#444; font-weight: bold;}
+	.future-link{margin:20px 0 0 0;}
+	.post-title{color:black;margin: 20px 0 0px 40px;}
+	.post-subheading{color:#555;margin:0 0 8px 80px;}
+	.day > ul {list-style:none;margin: 0; text-align:center; }
 	</style>
 	{% for day in days %}
 	<div class="day">
-		<div class="day-name">{{day.0}}</div>
+		<a class="day-name" href="{% url 'gleanevent:index' %}
+		?date_from={{day.0|date:"m"}}%2F{{day.0|date:"d"}}%2F{{day.0.year}}
+		&date_until={{day.0|date:"m"}}%2F{{day.0|date:"d"}}%2F{{day.0.year}}">
+		<div class="day-title">{{day.0|date:"l - d"}}</div></a>
 		<br />
 		<ul>
 			{% for glean in day.1 %}
 			<li><a href="{% url 'gleanevent:detailglean' glean.id %}">{{glean.title}}</a></li>
 			{% endfor %}
+			{% if day.2 %}
+			<li><a href="{% url 'gleanevent:index' %}
+		?date_from={{day.0|date:"m"}}%2F{{day.0|date:"d"}}%2F{{day.0.year}}
+		&date_until={{day.0|date:"m"}}%2F{{day.0|date:"d"}}%2F{{day.0.year}}">
+		(click for more)</a></li>
+			{% endif %}
 		</ul>
-	</div>	
+	</div>
+	{% cycle '' '' '' '' '' '' '</div><div class="row" style="margin:0 auto;;">' %}	
 	{% endfor %}
-
 </div>
-
-Upcomming Gleans: {{future.count}}
-
-
-<div class="divider" style="width:100%; clear:both; border-bottom:dotted #444 1px;">&nbsp;</div>
+<div class="future-link">
+{% if future %}Upcomming Gleans: <a href="{% url 'gleanevent:index' %}?date_from={{two_weeks|date:"m"}}%2F{{two_weeks|date:"d"}}%2F{{two_weeks.year}}">{{future.count}} Glean{% if future.count != 1 %}s{% endif %}</a>{% endif %}</div>
+<div class="divider" style="">&nbsp;</div>
+</div>
+</div>
+<div class="row-fluid">
+	<div class="span12">
 	{% for post in posts %}
-		<h3><a href="{% url 'posts:detailpost' post.id %}">{{post.title}}</a></h3>
-		<p>{{post.excerpt}}</p>
+		<a href="{% url 'posts:detailpost' post.id %}"><h3 class="post-title">{{post.title}}</h3></a>
+		<h5 class="post-subheading">Posted on {{post.datetime|date:"M j"}} by {{post.created_by.profile_set.get.first_name}} {{post.created_by.profile_set.get.last_name}} of {{post.created_by.profile_set.get.member_organization.name}}</h5>
+		{{post.body|linebreaks}}
 		{% get_comment_count for post as comment_count %}
 		<p><small>{{comment_count}} Comment{% if comment_count != 1 %}s{% endif %}</small></p>
 	{% endfor %}
+</div>
 {% endblock %}

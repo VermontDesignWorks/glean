@@ -42,6 +42,8 @@
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'gleanevent:index' %}">Glean Index</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'gleanevent:newglean' %}">New Glean</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'gleanevent:download' %}">Download Glean Data</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'gleanevent:postdownload' %}">Download Post Glean Data</a></li>
                         </ul>
                       </li>
                       {% endif %}
@@ -51,10 +53,11 @@
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'farms:index' %}">Farm Index</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'farms:newfarm' %}">New Farm</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'farms:download' %}">Download Farm List</a></li>
                         </ul>
                       </li>
                       {% endif %}
-                      {% if 'counties.auth' in perms %}
+                      {% if 'counties.uniauth' in perms %}
                       <li class="dropdown">
                         <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">Counties <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
@@ -68,7 +71,9 @@
                         <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">User Management <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:userlists' %}">User Lists</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:newuser' %}">Input New Volunteers</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:download' %}">Download Volunteer Rolls</a></li>
+
                         </ul>
                       </li>
                       {% endif %}
@@ -144,17 +149,8 @@
   <div class="container">
     <div class="row-fluid">
       {% block body %}
-      <!--<div class="span2">   
-        <ul class="nav nav-tabs nav-stacked">
-          <li class="mystacked">
-            <a href="#">Home</a>
-          </li>
-          <li class="mystacked"><a href="#">Away</a></li>
-          <li class="mystacked"><a href="#">Neutral</a></li>
-        </ul>
-      </div>-->
-      	<div class="span12">
-        
+      
+        <div class="span12">
           {% block content %}
           {% endblock content %}
       	</div>

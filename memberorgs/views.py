@@ -23,7 +23,7 @@ def newMemOrg(request):
 	if request.method == "POST":
 		form = MemOrgForm(request.POST)
 		if form.is_valid():
-			new_save = MemOrg(**form.cleaned_data)
+			new_save = form.save()
 			new_save.save()
 			return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(new_save.id,) ))
 		else:
@@ -40,8 +40,9 @@ def editMemOrg(request, memorg_id):
 	if request.method == "POST":
 		form = MemOrgForm(request.POST)
 		if form.is_valid():
-			new_save = MemOrg(**form.cleaned_data)
+			new_save = form.save(commit=False)
 			new_save.id = memorg_id
+			new_save.created = memorg.created
 			new_save.save()
 			return HttpResponseRedirect(reverse('memorgs:index'))
 		else:

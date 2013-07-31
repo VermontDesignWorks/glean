@@ -1,5 +1,6 @@
 import time
 import datetime
+import csv
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
@@ -14,7 +15,15 @@ from django.contrib.auth.decorators import permission_required
 from gleanevent.models import GleanEvent, GleanForm, PostGlean# PostGleanForm
 from announce.models import Announcement
 
-@permission_required('gleanevent.auth')
+from django.contrib.comments.forms import CommentForm
+
+class CustomCommentForm(CommentForm):
+
+    def __init__(self, *args, **kwargs):
+        super(CustomCommentForm, self).__init__(*args, **kwargs)
+        self.fields['comment'].widget = forms.TextInput()
+
+@login_required
 def index(request):
 	date_from = request.GET.get('date_from', '')
 	date_until = request.GET.get('date_until', '')
@@ -26,10 +35,10 @@ def index(request):
 		date_until = date_until[6:] + '-' + date_until[:2] + '-' + date_until[3:5]
 	else:
 		date_until = '3013-01-01'
-	if request.user.has_perm('gleanevent.uniauth'):
-		gleaning_events_list = GleanEvent.objects.all()
-	else:
-		gleaning_events_list = GleanEvent.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+	# if request.user.has_perm('gleanevent.uniauth'):
+	gleaning_events_list = GleanEvent.objects.all()
+	# else:
+	# 	gleaning_events_list = GleanEvent.objects.filter(member_organization=request.user.profile_set.get().member_organization)
 	gleaning_events_list = gleaning_events_list.filter(date__gte=date_from).filter(date__lte=date_until)
 	return render(request, 'gleanevent/index.html', {'gleans':gleaning_events_list})
 
@@ -74,7 +83,7 @@ def editGlean(request, glean_id):
 @login_required
 def detailGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
-	return render(request, 'gleanevent/detail.html', {'glean':glean})
+	return render(request, 'gleanevent/detail.html', {'glean':glean,})
 
 #== Delete Glean View ==#
 @permission_required('gleanevent.auth')
@@ -129,44 +138,166 @@ def postGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
 	if glean.member_organization != request.user.profile_set.get().member_organization and u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
-	if not glean.data_entered() and glean.happened():
-		count = len(glean.rsvped.all())
-		unrsvped = int(request.GET.get('extra', 0))
-		if int(unrsvped) > 100:
-			unrsvped = 100
-		PostGleanFormSet = modelformset_factory(PostGlean, extra=count+unrsvped)
-		#formset = PostGleanFormSet(queryset=PostGlean.objects.none())
-		
-		if request.method == 'POST':
-			formset = PostGleanFormSet(request.POST)
-			instances = formset.save(commit=False)
-			for i in range(count):
-				instances[i].glean= glean
-				instances[i].user = glean.rsvped.all()[i]
-				if instances[i].attended == True:
-					profile = instances[i].user.profile_set.get()
-					profile.attended += 1
-					if instances[i].hours:
-						profile.hours += instances[i].hours
-					profile.save()
-			for instance in instances:
-				if not hasattr(instance, 'glean'):
-					instance.glean = glean
-				instance.save()
-			return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
-		else:
-			initial = []
-			for person in glean.rsvped.all():
-				prof = person.profile_set.get()
-				initial.append({'first_name':prof.first_name,
-								'last_name':prof.last_name})
-			#return HttpResponse(str(initial))
-			forms=PostGleanFormSet(initial=initial, queryset=PostGlean.objects.none())
-			return render(request, 'gleanevent/postglean.html', {'glean':glean, 'forms':forms})
-	else:
+	#if not glean.data_entered() and glean.happened():
+	count = len(glean.rsvped.all())
+	unrsvped = int(request.GET.get('extra', 0))
+	if int(unrsvped) > 100:
+		unrsvped = 100
+	PostGleanFormSet = modelformset_factory(PostGlean, extra=count+unrsvped)
+	#formset = PostGleanFormSet(queryset=PostGlean.objects.none())
+	
+	if request.method == 'POST':
+		formset = PostGleanFormSet(request.POST)
+		instances = formset.save(commit=False)
+		for i in range(count):
+			instances[i].glean= glean
+			instances[i].user = glean.rsvped.all()[i]
+			if instances[i].attended == True:
+				profile = instances[i].user.profile_set.get()
+				profile.attended += 1
+				if instances[i].hours:
+					profile.hours += instances[i].hours
+				profile.save()
+		for instance in instances:
+			if not hasattr(instance, 'glean'):
+				instance.glean = glean
+			instance.save()
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
+	else:
+		initial = []
+		for person in glean.rsvped.all():
+			prof = person.profile_set.get()
+			initial.append({'first_name':prof.first_name,
+							'last_name':prof.last_name})
+		#return HttpResponse(str(initial))
+		forms=PostGleanFormSet(initial=initial, queryset=PostGlean.objects.none())
+		return render(request, 'gleanevent/postglean.html', {'glean':glean, 'formset':forms})
+	#else:
+	#		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 
 @permission_required('gleanevent.auth')
 def printGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
 	return render(request, 'gleanevent/print.html', {'glean':glean})
+
+@permission_required('gleanevent.auth')
+def download(request):
+	response = HttpResponse(mimetype='text/csv')
+	response['Content-Disposition'] = 'attachment; filename=gleanevent.csv'
+
+	# Create the CSV writer using the HttpResponse as the "file."
+	writer = csv.writer(response)
+	writer.writerow([
+			'title',
+			'address_one',
+			'address_two',
+			'city',
+			'state',
+
+			'date',
+			'time',
+			'description',
+			'crops',
+
+			'directions',
+			'instructions',
+
+			'volunteers_needed',
+			'duration',
+
+			'farm',
+			'farm_location',
+
+			'created_by',
+			'invited_volunteers',
+
+			'rsvped',
+			'not_rsvped',
+			'waitlist',
+
+			'attending_volunteers',
+			'officiated_by',
+			'counties',
+
+			'member_organization',
+	])
+
+	if request.user.has_perm('gleanevent.uniauth'):
+		gleans = GleanEvent.objects.all()
+	else:
+		gleans = GleanEvent.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+	for glean in gleans:
+		writer.writerow([
+			glean.title,
+			glean.address_one,
+			glean.address_two,
+			glean.city,
+			glean.state,
+
+			glean.date,
+			glean.time,
+			glean.description,
+			glean.crops,
+
+			glean.directions,
+			glean.instructions,
+
+			glean.volunteers_needed,
+			glean.duration,
+
+			glean.farm,
+			glean.farm_location,
+
+			glean.created_by,
+			glean.invited_volunteers.all(),
+
+			glean.rsvped.all(),
+			glean.not_rsvped.all(),
+			glean.waitlist.all(),
+
+			glean.attending_volunteers.all(),
+			glean.officiated_by.all(),
+			glean.counties.all(),
+
+			glean.member_organization,
+			])
+
+	return response
+
+@permission_required('gleanevent.auth')
+def postGleanDownload(request):
+	response = HttpResponse(mimetype='text/csv')
+	response['Content-Disposition'] = 'attachment; filename=postglean.csv'
+
+	# Create the CSV writer using the HttpResponse as the "file."
+	writer = csv.writer(response)
+	writer.writerow([
+			'glean',
+			'user',
+			'attended',
+			'first_name',
+			'last_name',
+			'hours',
+			'group',
+			'members',
+			'notes',
+	])
+
+	if request.user.has_perm('gleanevent.uniauth'):
+		postgleans = PostGlean.objects.all()
+	else:
+		postgleans = PostGlean.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+	for postglean in postgleans:
+		writer.writerow([
+			postglean.glean,
+			postglean.user,
+			postglean.attended,
+			postglean.first_name,
+			postglean.last_name,
+			postglean.hours,
+			postglean.group,
+			postglean.members,
+			postglean.notes,
+			])
+
+	return response
