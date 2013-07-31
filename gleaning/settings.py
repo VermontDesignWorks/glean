@@ -1,3 +1,4 @@
+# Django settings for gleaning project.
 
 import os
 
@@ -30,7 +31,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
 	'default': {
-		'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+		'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
 		'NAME': 'glean',                      # Or path to database file if using sqlite3.
 		'USER': 'glean',                      # Not used with sqlite3.
 		'PASSWORD': 'salvationfarms_007',                  # Not used with sqlite3.
@@ -126,9 +127,11 @@ ROOT_URLCONF = 'gleaning.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'gleaning.wsgi.application'
 
-
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_DIR, "templates")
+	"/home/gregor/Documents/django/gleaning/gleaning/templates"
+	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+	# Always use forward slashes, even on Windows.
+	# Don't forget to use absolute paths, not relative paths.
 )
 
 INSTALLED_APPS = (
@@ -191,28 +194,3 @@ LOGGING = {
 		},
 	}
 }
-##Heroku Settings
-# Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
-
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Allow all host headers
-ALLOWED_HOSTS = ['*']
-
-# Static asset configuration
-import os
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = 'staticfiles'
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-
-try:
-	import devsettings
-except:
-	pass
