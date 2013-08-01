@@ -3,8 +3,12 @@
 {% block title %}
 Confirm Recipient Site Deletion- {{site.name}}
 {% endblock title %}
+
+{% block heading %}
+<h3>Delete Recipient Site "{{site.name}}"?</h3>
+{% endblock heading %}
+
 {% block content %}
-<h1>Delete Recipient Site "{{site.name}}"?</h1>
 <h5>This action is IRREVERSIBLE! Think carefully before you delete this recipient site!</h5>
 <p>{{site.description}}</p>
 	<form method="post" action="">

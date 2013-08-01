@@ -2,7 +2,7 @@
 {% block title %}
 {{person.first_name}} {{person.last_name}}
 {% endblock title %}
-{% block content %}
+{% block body %}
 <h2>{{person.first_name}} {{person.last_name}}</h2>
 <p>{{person.address}}</p>
 <p>{{person.city}}</p>
@@ -17,4 +17,4 @@
 <div class="span3">
 	<a class="btn btn-info" href="{% url 'userprofile:useredit' person.user.id %}">Edit this Profile</a>
 </div>
-{% endblock content %}
+{% endblock body %}

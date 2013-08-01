@@ -3,8 +3,12 @@
 {% block title %}
 Confirm Glean Event Delete - {{glean.title}}
 {% endblock title %}
+
+{% block heading %}
+<h3>Delete Glean Event "{{glean.title}}"?</h3>
+{% endblock heading %}
+
 {% block content %}
-<h1>Delete Glean Event "{{glean.title}}"?</h1>
 <h5>This action is IRREVERSIBLE! Think carefully before you delete this glean!</h5>
 	<form method="post" action="">
 		{% csrf_token %}

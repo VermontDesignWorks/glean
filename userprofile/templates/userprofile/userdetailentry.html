@@ -2,9 +2,14 @@
 {% block title %}
 Additional Details
 {% endblock %}
+
+{% block heading %}
+	<h3><strong>REQUIRED</strong> details to participate in a glean!</strong></h3>
+{% endblock heading %}
+
+
 {% block content %}
 <form method="POST">
-	<h2><strong>REQUIRED</strong> details to participate in a glean!</strong></h2>
 	{% csrf_token %}
 	{% include 'userprofile/profileform.html' %}
 	<input type="submit" value="Go!">

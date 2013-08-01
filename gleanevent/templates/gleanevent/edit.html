@@ -2,8 +2,14 @@
 {% load url from future %}
 {% block title %}Edit Glean
 {% endblock title %}
+
+
+{% block heading %}
+<h3>Edit Glean</h3>
+{% endblock heading %}
+
+
 {% block content %}
-<h1>Edit Glean</h1>
 {{form.errors}}
 	<form method="post" action="">
 		{% csrf_token %}

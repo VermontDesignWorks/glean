@@ -38,7 +38,62 @@ def delete(request):
 	for announce in Announcement.objects.all():
 		announce.delete()
 
-def groupsAndPerms(request):
+# def groupsAndPerms(request):
+# 	# if not Group.objects.all():
+# 	# 	vol = Group(name="Volunteer")
+# 	# 	vol.save()
+# 	# 	ed = Group(name="Member Organization Executive Director")
+# 	# 	ed.save()
+# 	# 	mc = Group(name="Member Organization Glean Coordinator")
+# 	# 	mc.save()
+# 	# 	sal = Group(name="Salvation Farms Administrator")
+# 	# 	sal.save()
+# 	# 	salc = Group(name="Salvation Farms Coordinator")
+# 	# 	salc.save()
+
+
+# 	# ed = Group.objects.get(name="Member Organization Executive Director")
+# 	# if not ed.permissions.all():
+		
+
+# 	# 	mo_list = [Announcement, Template, Distro, GleanEvent, Farm, PostGlean, RecipientSite, Profile, MemOrg, Post]
+# 	# 	uni_list = [Announcement, Template, Distro, GleanEvent, Farm, FarmLocation, Contact, PostGlean, RecipientSite, Profile, MemOrg, County, Post]
+
+# 	# 	modelc = Group.objects.get(name="Member Organization Glean Coordinator")
+# 	# 	sal = Group.objects.get(name="Salvation Farms Administrator")
+# 	# 	salc = Group.objects.get(name="Salvation Farms Coordinator")
+
+# 	# 	for model in mo_list:
+# 	# 		content_type = ContentType.objects.get_for_model(model)
+# 	# 		perm = Permission.objects.get(codename='auth', content_type=content_type)
+# 	# 		ed.permissions.add(perm)
+# 	# 		mc.permissions.add(perm)
+# 	# 		sal.permissions.add(perm)
+# 	# 		salc.permissions.add(perm)
+# 	# 	for model in uni_list:
+# 	# 		content_type = ContentType.objects.get_for_model(model)
+# 	# 		perm = Permission.objects.get(codename='uniauth', content_type=content_type)
+# 	# 		sal.permissions.add(perm)
+# 	# 		salc.permissions.add(perm)
+		
+# 	# 	# for model in mo_list:
+# 	# 	# 	ed.permissions.add(model.moauth)
+
+
+# 	# 	# for model in uni_list:
+# 	# 	# 	content_type = ContentType.objects.get_for_model(model)
+# 	# 	# 	moauth = Permission.objects.create(	codename="uniauth",
+# 	# 	# 										name="Universal Authorization and Permissions",
+# 	# 	# 										content_type=content_type)
+		
+		
+# 	# 	return HttpResponse("perms and users are made")
+# 	# else:
+# 	# 	return HttpResponse("perms and users are already made")
+
+
+def index(request):
+
 	if not Group.objects.all():
 		vol = Group(name="Volunteer")
 		vol.save()
@@ -75,24 +130,18 @@ def groupsAndPerms(request):
 			perm = Permission.objects.get(codename='uniauth', content_type=content_type)
 			sal.permissions.add(perm)
 			salc.permissions.add(perm)
-		
-		# for model in mo_list:
-		# 	ed.permissions.add(model.moauth)
 
+	person = User.objects.create_user('Vista@Salvation', 'vista@salvation.org', 'password')
+	vol = Group.objects.get(name="Salvation Farms Administrator")
+	person.groups.add(vol)
 
-		# for model in uni_list:
-		# 	content_type = ContentType.objects.get_for_model(model)
-		# 	moauth = Permission.objects.create(	codename="uniauth",
-		# 										name="Universal Authorization and Permissions",
-		# 										content_type=content_type)
-		
-		
-		return HttpResponse("perms and users are made")
-	else:
-		return HttpResponse("perms and users are already made")
+	userprof = Profile(user=person, first_name = 'Marcella', last_name="Houghton", )
+	userprof.save()
+	counties = County.objects.all()
+	for county in counties:
+		userprof.counties.add(county)
+	userprof.save()
 
-
-def index(request):
 	if County.objects.filter(name='County1').exists():
 		return HttpResponse("<a href='/'>Go home.</a>")
 	for i in range(memberorg_quant):
@@ -144,7 +193,7 @@ def index(request):
 		choices2 = range(memberorg_quant)
 		choice2 = choices2.pop(random.choice(choices2))
 		memorg = MemOrg.objects.get(name="MemberOrg"+str(choice2))
-		new = Farm(name="farm"+str(i),farm_type=FARM_TYPE[0][1],description="generic farm",physical_address_one="36 maple street",physical_city="Morrisville",physical_state="VT",physical_is_mailing=True,phone_1='8025786266',email="Joshua.Lucier@gmail.com",direction="Many different directions",instructions="many instructions")
+		new = Farm(name="farm"+str(i),farm_type=FARM_TYPE[0][1],address_one="100 Main Street",address_two="apartment 3",city="Burlington",state="VT",description="generic farm",physical_is_mailing=True,phone_1='8025786266',email="Joshua.Lucier@gmail.com",direction="Many different directions",instructions="many instructions")
 		new.save()
 		new.member_organization.add(memorg)
 		new.save()
@@ -164,6 +213,9 @@ def index(request):
 		new.counties.add(County.objects.all()[my_county])
 		my_farm = my_farm + 1
 		my_county = my_county + 1
+
+	
+
 	return HttpResponse("Your data has been created. <a href='/'>Go home.</a>")
 
 

@@ -3,8 +3,14 @@
 {% block title %}
 Confirm Farm Delete - {{farm.name}}
 {% endblock title %}
+
+
+{% block heading %}
+<h3>Delete Farm "{{farm.name}}"?</h3>
+{% endblock heading %}
+
+
 {% block content %}
-<h1>Delete Farm "{{farm.name}}"?</h1>
 <h5>This action is IRREVERSIBLE! Think carefully before you delete this farm!</h5>
 	<form method="post" action="">
 		{% csrf_token %}

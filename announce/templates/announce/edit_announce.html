@@ -2,23 +2,20 @@
 {% load url from future %}
 {% block title %}Announcement for {{announce.subject}}
 {% endblock title %}
+{% block heading %}
+<h3>Edit Announcement</h3>
+{% endblock heading %}
 {% block content %}
-<h1>Edit Announcement</h1>
 {% if announcement.sent == True %}
 <h4>No further edits allowed, the announcement has already been sent</h4>
 {% else %}
-<div class="row-fluid">
-	<div class="span8">
 		<form method="post" action="">
 			{% csrf_token %}
 			{% include 'announce/announceform.html' %}
 			<input type="submit" value="Go!" />
 		</form>
-	</div>
-	<div class="span4">
-		{% include "announce/recipients.html" %}
-	</div>
-
-</div>
 {% endif %}
 {% endblock content %}
+{% block related %}
+		{% include "announce/recipients.html" %}
+{% endblock related %}

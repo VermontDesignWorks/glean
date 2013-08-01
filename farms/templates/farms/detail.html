@@ -2,7 +2,9 @@
 {% block title %}
 Details of {{ farm.name }}
 {% endblock title %}
-{% block content %}
+
+{% block body %}
+<h3>Details of {{ farm.name }}</h3>
 <div class="row-fluid">
 	<div class="span9">
 		<h2>{{farm.name}}</h2>
@@ -49,4 +51,4 @@ Details of {{ farm.name }}
 	{% endfor %}
 </div>
 {% endif %}
-{% endblock content %}
+{% endblock body %}

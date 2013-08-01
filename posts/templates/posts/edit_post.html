@@ -3,8 +3,12 @@
 {% block title %}
 Edit {{post.title}}
 {% endblock title %}
-{% block content %}
+
+{% block heading %}
 <h3>Edit {{post.title}}</h3>
+{% endblock heading %}
+
+{% block content %}
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'posts/postform.html' %}

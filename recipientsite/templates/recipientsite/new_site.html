@@ -3,8 +3,14 @@
 {% block title %}
 New Recipient Site
 {% endblock title %}
+
+
+{% block heading %}
+<h3>New Recipient Site</h3>
+{% endblock heading %}
+
+
 {% block content %}
-<h2>New Recipient Site</h2>
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'recipientsite/siteform.html' %}

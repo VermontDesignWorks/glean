@@ -2,7 +2,9 @@
 {% load url from future %}
 {% block title %}Post Glean
 {% endblock title %}
-{% block content %}
+
+{% block body %}
+<h3>Enter Post Glean Data</h3>
 <form method="get">
 	<label target="extra">Lines for Un-RSVP'ed Gleaners</label>
 	<input type="text" name="extra" value="0">
@@ -13,4 +15,4 @@
 		{% include 'gleanevent/postgleanform.html' %}
 <input type="submit" value="Go!">
 	</form>
-{% endblock content %}
+{% endblock body %}

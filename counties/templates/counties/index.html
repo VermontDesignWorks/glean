@@ -3,9 +3,8 @@
 {% block title %}
 County Index
 {% endblock title %}
-
-{% block content %}
-<h1>County Index</h1>
+{% block body %}
+<h3>County Index</h3>
 {% if counties %}
 <ul>
 {% for county in counties %}
@@ -17,4 +16,4 @@ County Index
 {% else %}
 <span>No counties :(</span>
 {% endif %}
-{% endblock content %} 
+{% endblock body %} 

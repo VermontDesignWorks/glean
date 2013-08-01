@@ -2,9 +2,15 @@
 {% block title %}
 Additional Details
 {% endblock %}
+
+
+{% block heading %}
+	<h3>Edit your details</h3>
+{% endblock heading %}
+
+
 {% block content %}
 <form method="POST">
-	<h2>Edit your details</h2>
 	{% csrf_token %}
 	{% include 'userprofile/profileform.html' %}
 	<input type="submit" value="Go!">

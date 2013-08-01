@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% load url from future %}
 {% block title %}
-Edit Template {{template.template_name}}
 {% endblock title %}
+Edit Template {{template.template_name}}
+{% block heading %}
+<h3>Edit Template "{{template.template_name}}"</h3>
+{% endblock heading %}
 {% block content %}
-<h1>Edit Template "{{template.template_name}}"</h1>
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'announce/templateform.html' %}

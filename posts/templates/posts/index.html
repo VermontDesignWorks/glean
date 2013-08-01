@@ -4,8 +4,11 @@
 Blog Post Index
 {% endblock title %}
 
-{% block content %}
-<h1>Blog Post Index</h1>
+{% block heading %}
+<h3>Blog Post Index</h3>
+{% endblock heading %}
+
+{% block body %}
 {% if blog_posts %}
 <ul>
 {% for post in blog_posts %}
@@ -17,4 +20,4 @@ Blog Post Index
 {% else %}
 <span>No Posts :(</span>
 {% endif %}
-{% endblock content %} 
+{% endblock body %} 

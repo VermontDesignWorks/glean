@@ -3,8 +3,14 @@
 {% block title %}
 New Contact for {{farm.name}}
 {% endblock title %}
+
+
+{% block heading %}
+<h3>New Contact</h3>
+{% endblock heading %}
+
+
 {% block content %}
-<h1>New Contact</h1>
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'farms/farmform.html' %}

@@ -2,17 +2,15 @@
 {% load url from future %}
 {% block title %}Announcement for {{announce.subject}}
 {% endblock title %}
+{% block heading %}<h1>Make an Announcement for this glean!</h1>{% endblock heading %}
 {% block content %}
-<h1>Make an Announcement for this glean!</h1>
-<div class="row-fluid">
-	<div class="span6">
 		<form method="post" action="">
 			{% csrf_token %}
 			{% include 'announce/announceform.html' %}
 			<input type="submit" value="Go!" />
 		</form>
-	</div>
-	<div class="span6">
+{% endblock content %}
+{% block related %}
 		<h3>Intended Recipients</h3>
 		<ul>
 		{% for county in source.counties.all %}
@@ -22,6 +20,4 @@
 		</ul>
 		{% endfor %}
 		</ul>
-	</div>	
-</div>
-{% endblock content %}
+{% endblock related %}

@@ -4,8 +4,13 @@
 Announcement Index
 {% endblock title %}
 
+
+{% block heading %}
+<h3>Template Index</h3>
+{% endblock heading %}
+
+
 {% block content %}
-<div class="span6">
 
 	{% if templates %}
 		{% if 'announce.uniauth' in perms %}
@@ -28,8 +33,9 @@ Announcement Index
 	{% else %}
 		<span>No templates :(</span>
 	{% endif %}
-</div>
-<div class="span6">
-	<a class="btn btn-info" href="{% url 'announce:newtemplate' %}" >New Template</a>
-</div>
 {% endblock content %} 
+
+
+{% block related %}
+	<a class="btn btn-info" href="{% url 'announce:newtemplate' %}" >New Template</a>
+{% endblock related %}

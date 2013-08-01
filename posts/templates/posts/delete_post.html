@@ -3,8 +3,12 @@
 {% block title %}
 Confirm Post Delete - {{post.title}}
 {% endblock title %}
+
+{% block heading %}
+<h3>Delete Blog Post "{{post.title}}"?</h3>
+{% endblock heading %}
+
 {% block content %}
-<h1>Delete Blog Post "{{post.title}}"?</h1>
 <h5>This action is IRREVERSIBLE! Think carefully before you delete this post!</h5>
 <p>{{post.body}}</p>
 	<form method="post" action="">

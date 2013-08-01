@@ -3,10 +3,13 @@
 {% block title %}
 Confirm Announcement Delete - {{announce.title}}
 {% endblock title %}
+{% block heading %}
+<h3>Delete Announcement "{{announce.title}}"?</h3>
+{% endblock %}
 {% block content %}
-<h1>Delete Announcement "{{announce.title}}"?</h1>
+
 <h5>This action is IRREVERSIBLE! Think carefully before you delete this announcement!</h5>
-	<div width="400px">{{announce.message}}</div>
+	<div>{{announce.message}}</div>
 	<form method="post" action="">
 		{% csrf_token %}
 		<input type="submit" class="btn btn-danger" value="Permanently Delete">

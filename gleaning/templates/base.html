@@ -27,7 +27,7 @@
         <![endif]-->
 
 <div id="wrapper">
-  <div class="row-fluid">
+  <div class="row-fluid" id="navbar-row">
     <div class="span12">
 
 
@@ -68,7 +68,7 @@
                       {% endif %}
                       {% if 'userprofile.auth' in perms %}
                       <li class="dropdown">
-                        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">User Management <b class="caret"></b></a>
+                        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Volunteers <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:userlists' %}">User Lists</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:newuser' %}">Input New Volunteers</a></li>
@@ -148,22 +148,27 @@
 
   <div class="container">
     <div class="row-fluid">
-      {% block body %}
-      
-        <div class="span12">
-          {% block content %}
-          {% endblock content %}
-      	</div>
-     </div>
-     <div class="row-fluid">
-         <div class="span12">
-          {% block content-related %}{% endblock %}
-              
+
+      <div class="span12">
+        {% block heading %}{% endblock %}
+      </div>
+    </div>
+    <div class="row-fluid">
+          {% block body %}
+            <div class="span7">
+                {% block content %}
+
+                {% endblock content %}
+            </div>
+            <div class="span5">
+              {% block related %}{% endblock %}
+            </div>
           {% endblock body %}
-        </div>
+      	
      </div>
     </div>
   </div>
+
 </div>
 <div class="footer navbar-fixed-bottom">
   <small>(c) Salvation Farms</small>

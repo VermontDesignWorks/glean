@@ -3,8 +3,14 @@
 {% block title %}
 New Post
 {% endblock title %}
-{% block content %}
+
+
+{% block heading %}
 <h3>Create a new post</h3>
+{% endblock heading %}
+
+
+{% block content %}
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'posts/postform.html' %}

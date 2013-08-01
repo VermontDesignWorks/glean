@@ -189,7 +189,7 @@ def newUser(request):
 			eclast_name=form.cleaned_data['eclast_name'],
 			ecrelationship=form.cleaned_data['ecrelationship'],
 			user=new_user,
-			member_organization=form.cleaned_data['member_organization'],
+			member_organization=request.user.profile_set.get().member_organization,
 			)
 			profile.save()
 			return HttpResponseRedirect(reverse('userprofile:userlists'))

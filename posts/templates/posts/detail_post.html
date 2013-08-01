@@ -4,7 +4,7 @@
 {% block title %}
 {{post.name}} Details
 {% endblock %}
-{% block content %}
+{% block body %}
 <a href="{% url 'posts:detailpost' post.id %}"><h1>{{post.name}} Details</h1></a>
 <p><small>posted {{post.datetime}} by {{post.created_by}}</small></p>
 {% if 'posts.auth' in perms and user.profile_set.get.member_organization == post.member_organization or 'posts.uniauth' in perms %}<a href="{% url 'posts:editpost' post.id %}" class="btn btn-warning">edit</a> - <a href="{% url 'posts:deletepost' post.id %}"><small>(delete)</small></a>{% endif %}
@@ -27,4 +27,4 @@
 {% else %}
     <p>Please <a href="{% url 'auth_login' %}">log in</a> to leave a comment.</p>
 {% endif %}
-{% endblock %}
+{% endblock body %}

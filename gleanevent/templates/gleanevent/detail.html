@@ -4,7 +4,7 @@
 {% block title %}
 Gleaning Details
 {% endblock title %}
-{% block content %}
+{% block body %}
 <style>
 .glean-title{text-align: center;color:#444;}
 .glean-title:hover{color:#000;text-decoration: none;}
@@ -23,8 +23,9 @@ Gleaning Details
 
 <div class="span5 glean-details">
 	<a class="glean-title" href="{% url 'gleanevent:detailglean' glean.id %}"><h2>{{glean.title}} {% if glean.farm %}at {{glean.farm}}{% endif %}</h2></a>
+  <h4 class='glean-address'> by {{glean.member_organization}}</h4>
   <h4 class='glean-address'>{{glean.address_one}} {{glean.city}}, {{glean.state}}</h4>
-  <h3 class="glean-date">{{glean.date}} - {{glean.time}}</h3>
+  <h3 class="glean-date">{{glean.date}} {% if glean.time %}- {{glean.time}}{% endif %}</h3>
   <div class="glean-half">
   {% if not glean.happened %}
   <h5>Will you attend?</h5>
@@ -48,13 +49,14 @@ Gleaning Details
   <div class="admin-controls">
   {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
   {% if not glean.happened %}
-  
-  <a href="{% url 'announce:announceglean' glean.id %}" class="btn btn-danger">Create Announcement</a> <a href="{% url 'gleanevent:editglean' glean.id %}"class="btn btn-warning">Edit Glean</a>
-
+<p>
+  <a href="{% url 'announce:announceglean' glean.id %}" class="btn btn-primary">Create Announcement</a> <a href="{% url 'gleanevent:editglean' glean.id %}"class="btn btn-warning">Edit Glean</a>
+</p>
+<p>
   <a href="{% url 'gleanevent:postglean' glean.id %}" class="btn btn-danger">
     Enter Data
   </a>
-  
+</p>
   {% endif %}
   {% endif %}
   </div>
@@ -136,4 +138,4 @@ google.maps.event.addDomListener(window, 'load', codeAddress);
 {% endif %}
 </div>
 
-{% endblock content %}
+{% endblock body %}

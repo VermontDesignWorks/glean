@@ -3,13 +3,17 @@
 {% block title %}
 New Glean!
 {% endblock title %}
+
+
+{% block heading %}
+<h3>New Glean Form</h3>
+{% endblock heading %}
+
+
 {% block content %}
-<h1>New Glean Form</h1>
 <form action="/glean/new/" method="post">
 {% csrf_token %}
 {% include 'gleanevent/gleanform.html' %}
 <input type="submit" value="Submit" />
 </form>
-
-
 {% endblock content %}

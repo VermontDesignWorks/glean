@@ -1,5 +1,11 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.1.3a - "Abraham the Grouch"
+*Reversed Body/Content tags in all templates, should allow for 'helper text' when filling out forms
+*added zipcodes and did legwork for farm/farmlocation/gleanaddress trees
+*cleaned up some model/form requirements and other low-hanging fruit
+*began 0.1.3 cycle, Abraham the Grouch should have a lot of changes before we're done with him
+
 Release 0.1.2 - "Prettiest Pangolin"
 *Massive Beautifying Campaign, affecting entire site
 *Calendar Implemented

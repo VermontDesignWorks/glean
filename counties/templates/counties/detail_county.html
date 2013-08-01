@@ -3,8 +3,10 @@
 {% block title %}
 {{county.name}} Details
 {% endblock %}
+{% block heading %}
+<h3>{{county.name}} Details</h3>
+{% endblock heading %}
 {% block content %}
-<h1>{{county.name}} Details</h1>
 <a href="{% url 'counties:editcounty' county.id %}" class="btn btn-warning">edit</a>
 <p>{{county.description}}</p>
 <ul>

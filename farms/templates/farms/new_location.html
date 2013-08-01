@@ -3,8 +3,14 @@
 {% block title %}
 New Location for {{farm.name}}!
 {% endblock title %}
+
+
+{% block heading %}
+<h3>New Location</h3>
+{% endblock heading %}
+
+
 {% block content %}
-<h1>Edit Location</h1>
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'farms/farmform.html' %}

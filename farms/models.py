@@ -21,16 +21,18 @@ class Farm(models.Model):
 	farm_type = models.CharField(choices=FARM_TYPE, max_length=20)
 	description = models.TextField(blank=True)
 
-	physical_address_one = models.CharField('Physical Address (line one)', max_length=200, blank=True)
-	physical_address_two = models.CharField('Physical Address (line two)',max_length=200, blank=True)
-	physical_city = models.CharField('Physical Address (City)', max_length=200, blank=True)
-	physical_state = models.CharField('Physical Address (State, Two Letter Code)', max_length=2, blank=True)
+	address_one = models.CharField('Physical Address (line one)', max_length=200, blank=True)
+	address_two = models.CharField('Physical Address (line two)',max_length=200, blank=True)
+	city = models.CharField('Physical Address (City)', max_length=200, blank=True)
+	state = models.CharField("Physical Address (State)",choices=STATES, default="VT", max_length=2, blank=True)
+	zipcode = models.CharField('Physical Address Zip Code', max_length=11, blank=True)
 	physical_is_mailing = models.BooleanField('Physical Address is Mailing Address', default=True)
 
 	mailing_address_one = models.CharField('Mailing Address (line one)', max_length=200, blank=True)
 	mailing_address_two = models.CharField('Mailing Address (line two)',max_length=200, blank=True)
 	mailing_city = models.CharField('Mailing Address (City)', max_length=200, blank=True)
 	mailing_state = models.CharField('Mailing Address (State)',choices=STATES, max_length=2, blank=True)
+	mailing_zip = models.CharField('Mailing Address Zipcode', max_length=11, blank=True)
 
 	phone_1 = models.CharField('Primary phone', max_length=200, blank=True)
 	phone_1_type = models.CharField('Primary Phone Type',choices=LINE_TYPE,max_length=10,blank=True)
@@ -65,6 +67,13 @@ class FarmLocation(models.Model):
 	description = models.TextField(blank=True)
 	directions = models.TextField(blank=True)
 	counties = models.ManyToManyField(County, blank=True, null=True)
+
+	address_one = models.CharField('Address (line one)', max_length=200, blank=True)
+	address_two = models.CharField('Address (line two)',max_length=200, blank=True)
+	city = models.CharField('Address (City)', max_length=200, blank=True)
+	state = models.CharField("State",choices=STATES, default="VT", max_length=2, blank=True)
+	zipcode = models.CharField('Address Zip Code', max_length=11, blank=True)
+	is_mailing = models.BooleanField('Address is Mailing Address', default=True)
 
 	def __unicode__(self):
 		return self.farm.name + ' - ' + self.name

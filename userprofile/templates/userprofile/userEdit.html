@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}
-Additional Details
+Edit User
 {% endblock %}
+
+{% block heading %}
+	<h3>Edit your user details</h3>
+{% endblock heading %}
+
+
 {% block content %}
 <form method="POST">
-	<h2>Edit your user details</h2>
 	<span>{{form.errors}}&nbsp;</span>
 	{% csrf_token %}
 	{% include 'userprofile/profileform.html' %}

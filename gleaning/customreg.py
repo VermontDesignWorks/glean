@@ -22,7 +22,7 @@ class ExtendedRegistrationForm(RegistrationForm):
 	phone = forms.CharField(label="Primary Phone", max_length=200)
 	phone_type = forms.ChoiceField(label="Phone Type", choices=PHONE_TYPE,initial='1')
 	preferred_method = forms.ChoiceField(label="How Should We Contact You?",choices=PREFERRED_CONTACT,initial='1')
-	member_organization = forms.ModelChoiceField(queryset=MemOrg.objects.all())
+	#member_organization = forms.ModelChoiceField(queryset=MemOrg.objects.all())
 
 	ecfirst_name = forms.CharField(label="Emergency Contact First Name", max_length=200)
 	eclast_name = forms.CharField(label="Emergency Contact Last Name", max_length=200)
@@ -83,7 +83,7 @@ class MyRegistrationView(RegistrationView):
 			eclast_name=form.cleaned_data['eclast_name'],
 			ecrelationship=form.cleaned_data['ecrelationship'],
 			user=user,
-			member_organization=form.cleaned_data['member_organization'],
+			#member_organization=form.cleaned_data['member_organization'],
 			)
 		profile.save()
 		for county in form.cleaned_data['counties']:

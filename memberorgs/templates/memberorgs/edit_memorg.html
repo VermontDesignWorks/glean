@@ -3,6 +3,11 @@
 {% block title %}
 Edit {{memorg.name}}
 {% endblock title %}
+
+{% block heading %}
+<h3>Edit Member Organization</h3>
+{% endblock heading %}
+
 {% block content %}
 	<form method="post" action="">
 		{% csrf_token %}

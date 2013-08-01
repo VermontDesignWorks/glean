@@ -59,6 +59,9 @@ AGE_RANGES = (
 
 STATES = (
 	('VT', 'Vermont'),
+	('NH', 'New Hampshire'),
+	('MA', 'Massachusetts'),
+	('NY', 'New York')
 )
 
 DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']

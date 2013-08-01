@@ -127,7 +127,7 @@ ROOT_URLCONF = 'gleaning.urls'
 WSGI_APPLICATION = 'gleaning.wsgi.application'
 
 try:
-	import development.production
+	import development
 	TEMPLATE_DIRS = (
 		development.templatedir,
 		)

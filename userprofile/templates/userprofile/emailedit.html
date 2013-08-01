@@ -2,6 +2,10 @@
 {% load url from future %}
 {% block title %}Change your Email{% endblock title %}
 
+{% block heading %}
+<h3>Change your Email</h3>
+{% endblock heading %}
+
 {% block content %}
 <form method="post" action="">
 	{% if error %}{{error}}<br />{% else %}&nbsp;<br />{% endif %}
@@ -11,6 +15,6 @@
 </form>
 {% endblock content %}
 
-{% block related-content %}
+{% block related %}
 Be sure to double check your spelling!
-{% endblock related-content %}
+{% endblock related %}

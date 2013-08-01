@@ -18,6 +18,7 @@ class Profile(models.Model):
 	address = models.CharField("Address (line one)", max_length=200, blank=True)
 	city = models.CharField("City", max_length=200, blank=True)
 	state = models.CharField("State", max_length=2, choices=STATES, default='VT')
+	zipcode = models.CharField("Zipcode", max_length=11, blank=True, null=True)
 	counties = models.ManyToManyField(County, blank=True, null=True, related_name='people')
 	age = models.CharField("Age", max_length=200,
 							choices=AGE_RANGES,
@@ -26,13 +27,13 @@ class Profile(models.Model):
 	phone_type = models.CharField("Phone Type", choices=PHONE_TYPE, max_length=1, default='1')
 	mo_emails_only = models.BooleanField(default=False, editable=False)
 	preferred_method = models.CharField(choices=PREFERRED_CONTACT, max_length=1, default='1')
-	member_organization = models.ForeignKey(MemOrg)
-	secondary_member_organizations = models.ManyToManyField(MemOrg, related_name="secondary_member_organization", null=True, editable=False)
+	member_organization = models.ForeignKey(MemOrg, blank=True, null=True, editable=False)
+	#secondary_member_organizations = models.ManyToManyField(MemOrg, related_name="secondary_member_organization", null=True, editable=False)
 
-	ecfirst_name = models.CharField("Emergency Contact First Name", max_length=200, blank=True)
-	eclast_name = models.CharField("Emergency Contact Last Name", max_length=200, blank=True)
-	ecphone = models.CharField("Emergency Contact Phone", max_length=200, blank=True)
-	ecrelationship = models.CharField("Relationship", max_length=200, blank=True)
+	ecfirst_name = models.CharField("Emergency Contact First Name", max_length=200)
+	eclast_name = models.CharField("Emergency Contact Last Name", max_length=200)
+	ecphone = models.CharField("Emergency Contact Phone", max_length=200)
+	ecrelationship = models.CharField("Relationship", max_length=200)
 
 	rsvped = models.IntegerField(editable=False, default=0)
 	attended = models.IntegerField(editable=False, default=0)

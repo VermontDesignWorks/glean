@@ -3,8 +3,13 @@
 {% block title %}
 Edit {{Farm.name}}
 {% endblock title %}
+
+{% block heading %}
+<h3>Edit This Farm</h3>
+{% endblock heading %}
+
+
 {% block content %}
-<h1>Edit This Farm</h1>
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'farms/farmform.html' %}

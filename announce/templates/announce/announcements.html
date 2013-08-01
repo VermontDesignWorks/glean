@@ -3,9 +3,10 @@
 {% block title %}
 Announcement Index
 {% endblock title %}
-
+{% block heading %}
+<h3>Announcement Index</h3>
+{% endblock heading %}
 {% block content %}
-<div class="span6">
 	{% if announcements %}
 	{% if 'announce.uniauth' in perms %}
 		<ul>
@@ -26,10 +27,10 @@ Announcement Index
 	{% endif %}
 	{% else %}
 	<span>No Announcements :(</span>
-</div>
-<div class="span6">
-<small>To make a new announcement, go to the Glean you'd like to announce and click on the "New Announcement Button"</small>
-</div>
-
 	{% endif %}
-{% endblock content %} 
+{% endblock content %}
+{% block related %}
+<small>To make a new announcement, go to the Glean you'd like to announce and click on the "New Announcement Button"</small>
+
+
+{% endblock related %} 

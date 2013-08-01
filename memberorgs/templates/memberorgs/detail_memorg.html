@@ -3,7 +3,7 @@
 {% block title %}
 {{memorg.name}} Details
 {% endblock %}
-{% block content %}
+{% block body %}
 <h1>{{memorg.name}} Details</h1>
 {% if perms.memberorgs.auth and user.profile_set.get.member_organization == glean.member_organization or perms.memberorgs.uniauth %}
 <a href="{% url 'memorgs:editmemorg' memorg.id %}" class="btn btn-warning">edit</a>
@@ -28,4 +28,4 @@
 </ul>
 {% endif %}
 
-{% endblock %}
+{% endblock body %}
