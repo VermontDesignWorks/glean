@@ -2,7 +2,6 @@
 
 import os
 
-
 PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 LOGIN_URL = "/accounts/login"
@@ -127,12 +126,18 @@ ROOT_URLCONF = 'gleaning.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'gleaning.wsgi.application'
 
-TEMPLATE_DIRS = (
-	"/home/gregor/Documents/django/gleaning/gleaning/templates"
-	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-	# Always use forward slashes, even on Windows.
-	# Don't forget to use absolute paths, not relative paths.
-)
+try:
+	import production
+	TEMPLATE_DIRS = (
+		production.templatedir,
+		)
+except:
+	TEMPLATE_DIRS = (
+		"/home/gregor/Documents/django/gleaning/gleaning/templates"
+		# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+		# Always use forward slashes, even on Windows.
+		# Don't forget to use absolute paths, not relative paths.
+	)
 
 INSTALLED_APPS = (
 	'django.contrib.auth',

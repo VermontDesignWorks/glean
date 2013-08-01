@@ -1,14 +1,13 @@
 <<<<<<< HEAD
-gleaning/settings.p*
 *.pyc
 .pyproject
 .project
 .pydevproject
 .idea*
 .idea/*
-=======
 .idea*
 .idea/*
+gleaning/production.py
 *.pyc
 *.project
 *.*project
