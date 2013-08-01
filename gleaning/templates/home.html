@@ -5,17 +5,8 @@
 Welcome to the Gleaning Interface!
 {% endblock %}
 {% block content %}
-<div class="span2">   
 
-        <ul class="nav nav-tabs nav-stacked">
-        	{%for memorg in memberorgs %}
-	          <li class="mystacked">
-	            <a href="{% url 'memorgs:detailmemorg' memorg.id %}">{{memorg.name}}</a>
-	          </li>
-          	{% endfor %}
-        </ul>
-      </div>
-      <div class="span10">
+     <div class="span12">
 <div class="row" id="calendar" style="margin:0 auto;">
 	<style>
 	.day{width:14.158%;border:1px #e5e5e5 solid;float:left;height:250px;}

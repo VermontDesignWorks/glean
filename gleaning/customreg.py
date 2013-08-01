@@ -29,6 +29,36 @@ class ExtendedRegistrationForm(RegistrationForm):
 	ecphone = forms.CharField(label="Emergency Contact Phone", max_length=200)
 	ecrelationship = forms.CharField(label="Relationship", max_length=200)
 
+	waiver = forms.BooleanField(label="Waiver of Liability", required=True)
+	# I understand that Salvation Farms is designed to let me harvest and process surplus farm produce for donation 
+	# to vulnerable populations in Vermont through connection with local and state agencies that serve the food 
+	# and nutritionally insecure.  I understand that I must work safely and treat participating farm and kitchen 
+	# properties with respect and care.
+	# With this knowledge, I _______________________________, and anyone accompanying me, do hereby 
+	# expressly agree that all our activities shall be at our sole risk and that neither Salvation Farms volunteers or its
+	# project leaders, nor the donors whose property we enter shall be held liable for any claims, demands, injuries, 
+	# damages, actions, or causes of action whatsoever, to person or property arising out of or connected with our 
+	# participation in this farm surplus management project.
+	agreement = forms.BooleanField(label="Volunteer Agreement", required=True)
+	# seriously?
+	photo_release = forms.BooleanField(label="Photo Release")
+	# I, ____________________, hereby authorize Salvation Farms permission to use my likeness in a photograph in 
+	# any and all of its publications, including but not limited to all Salvation Farms printed and digital publications.  
+	# I understand and agree that any photograph using my likeness will become property of Salvation Farms and 
+	# will not be returned.
+	# I acknowledge that since my participation with Salvation Farms is voluntary, I will receive no financial 
+	# compensation.
+	# I hereby irrevocably authorize Salvation Farms to edit, alter, copy, exhibit, publish or distribute photos for 
+	# purposes of publicizing Salvation Farms programs or for any other lawful purpose.  In addition, I waive the 
+	# tight to inspect or approve the finished product, including written or electronic copy, wherein my likeness 
+	# appears.  Additionally, I waive any tight to royalties or other compensation arising or related to the use of 
+	# photographs.
+	# I hereby hold harmless and release and forever discharge Salvation Farms from all claims, demands, and 
+	# causes of action which I, my heirs, representative, executors, administrators, or any other person acting on my 
+	# behalf or on behalf of my estate have or may have by reason of this authorization.
+	# I am at least 18 years of age and am competent to contract in my own name. I have read this release before 
+	# signing below and I fully understand the contents, meaning and impact of this release.
+
 
 class MyRegistrationView(RegistrationView):
 	form_class = ExtendedRegistrationForm

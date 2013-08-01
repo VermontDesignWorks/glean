@@ -40,6 +40,10 @@ class Profile(models.Model):
 	
 	accepts_email = models.BooleanField(default=True, editable=False)
 	unsubscribe_key = models.CharField("Unsubscribe key, for emails", max_length=30, blank=True, null=True, editable=False)
+
+	waiver = models.BooleanField()
+	agreement = models.BooleanField()
+	photo_release = models.BooleanField()
 			
 	def __unicode__(self):
 		return u'%s %s' % (self.user, self.address)

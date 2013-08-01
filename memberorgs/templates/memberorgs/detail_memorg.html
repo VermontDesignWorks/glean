@@ -10,10 +10,22 @@
 {% endif %}
 {{memorg.description|linebreaks}}
 
-Members:
+<h5>Members:</h5>
 <ul>
 {% for person in memorg.profile_set.all %}
 <li>{{person.first_name}} {{person.last_name}}</li>
 {% endfor %}
 </ul>
+<h5>Gleans:</h5>
+<ul>
+	{% if memorg.glean_set.all %}
+
+{% for glean in memorg.glean_set.all %}
+<li><a href="{% url 'gleanevent:detailglean' glean.id %}">{{glean.date}} - {{glean.title}}</a></li>
+{% endfor %}
+{% else %}
+<li>No Gleans yet :(</li>
+</ul>
+{% endif %}
+
 {% endblock %}
