@@ -127,9 +127,9 @@ ROOT_URLCONF = 'gleaning.urls'
 WSGI_APPLICATION = 'gleaning.wsgi.application'
 
 try:
-	import production
+	import development.production
 	TEMPLATE_DIRS = (
-		production.templatedir,
+		development.templatedir,
 		)
 except:
 	TEMPLATE_DIRS = (
