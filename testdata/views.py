@@ -94,18 +94,9 @@ def delete(request):
 
 def index(request):
 
-	person = User.objects.create_user('Vista@Salvation', 'vista@salvation.org', 'password')
-	vol = Group.objects.get(name="Salvation Farms Administrator")
-	person.groups.add(vol)
-	memorg = MemOrg.objects.get(name="MemberOrg0")
-	userprof = Profile(user=person, first_name = 'Marcella', last_name="Houghton", member_organization=memorg)
-	userprof.save()
-	counties = County.objects.all()
-	for county in counties:
-		userprof.counties.add(county)
-	userprof.save()
+	
 
-	return HttpResponse('worked')
+	#return HttpResponse('worked')
 	if not Group.objects.all():
 		vol = Group(name="Volunteer")
 		vol.save()
@@ -222,6 +213,19 @@ def index(request):
 
 	return HttpResponse("Your data has been created. <a href='/'>Go home.</a>")
 
+def accounts(request):
+	#person = User.objects.create_user('Vista@Salvation', 'vista@salvation.org', 'password')
+	#person.save()
+	person = User.objects.get(username='Vista@Salvation')
+	vol = Group.objects.get(name="Salvation Farms Administrator")
+	person.groups.add(vol)
+	memorg = MemOrg.objects.get(name="MemberOrg0")
+	userprof = Profile(user=person, first_name = 'Marcella', last_name="Houghton", member_organization=memorg)
+	userprof.save()
+	counties = County.objects.all()
+	for county in counties:
+		userprof.counties.add(county)
+	return HttpResponse('that all worked')
 
 # class Template(models.Model):
 # 	template_name = models.CharField(max_length=40, unique=True)

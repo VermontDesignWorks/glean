@@ -12,6 +12,8 @@ urlpatterns = patterns('',
 	url(r'^(?P<announce_id>\d+)/delete$', views.deleteAnnounce, name='deleteannounce'),
 	url(r'^(?P<announce_id>\d+)/edit$', views.editAnnounce, name='editannounce'),
 	url(r'^(?P<announce_id>\d+)/phone$', views.phoneAnnounce, name='phoneannounce'),
+	url(r'^(?P<announce_id>\d+)/send$', views.sendAnnounce, name='sendannounce'),
+	url(r'^(?P<announce_id>\d+)/htmlemail$', views.HTMLemail, name='htmlemail'),
 
 
 	#==================# Template Urls #==================#

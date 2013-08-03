@@ -112,7 +112,7 @@ def weave_template_and_body_and_glean(template, announcement, glean):
 		'{{content}}':announcement.message,
 		'{{glean.title}}':glean.title, 
 		'{{glean.description}}':glean.description,
-		'{{info}}':glean_link,
+		#'{{info}}':glean_link,
 	}
 	returnable = template.body
 	for key, value in replace.iteritems():
@@ -128,7 +128,7 @@ def weave_template_and_body_and_glean(template, announcement, glean):
 	return returnable
 
 #== Final Weave, puts per-user unsubscribe link into email ==#
-def weave_unsubscribe(body, userprofile):
+def weave_unsubscribe(body, userprofile,announce):
 	site = Site.objects.get(pk=1)
 	returnable = body
 	key = '{{unsubscribe}}'
@@ -141,28 +141,41 @@ def weave_unsubscribe(body, userprofile):
 		userprofile.unsubscribe_key = value
 		userprofile.save()
 	value = "<a href='" + site.domain+ str(reverse('announce:unsubscribelink', args=(value,)))+"'>Unsubscribe</a>"
-
-	if body.find(key) != -1:
-		try:
-			start = returnable.find(key)
-			finish = returnable.find(key)+len(key)
-			returnable = returnable[:start] + value + returnable[finish:]
-		except: #in the case that the key ends the document
-			start = returnable.find(key)
-			finish = returnable.find(key)+len(key)
-			returnable = returnable[:start] + value
+	glean_link = "<a href='" + site.domain + str(reverse('gleanevent:detailglean', args=(announce.glean.id,))) + "'>Glean Info</a>"
+	replace = {
+		'{{content}}':announce.message,
+		'{{glean.title}}':announce.glean.title, 
+		'{{glean.description}}':announce.glean.description,
+		'{{info}}':glean_link,
+		'{{unsubscribe}}': value,
+	}
+	returnable = announce.template.body
+	for key, value in replace.iteritems():
+		if returnable.find(key) != -1:
+			try:
+				start = returnable.find(key)
+				finish = returnable.find(key)+len(key)
+				returnable = returnable[:start] + value + returnable[finish:]
+			except: #in the case that the key ends the document
+				start = returnable.find(key)
+				finish = returnable.find(key)+len(key)
+				returnable = returnable[:start] + value
 	return returnable
 
 #== Mailing Logic ==#
 def mail_from_source(source, body, announcement):
 	mailed = []
+	if announcement.title:
+		subject = announcement.title
+	else:
+		subject = announcement.glean.title
 	for county in source.counties.all():
 		for recipient in county.people.all():
 			
 			if recipient not in mailed and recipient.accepts_email and recipient.preferred_method == '1':
 				mailed.append(recipient)
-				text = weave_unsubscribe(body,recipient)
-				msg = EmailMessage(announcement.title, text, 'Salvation Farms', [recipient.user.email])
+				text = weave_unsubscribe(body,recipient,announcement)
+				msg = EmailMessage(subject, text, 'Salvation Farms', [recipient.user.email])
 				msg.content_subtype = "html"
 				msg.send()
 				#send_mail(announcement.title, text, 'Salvation Farms', [recipient.user.email], fail_silently=False)
@@ -237,9 +250,17 @@ def announceGlean(request, glean_id):
 	if not request.user.has_perm('announce.uniauth') and profile.member_organization != glean.member_organization:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 	if not glean.happened():
-		new_save = Announcement(glean=glean, member_organization=profile.member_organization)
-		new_save.save()
-		return HttpResponseRedirect(reverse('announce:combinedannounce', args=(new_save.id,)))
+		empty_announcements = Announcement.objects.filter(title='', message='', sent=False)
+		for ann in empty_announcements:
+			ann.delete()
+		query = Template.objects.filter(member_organization = profile.member_organization, default=True)
+		if query.exists():
+			def_template = query.get()
+			new_save = Announcement(title='', message='', glean=glean, member_organization=profile.member_organization, template=def_template)
+			new_save.save()
+			return HttpResponseRedirect(reverse('announce:combinedannounce', args=(new_save.id,)))
+		else:
+			return HttpResponse('no default template selected! You need a template to announce a glean!')
 		# if request.method == 'POST':
 		# 	new_save = Annoucement(glean=glean)
 		# 	new_save.save()
@@ -306,22 +327,52 @@ def combinedAnnounce(request, announce_id):
 	profile = request.user.profile_set.get()
 	if not request.user.has_perm('announce.uniauth') and profile.member_organization != announce.member_organization:
 		return HttpResponseRedirect(reverse('announce:detailannounce', args=(announce_id,)))
+	glean = announce.glean
+	#return HttpResponse(announce.template.body)
+	body = weave_template_and_body_and_glean(announce.template, announce, glean)
 	templates = Template.objects.filter(member_organization=profile.member_organization)
 	source = primary_source(announce.glean)
 	if request.method == 'POST':
-		pass
-	# 	form = AnnouncementForm(request.POST)
-	# 	if form.is_valid():
-	# 		new_save = form.save(commit=False)
-	# 		new_save.member_organization = announce.member_organization
-	# 		new_save.glean = announce.glean
-	# 		new_save.datetime = announce.datetime
-	# 		new_save.id = announce.id
-	# 		new_save.save()
-	# 		return HttpResponseRedirect(reverse('announce:detailannounce', args=(new_save.id,)))
-	# 	else:
-	# 		return render(request, 'announce/combined_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients, 'source':source})
+		
+		form = AnnouncementForm(request.POST)
+		if form.is_valid():
+			new_save = form.save(commit=False)
+			new_save.member_organization = announce.member_organization
+			new_save.glean = announce.glean
+			new_save.datetime = announce.datetime
+			new_save.id = announce.id
+			new_save.save()
+			return HttpResponseRedirect(reverse('announce:combinedannounce', args=(new_save.id,)))
+		else:
+			return render(request, 'announce/combined_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients, 'source':source})
 	else:
 		templates = Template.objects.all()
 		form = AnnouncementForm(instance=announce)
-		return render(request, 'announce/combined_announce.html', {'glean':announce.glean, 'announcement':announce,'templates':templates, 'form':form, 'source':source})
+		return render(request, 'announce/combined_announce.html', {'glean':announce.glean, 'announcement':announce,'templates':templates, 'form':form, 'source':source, 'test':body})
+
+@permission_required('announce.auth')
+def sendAnnounce(request, announce_id):
+	announcement = get_object_or_404(Announcement, pk=announce_id)
+	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != announcement.member_organization:
+		return HttpResponseRedirect(reverse('announce:announcements'))
+	if request.method == 'POST' and announcement.sent == False:
+		glean = announcement.glean
+		body = weave_template_and_body_and_glean(announcement.template, announcement, glean)
+		source = primary_source(announcement.glean)
+		mail_from_source(source, body, announcement)
+		announcement.sent = True
+		announcement.sent_by = request.user
+		announcement.save()
+		return HttpResponseRedirect(reverse('announce:detailannounce', args=(announce_id,)))
+	else:
+		return HttpResonseRedirect(reverse('announce:combinedannounce', args=(annouce_id,)))
+
+def HTMLemail(request, announce_id):
+	announce = get_object_or_404(Announcement, pk=announce_id)
+	glean = announce.glean
+	body = weave_template_and_body_and_glean(announce.template, announce, glean)
+	if announce.title:
+		subject = announce.title
+	else:
+		subject = glean.title
+	return render(request, 'announce/HTMLemail.html', {'body':body, 'subject':subject})

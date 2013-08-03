@@ -1,3 +1,6 @@
+import datetime
+from django.utils import timezone
+
 from django.db import models
 from django.forms import ModelForm
 
@@ -36,9 +39,9 @@ class Announcement(models.Model):
 	phone_recipients = models.ManyToManyField(User, null=True, blank=True, related_name="Phone List", editable=False)
 	datetime = models.DateTimeField(auto_now_add=True, editable=False)
 	glean = models.ForeignKey(GleanEvent, blank=True, null=True, editable=False)
-	title = models.CharField(max_length=50, null=True, blank=True)
-	message = models.TextField(null=True, blank=True)
-	template = models.ForeignKey(Template, blank=True, null=True)
+	title = models.CharField("Add a Custom Subject", max_length=50, null=True, blank=True)
+	message = models.TextField("Add a Custom Message",null=True, blank=True)
+	template = models.ForeignKey( Template, blank=True, null=True, verbose_name="Email Template")
 	sent = models.BooleanField(default=False, editable=False)
 	sent_by = models.ForeignKey(User, editable=False, null=True)
 	member_organization = models.ForeignKey(MemOrg, editable=False, verbose_name="Member Organization")
@@ -50,7 +53,11 @@ class Announcement(models.Model):
 		)
 
 	def __unicode__(self):
-		return self.datetime.strftime('%y:%m:%d %H:%M:%S') + self.member_organization
+		return self.datetime.strftime('%y:%m:%d %H:%M:%S') + self.member_organization.name
+
+	def active(self):
+		if self.datetime + datetime.timedelta(hours=3) < time.now():
+			return True
 
 class AnnouncementForm(ModelForm):
 	class Meta:

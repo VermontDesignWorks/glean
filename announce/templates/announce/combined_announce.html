@@ -8,6 +8,8 @@
 
 {% block heading %}
 <h2>Announcement for "{{glean.title}}"</h2>
+<p><small><a href="{% url 'announce:deleteannounce' announcement.id %}" class="">(Delete This Announcement)</a></small></p>
+<br />
 {% endblock heading %}
 
 
@@ -15,21 +17,28 @@
 {% if announcement.sent %}
 <h4>Sent!</h4>
 {% else %}
-<form method="POST" action="" style="display:inline-block;">{% csrf_token %}
+<form method="POST" action="{% url 'announce:sendannounce' announcement.id %}" style="display:inline-block;">{% csrf_token %}
 	<input type="submit" class="btn btn-danger" value="  SEND!!  " data-loading-text="Sending...">
+
 </form>
 
-<p><small><a href="{% url 'announce:deleteannounce' announcement.id %}" class="">(Delete This Announcement)</a></small></p>
 
 {% endif %}
-	<div class="previewpane" style="">{{test|safe}}</div>
+<h4 style="text-align:center;">Preview of Email</h4>
+	<iframe width="100%" height="400px" src="{% url 'announce:htmlemail' announcement.id %}"></iframe>
+	
 {% endblock content %}
 
 
 {% block related %}
-<form>
+<br />
+<br />
+<br />
+<br />
+<form method="post" action="">
+	{% csrf_token %}
 	{% include 'announce/announceform.html' %}
-	<input class="btn btn-primary" type="submit" value="Commit These Edits"></input>
+	<input class="btn btn-primary" type="submit" value="Commit These Edits">
 </form>
 	{% include 'announce/recipients.html' %}
 {% endblock related %}

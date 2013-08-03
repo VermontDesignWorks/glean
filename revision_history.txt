@@ -1,5 +1,11 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.1.3b - "Abraham the Grouch"
+*Added a functional Edit/New/Display page for Announcements
+*Fixed base template and email's GleanInfo link
+*created cleanup code to get rid of empty announcements... and a workaround for the bug that crops up (signals!!)
+*that seems to be it, tbh
+
 Release 0.1.3a - "Abraham the Grouch"
 *Reversed Body/Content tags in all templates, should allow for 'helper text' when filling out forms
 *added zipcodes and did legwork for farm/farmlocation/gleanaddress trees
