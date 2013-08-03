@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load url from future %}
+
+
+{% block title %}Announcement for {{glean.title}}
+{% endblock title %}
+
+
+{% block heading %}
+<h2>Announcement for "{{glean.title}}"</h2>
+{% endblock heading %}
+
+
+{% block content %}
+{% if announcement.sent %}
+<h4>Sent!</h4>
+{% else %}
+<form method="POST" action="" style="display:inline-block;">{% csrf_token %}
+	<input type="submit" class="btn btn-danger" value="  SEND!!  " data-loading-text="Sending...">
+</form>
+
+<p><small><a href="{% url 'announce:deleteannounce' announcement.id %}" class="">(Delete This Announcement)</a></small></p>
+
+{% endif %}
+	<div class="previewpane" style="">{{test|safe}}</div>
+{% endblock content %}
+
+
+{% block related %}
+<form>
+	{% include 'announce/announceform.html' %}
+	<input class="btn btn-primary" type="submit" value="Commit These Edits"></input>
+</form>
+	{% include 'announce/recipients.html' %}
+{% endblock related %}

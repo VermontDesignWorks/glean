@@ -233,24 +233,32 @@ def Announcements(request):
 @permission_required('announce.auth')
 def announceGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
-	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != glean.member_organization:
+	profile = request.user.profile_set.get()
+	if not request.user.has_perm('announce.uniauth') and profile.member_organization != glean.member_organization:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 	if not glean.happened():
-		if request.method == 'POST':
-			form = AnnouncementForm(request.POST)
-			if form.is_valid():
-				new_save = form.save(commit=False)
-				new_save.member_organization = glean.member_organization
-				new_save.glean = glean
-				new_save.save()
-				return HttpResponseRedirect(reverse('announce:detailannounce', args=(new_save.id,)))
-			else:
-				HttpResponse('form was not vaild')
-		else:
-			templates = Template.objects.all()
-			form = AnnouncementForm()
-			source = primary_source(glean)
-			return render(request, 'announce/announce.html', {'glean':glean, 'templates':templates, 'form':form, 'source':source})
+		new_save = Announcement(glean=glean, member_organization=profile.member_organization)
+		new_save.save()
+		return HttpResponseRedirect(reverse('announce:combinedannounce', args=(new_save.id,)))
+		# if request.method == 'POST':
+		# 	new_save = Annoucement(glean=glean)
+		# 	new_save.save()
+		# 	return HttpResponseRedirect(reverse('announce:combinedannounce', args=(new_save.id,)))
+
+		# 	form = AnnouncementForm(request.POST)
+		# 	if form.is_valid():
+		# 		new_save = form.save(commit=False)
+		# 		new_save.member_organization = glean.member_organization
+		# 		new_save.glean = glean
+		# 		new_save.save()
+		# 		return HttpResponseRedirect(reverse('announce:detailannounce', args=(new_save.id,)))
+		# 	else:
+		# 		HttpResponse('form was not vaild')
+		# else:
+		# 	templates = Template.objects.all()
+		# 	form = AnnouncementForm()
+		# 	source = primary_source(glean)
+		# 	return render(request, 'announce/announce.html', {'glean':glean, 'templates':templates, 'form':form, 'source':source})
 	else:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id)))
 
@@ -258,9 +266,10 @@ def announceGlean(request, glean_id):
 @permission_required('announce.auth')
 def editAnnounce(request, announce_id):
 	announce = get_object_or_404(Announcement, pk=announce_id)
-	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != announce.member_organization:
+	profile = request.user.profile_set.get()
+	if not request.user.has_perm('announce.uniauth') and profile.member_organization != announce.member_organization:
 		return HttpResponseRedirect(reverse('announce:detailannounce', args=(announce_id,)))
-	templates = Template.objects.all()
+	templates = Template.objects.all(member_organization=profile.member_organization)
 	source = primary_source(announce.glean)
 	if request.method == 'POST':
 		form = AnnouncementForm(request.POST)
@@ -290,3 +299,29 @@ def unsubscribeLink(request, key):
 	prof.unsubscribe_key = None
 	prof.save()
 	return render(request, 'announce/unsubscribe.html')
+
+@permission_required('announce.auth')
+def combinedAnnounce(request, announce_id):
+	announce = get_object_or_404(Announcement, pk=announce_id)
+	profile = request.user.profile_set.get()
+	if not request.user.has_perm('announce.uniauth') and profile.member_organization != announce.member_organization:
+		return HttpResponseRedirect(reverse('announce:detailannounce', args=(announce_id,)))
+	templates = Template.objects.filter(member_organization=profile.member_organization)
+	source = primary_source(announce.glean)
+	if request.method == 'POST':
+		pass
+	# 	form = AnnouncementForm(request.POST)
+	# 	if form.is_valid():
+	# 		new_save = form.save(commit=False)
+	# 		new_save.member_organization = announce.member_organization
+	# 		new_save.glean = announce.glean
+	# 		new_save.datetime = announce.datetime
+	# 		new_save.id = announce.id
+	# 		new_save.save()
+	# 		return HttpResponseRedirect(reverse('announce:detailannounce', args=(new_save.id,)))
+	# 	else:
+	# 		return render(request, 'announce/combined_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients, 'source':source})
+	else:
+		templates = Template.objects.all()
+		form = AnnouncementForm(instance=announce)
+		return render(request, 'announce/combined_announce.html', {'glean':announce.glean, 'announcement':announce,'templates':templates, 'form':form, 'source':source})

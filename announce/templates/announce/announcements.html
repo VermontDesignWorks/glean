@@ -12,7 +12,7 @@ Announcement Index
 		<ul>
 			{% for announce in announcements %}
 				<li>
-					<a href="{% url 'announce:detailannounce' announce.id %}">{{announce.member_organization}} - {{ announce.title }}</a>
+					<a href="{% url 'announce:combinedannounce' announce.id %}">{{announce.member_organization}} - {{ announce.title }}</a>
 				</li>
 			{% endfor %}
 		</ul>
@@ -20,7 +20,7 @@ Announcement Index
 		<ul>
 			{% for announce in announcements %}
 				<li>
-					<a href="{% url 'announce:detailannounce' announce.id %}">{{ announce.title }}</a>
+					<a href="{% url 'announce:combinedannounce' announce.id %}">{{ announce.title }}</a>
 				</li>
 			{% endfor %}
 		</ul>

@@ -11,7 +11,8 @@ class Template(models.Model):
 	template_name = models.CharField(max_length=40)
 	member_organization = models.ForeignKey(MemOrg, editable=False)
 	body = models.TextField()
-	
+	default = models.BooleanField(default=False)
+
 	def __unicode__(self):
 		return self.member_organization.name + ' - ' + self.template_name
 
@@ -35,8 +36,8 @@ class Announcement(models.Model):
 	phone_recipients = models.ManyToManyField(User, null=True, blank=True, related_name="Phone List", editable=False)
 	datetime = models.DateTimeField(auto_now_add=True, editable=False)
 	glean = models.ForeignKey(GleanEvent, blank=True, null=True, editable=False)
-	title = models.CharField(max_length=50)
-	message = models.TextField()
+	title = models.CharField(max_length=50, null=True, blank=True)
+	message = models.TextField(null=True, blank=True)
 	template = models.ForeignKey(Template, blank=True, null=True)
 	sent = models.BooleanField(default=False, editable=False)
 	sent_by = models.ForeignKey(User, editable=False, null=True)
@@ -49,7 +50,7 @@ class Announcement(models.Model):
 		)
 
 	def __unicode__(self):
-		return self.datetime.strftime('%y:%m:%d %H:%M:%S') + ' ' + self.glean.title + ' ' + self.title
+		return self.datetime.strftime('%y:%m:%d %H:%M:%S') + self.member_organization
 
 class AnnouncementForm(ModelForm):
 	class Meta:
