@@ -8,7 +8,9 @@
 
 {% block heading %}
 <h2>Announcement for "{{glean.title}}"</h2>
+{% if not announcement.sent %}
 <p><small><a href="{% url 'announce:deleteannounce' announcement.id %}" class="">(Delete This Announcement)</a></small></p>
+{% endif %}
 <br />
 {% endblock heading %}
 
@@ -24,21 +26,20 @@
 
 
 {% endif %}
-<h4 style="text-align:center;">Preview of Email</h4>
+<h4 style="text-align:center;">Preview of Announcement Email</h4>
+<h3>Subject Line: {{subject}}</h3>
 	<iframe width="100%" height="400px" src="{% url 'announce:htmlemail' announcement.id %}"></iframe>
 	
 {% endblock content %}
 
 
 {% block related %}
-<br />
-<br />
-<br />
-<br />
+{% include 'announce/recipients.html' %}
+{% if not announcement.sent %}
 <form method="post" action="">
 	{% csrf_token %}
 	{% include 'announce/announceform.html' %}
-	<input class="btn btn-primary" type="submit" value="Commit These Edits">
 </form>
-	{% include 'announce/recipients.html' %}
+{% endif %}
+	
 {% endblock related %}

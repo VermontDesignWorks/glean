@@ -53,6 +53,10 @@ def newGlean(request):
 			new_save.created_by = request.user
 			new_save.member_organization = request.user.profile_set.get().member_organization
 			new_save.save()
+			form.save_m2m()
+			# for county in form.cleaned_data['counties']:
+			# 	new_save.counties.add(county)
+			# return HttpResponse(new_save.counties.all())
 			return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(new_save.id,) ))
 		return HttpResponse('form was not valid')
 			

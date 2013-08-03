@@ -327,13 +327,30 @@ def combinedAnnounce(request, announce_id):
 	profile = request.user.profile_set.get()
 	if not request.user.has_perm('announce.uniauth') and profile.member_organization != announce.member_organization:
 		return HttpResponseRedirect(reverse('announce:detailannounce', args=(announce_id,)))
-	glean = announce.glean
 	#return HttpResponse(announce.template.body)
+	glean = announce.glean
+	if announce.title:
+		subject = announce.title
+	else:
+		subject = glean.title
 	body = weave_template_and_body_and_glean(announce.template, announce, glean)
 	templates = Template.objects.filter(member_organization=profile.member_organization)
 	source = primary_source(announce.glean)
-	if request.method == 'POST':
-		
+	recipients = []
+	phone = []
+
+	for county in source.counties.all():
+		for recipient in county.people.all():
+			
+			if recipient not in recipients and recipient.accepts_email and recipient.preferred_method == '1':
+				recipients.append(recipient)
+			elif recipient.preferred_method == '2' and recipient.accepts_email and recipeint not in phone:
+				phone.append(recipient)
+
+
+
+
+	if request.method == 'POST':		
 		form = AnnouncementForm(request.POST)
 		if form.is_valid():
 			new_save = form.save(commit=False)
@@ -344,11 +361,11 @@ def combinedAnnounce(request, announce_id):
 			new_save.save()
 			return HttpResponseRedirect(reverse('announce:combinedannounce', args=(new_save.id,)))
 		else:
-			return render(request, 'announce/combined_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients, 'source':source})
+			return render(request, 'announce/combined_announce.html', {'glean':announce.glean, 'templates':templates, 'form':form, 'recipients':recipients, 'phone':phone,'source':source, 'subject':subject})
 	else:
 		templates = Template.objects.all()
 		form = AnnouncementForm(instance=announce)
-		return render(request, 'announce/combined_announce.html', {'glean':announce.glean, 'announcement':announce,'templates':templates, 'form':form, 'source':source, 'test':body})
+		return render(request, 'announce/combined_announce.html', {'glean':announce.glean, 'announcement':announce,'templates':templates, 'form':form, 'phone':phone,'recipients':recipients, 'source':source, 'test':body, 'subject':subject})
 
 @permission_required('announce.auth')
 def sendAnnounce(request, announce_id):

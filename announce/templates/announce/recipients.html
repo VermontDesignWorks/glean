@@ -3,12 +3,16 @@
 		<ul>
 
 			{% if not announcement.sent %}
-			{% for county in source.counties.all %}
-				<li><a href="{% url 'counties:detailcounty' county.id %}">{{county}}</a></li>
-				<ul>
-					<li>{{county.people.count}} Recipient{% if county.people.count > 1 %}s{% endif %}</li>
-				</ul>
-			{% endfor %}
+				{% if recipients %}
+					<li>{{recipients|length}} Email Recipient{% if not recipients|length_is:"1" %}s{% endif %} {% if phone %}and {{phone|length}} Gleaner{% if not phone|length_is:"1" %}s{% endif %} to Call{% endif %}
+				{% else %}
+					{% for county in source.counties.all %}
+						<li><a href="{% url 'counties:detailcounty' county.id %}">{{county}}</a></li>
+						<ul>
+							<li>{{county.people.count}} Recipient{% if county.people.count > 1 %}s{% endif %}</li>
+						</ul>
+					{% endfor %}
+				{% endif %}
 			{% else %}
 				<li>Emailed</li>
 				<ul><li>{{announcement.email_recipients.count}} Email Recipients</li></ul> 

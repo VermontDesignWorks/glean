@@ -25,7 +25,8 @@ Gleaning Details
 	<a class="glean-title" href="{% url 'gleanevent:detailglean' glean.id %}"><h2>{{glean.title}} {% if glean.farm %}at {{glean.farm}}{% endif %}</h2></a>
   <h4 class='glean-address'> by {{glean.member_organization}}</h4>
   <h4 class='glean-address'>{{glean.address_one}} {{glean.city}}, {{glean.state}}</h4>
-  <h3 class="glean-date">{{glean.date}} {% if glean.time %}- {{glean.time}}{% endif %}</h3>
+  <h3 class="glean-date">{{glean.date}} {% if glean.time %}- {{glean.time}}{% endif %}</h3></h3>
+
   <div class="glean-half">
   {% if not glean.happened %}
   <h5>Will you attend?</h5>
@@ -41,6 +42,7 @@ Gleaning Details
         <li>Required:{{glean.volunteers_needed}}</li>
         <li>Yays:{{glean.rsvped.count}}</li>
         <li>Nays:{{glean.not_rsvped.count}}</li>
+
       </ul>
     
   </div>
@@ -64,6 +66,7 @@ Gleaning Details
   {% if glean.description %}
 	<p>{{glean.description|linebreaks}}</p>
   {% endif %}
+  <h5>Expected Duration:{{glean.duration}}</h5>
   <div class="glean-half">
 	<h4>Directions</h4>
   <p>{{glean.render_directions|linebreaks}}</p>
