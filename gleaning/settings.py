@@ -131,7 +131,9 @@ try:
 	TEMPLATE_DIRS = (
 		development.templatedir,
 		)
+
 except:
+	PROJECT_DIR = os.path.dirname(__file__)
 	TEMPLATE_DIRS = (
 		os.path.join(PROJECT_DIR, 'templates'),
 		# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
