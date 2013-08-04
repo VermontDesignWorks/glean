@@ -37,7 +37,7 @@ class GleanEvent(models.Model):
 	instructions = models.TextField(blank=True, null=True)
 
 	volunteers_needed = models.IntegerField(blank = True, default=1)
-	duration = models.IntegerField(blank=True, default=0)
+	duration = models.CharField(max_length=30, blank=True, null=True)
 
 	farm = models.ForeignKey(Farm, blank=True, null=True)
 	farm_location = models.ForeignKey(FarmLocation, blank=True, null=True)

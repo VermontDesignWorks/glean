@@ -120,12 +120,15 @@
                       </li>
                       {% endif %}
                     </ul>
-                    <li><a href="/admin">admin login</a></li>
+
                     <ul class="nav pull-right">
                       <li id="fat-menu" class="dropdown">
                         <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">{% if user.is_anonymous %}User{% else %}{{user.username}}'s{% endif %} Options <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
                           {% if user.is_authenticated %}
+                          {% if user.is_superuser %}
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="/admin">Admin Controls</a></li>
+                          {% endif %}
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:selfedit' %}">Edit Profile</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_password_change' %}">Change Password</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:emailedit' %}">Change Email</a></li>
@@ -136,7 +139,6 @@
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_password_reset' %}">Reset Password</a></li>
                           <li role="presentation" class="divider"></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:registration_register' %}">Register New User</a></li>
-
 
                           {% endif %}
                         </ul>
