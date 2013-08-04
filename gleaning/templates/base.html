@@ -120,6 +120,7 @@
                       </li>
                       {% endif %}
                     </ul>
+                    <li><a href="/admin">admin login</a></li>
                     <ul class="nav pull-right">
                       <li id="fat-menu" class="dropdown">
                         <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">{% if user.is_anonymous %}User{% else %}{{user.username}}'s{% endif %} Options <b class="caret"></b></a>
@@ -135,6 +136,7 @@
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_password_reset' %}">Reset Password</a></li>
                           <li role="presentation" class="divider"></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:registration_register' %}">Register New User</a></li>
+
 
                           {% endif %}
                         </ul>
