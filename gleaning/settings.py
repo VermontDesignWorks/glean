@@ -13,7 +13,7 @@ try:
 	EMAIL_HOST_PASSWORD = development.password
 except:
 	EMAIL_HOST_USER = os.environ['GMAIL_ADDRESS']
-	EMAIL_HOST_PASSWORD = os.environ['GMAIL_PASSWORD']
+	EMAIL_HOST_PASSWORD = os.environ['GMAIL_PW']
 ACCOUNT_ACTIVATION_DAYS = 7
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
