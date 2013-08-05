@@ -17,6 +17,7 @@ urlpatterns = patterns('',
 	url(r'^recipientsite/', include('recipientsite.urls', namespace="site")),
 	url(r'^distribution/', include('distro.urls', namespace="distro")),
 	url(r'^posts/', include('posts.urls', namespace="posts")),
+	url(r'^initialize/', include('initialize.urls', namespace="initialize")),
 
 	url(r'^comments/', include('django.contrib.comments.urls')),
 

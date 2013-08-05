@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.db import models
 from django.forms import ModelForm
 
@@ -21,3 +22,5 @@ class County(models.Model):
 class CountyForm(ModelForm):
 	class Meta:
 		model = County
+
+admin.site.register(County)

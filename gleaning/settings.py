@@ -162,6 +162,7 @@ INSTALLED_APPS = (
 	'recipientsite',
 	'distro',
 	'posts',
+	'initialize',
 
 	# third party apps
 	'registration',
