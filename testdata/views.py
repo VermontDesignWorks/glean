@@ -234,5 +234,5 @@ def accounts(request):
 # 	def __unicode__(self):
 # 		return self.template_name# sel
 
-def accounts(request):
+def redirect(request):
 	return HttpResponseRedirect(reverse('home'))
