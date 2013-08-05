@@ -233,3 +233,6 @@ def accounts(request):
 # 	body = models.TextField()
 # 	def __unicode__(self):
 # 		return self.template_name# sel
+
+def accounts(request):
+	return HttpResponseRedirect(reverse('home'))

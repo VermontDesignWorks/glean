@@ -7,11 +7,17 @@ PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 LOGIN_URL = "/accounts/login"
 LOGOUT_URL = "/"
 
+try:
+	import development
+	EMAIL_HOST_USER = development.user
+	EMAIL_HOST_PASSWORD = development.password
+except:
+	EMAIL_HOST_USER = os.environ['GMAIL_ADDRESS']
+	EMAIL_HOST_PASSWORD = os.environ['GMAIL_PASSWORD']
 ACCOUNT_ACTIVATION_DAYS = 7
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'gleaningcollective@gmail.com'
-EMAIL_HOST_PASSWORD = 'salvationfarms_007'
+
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = 'The Gleaning Collective <gleaningcollective@gmail.com>'
 
@@ -19,7 +25,11 @@ DEFAULT_FROM_EMAIL = 'The Gleaning Collective <gleaningcollective@gmail.com>'
 
 #AUTH_USER_MODEL = User
 
-DEBUG = True
+try:
+	import development
+	DEBUG = True
+except:
+	DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -218,7 +228,6 @@ except:
 	ALLOWED_HOSTS = ['*']
 
 	# Static asset configuration
-	import os
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 	STATIC_ROOT = 'staticfiles'
 	STATIC_URL = '/static/'
