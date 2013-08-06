@@ -28,7 +28,8 @@ class Profile(models.Model):
 	mo_emails_only = models.BooleanField(default=False, editable=False)
 	preferred_method = models.CharField(choices=PREFERRED_CONTACT, max_length=1, default='1')
 	member_organization = models.ForeignKey(MemOrg, blank=True, null=True, editable=False)
-	#secondary_member_organizations = models.ManyToManyField(MemOrg, related_name="secondary_member_organization", null=True, editable=False)
+
+	joined = models.DateTimeField(auto_now_add=True, editable=False, null = True)
 
 	ecfirst_name = models.CharField("Emergency Contact First Name", max_length=200)
 	eclast_name = models.CharField("Emergency Contact Last Name", max_length=200)
@@ -76,6 +77,14 @@ class LoginForm(forms.Form):
 
 class EmailForm(forms.Form):
 	email = forms.EmailField()
+
+class UniPromoteForm(forms.Form):
+	member_organization = forms.ModelChoiceField(queryset=MemOrg.objects.all(), label="Member Organization")
+	executive = forms.BooleanField(label="Is this person an Executive Director?", required=False)
+	promote = forms.BooleanField(label="Are you sure you want to promote this person?", required=False)
+
+class PromoteForm(forms.Form):
+	promote = forms.BooleanField(label="Are you sure you want to promote this person to Glean Coordinator?", required=False)
 
 try:
 	admin.site.register(Profile)

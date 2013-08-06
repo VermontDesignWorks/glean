@@ -2,12 +2,32 @@
 {% load url from future %}
 {% block title %}User Lists{% endblock title %}
 {% block body %}
-<h2>A list of Users</h2>
-
-
-<ul>
-{% for person in users %}
-<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.user.username}}{% if person.first_name and person.last_name %} - ({{person.first_name}} {{person.last_name}}){% endif %}</a></li>
-{% endfor %}
-</ul>
+<style>
+.user-rows{
+	border:1px #e5e5e5 solid;
+	padding:20px;
+	min-height:200px;
+}
+.row-fluid + .row-fluid{padding-top:30px;}
+</style>
+<div class="user-rows">
+<h3>Your Volunteer Rolls</h3>
+	<div class="row-fluid">
+		<div class="span4">
+			<ul>
+				{% if 'userprofile.uniauth' in perms %}
+					{% for person in users %}
+						<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}{% if person.member_organization %} - {{person.member_organization}}{% endif %}</a></li>
+						{% cycle '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div></div><div class="row-fluid"><div class="span4"><ul>' %}
+					{% endfor %}
+				{% else %}
+					{% for person in users %}
+						<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}</a></li>
+						{% cycle '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div></div><div class="row-fluid"><div class="span4"><ul>' %}
+					{% endfor %}
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</div>
 {% endblock body %}

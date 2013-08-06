@@ -19,18 +19,8 @@ from userprofile.models import Profile
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
 from django.contrib.sites.models import Site
+from functions import primary_source
 
-#==================== Recipient Logic ====================#
-
-def primary_source(glean):
-	if glean.counties.all():
-		return glean
-	elif glean.farm_location and glean.farm_location.counties.all():
-		return glean.farm_location
-	elif glean.farm and glean.farm.counties.all():
-		return glean.farm
-	else:
-		return glean
 
 #==================== Template System ====================#
 
@@ -54,8 +44,9 @@ def editTemplate(request, template_id):
 		if form.is_valid():
 			if form.cleaned_data['body'].find('{{content}}') != -1:
 				template.body = form.cleaned_data['body']
+				template.default = form.cleaned_data['default']
 				template.save()
-				return HttpResponseRedirect(reverse('announce:templates'))
+				return HttpResponseRedirect(reverse('announce:detailtemplate', args=(template.id,)))
 			else:
 				form = PartialTemplateForm(instance=newTemplate)
 				return render(request, 'announce/edit_template.html', {'form':form, 'template':template, 'error':'Need a {{content}} tag!', 'editmode':True})

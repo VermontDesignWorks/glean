@@ -21,6 +21,13 @@ from cidgets import DatePicker
 
 class GleanEvent(models.Model):
 	title = models.CharField(max_length=200)
+	date = models.DateField('Date', blank=True, null=True)
+	time = models.CharField('Time', max_length=40, blank=True, null=True)
+	farm = models.ForeignKey(Farm, blank=True, null=True)
+	farm_location = models.ForeignKey(FarmLocation, blank=True, null=True)
+	description = models.TextField(blank=True)
+	volunteers_needed = models.IntegerField(blank = True, default=1)
+	duration = models.CharField(max_length=30, blank=True, null=True)
 
 	address_one = models.CharField('Address (line one)', max_length=200, blank=True)
 	address_two = models.CharField('Address (line two)',max_length=200, blank=True)
@@ -28,19 +35,8 @@ class GleanEvent(models.Model):
 	state = models.CharField("State",choices=STATES, default="VT", max_length=2, blank=True)
 	zipcode = models.CharField('Address Zip Code', max_length=11, blank=True)
 
-	date = models.DateField('Date', blank=True, null=True)
-	time = models.CharField('Time', max_length=40, blank=True, null=True)
-	description = models.TextField(blank=True)
-	crops = models.CharField(max_length=200, blank=True)
-
-	directions = models.TextField(blank=True, null=True)
 	instructions = models.TextField(blank=True, null=True)
-
-	volunteers_needed = models.IntegerField(blank = True, default=1)
-	duration = models.CharField(max_length=30, blank=True, null=True)
-
-	farm = models.ForeignKey(Farm, blank=True, null=True)
-	farm_location = models.ForeignKey(FarmLocation, blank=True, null=True)
+	directions = models.TextField(blank=True, null=True)
 
 	created_by = models.ForeignKey(User, editable=False, related_name="created_by")
 	invited_volunteers = models.ManyToManyField(User, null=True, blank=True, related_name="invited_volunteers")

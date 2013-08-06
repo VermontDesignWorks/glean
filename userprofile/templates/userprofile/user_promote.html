@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+Promote A User
+{% endblock title %}
+
+{% block heading %}
+<h3>Promote (or demote) a User</h3>
+{% endblock heading %}
+
+{% block content %}
+	<form method="post" action="">
+		{% csrf_token %}
+		{% include 'userprofile/profileform.html' %}
+		<input type="submit" value="Go!">
+	</form>
+{% endblock content %}
+{% block related %}
+<p>Promote a user to make gleans, register farms, enter post-glean data and more.</p>
+<p>To demote a user, simply uncheck the checkbox(s) on the left and hit 'Go!'.</p>
+{% endblock %}

@@ -17,7 +17,9 @@ from memberorgs.models import MemOrg
 from constants import DAYS
 
 def home(request):
-	if not request.user.is_anonymous() and not Profile.objects.filter(user=request.user).exists():
+	if request.user.is_anonymous():
+		return render(request, 'anon_home.html', {})
+	if not Profile.objects.filter(user=request.user).exists():
 		return HttpResponseRedirect(reverse('userprofile:userdetailentry'))
 	todays_gleans = GleanEvent.objects.filter(date=datetime.date.today())
 	l = []

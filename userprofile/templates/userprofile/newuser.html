@@ -10,9 +10,23 @@ Create a New User
 
 
 {% block content %}
+<h5 class='text-success' style="text-align:center;">{{notice}}</h5>
 <form method="POST">
 	{% csrf_token %}
 	{% include 'userprofile/profileform.html' %}
 	<input type="submit" value="Create this user!">
 </form>
 {% endblock %}
+{% block related %}
+<h3>Recently added members</h3>
+{% if 'userprofile.uniauth' in perms %}
+{% for person in users %}
+<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{% if person.member_organization %}{{person.member_organization}} - {% endif %}{{person.first_name}} {{person.last_name}}</a></li>
+{% endfor %}
+{% else %}
+{% for person in users %}
+<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}</a></li>
+{% endfor %}
+{% endif %}
+</ul>
+{% endblock related %}

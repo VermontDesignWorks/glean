@@ -24,7 +24,9 @@ Gleaning Details
 <div class="span5 glean-details">
 	<a class="glean-title" href="{% url 'gleanevent:detailglean' glean.id %}"><h2>{{glean.title}} {% if glean.farm %}at {{glean.farm}}{% endif %}</h2></a>
   <h4 class='glean-address'> by {{glean.member_organization}}</h4>
-  <h4 class='glean-address'>{{glean.address_one}} {{glean.city}}, {{glean.state}}</h4>
+{% if address %}
+  <h4 class='glean-address'>{{address.address_one}} {{address.city}}, {{address.state}}</h4>
+{% endif %}
   <h3 class="glean-date">{{glean.date}} {% if glean.time %}- {{glean.time}}{% endif %}</h3></h3>
 
   <div class="glean-half">
@@ -66,7 +68,7 @@ Gleaning Details
   {% if glean.description %}
 	<p>{{glean.description|linebreaks}}</p>
   {% endif %}
-  <h5>Expected Duration:{{glean.duration}}</h5>
+  <h6>Expected Duration: {{glean.duration}}</h6>
   <div class="glean-half">
 	<h4>Directions</h4>
   <p>{{glean.render_directions|linebreaks}}</p>
@@ -100,7 +102,7 @@ function initialize() {
 }
 
 function codeAddress() {
-  var address = '{{glean.address_one}} {{glean.address_two}} {{glean.city}}, {{glean.state}}';
+  var address = '{{address.address_one}} {{address.city}}, {{address.state}} {{address.zipcode}}';
   geocoder.geocode( { 'address': address}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
       map.setCenter(results[0].geometry.location);
@@ -109,7 +111,7 @@ function codeAddress() {
           position: results[0].geometry.location
       });
     } else {
-      alert('Geocode was not successful for the following reason: ' + status);
+      
     }
   });
 }
@@ -121,7 +123,12 @@ google.maps.event.addDomListener(window, 'load', codeAddress);
 <div class="span6" id="map-canvas" style="height:400px;"></div>
 <div class="span6">
   <div class="comments">
+    {% get_comment_count for glean as comment_count %}
+    {% if comment_count %}
   {% render_comment_list for glean %}
+  {% else %}
+  <div style="text-align:center;">Post Comments here to discuss rideshares!</div>
+  {% endif %}
   </div>
   {% get_comment_form for glean as form %}
   {% if user.is_authenticated %}

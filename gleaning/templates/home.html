@@ -5,7 +5,6 @@
 Welcome to the Gleaning Interface!
 {% endblock %}
 {% block body %}
-
      <div class="span12">
 <div class="row" id="calendar" style="margin:0 auto;">
 	<style>
@@ -27,7 +26,7 @@ Welcome to the Gleaning Interface!
 		<br />
 		<ul>
 			{% for glean in day.1 %}
-			<li><a href="{% url 'gleanevent:detailglean' glean.id %}">{{glean.title}}</a></li>
+			<li><a href="{% url 'gleanevent:detailglean' glean.id %}"><span class="label label-success">{{glean.member_organization}}</span></a></li>
 			{% endfor %}
 			{% if day.2 %}
 			<li><a href="{% url 'gleanevent:index' %}
