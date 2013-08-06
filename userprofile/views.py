@@ -243,7 +243,7 @@ def userPromote(request, user_id):
 						else: 
 							user.groups.add(salc)
 					else: # not making a sal users->
-						if form.cleaned_data['executive']: #executive if/else
+						if form.cleaned_data['executive']: # executive if/else
 							user.groups.add(ed)
 						else:
 							user.groups.add(memc)
