@@ -4,7 +4,6 @@ from customreg import MyRegistrationView
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
-import gleaning.settings as settings
 
 urlpatterns = patterns('',
 	url(r'^$', 'gleaning.views.home', name="home"),
@@ -34,7 +33,6 @@ urlpatterns = patterns('',
 	# Examples:
 	# url(r'^$', 'gleaning.views.home', name='home'),
 	# url(r'^gleaning/', include('gleaning.foo.urls')),
-	url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
 
 	# Uncomment the admin/doc line below to enable admin documentation:
 	url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
