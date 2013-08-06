@@ -1,1 +1,1 @@
-web: gunicorn gleaning.wsgi
+web: python manage.py collectstatic --noinput; gunicorn gleaning.wsgi
