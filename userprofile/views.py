@@ -215,8 +215,9 @@ def userPromote(request, user_id):
 	memc = Group.objects.get(name="Member Organization Glean Coordinator")
 	sal = Group.objects.get(name="Salvation Farms Administrator")
 	salc = Group.objects.get(name="Salvation Farms Coordinator")
-
+	#return HttpResponse(ed in user.groups.all())
 	executive = ed in user.groups.all() or sal in user.groups.all()
+
 	admin = executive or memc in user.groups.all() or salc in user.groups.all()
 	data = {'member_organization':profile.member_organization,
 			'executive': executive,
@@ -242,7 +243,7 @@ def userPromote(request, user_id):
 						else: 
 							user.groups.add(salc)
 					else: # not making a sal users->
-						if executive: #executive if/else
+						if form.cleaned_data['executive']: #executive if/else
 							user.groups.add(ed)
 						else:
 							user.groups.add(memc)
