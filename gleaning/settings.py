@@ -212,8 +212,16 @@ LOGGING = {
 		},
 	}
 }
+### managing local static files
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
+
+
+
 
 ##heroku additions:
+
+
 
 try:
 	import development
