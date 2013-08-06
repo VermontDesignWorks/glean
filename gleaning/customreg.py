@@ -69,7 +69,6 @@ class MyRegistrationView(RegistrationView):
 		form = self.get_form(ExtendedRegistrationForm)
 		form.is_valid()
 		user = super(MyRegistrationView, self).register(*args, **kwargs)
-		
 		profile = Profile(first_name=form.cleaned_data['first_name'],
 			last_name=form.cleaned_data['last_name'],
 			address=form.cleaned_data['address'],

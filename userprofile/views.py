@@ -231,6 +231,7 @@ def userPromote(request, user_id):
 			if form.is_valid(): #validate it
 				user.groups.clear() #if it's valid, clear your groups data
 				profile.member_organization = form.cleaned_data['member_organization'] # save your member org data
+				profile.save()
 				if form.cleaned_data['promote']: #in the case this is a PROmotion
 					# this next step asks if, as only salvation farm users, or 'sal' users,
 					# can access this form, if we're
