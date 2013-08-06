@@ -244,3 +244,7 @@ except:
 	#STATICFILES_DIRS = (
 	#    os.path.join(BASE_DIR, '../static/'),
 	#)
+
+STATICFILES_DIRS = (
+	#"static/",
+    os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'static')),
