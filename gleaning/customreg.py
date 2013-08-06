@@ -13,7 +13,7 @@ from constants import ACCESS_LEVELS, VERMONT_COUNTIES, AGE_RANGES, PHONE_TYPE, P
 class ExtendedRegistrationForm(RegistrationForm):
 	first_name = forms.CharField(label="First Name", max_length=20)
 	last_name = forms.CharField(label="Last Name", max_length=20)
-	address = forms.CharField(label="Address (line one)", max_length=200)
+	address = forms.CharField(label="Address", max_length=200)
 	city = forms.CharField(label="City", max_length=200)
 	state = forms.ChoiceField(label="State",choices=STATES, initial='VT')
 	counties = forms.ModelMultipleChoiceField(queryset=County.objects.all())

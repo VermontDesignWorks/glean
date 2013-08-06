@@ -16,7 +16,7 @@ from django.contrib.auth.models import Group
 
 
 def create(request):
-	if not request.user.is_superuser and Group.objects.all():
+	if request.user.is_superuser and not Group.objects.all():
 		vol = Group(name="Volunteer")
 		vol.save()
 		ed = Group(name="Member Organization Executive Director")
