@@ -99,7 +99,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
 	#"static/",
     os.path.join(PROJECT_DIR, '..', '/static/'),
-    '/app/static/'
 	# Put strings here, like "/home/html/static" or "C:/www/django/static".
 	# Always use forward slashes, even on Windows.
 	# Don't forget to use absolute paths, not relative paths.
