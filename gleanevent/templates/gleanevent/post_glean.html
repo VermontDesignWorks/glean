@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+Post Glean Data for {{glean.title}}
+{% endblock title %}
+
+{% block heading %}
+<h3>Post Glean Data for {{glean.title}}</h3>
+{% endblock heading %}
+
+{% block body %}
+	<table width="100%">
+		<tr style="border-bottom:1px #e5e5e5 solid">
+			<td><b>User</b></td>
+			<td><b>Attended?</b></td>
+			<td><b>First</b></td>
+			<td><b>Last</b></td>
+			<td><b>Hours</b></td>
+			<td><b>Group</b></td>
+			<td><b>Members</b></td>
+			<td><b>Notes</b></td>
+		</tr>
+		{% for post in glean_data %}
+		<tr>
+			<td>{{post.user}}</td>
+			<td>{{post.attended}}</td>
+			<td>{{post.first_name}}</td>
+			<td>{{post.last_name}}</td>
+			<td>{{post.hours}}</td>
+			<td>{{post.group}}</td>
+			<td>{{post.members}}</td>
+			<td>{{post.notes}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+
+{% endblock body %}
