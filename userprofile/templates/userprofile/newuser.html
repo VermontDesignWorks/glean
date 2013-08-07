@@ -6,6 +6,7 @@ Create a New User
 
 {% block heading %}
 	<h3>Input New Volunteers</h3>
+	<h4>{{user.member_organization.get}}</h4>
 {% endblock heading %}
 
 
@@ -21,11 +22,11 @@ Create a New User
 <h3>Recently added members</h3>
 {% if 'userprofile.uniauth' in perms %}
 {% for person in users %}
-<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{% if person.member_organization %}{{person.member_organization}} - {% endif %}{{person.first_name}} {{person.last_name}}</a></li>
+<li><a href="{% url 'userprofile:userprofile' person.id %}">{% if person.profile_set.get.member_organization %}{{person.profile_set.get.member_organization}} {% endif %}{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}}{% if person.member_organizations.all %} - {% for memorg in person.member_organizations.all %}{{person.member_organization}} - {% endfor %}{% endif %}</a></li>
 {% endfor %}
 {% else %}
 {% for person in users %}
-<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}</a></li>
+<li><a href="{% url 'userprofile:userprofile' person.id %}">{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}}</a></li>
 {% endfor %}
 {% endif %}
 </ul>

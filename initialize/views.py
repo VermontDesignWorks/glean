@@ -57,5 +57,11 @@ def create(request):
 			perm = Permission.objects.get(codename='uniauth', content_type=content_type)
 			sal.permissions.add(perm)
 			salc.permissions.add(perm)
+	if not MemOrg.objects.all():
+		new_memorg = MemOrg(name="Salvation Farms")
+		new_memorg.save()
+		new_memorg.volunteers.add(request.user)
+
+
 	return HttpResponse('it worked from scratch')	
 	return HttpResponseRedirect(reverse('home'))

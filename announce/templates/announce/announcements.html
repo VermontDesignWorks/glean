@@ -23,7 +23,7 @@ Announcement Index
 			{% for announce in announcements %}
 			
 				<li>
-					<a href="{% url 'announce:combinedannounce' announce.id %}">{{ announce.title }}</a>
+					<a href="{% url 'announce:combinedannounce' announce.id %}">{{ announce.datetime }} {% if announce.title %}{{announce.title}}{% else %}{{announce.glean.title}}{% endif %}</a>
 				</li>
 
 			{% endfor %}

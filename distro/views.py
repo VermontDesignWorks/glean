@@ -76,31 +76,35 @@ def download(request):
 
 	# Create the CSV writer using the HttpResponse as the "file."
 	writer = csv.writer(response)
-	writer.writerow(['Farm', 'Crops', 'Pounds', 'Other', 'Containers', 'Recipient Site', 'Pickup/DropOff', 'Farm Delivery or Field Glean'])
+	writer.writerow(['Distribution Date', 'Recipient Site', 'Crops', 'Pounds', 'Containers','Farm', 'Other (notes)', 'Harvest Date', 'Farm Delivery/Field Glean/Farmers Market', 'Pickup/DropOff'])
 
- #    date = models.DateField()
-	# farm = models.ForeignKey(Farm, null=True, blank=True)
-	# crops = models.CharField(max_length=50, blank=True, null=True)
-	# pounds = models.CharField(max_length=5, default=0)
-	# other = models.CharField(max_length=50, blank=True, null=True)
-	# containers = models.CharField(max_length=20, blank=True, null=True)
-	# recipient = models.ForeignKey(Site, verbose_name = "Recipient Site")
-	# del_or_pick = models.CharField(max_length=2, choices=d_or_p, default='d')
-	# field_or_farm = models.CharField(max_length=1, choices=g_or_p, default='g')
+# date_d = models.DateField("Date of Distribution")
+# 	recipient = models.ForeignKey(RecipientSite, verbose_name = "Recipient Site")
+# 	crops = models.CharField(max_length=50, blank=True, null=True)
+# 	pounds = models.CharField(max_length=5, blank=True, null=True)
+# 	containers = models.CharField(max_length=20, blank=True, null=True)
+# 	farm = models.ForeignKey(Farm, null=True, blank=True)
+# 	other = models.CharField(max_length=50, blank=True, null=True)
+# 	date = models.DateField("Date of Harvest")
+# 	field_or_farm = models.CharField(max_length=1, choices=g_or_p, default='g')
+# 	del_or_pick = models.CharField(max_length=2, choices=d_or_p, default='d')
 
 	if request.user.has_perm('distro.uniauth'):
 		group = Distro.objects.all()
 	else:
 		group = Distro.objects.filter(member_organization=request.user.profile_set.get().member_organization)
 	for line in group:
-		writer.writerow([line.date,
-			line.farm,
+		writer.writerow([
+			line.date_d,
+			line.recipient,
 			line.crops,
 			line.pounds,
-			line.other,
 			line.containers,
-			line.recipient,
+			line.farm,
+			line.other,
+			line.date,
+			line.field_or_farm,
 			line.del_or_pick,
-			line.field_or_farm])
+			])
 
 	return response

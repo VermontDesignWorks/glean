@@ -65,14 +65,24 @@ def userLists(request):
 	if request.user.has_perm('userprofile.uniauth'):
 		users = Profile.objects.all().order_by('member_organization', 'last_name')
 	else:
-		users = Profile.objects.filter(member_organization=request.user.profile_set.get().member_organization).order_by('last_name')
+		member_organization = request.user.profile_set.get().member_organization
+		user_objects = member_organization.volunteers.all()
+		users = []
+		for user_object in user_objects:
+			users.append(user_object.profile_set.get())
+
 	return render(request, 'userprofile/userLists.html', {'users':users})
 
 @permission_required('userprofile.auth')
 def userProfile(request, user_id):
 	user = get_object_or_404(User, pk=user_id)
-	if user.profile_set.get().member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('userprofile.uniauth'):
-		return HttpResponseRedirect('home')
+	#return HttpResponse(user)
+	member_organization = request.user.profile_set.get().member_organization
+	if request.user.has_perm('userprofile.uniauth'):
+		pass
+	elif user not in member_organization.volunteers.all():
+		#if user.profile_set.get().member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('userprofile.uniauth'):
+		return HttpResponseRedirect(reverse('home'))
 	person = Profile.objects.get(user=user)
 	return render(request, 'userprofile/detail.html', {'person':person})
 
@@ -80,7 +90,7 @@ def userProfile(request, user_id):
 def userEdit(request, user_id):
 	user = get_object_or_404(User, pk=user_id)
 	if user.profile_set.get().member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('userprofile.uniauth'):
-		return HttpResponseRedirect('home')
+		return HttpResponseRedirect(reverse('home'))
 	person = Profile.objects.get(user=user)
 	if request.method == 'POST':
 		form = ProfileForm(request.POST, person)
@@ -148,7 +158,7 @@ def download(request):
 	if request.user.has_perm('userprofile.uniauth'):
 		profiles = Profile.objects.all()
 	else:
-		profiles = Profile.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+		profiles = request.user.profile_set.get().member_organization.volunteers.all()
 	for profile in profiles:
 		writer.writerow([
 			profile.user.username,
@@ -201,14 +211,16 @@ def newUser(request):
 				member_organization=request.user.profile_set.get().member_organization,
 			)
 			profile.save()
+			if new_user not in profile.member_organization.volunteers.all():
+				profile.member_organization.volunteers.add(new_user)
 			notice = 'New Volunteer ' + profile.first_name + ' ' + profile.last_name + ' has been created.'
 			#return HttpResponseRedirect(reverse('userprofile:userlists'))
 	else:
 		form = ExtendedRegistrationForm()
 	if request.user.has_perm('userprofile.uniauth'):
-		users = Profile.objects.all().order_by('-joined')[:20]
+		users = User.objects.all().order_by('-date_joined')[:20]
 	else:
-		users = Profile.objects.filter(member_organization=request.user.profile_set.get().member_organization).order_by('-joined')[:20]
+		users = request.user.profile_set.get().member_organization.volunteers.order_by('-date_joined')[:20]
 	return render(request, 'userprofile/newuser.html', {'form':form, 'users':users, 'notice':notice})
 
 @permission_required('userprofile.auth')
@@ -236,6 +248,8 @@ def userPromote(request, user_id):
 			if form.is_valid(): #validate it
 				user.groups.clear() #if it's valid, clear your groups data
 				profile.member_organization = form.cleaned_data['member_organization'] # save your member org data
+				if user not in profile.member_organization.volunteers.all():
+					profile.member_organization.volunteers.add(user)
 				profile.save()
 				if form.cleaned_data['promote']: #in the case this is a PROmotion
 					# this next step asks if, as only salvation farm users, or 'sal' users,

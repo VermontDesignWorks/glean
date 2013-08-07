@@ -125,8 +125,8 @@ def confirmLink(request, glean_id):
 			profile = request.user.profile_set.get()
 			profile.rsvped += 1
 			profile.save()
-			if profile.member_organization != request.user.profile_set.get().member_organization and profile.user not in glean.member_organization.volunteers.all():
-				glean.member_organization.volunteers.add(profile.user)
+			if request.user not in glean.member_organization.volunteers.all():
+				glean.member_organization.volunteers.add(request.user)
 			if request.user in glean.not_rsvped.all():
 				glean.not_rsvped.remove(request.user)
 			glean.save()
@@ -146,7 +146,11 @@ def denyLink(request, glean_id):
 				profile.rsvped -= 1
 				profile.save()
 			glean.save()
-		return render(request, 'gleanevent/deny.html', {'glean':glean})
+			return render(request, 'gleanevent/deny.html', {'glean':glean})
+		else:
+			if request.user in glean.rsvped.all():
+				glean.rsvped.remove(request.user)
+			return render(request, 'gleanevent/deny.html', {'glean':glean})
 	else:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 

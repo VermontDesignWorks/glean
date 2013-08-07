@@ -2,6 +2,7 @@ from django.db import models
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 
+from django.contrib import admin
 from constants import STATES
 # Create your models here.
 
@@ -24,3 +25,5 @@ class MemOrg(models.Model):
 class MemOrgForm(ModelForm):
 	class Meta:
 		model = MemOrg
+
+admin.site.register(MemOrg)
