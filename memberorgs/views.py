@@ -8,6 +8,7 @@ from django.views import generic
 from django.contrib.auth.decorators import permission_required
 
 from memberorgs.models import MemOrg, MemOrgForm
+from announce.models import Template
 
 @permission_required('memberorgs.auth')
 def index(request):
@@ -25,6 +26,10 @@ def newMemOrg(request):
 		if form.is_valid():
 			new_save = form.save()
 			new_save.save()
+			new_template = Template(template_name="Default Template", member_organization=new_save,
+				body="<html><body><h3 style='text-align:center;color:green'>{{glean.title}}</h3><p>{{glean.description}}</p><p>{{content}}</p><p>For more information, click on the {{info}} link!</p><p>To no longer receive emails about gleaning, click on the {{unsubscribe}} link.</p></body></html>",
+				default=True)
+			new_template.save()
 			return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(new_save.id,) ))
 		else:
 			return render(request, 'memberorgs/new_memorg.html', {'form':form, 'error':'Your Member Organization Form Was Not Valid'})

@@ -336,7 +336,7 @@ def combinedAnnounce(request, announce_id):
 			
 			if recipient not in recipients and recipient.accepts_email and recipient.preferred_method == '1':
 				recipients.append(recipient)
-			elif recipient.preferred_method == '2' and recipient.accepts_email and recipeint not in phone:
+			elif recipient.preferred_method == '2' and recipient.accepts_email and recipient not in phone:
 				phone.append(recipient)
 
 
