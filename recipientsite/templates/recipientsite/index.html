@@ -5,16 +5,32 @@ Recipient Site Index
 {% endblock title %}
 
 {% block body %}
-<h1>Recipient Site Index</h1>
-{% if sites %}
-<ul>
-{% for site in sites %}
-<li>
-<a href="{% url 'site:detailsite' site.id %}">{{ site.name }}</a> - <a href="{% url 'site:editsite' site.id %}">edit</a>
-</li>
-{% endfor %}
-</ul>
-{% else %}
-<span>No recipient sites :(</span>
-{% endif %}
+<div class="row-fluid">
+	<div class="span6" style="text-align:center;">
+		<h1>Recipient Site Index</h1>
+		<a href="{% url 'site:newsite' %}" class="btn btn-success">Create a New Site</a>
+
+	</div>
+	<div class="span6">
+		<p>Click on a recipient site to view details – or click edit to edit.</p>
+
+		<p>Adding in recipient sites is necessary for entering in distribution data (since the form for entering data links to names that are already entered into the Interface), so make sure you create a profile for each recipient site you work with. 
+		</p>
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span12">
+		{% if sites %}
+		<ul>
+		{% for site in sites %}
+		<li>
+		<a href="{% url 'site:detailsite' site.id %}">{{ site.name }}</a> - <a href="{% url 'site:editsite' site.id %}">edit</a>
+		</li>
+		{% endfor %}
+		</ul>
+		{% else %}
+		<span>(Nothing here at the moment)</span>
+		{% endif %}
+	</div>
+</div>
 {% endblock body %} 

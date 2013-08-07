@@ -19,13 +19,13 @@
 		</form>
 	
 {% endblock content %}
-	{% block related %}
-		<h4>To edit in content where you'd like, use the following keywords:</h4>
-		<ul>
-			<li>{% templatetag openvariable %}content{% templatetag closevariable %} - for your message content</li>
-			<li>{% templatetag openvariable %}glean.title{% templatetag closevariable %} - for the glean's title</li>
-			<li>{% templatetag openvariable %}glean.description{% templatetag closevariable %} - for the glean's title</li>
-			<li>{% templatetag openvariable %}info{% templatetag closevariable %} - for the Glean's Detail Page Link</li>
-			<li>{% templatetag openvariable %}unsubscribe{% templatetag closevariable %} - for the Unsubscribe Link</li>
-		</ul>
-	{% endblock related %}
+{% block related %}
+	<h4>To edit in content where you'd like, use the following keywords in mail-friendly HTML:</h4>
+	<ul>
+		<li>{% templatetag openvariable %}content{% templatetag closevariable %} - for your message content</li>
+		<li>{% templatetag openvariable %}glean.title{% templatetag closevariable %} - for the glean's title</li>
+		<li>{% templatetag openvariable %}glean.description{% templatetag closevariable %} - for the glean's title</li>
+		<li>{% templatetag openvariable %}info{% templatetag closevariable %} - for the Glean's Detail Page Link</li>
+		<li>{% templatetag openvariable %}unsubscribe{% templatetag closevariable %} - for the Unsubscribe Link</li>
+	</ul>
+{% endblock related %}

@@ -13,7 +13,7 @@
 
 {% block content %}
 {% if announcement.sent %}
-<h4>Sent!</h4>
+<h4>Sent on {{announcement.sent_on}}</h4>
 {% else %}
 <a href="{% url 'announce:editannounce' announcement.id %}" class="btn btn-info">Edit Message</a>
 <a href="{% url 'announce:edittemplate' announcement.template.id %}" class="btn btn-warning">Edit Template</a> <form method="POST" action="" style="display:inline-block;">{% csrf_token %}

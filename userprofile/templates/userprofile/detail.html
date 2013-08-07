@@ -43,5 +43,13 @@
 	<a class="btn btn-success" href="{% url 'userprofile:userpromote' person.user.id %}">Promote This User</a>
 </div>
 {% endif %}
+<div class="span12">
+<!--h5>User Stats</h5-->
+</div>
+{% if not person.accepts_email %}
+<div class="span12">
+	<a class="btn btn-danger" href="{% url 'userprofile:reaccept' person.user.id %}">This person opted back into recieving emails</a>
+</div>
+{% endif %}
 </div>
 {% endblock related %}

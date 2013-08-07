@@ -21,7 +21,6 @@
 </form>
 {% endblock %}
 
-{% block content-related %}
-<p>If you don't have an account, you can <a href="{% url 'registration:registration_register' %}">sign
-up</a> for one.
+{% block related %}
+<p>Please enter your username and password to access the site. Forgot either one? <a href="{% url 'registration:auth_password_reset' %}">Reset it here.</a> Don't have an account? <a href="{% url 'registration:registration_register' %}">Create a new one</a></p>
 {% endblock %}

@@ -9,7 +9,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>{% block title %}{% endblock title %} - The Gleaning Interface</title>
+        <title>{% block title %}{% endblock title %} - The Gleaners Interface</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="{% static '/static/initializr/css/bootstrap.min.css' %}">
@@ -112,9 +112,10 @@
                       {% endif %}
                       {% if 'distro.auth' in perms %}
                       <li class="dropdown">
-                        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Distro <b class="caret"></b></a>
+                        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Harvest and Distribution Data <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'distro:entry' %}">Entry</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'distro:edit' %}">Edit</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'distro:download' %}">Download</a></li>
                         </ul>
                       </li>

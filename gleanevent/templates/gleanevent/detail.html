@@ -22,8 +22,8 @@ Gleaning Details
 </style>
 
 <div class="span5 glean-details">
-	<a class="glean-title" href="{% url 'gleanevent:detailglean' glean.id %}"><h2>{{glean.title}} {% if glean.farm %}at {{glean.farm}}{% endif %}</h2></a>
-  <h4 class='glean-address'> by {{glean.member_organization}}</h4>
+	<a class="glean-title" href="{% url 'gleanevent:detailglean' glean.id %}"><h2>{{glean.title}} </h2></a>
+  <h4 class='glean-address'> by {{glean.member_organization}}{% if glean.farm %} at {{glean.farm}}{% endif %}</h4>
 {% if address %}
   <h4 class='glean-address'>{{address.address_one}} {{address.city}}, {{address.state}}</h4>
 {% endif %}
@@ -123,18 +123,21 @@ google.maps.event.addDomListener(window, 'load', codeAddress);
 <div class="span6" id="map-canvas" style="height:400px;"></div>
 <div class="span6">
   <div class="comments">
-    {% get_comment_count for glean as comment_count %}
-    {% if comment_count %}
-  {% render_comment_list for glean %}
+  {% get_comment_list for glean as comment_list %}
+  {% if comment_list %}
+  {% for comment in comment_list %}
+  <p>{{user.profile_set.get.first_name}} {{user.profile_set.get.last_name}}:&nbsp;&nbsp;{{comment.comment}}</p>
+  {% endfor %}
   {% else %}
-  <div style="text-align:center;">Post Comments here to discuss rideshares!</div>
+  <div style="text-align:center;"><small>Post comments here to discuss rideshares and !</small></div>
   {% endif %}
   </div>
   {% get_comment_form for glean as form %}
   {% if user.is_authenticated %}
     <form action="{% comment_form_target %}" method="POST">
     {% csrf_token %}
-    {{ form.comment }}
+    <!--{{ form.comment }}-->
+    <input type="text" id="id_comment" name="comment">
     {{ form.honeypot }}
     {{ form.content_type }}
     {{ form.object_pk }}

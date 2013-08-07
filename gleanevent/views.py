@@ -68,12 +68,12 @@ def newGlean(request):
 @permission_required('gleanevent.auth')
 def editGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
-	if glean.member_organization != request.user.profile_set.get().member_organization and u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
+	if glean.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('gleanevent.uniauth'):
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 	if not glean.happened():
 		if request.method == "POST":
 			form = GleanForm(request.POST, instance = glean)
-			#return HttpResponse('texst2')
+			
 			if form.is_valid():
 				new_save = form.save()
 				return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(new_save.id,) ))
@@ -153,7 +153,7 @@ def denyLink(request, glean_id):
 @permission_required('gleanevent.auth')
 def postGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
-	if glean.member_organization != request.user.profile_set.get().member_organization and u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
+	if glean.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('gleanevent.uniauth'):#u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 	#if not glean.data_entered() and glean.happened():
 	count = len(glean.rsvped.all())

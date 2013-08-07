@@ -46,6 +46,7 @@ def selfEdit(request):
 		if form.is_valid():
 			new_save = form.save(commit=False)
 			#new_save.member_organization = instance.member_organization
+			form.save_m2m()
 			new_save.save()
 			return HttpResponseRedirect(reverse('home'))
 		else:
@@ -183,7 +184,8 @@ def newUser(request):
 			profile = Profile(
 				first_name=form.cleaned_data['first_name'],
 				last_name=form.cleaned_data['last_name'],
-				address=form.cleaned_data['address'],
+				address_one=form.cleaned_data['address_one'],
+				address_two=form.cleaned_data['address_two'],
 				city=form.cleaned_data['city'],
 				state=form.cleaned_data['state'],
 				age=form.cleaned_data['age'],
@@ -272,3 +274,12 @@ def userPromote(request, user_id):
 		else:
 			form = PromoteForm({'promote':admin}) #not a POST, so fill in the 'promote' field
 	return render(request, 'userprofile/user_promote.html', {'form':form})
+
+@permission_required('userprofile.auth')
+def reaccept(request, user_id):
+	user = get_object_or_404(User, pk=user_id)
+	profile = Profile.objects.filter(user=user).get()
+	if not profile.accepts_email:
+		profile.accepts_email = True
+		profile.save()
+	return HttpResponseRedirect(reverse('userprofile:userprofile', args=(user_id,)))

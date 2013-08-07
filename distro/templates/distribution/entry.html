@@ -2,15 +2,17 @@
 {% load url from future %}
 {% block title %}Distribution Entry Forms
 {% endblock title %}
-{% block content %}
+{% block body %}
+<div class="row-fluid">
 <form method="get">
 	<label target="extra">Lines Needed</label>
 	<input type="text" name="extra" value="{{lines|default:'0'}}">
 	<input type="submit" value="Render New Form">
 </form>
+</div>
 <form method="post" action="">
 		{% csrf_token %}
 		{% include 'distribution/distroform.html' %}
 <input type="submit" value="Go!">
 	</form>
-{% endblock content %}
+{% endblock body %}
