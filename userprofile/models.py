@@ -49,7 +49,7 @@ class Profile(models.Model):
 	photo_release = models.BooleanField()
 			
 	def __unicode__(self):
-		return u'%s %s' % (self.user, self.address)
+		return u'%s %s %s' % (self.first_name, self.last_name, self.user)
 
 	class Meta:
 		permissions = (
