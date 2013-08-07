@@ -58,7 +58,10 @@ Gleaning Details
 </p>
 <p>
   <a href="{% url 'gleanevent:postglean' glean.id %}" class="btn btn-danger">
-    Enter Data
+    Enter Post Glean Data
+  </a>
+  <a href="{% url 'gleanevent:postgleanedit' glean.id %}" class="btn btn-warning">
+    Edit Post Glean Data
   </a>
 </p>
   {% endif %}

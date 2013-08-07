@@ -4,5 +4,10 @@
 
 {% block content %}
 <h1>You've been logged out.</h1>
-<p>Thanks for stopping by; when you come back, don't forget to <a href="{% url 'registration:auth_login' %}">log in</a> again.</p>
+<p>Redirecting to the <a href="{% url 'home' %}">home page</a>...</p>
+<script type="text/JavaScript">
+<!--
+setTimeout("location.href = '/';",1500);
+-->
+</script>
 {% endblock %}

@@ -2,6 +2,8 @@ import time
 
 from django.db import models
 
+from django.contrib import admin
+
 from memberorgs.models import MemOrg
 from farms.models import Farm
 from recipientsite.models import RecipientSite
@@ -44,3 +46,5 @@ class Distro(models.Model):
 
 	def __unicode__(self):
 		return self.member_organization.name + ' ' + self.date.strftime('%Y %m %d - %I:%M:%S %p') #+ ' ' + self.created_by.profile_set.first_name + ' ' + self.created_by.profile_set.last_name
+
+admin.site.register(Distro)

@@ -43,14 +43,14 @@ def editTemplate(request, template_id):
 	if request.method == 'POST':
 		form = PartialTemplateForm(request.POST)
 		if form.is_valid():
-			if form.cleaned_data['body'].find('{{content}}') != -1:
+			if form.cleaned_data['body'].find('{{custom}}') != -1:
 				template.body = form.cleaned_data['body']
 				template.default = form.cleaned_data['default']
 				template.save()
 				return HttpResponseRedirect(reverse('announce:detailtemplate', args=(template.id,)))
 			else:
 				form = PartialTemplateForm(instance=newTemplate)
-				return render(request, 'announce/edit_template.html', {'form':form, 'template':template, 'error':'Need a {{content}} tag!', 'editmode':True})
+				return render(request, 'announce/edit_template.html', {'form':form, 'template':template, 'error':'Need a {{custom}} tag!', 'editmode':True})
 		else:
 			return render(request, 'announce/edit_template.html', {'form':form, 'template':template, 'error':'Form was not valid', 'editmode':True})
 	else:		
@@ -64,13 +64,13 @@ def newTemplate(request):
 		form = TemplateForm(request.POST)
 		if form.is_valid():
 			newTemplate = form.save(commit=False)
-			if form.cleaned_data['body'].find('{{content}}') != -1:
+			if form.cleaned_data['body'].find('{{custom}}') != -1:
 				newTemplate.member_organization = request.user.profile_set.get().member_organization
 				newTemplate.save()
 				return HttpResponseRedirect(reverse('announce:templates'))
 			else:
 				form = TemplateForm(instance=newTemplate)
-				return render(request, 'announce/new_template.html', {'form':form, 'error':'Need a {{content}} tag!'})
+				return render(request, 'announce/new_template.html', {'form':form, 'error':'Need a {{custom}} tag!'})
 		else:
 			return HttpResponse('form is not valid')
 	else:
@@ -102,7 +102,7 @@ def weave_template_and_body_and_glean(template, announcement, glean):
 	site = Site.objects.get(pk=1)
 	glean_link = "<a href='" + site.domain + str(reverse('gleanevent:detailglean', args=(glean.id,))) + "'>Glean Info</a>"
 	replace = {
-		'{{content}}':announcement.message,
+		'{{custom}}':announcement.message,
 		'{{glean.title}}':glean.title, 
 		'{{glean.description}}':glean.description,
 		#'{{info}}':glean_link,
@@ -135,12 +135,17 @@ def weave_unsubscribe(body, userprofile,announce):
 		userprofile.save()
 	value = "<a href='" + site.domain+ str(reverse('announce:unsubscribelink', args=(value,)))+"'>Unsubscribe</a>"
 	glean_link = "<a href='" + site.domain + str(reverse('gleanevent:detailglean', args=(announce.glean.id,))) + "'>Glean Info</a>"
+	if announce.title:
+		subject = announce.title
+	else:
+		subject = announce.glean.title
 	replace = {
-		'{{content}}':announce.message,
+		'{{custom}}':announce.message,
 		'{{glean.title}}':announce.glean.title, 
 		'{{glean.description}}':announce.glean.description,
 		'{{info}}':glean_link,
 		'{{unsubscribe}}': value,
+		'{{subject}}':subject,
 	}
 	returnable = announce.template.body
 	for key, value in replace.iteritems():

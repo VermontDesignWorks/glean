@@ -22,7 +22,8 @@
 {% block related %}
 	<h4>To edit in content where you'd like, use the following keywords in mail-friendly HTML:</h4>
 	<ul>
-		<li>{% templatetag openvariable %}content{% templatetag closevariable %} - for your message content</li>
+		<li>{% templatetag openvariable %}subject{% templatetag closevariable %} - This is for your template head's Title (the HTML element)</li>
+		<li>{% templatetag openvariable %}custom{% templatetag closevariable %} - This is your Custom Message</li>
 		<li>{% templatetag openvariable %}glean.title{% templatetag closevariable %} - for the glean's title</li>
 		<li>{% templatetag openvariable %}glean.description{% templatetag closevariable %} - for the glean's title</li>
 		<li>{% templatetag openvariable %}info{% templatetag closevariable %} - for the Glean's Detail Page Link</li>

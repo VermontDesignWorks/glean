@@ -27,7 +27,7 @@ def newMemOrg(request):
 			new_save = form.save()
 			new_save.save()
 			new_template = Template(template_name="Default Template", member_organization=new_save,
-				body="<html><body><h3 style='text-align:center;color:green'>{{glean.title}}</h3><p>{{glean.description}}</p><p>{{content}}</p><p>For more information, click on the {{info}} link!</p><p>To no longer receive emails about gleaning, click on the {{unsubscribe}} link.</p></body></html>",
+				body="<html><body><h3 style='text-align:center;color:green'>{{glean.title}}</h3><p>{{glean.description}}</p><p>{{custom}}</p><p>For more information, click on the {{info}} link!</p><p>To no longer receive emails about gleaning, click on the {{unsubscribe}} link.</p></body></html>",
 				default=True)
 			new_template.save()
 			return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(new_save.id,) ))

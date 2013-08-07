@@ -16,4 +16,6 @@ urlpatterns = patterns('',
 	url(r'^(?P<glean_id>\d+)/attending/$', views.confirmLink, name='confirmlink'),
 	url(r'^(?P<glean_id>\d+)/notattending/$', views.denyLink, name='denylink'),
 	url(r'^(?P<glean_id>\d+)/postglean/$', views.postGlean, name='postglean'),
+	url(r'^(?P<glean_id>\d+)/viewpostglean/$', views.postGleanView, name='postgleanview'),
+	url(r'^(?P<glean_id>\d+)/editpostglean/$', views.postGleanEdit, name='postgleanedit'),
 )

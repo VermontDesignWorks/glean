@@ -192,6 +192,25 @@ def postGlean(request, glean_id):
 	#else:
 	#		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 
+
+def postGleanView(request, glean_id):
+	glean = get_object_or_404(GleanEvent, pk=glean_id)
+	glean_data = PostGlean.objects.filter(glean=glean)
+	return render(request, 'gleanevent/post_glean.html', {'glean':glean, 'glean_data':glean_data})
+
+def postGleanEdit(request, glean_id):
+	glean = get_object_or_404(GleanEvent, pk=glean_id)
+	PostGleanFormSet = modelformset_factory(PostGlean, extra=0)
+	if request.method == 'POST':
+		formset = PostGleanFormSet(request.POST)
+		if formset.is_valid():
+			formset.save()
+			return HttpResponseRedirect(reverse('gleanevent:postgleanview', args=(glean_id,)))
+
+	forms = PostGleanFormSet(queryset=PostGlean.objects.filter(glean=glean))
+
+	return render(request, 'gleanevent/postgleanedit.html', {'glean':glean, 'formset':forms})
+
 @permission_required('gleanevent.auth')
 def printGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
