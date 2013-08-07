@@ -63,5 +63,6 @@ def create(request):
 		new_memorg.volunteers.add(request.user)
 
 
+
 	return HttpResponse('it worked from scratch')	
 	return HttpResponseRedirect(reverse('home'))
