@@ -234,9 +234,9 @@ def phoneAnnounce(request, announce_id):
 @permission_required('announce.auth')
 def Announcements(request):
 	if request.user.has_perm('announce.uniauth'):
-		announcements = Announcement.objects.all()
+		announcements = Announcement.objects.filter(sent=True).order_by('datetime')
 	else:
-		announcements= Announcement.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+		announcements= Announcement.objects.filter(member_organization=request.user.profile_set.get().member_organization, sent=True).order_by('datetime')
 	return render(request, 'announce/announcements.html', {'announcements':announcements})
 	#return HttpResponse(request.user.profile_set.get().member_organization)
 
