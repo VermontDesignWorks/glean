@@ -62,8 +62,9 @@ def newTemplate(request):
 	if request.method == 'POST':
 		form = TemplateForm(request.POST)
 		if form.is_valid():
-			newTemplate = Template(**form.cleaned_data)
+			newTemplate = form.save(commit=False)
 			if form.cleaned_data['body'].find('{{content}}') != -1:
+				newTemplate.member_organization = request.user.profile_set.get().member_organization
 				newTemplate.save()
 				return HttpResponseRedirect(reverse('announce:templates'))
 			else:
