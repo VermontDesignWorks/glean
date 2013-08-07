@@ -15,7 +15,8 @@ class Profile(models.Model):
 
 	first_name = models.CharField("First Name", max_length=20)
 	last_name = models.CharField("Last Name", max_length=20)
-	address = models.CharField("Address (line one)", max_length=200, blank=True)
+	address_one = models.CharField("Address (line one)", max_length=200, blank=True)
+	address_two = models.CharField("Address (line one)", max_length=200, blank=True, null=True)
 	city = models.CharField("City", max_length=200, blank=True)
 	state = models.CharField("State", max_length=2, choices=STATES, default='VT')
 	zipcode = models.CharField("Zipcode", max_length=11, blank=True, null=True)

@@ -13,7 +13,8 @@ from constants import ACCESS_LEVELS, VERMONT_COUNTIES, AGE_RANGES, PHONE_TYPE, P
 class ExtendedRegistrationForm(RegistrationForm):
 	first_name = forms.CharField(label="First Name", max_length=20)
 	last_name = forms.CharField(label="Last Name", max_length=20)
-	address = forms.CharField(label="Address", max_length=200)
+	address_one = forms.CharField(label="Address", max_length=200)
+	address_two = forms.CharField(label="Address (line two)", max_length=200)
 	city = forms.CharField(label="City", max_length=200)
 	state = forms.ChoiceField(label="State",choices=STATES, initial='VT')
 	counties = forms.ModelMultipleChoiceField(queryset=County.objects.all())
@@ -71,7 +72,8 @@ class MyRegistrationView(RegistrationView):
 		user = super(MyRegistrationView, self).register(*args, **kwargs)
 		profile = Profile(first_name=form.cleaned_data['first_name'],
 			last_name=form.cleaned_data['last_name'],
-			address=form.cleaned_data['address'],
+			address_one=form.cleaned_data['address_one'],
+			address_two=form.cleaned_data['address_two'],
 			city=form.cleaned_data['city'],
 			state=form.cleaned_data['state'],
 			age=form.cleaned_data['age'],

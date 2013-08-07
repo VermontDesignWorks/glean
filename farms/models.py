@@ -40,7 +40,7 @@ class Farm(models.Model):
 	phone_2_type = models.CharField('Secondary Phone Type', choices=LINE_TYPE,max_length=10,blank=True)
 
 	email = models.CharField("The Farm's Email", max_length=200, blank=True)
-	direction = models.TextField("Directions", blank=True)
+	directions = models.TextField("Directions", blank=True)
 	instructions = models.TextField("Instructions", blank=True)
 	farmers = models.ManyToManyField(User, blank=True, null=True, editable=False)
 	counties = models.ManyToManyField(County, blank=True, null=True)
