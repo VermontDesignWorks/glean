@@ -55,12 +55,15 @@ class MyRegistrationView(RegistrationView):
 			age=form.cleaned_data['age'],
 			phone=form.cleaned_data['phone'],
 			phone_type=form.cleaned_data['phone_type'],
+			ecphone = form.cleaned_data['ecphone']
 			preferred_method=form.cleaned_data['preferred_method'],
 			ecfirst_name=form.cleaned_data['ecfirst_name'],
 			eclast_name=form.cleaned_data['eclast_name'],
 			ecrelationship=form.cleaned_data['ecrelationship'],
 			user=user,
-			#member_organization=form.cleaned_data['member_organization'],
+			waiver = form.cleaned_data['waiver']
+			agreement = form.cleaned_data['agreement']
+			photo_release = form.cleaned_data['photo_release']
 			)
 		profile.save()
 		for county in form.cleaned_data['counties']:
