@@ -26,15 +26,17 @@ class Distro(models.Model):
 		(farmers_market, "Farmer's Market")
 	)
 	member_organization = models.ForeignKey(MemOrg, verbose_name = "Member Organization", editable = False)
-	date = models.DateField()
-	farm = models.ForeignKey(Farm, null=True, blank=True)
+	date_d = models.DateField("Date of Distribution")
+	recipient = models.ForeignKey(RecipientSite, verbose_name = "Recipient Site")
 	crops = models.CharField(max_length=50, blank=True, null=True)
 	pounds = models.CharField(max_length=5, blank=True, null=True)
-	other = models.CharField(max_length=50, blank=True, null=True)
 	containers = models.CharField(max_length=20, blank=True, null=True)
-	recipient = models.ForeignKey(RecipientSite, verbose_name = "Recipient Site")
-	del_or_pick = models.CharField(max_length=2, choices=d_or_p, default='d')
+	farm = models.ForeignKey(Farm, null=True, blank=True)
+	other = models.CharField(max_length=50, blank=True, null=True)
+	date = models.DateField("Date of Harvest")
 	field_or_farm = models.CharField(max_length=1, choices=g_or_p, default='g')
+	del_or_pick = models.CharField(max_length=2, choices=d_or_p, default='d')
+
 	#created_by = models.ForeignKey(User, shiiite)
 
 	class Meta:

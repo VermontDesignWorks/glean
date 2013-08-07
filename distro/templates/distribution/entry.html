@@ -4,11 +4,16 @@
 {% endblock title %}
 {% block body %}
 <div class="row-fluid">
-<form method="get">
-	<label target="extra">Lines Needed</label>
-	<input type="text" name="extra" value="{{lines|default:'0'}}">
-	<input type="submit" value="Render New Form">
-</form>
+	<div class="span6">
+		<form method="get">
+			<label target="extra">Lines Needed</label>
+			<input type="text" name="extra" value="{{lines|default:'0'}}">
+			<input type="submit" value="Render New Form">
+		</form>
+	</div>
+	<div class="span6">
+		Helper Text
+	</div>
 </div>
 <form method="post" action="">
 		{% csrf_token %}

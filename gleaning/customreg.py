@@ -17,6 +17,7 @@ class ExtendedRegistrationForm(RegistrationForm):
 	address_two = forms.CharField(label="Address (line two)", max_length=200, required=False)
 	city = forms.CharField(label="City", max_length=200)
 	state = forms.ChoiceField(label="State",choices=STATES, initial='VT')
+	zipcode = forms.CharField(label="Zipcode", max_length=11)
 	counties = forms.ModelMultipleChoiceField(queryset=County.objects.all(), label="Counties You'd like to Glean In")
 	age = forms.ChoiceField(label="Age",
 							choices=AGE_RANGES)
@@ -52,6 +53,7 @@ class MyRegistrationView(RegistrationView):
 			address_two=form.cleaned_data['address_two'],
 			city=form.cleaned_data['city'],
 			state=form.cleaned_data['state'],
+			zipcode=form.cleaned_data['zipcode'],
 			age=form.cleaned_data['age'],
 			phone=form.cleaned_data['phone'],
 			phone_type=form.cleaned_data['phone_type'],
