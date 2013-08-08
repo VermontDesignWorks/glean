@@ -5,11 +5,9 @@
 {% block body %}
 <div class="row-fluid">
 	<div class="span6">
-		<form method="get">
-			<label target="extra">Lines Needed</label>
-			<input type="text" name="extra" value="{{lines|default:'0'}}"><span class="help-block">{{error}}</span>
-			<input type="submit" value="Render New Form">
-		</form>
+		<h3>Distribution And Harvest Data Entry</h3>
+		<h5>Enter the data by site of distribution</h5>
+		<h6><small>Hint: Hit Enter at any point to input your work, rather than scrolling to the bottom when you're done!</small></h6>
 	</div>
 	<div class="span6">
 		<p>Enter your post-glean distribution information here. Don't worry about extra lines, the system rightfully ignores them :D</p>
@@ -17,9 +15,82 @@
 
 	</div>
 </div>
+<div class="row-fluid">
+	<div class="span12"><h4 style="color:green">{{Message}}</h4></div>
+	<div class="span12">
 <form method="post" action="">
 		{% csrf_token %}
 		{% include 'distribution/distroform.html' %}
 <input type="submit" value="Go!">
 	</form>
+	<script type="text/javascript">
+	var source = [
+		'Apples',
+		'Arugula',
+		'Beans',
+		'Beet Greens/Chard',
+		'Beets',
+		'Blueberries',
+		'Bread',
+		'Broccoli',
+		'Brussel Sprouts',
+		'Cabbage',
+		'Carrots',
+		'Cauliflower',
+		'Celeriac',
+		'Celery',
+		'Chard',
+		'Chinese Cabbage',
+		'Collards',
+		'Cooking Greens',
+		'Corn',
+		'CSA Share',
+		'Cucumbers',
+		'Eggs',
+		'Eggplant',
+		'Fennel',
+		'Flowers',
+		'Garlic/Garlic Scapes',
+		'Head Lettuce',
+		'Herbs',
+		'Kale',
+		'Kohlrabi',
+		'Leeks',
+		'Lettuce Mix',
+		'Melons',
+		'Mesclun',
+		'Mixed Roots',
+		'Mixed Veggies',
+		'Mushrooms',
+		'Onions',
+		'Pac Choy',
+		'Parsnips',
+		'Peas',
+		'Peppers',
+		'Plants/Starts',
+		'Potatoes',
+		'Pumpkins',
+		'Radishes',
+		'Raspberries',
+		'Rutabaga',
+		'Scallions',
+		'Seeds',
+		'Spinach',
+		'Summer Sq./Zucchini',
+		'Tomatillos',
+		'Tomatoes',
+		'Turnips',
+		'Watermelon',
+		'Winter Squash',
+		];
+		{% for i in range %}
+		    $(function() {
+				$('#id_form-{{i}}-date').datepicker();
+				$('#id_form-{{i}}-date_d').datepicker();
+				$('#id_form-{{i}}-crops').typeahead({'source':source});
+		    });
+		{% endfor %}
+	</script>
+</div>
+</div>
 {% endblock body %}

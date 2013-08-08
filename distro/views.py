@@ -19,14 +19,7 @@ from distro.models import Distro
 
 @permission_required('distro.auth')
 def entry(request):
-	lines = request.GET.get('extra', 8)
-	try:
-		int(lines)
-	except:
-		DistroFormSet = modelformset_factory(Distro, extra=8, can_delete=True)
-		form = DistroFormSet(queryset=Distro.objects.none())
-		return render(request, 'distribution/entry.html', {'form':form, 'error':'Must be a number', 'lines':lines})
-	DistroFormSet = modelformset_factory(Distro, extra=int(lines))
+	DistroFormSet = modelformset_factory(Distro, extra=int(50))
 	DistroFormSet.date = forms.CharField(widget=TextInput({"class":"datepicker"}))
 	if request.method == 'POST':
 		formset = DistroFormSet(request.POST)
@@ -42,7 +35,7 @@ def entry(request):
 	else:
 		form = DistroFormSet(queryset=Distro.objects.none())
 		debug = dir(form)
-		return render(request, 'distribution/entry.html', {'formset':form, 'lines':lines, 'debug':debug})
+		return render(request, 'distribution/entry.html', {'formset':form, 'range':range(50), 'debug':debug})
 
 @permission_required('distro.auth')
 def edit(request):
@@ -58,14 +51,14 @@ def edit(request):
 	else:
 		date_until = '3013-01-01'
 	DistroFormSet = modelformset_factory(Distro, extra=0, can_delete=True)
-	DistroFormSet.date = forms.CharField(widget=TextInput({"class":"datepicker"}))
+	#DistroFormSet.date = forms.CharField(widget=TextInput({"class":"datepicker"}))
 	if request.method == 'POST':
 		formset = DistroFormSet(request.POST)
 		if formset.is_valid():
 			instances = formset.save()
-			queryset = Distro.objects.filter(date__gte=date_from,date__lte=date_until)
+			queryset = Distro.objects.all()#filter(date__gte=date_from,date__lte=date_until)
 			if not request.user.has_perm('distro.uniauth'):
-				queryset.filter(member_organization=request.user.profile_set.get().member_organization)
+				queryset = queryset.filter(member_organization=request.user.profile_set.get().member_organization)
 			form = DistroFormSet(queryset=queryset)
 			return render(request, 'distribution/edit.html', {'form':form})
 	else:
