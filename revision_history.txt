@@ -1,5 +1,12 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.1.3.6 - "Abraham the Grouch"
+*Fixed the harvest Distribution business
+*Completely revamped the Volunteer/MO attribtion code
+*Lot of beautifying
+*Added 'delete' option to Post-Gleans
+*Something else? It's all a blur. Last revision before next release
+
 Release 0.1.3 - "Abraham the Grouch"
 *Added Helper Text
 *Fixed Template Save Bug

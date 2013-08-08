@@ -2,54 +2,75 @@
 {% load url from future %}
 {% block title %}Distribution Entry Forms
 {% endblock title %}
-{% block content %}
-<form method="get">
-	<table>
-		<tr>
-			<td>
-				<label for="date_from">From</label>
-			</td>
-			<td>
-				<input id="date_from" maxlength=200 name="date_from" type="text" value="{{date_from}}" class="datepicker"></input>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label for="date_until">Until</label>
-			</td>
-			<td>
-				<input id="date_until" maxlength=200 name="date_until"  type="text" value="{{date_until}}" class="datepicker"></input>
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td>
-			<td>
-				<input type="submit" value="Render Dates">
-			</td>
-		</tr>
-	</table>
-</form>
-
-
-	<script type="text/javascript">
-	      $(function() {
-				$('.datetimechoser').datetimepicker({
-	  				language: 'en',
-	  				pick12HourFormat: true
-				});
-	      });
-	</script>
-{% if form.errors %}{{form.errors}}{% endif %}
-{% if form %}
-	<form method="post" action="">
-			{% csrf_token %}
+{% block body %}
+<div class="row-fluid">
+	<div class="span12">
+		<h3 style="text-align:center">View and Edit your Distribution Data by Date</h3>
+	</div>
+	<div class="span12">
+		&nbsp;
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span5 offset1">
+		<form method="get" style="">
 			<table>
-		{% include 'distribution/distroform.html' %}
+				<tr>
+					<td>
+						<label for="date_from">From</label>
+					</td>
+					<td>
+						<input id="date_from" maxlength=200 name="date_from" type="text" value="{{date_from}}" class="datepicker"></input>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="date_until">Until</label>
+					</td>
+					<td>
+						<input id="date_until" maxlength=200 name="date_until"  type="text" value="{{date_until}}" class="datepicker"></input>
+					</td>
+				</tr>
+				<tr><td>&nbsp;</td>
+					<td>
+						<input type="submit" value="Render Dates">
+					</td>
+				</tr>
 			</table>
-	<input type="submit" value="Go!">
-	</form>
- {% else %}
- No Data to Show!
- {% endif %}
+			<script type="text/javascript">
+				$(function() {
+					$('.datepicker').datepicker({
+							language: 'en',
+							pick12HourFormat: true
+					});
+				});
+			</script>
+		</form>
 
-{% endblock content %}
+	</div>
+	<div class="span6">
+		
+		<p>Enter the dates you'd like to examine to the left, and then edit the data below.</p>
+		<p><small>Hint: You can press enter on any field to save all your work up to that point instead of scrolling all the way to the bottom!</p>
+		<p><small>Hint: To delete items, check the last column, marked "Delete", then save!</p>
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span12"><h4 style="color:red">{% if formset.errors %}{{formset.errors}}{% endif %}</h4>
+	</div>
+	<div class="span12">
+		
+		{% if formset %}
+			<form method="post" action="">
+				{% csrf_token %}
+				{% include 'distribution/distroformedit.html' %}
+				<input type="submit" value="Go!">
+			</form>
+		 {% else %}
+		 No Data to Show!
+		 {% endif %}
+	</div>
+</div>
+
+{% endblock body %}
 

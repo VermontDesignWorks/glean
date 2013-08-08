@@ -1,52 +1,29 @@
-<div class="distroform inline-form">
-	{{formset.management_form}}
-{{ formset.non_form_errors.as_ul }}
-<table id="formset" class="form">
-{% for form in formset.forms %}
-  {% if forloop.first %}
-  <thead><tr>
-    {% for field in form.visible_fields %}
-    <th>{{ field.label|capfirst }}</th>
-    {% endfor %}
-  </tr></thead>
-  {% endif %}
-  <tr class="{% cycle row1,row2 %}">
-  {% for field in form.visible_fields %}
-    <td>
-    {# Include the hidden fields in the form #}
-    {% if forloop.first %}
-      {% for hidden in form.hidden_fields %}
-      {{ hidden }}
+<div class="distroform">
+  {{formset.management_form}}
+  {{ formset.non_form_errors.as_ul }}
+  <table id="formset" class="">
+    {% for form in formset.forms %}
+      {% if forloop.first %}
+      <thead><tr>
+        {% for field in form.visible_fields %}
+        <th>{{ field.label|capfirst }}</th>
+        {% endfor %}
+      </tr></thead>
+      {% endif %}
+      <tr class="{% cycle row1,row2 %}">
+      {% for field in form.visible_fields %}
+        <td>
+        {# Include the hidden fields in the form #}
+        {% if forloop.first %}
+          {% for hidden in form.hidden_fields %}
+          {{ hidden }}
+          {% endfor %}
+        {% endif %}
+          {{ field.errors.as_ul }}
+          {{ field }}
+        </td>
       {% endfor %}
-    {% endif %}
-      {{ field.errors.as_ul }}
-      {{ field }}
-    </td>
-  {% endfor %}
-  </tr>
-{% endfor %}
-</table>
-
-<!--{{form.as_ul}}-->
-
-<!--table>
-	<tr>
-		{% for field in form.0 %}
-				<td><label for="{{ field.id_for_label }}">{{field.label_tag}}</label></td>
-		{% endfor %}
-	</tr>
-	{% for instance in form %}
-	<tr>
-	{% for field in instance %}
-	<td>
-	{% if field.name == 'date' %}
-	<input id="{{field.auto_id}}" name="id_form-{{forloop.counter0}}-{{field.name}}" value="{{field.initial}}" class="datepicker" type="text"  />
-	{% else %}
-	{{field}}
-	{% endif %}
-	</td>
-	{% endfor %}
-	</tr>
-	{% endfor %}
-</table-->
+      </tr>
+    {% endfor %}
+  </table>
 </div>

@@ -204,7 +204,7 @@ def postGleanView(request, glean_id):
 
 def postGleanEdit(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
-	PostGleanFormSet = modelformset_factory(PostGlean, extra=0)
+	PostGleanFormSet = modelformset_factory(PostGlean, extra=0, can_delete=True)
 	if request.method == 'POST':
 		formset = PostGleanFormSet(request.POST)
 		if formset.is_valid():

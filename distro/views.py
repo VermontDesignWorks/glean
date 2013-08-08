@@ -20,7 +20,6 @@ from distro.models import Distro
 @permission_required('distro.auth')
 def entry(request):
 	DistroFormSet = modelformset_factory(Distro, extra=int(50))
-	DistroFormSet.date = forms.CharField(widget=TextInput({"class":"datepicker"}))
 	if request.method == 'POST':
 		formset = DistroFormSet(request.POST)
 		formset.is_valid()
@@ -41,7 +40,6 @@ def entry(request):
 def edit(request):
 	date_from = request.GET.get('date_from', '')
 	date_until = request.GET.get('date_until', '')
-	
 	if date_from:
 		date_from = date_from[6:] + '-' + date_from[:2] + '-' + date_from[3:5]
 	else:
@@ -64,11 +62,11 @@ def edit(request):
 	else:
 		
 		queryset = Distro.objects.filter(date__gte=date_from).filter(date__lte=date_until)
-		#return HttpResponse(queryset.all())
+		
 		if not request.user.has_perm('distro.uniauth'):
-			queryset.filter(member_organization=request.user.profile_set.get().member_organization)
-		form = DistroFormSet(queryset=queryset.all())
-		return render(request, 'distribution/edit.html', {'form':form})
+			queryset = queryset.filter(date__gte=date_from,date__lte=date_until,member_organization=request.user.profile_set.get().member_organization)
+		form = DistroFormSet(queryset=queryset.order_by('-date_d'))
+		return render(request, 'distribution/edit.html', {'formset':form})
 
 @permission_required('distro.auth')
 def download(request):

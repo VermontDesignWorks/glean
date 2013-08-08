@@ -12,17 +12,16 @@
 	<div class="span6">
 		<p>Enter your post-glean distribution information here. Don't worry about extra lines, the system rightfully ignores them :D</p>
 		<p>If you need to register more distribution sites, use the Distributon Site area of this website, you can access it on the navbar above!</p>
-
 	</div>
 </div>
 <div class="row-fluid">
 	<div class="span12"><h4 style="color:green">{{Message}}</h4></div>
 	<div class="span12">
-<form method="post" action="">
-		{% csrf_token %}
-		{% include 'distribution/distroform.html' %}
-<input type="submit" value="Go!">
-	</form>
+		<form method="post" action="">
+			{% csrf_token %}
+			{% include 'distribution/distroform.html' %}
+			<input type="submit" value="Go!">
+		</form>
 	<script type="text/javascript">
 	var source = [
 		'Apples',
@@ -91,6 +90,6 @@
 		    });
 		{% endfor %}
 	</script>
-</div>
+	</div>
 </div>
 {% endblock body %}
