@@ -174,6 +174,7 @@ INSTALLED_APPS = (
 	'distro',
 	'posts',
 	'initialize',
+	'api',
 
 	# third party apps
 	'registration',

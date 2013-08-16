@@ -11,6 +11,7 @@ New Glean!
 
 
 {% block content %}
+
 <form action="/glean/new/" method="post">
 {% csrf_token %}
 {% include 'gleanevent/gleanform.html' %}

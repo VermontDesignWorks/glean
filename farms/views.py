@@ -176,21 +176,21 @@ def download(request):
 			'type',
 			'description',
 
-			'physical_address_one',
-			'physical_address_two',
-			'physical_city',
-			'physical_state',
-			'physical_is_mailing',
+			'physical address',
+			'physical address',
+			'physical city',
+			'physical state',
+			'physical is mailing',
 
-			'mailing_address_one',
-			'mailing_address_two',
-			'mailing_city',
-			'mailing_state',
+			'mailing address',
+			'mailing address',
+			'mailing city',
+			'mailing state',
 
-			'phone_1',
-			'phone_1_type',
-			'phone_2',
-			'phone_2_type',
+			'phone 1',
+			'phone 1 type',
+			'phone 2',
+			'phone 2 type',
 
 			'email',
 			'direction',
@@ -198,7 +198,7 @@ def download(request):
 			'famers',
 			'counties',
 
-			'member_organization',
+			'member organization',
 	])
 
 	if request.user.has_perm('farms.uniauth'):
@@ -211,10 +211,10 @@ def download(request):
 			farm.farm_type,
 			farm.description,
 
-			farm.physical_address_one,
-			farm.physical_address_two,
-			farm.physical_city,
-			farm.physical_state,
+			farm.address_one,
+			farm.address_two,
+			farm.city,
+			farm.state,
 			farm.physical_is_mailing,
 
 			farm.mailing_address_one,
@@ -228,7 +228,7 @@ def download(request):
 			farm.phone_2_type,
 
 			farm.email,
-			farm.direction,
+			farm.directions,
 			farm.instructions,
 			farm.farmers.all(),
 			farm.counties.all(),

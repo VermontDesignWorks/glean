@@ -18,6 +18,7 @@ urlpatterns = patterns('',
 	url(r'^distribution/', include('distro.urls', namespace="distro")),
 	url(r'^posts/', include('posts.urls', namespace="posts")),
 	url(r'^initialize/', include('initialize.urls', namespace="initialize")),
+	url(r'^api/', include('api.urls', namespace="api")),
 
 	url(r'^comments/', include('django.contrib.comments.urls')),
 

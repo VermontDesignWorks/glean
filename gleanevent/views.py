@@ -63,7 +63,7 @@ def newGlean(request):
 			
 	else:
 		form = GleanForm()
-		return render(request, 'gleanevent/new.html', {'form':form})
+		return render(request, 'gleanevent/newjava.html', {'form':form})
 
 @permission_required('gleanevent.auth')
 def editGlean(request, glean_id):
