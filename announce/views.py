@@ -259,25 +259,6 @@ def announceGlean(request, glean_id):
 			return HttpResponseRedirect(reverse('announce:combinedannounce', args=(new_save.id,)))
 		else:
 			return HttpResponse('no default template selected! You need a template to announce a glean!')
-		# if request.method == 'POST':
-		# 	new_save = Annoucement(glean=glean)
-		# 	new_save.save()
-		# 	return HttpResponseRedirect(reverse('announce:combinedannounce', args=(new_save.id,)))
-
-		# 	form = AnnouncementForm(request.POST)
-		# 	if form.is_valid():
-		# 		new_save = form.save(commit=False)
-		# 		new_save.member_organization = glean.member_organization
-		# 		new_save.glean = glean
-		# 		new_save.save()
-		# 		return HttpResponseRedirect(reverse('announce:detailannounce', args=(new_save.id,)))
-		# 	else:
-		# 		HttpResponse('form was not vaild')
-		# else:
-		# 	templates = Template.objects.all()
-		# 	form = AnnouncementForm()
-		# 	source = primary_source(glean)
-		# 	return render(request, 'announce/announce.html', {'glean':glean, 'templates':templates, 'form':form, 'source':source})
 	else:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id)))
 
@@ -363,6 +344,8 @@ def combinedAnnounce(request, announce_id):
 	else:
 		templates = Template.objects.all()
 		form = AnnouncementForm(instance=announce)
+		if not request.user.has_perm('announce.uniauth'):
+			form.fields['template'].queryset = Template.objects.filter(member_organization=profile.member_organization)
 		return render(request, 'announce/combined_announce.html', {'glean':announce.glean, 'announcement':announce,'templates':templates, 'form':form, 'phone':phone,'recipients':recipients, 'source':source, 'test':body, 'subject':subject})
 
 @permission_required('announce.auth')

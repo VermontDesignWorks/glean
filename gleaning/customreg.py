@@ -17,7 +17,7 @@ class ExtendedRegistrationForm(RegistrationForm):
 	address_two = forms.CharField(label="Address (line two)", max_length=200, required=False)
 	city = forms.CharField(label="City", max_length=200)
 	state = forms.ChoiceField(label="State",choices=STATES, initial='VT')
-	zipcode = forms.CharField(label="Zipcode", max_length=11)
+	zipcode = forms.CharField(label="Zipcode", max_length=11, required=False)
 	counties = forms.ModelMultipleChoiceField(queryset=County.objects.all(), label="Counties You'd like to Glean In")
 	age = forms.ChoiceField(label="Age",
 							choices=AGE_RANGES)

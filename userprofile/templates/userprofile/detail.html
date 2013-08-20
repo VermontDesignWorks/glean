@@ -9,6 +9,7 @@
 <p>{{person.city}}</p>
 <p>{{person.state}}</p>
 <p>{{person.zipcode}}</p>
+<p>{{person.get_hours}}</p>
 <h4>{{person.first_name}} {{person.last_name}}'s counties</h4>
 {% if person.counties.all %}
 <p>{% for county in person.counties.all %}</p>

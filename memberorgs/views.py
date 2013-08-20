@@ -3,7 +3,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django.views import generic
 
 from django.contrib.auth.decorators import permission_required
 
@@ -18,6 +17,7 @@ def index(request):
 		memorg_id = request.user.profile_set.get().member_organization.id
 		return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(memorg_id,)))
 	return render(request, 'memberorgs/index.html', {'memorgs':memorgs_list})
+
 
 @permission_required('memberorgs.uniauth')
 def newMemOrg(request):
@@ -59,3 +59,21 @@ def editMemOrg(request, memorg_id):
 def detailMemOrg(request, memorg_id):
 	memorg = get_object_or_404(MemOrg, pk=memorg_id)
 	return render(request, 'memberorgs/detail_memorg.html', {'memorg':memorg})
+
+@permission_required('memberorgs.uniauth')
+def newMemOrgAndSuperUser(request):
+	if request.method == "POST":
+		form = MemOrgForm(request.POST)
+		if form.is_valid():
+			new_save = form.save()
+			new_save.save()
+			new_template = Template(template_name="Default Template", member_organization=new_save,
+				body="<html><body><h3 style='text-align:center;color:green'>{{glean.title}}</h3><p>{{glean.description}}</p><p>{{custom}}</p><p>For more information, click on the {{info}} link!</p><p>To no longer receive emails about gleaning, click on the {{unsubscribe}} link.</p></body></html>",
+				default=True)
+			new_template.save()
+			return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(new_save.id,) ))
+		else:
+			return render(request, 'memberorgs/new_memorg.html', {'form':form, 'error':'Your Member Organization Form Was Not Valid'})
+	else:
+		form = MemOrgForm()
+		return render(request, 'memberorgs/new_memorg.html', {'form':form})

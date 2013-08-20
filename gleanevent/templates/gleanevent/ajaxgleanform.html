@@ -1,12 +1,5 @@
-{% extends 'base.html' %}
-{% load url from future %}
-{% block title %}
-New Glean!
-{% endblock title %}
-
-{% block body %}
-<h3>New Glean Form</h3>
-<form action="/glean/new/" method="post">
+<form action="" method="post">
+	{{form.errors}}
 {% csrf_token %}
 
 <div class="form">
@@ -40,8 +33,8 @@ New Glean!
 
       }
       function updateAddressFields(data){
-         $('#id_instructions').text(data['instructions']);
-         $('#id_directions').text(data['directions']);
+         $('#id_instructions').val(data['instructions']);
+         $('#id_directions').val(data['directions']);
          $('#id_address_one').val(data['address_one']);
          $('#id_address_two').val(data['address_two']);
          $('#id_city').val(data['city']);
@@ -59,11 +52,11 @@ New Glean!
          for (var key in data['counties']){
 
          }
-         //########currently covered with filler code#########
+      
       }
       function clearAddressFields(){
-         $('#id_instructions').text('');
-         $('#id_directions').text('');
+         $('#id_instructions').val('');
+         $('#id_directions').val('');
          $('#id_address_one').val('');
          $('#id_address_two').val('');
          $('#id_city').val('');
@@ -120,7 +113,7 @@ New Glean!
                clearAddressFields();
             }
          });
-         //clearFarmLocationChoices();
+         clearFarmLocationChoices();
       });
       
       </script>
@@ -169,4 +162,3 @@ New Glean!
 </div>
 <input type="submit" value="Submit" />
 </form>
-{% endblock body %}

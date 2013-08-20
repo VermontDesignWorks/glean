@@ -1,5 +1,10 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.1.4 - "Ajax and Friends"
+*added Ajax backend
+*cleaned up New Glean Form
+*like a b
+
 Release 0.1.3.6 - "Abraham the Grouch"
 *Fixed the harvest Distribution business
 *Completely revamped the Volunteer/MO attribtion code

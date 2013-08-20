@@ -2,9 +2,10 @@ import datetime
 from django.utils import timezone
 
 from django.db import models
+from django.forms import TextInput
 from django.forms import ModelForm
-from django.forms.fields import ChoiceField
 
+from django.forms.fields import ChoiceField
 
 from django.conf import settings
 from constants import VERMONT_COUNTIES, STATES
@@ -14,7 +15,6 @@ from farms.models import Farm, FarmLocation
 from memberorgs.models import MemOrg
 from counties.models import County
 
-from django.forms import TextInput
 from cidgets import DatePicker
 
 # Create your models here.
@@ -91,6 +91,7 @@ class GleanEvent(models.Model):
 		)
 
 class GleanForm(ModelForm):
+
 	class Meta:
 		model = GleanEvent
 		exclude = ['invited_volunteers', 'attending_volunteers', 'officiated_by']
@@ -105,6 +106,7 @@ class PostGlean(models.Model):
 	first_name = models.CharField(max_length=20, blank=True, null=True)
 	last_name = models.CharField(max_length=20, blank=True, null=True)
 	hours = models.IntegerField(default=0, null=True)
+	hours = models.DecimalField("Hours (e.g. '3.5')", max_digits=5, decimal_places=3)
 	group = models.CharField(max_length=40, blank=True, null=True)
 	members = models.CharField(max_length=20, blank=True, null=True)
 	notes = models.CharField(max_length=200, blank=True, null=True)

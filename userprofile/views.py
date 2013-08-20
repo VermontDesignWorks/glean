@@ -208,6 +208,9 @@ def newUser(request):
 				eclast_name=form.cleaned_data['eclast_name'],
 				ecrelationship=form.cleaned_data['ecrelationship'],
 				user=new_user,
+				waiver=form.cleaned_data['waiver'],
+				agreement=form.cleaned_data['agreement'],
+				photo_release=form.cleaned_data['photo_release'],
 				member_organization=request.user.profile_set.get().member_organization,
 			)
 			profile.save()
@@ -290,6 +293,9 @@ def userPromote(request, user_id):
 		else:
 			form = PromoteForm({'promote':admin}) #not a POST, so fill in the 'promote' field
 	return render(request, 'userprofile/user_promote.html', {'form':form})
+
+def newAdmin(request, memorg_id):
+	pass
 
 @permission_required('userprofile.auth')
 def reaccept(request, user_id):

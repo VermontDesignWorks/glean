@@ -12,8 +12,11 @@ from django.forms.models import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 
-from gleanevent.models import GleanEvent, GleanForm, PostGlean# PostGleanForm
+from gleanevent.models import GleanEvent, GleanForm, PostGlean
+from farms.models import Farm, FarmLocation
 from announce.models import Announcement
+from userprofile.models import Profile
+
 from functions import primary_address
 
 from django.contrib.comments.forms import CommentForm
@@ -26,6 +29,7 @@ class CustomCommentForm(CommentForm):
 
 @login_required
 def index(request):
+	profile = get_object_or_404(Profile, user=request.user)
 	date_from = request.GET.get('date_from', '')
 	date_until = request.GET.get('date_until', '')
 	if date_from:
@@ -36,15 +40,16 @@ def index(request):
 		date_until = date_until[6:] + '-' + date_until[:2] + '-' + date_until[3:5]
 	else:
 		date_until = '3013-01-01'
-	# if request.user.has_perm('gleanevent.uniauth'):
-	gleaning_events_list = GleanEvent.objects.all()
-	# else:
-	# 	gleaning_events_list = GleanEvent.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+	if request.user.has_perm('gleanevent.uniauth'):
+		gleaning_events_list = GleanEvent.objects.all()
+	else:
+	 	gleaning_events_list = GleanEvent.objects.filter(member_organization=profile.member_organization)
 	gleaning_events_list = gleaning_events_list.filter(date__gte=date_from).filter(date__lte=date_until)
 	return render(request, 'gleanevent/index.html', {'gleans':gleaning_events_list})
 
 @permission_required('gleanevent.auth')
 def newGlean(request):
+	profile = request.user.profile_set.get()
 	if request.method == "POST":
 		form = GleanForm(request.POST)
 		if form.is_valid():
@@ -59,11 +64,20 @@ def newGlean(request):
 			# 	new_save.counties.add(county)
 			# return HttpResponse(new_save.counties.all())
 			return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(new_save.id,) ))
-		return HttpResponse('form was not valid')
+
+		form.fields['farm'].queryset=Farm.objects.filter(member_organization=profile.member_organization)
+		if form.cleaned_data['farm']:
+			farm = Farm.objects.get(name=form.cleaned_data['farm'])
+			form.fields['farm_location'].queryset=FarmLocation.objects.filter(farm=farm)
+		return render(request, 'gleanevent/new.html', {'form':form})
 			
 	else:
 		form = GleanForm()
-		return render(request, 'gleanevent/newjava.html', {'form':form})
+		if not request.user.has_perm('gleanevent.uniauth'):
+
+			form.fields['farm'].queryset = Farm.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+			form.fields['farm_location'].queryset=FarmLocation.objects.none()
+		return render(request, 'gleanevent/new.html', {'form':form})
 
 @permission_required('gleanevent.auth')
 def editGlean(request, glean_id):
@@ -73,14 +87,17 @@ def editGlean(request, glean_id):
 	if not glean.happened():
 		if request.method == "POST":
 			form = GleanForm(request.POST, instance = glean)
-			
 			if form.is_valid():
 				new_save = form.save()
 				return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(new_save.id,) ))
 			else:
+				form.fields['farm'].queryset=Farm.objects.filter(member_organization=glean.member_organization)
+				form.fields['farm_location'].queryset=FarmLocation.objects.filter(farm=glean.farm)
 				return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':form.errors})
 		else:
 			form = GleanForm(instance = glean)
+			form.fields['farm'].queryset=Farm.objects.filter(member_organization=glean.member_organization)
+			form.fields['farm_location'].queryset=FarmLocation.objects.filter(farm=glean.farm)
 			return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':''})
 	else:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))

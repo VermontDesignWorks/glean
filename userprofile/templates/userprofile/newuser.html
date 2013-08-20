@@ -12,6 +12,7 @@ Create a New User
 
 {% block content %}
 <h5 class='text-success' style="text-align:center;">{{notice}}</h5>
+<h5 class='text-danger' style="text-align:center;">{{form.errors}}</h5>
 <form method="POST">
 	{% csrf_token %}
 	{% include 'userprofile/profileform.html' %}

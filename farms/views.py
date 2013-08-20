@@ -22,14 +22,16 @@ def index(request):
 @permission_required('farms.auth')
 def newFarm(request):
 	if request.method == "POST":
+
 		form = FarmForm(request.POST)
 		if form.is_valid():
-			#newFarm = Farm(**form.cleaned_data)
-			#newFarm.save()
 			new_save = form.save()
 			new_save.member_organization.add(request.user.profile_set.get().member_organization)
 			new_save.save()
-			return HttpResponseRedirect(reverse('farms:detailfarm', args=(new_save.id,) ))
+			if request.POST['action'] == "Save And View":
+				return HttpResponseRedirect(reverse('farms:detailfarm', args=(new_save.id,) ))
+			else:
+				return HttpResponseRedirect(reverse('farms:newlocation', args=(new_save.id,) ))
 		else:
 			return render(request, 'farms/new.html', {'form':form, 'error':'Your Farm Form Was Not Valid'})
 	else:

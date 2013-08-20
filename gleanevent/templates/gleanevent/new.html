@@ -4,38 +4,7 @@
 New Glean!
 {% endblock title %}
 
-
-{% block heading %}
+{% block body %}
 <h3>New Glean Form</h3>
-{% endblock heading %}
-
-
-{% block content %}
-
-<form action="/glean/new/" method="post">
-{% csrf_token %}
-{% include 'gleanevent/gleanform.html' %}
-<input type="submit" value="Submit" />
-</form>
-{% endblock content %}
-{% block related %}
-<p>The information you enter here will build a Glean Event Page—the place your announcement email will direct volunteers. (On the Glean Event Page, volunteers will view information about a glean, RSVP, and post messages on the rideshare/comments board.)
-</p>
-
-<p>Much of this information will also help build the email announcement itself. (The information on the announcement email is more limited, with no specific time or farm address, in order to minimize the chance that unregistered volunteers view the email and show up to a farm to glean without having first signed the waiver of liability and volunteer agreement.) Keep in mind that you can edit this information even after you create the glean page.</p>
-
-<p><i>The Title</i> is the headliner for the Glean Event Page and also becomes the subject line of your gleaning announcement email (editable later). Date generates a drop-down calendar and <i>Time</i> is a text box – any combination of text and numbers works here.</p>
-
-<p>When farm information is already entered into the Interface, selecting a farm from the dropdown menu that appears under <i>Farm Name</i> will 1) fill the dropdown list for farm location (if there is more than one), 2) auto-fill the address, 3) directions, and 4) instructions fields, and 5) automatically highlight the county or counties this farm is in/near.</p>
-
-<p><b>If the farm is new, be sure enter it into the Interface first</b> (in the top bar, Farms -> Add New Farm). This saves the steps of entering in address, county, and other info each time and is also crucial for keeping accurate and consistent records when you enter in harvest and distribution data.</p>
-
-<p>If you do type in a farm name that is not yet in the system, the Address and County fields are required [as noted in the 7/7/13 note above]. The <b><i>Address</i> is the default location where volunteers will convene for the glean</b>. If there are additional Instructions or Directions for this particular glean, you can type them here in this form. If these pieces of extra instruction would be useful for any glean at this farm, edit the info on the farm profile (in Farm Index) instead so that the changes carry over to each new Glean Event Page. <b></i>The County</i> selection determines which volunteers will receive the glean announcement.</b> Generally, whichever county the farm is located in will make the most sense, but you may want to consider selecting multiple counties of this farm is situated near county borders. Again, the county selection will usually be made automatically, and if you want to make changes that will apply to every glean at the farm, better to do it on the farm profile itself.</p>
-
-<p><i>Volunteers Needed</i> will help provide a cap for the glean, making sure you don’t end up with more people than you can manage. Of course, this number doesn’t guarantee full attendance!</p>
-
-<p>The <i>Duration</i> gives your volunteers a sense for how long they should plan to be in the field. Enter in any combination of numerals and text: (ie, 3 hours) </p>
-
-<p>When you’re ready to see the Glean Event Page, Click <b>Submit</b>.</p>
-
-{% endblock related %}
+{% include 'gleanevent/ajaxgleanform.html' %}
+{% endblock body %}

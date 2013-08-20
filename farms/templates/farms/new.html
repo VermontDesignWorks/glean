@@ -13,7 +13,10 @@ New Farm!
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'farms/farmform.html' %}
-		<input type="submit" value="Go!">
+		<span style="text-align:center;">
+		<input type="submit" class="btn btn-success" name="action" value="Save And View" />
+		<input type="submit" class="btn btn-danger" name="action" value="Save and Create Additional Field Location" />
+		<span>
 	</form>
 {% endblock content %}
 {% block related %}

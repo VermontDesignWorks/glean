@@ -6,7 +6,7 @@ New Location for {{farm.name}}!
 
 
 {% block heading %}
-<h3>New Location</h3>
+<h3>New Location for {{farm.name}}</h3>
 {% endblock heading %}
 
 
@@ -14,7 +14,8 @@ New Location for {{farm.name}}!
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'farms/farmform.html' %}
-		<input type="submit" value="Go!">
+		<input type="submit" class="btn btn-success" name='action' value="Save">
+		<input type="submit" class="btn btn-danger" name='action' value="Save and Create Another">
 	</form>
 {% endblock content %}
 {% block related %}

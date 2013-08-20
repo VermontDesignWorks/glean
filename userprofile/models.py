@@ -8,6 +8,7 @@ from constants import ACCESS_LEVELS, VERMONT_COUNTIES, AGE_RANGES, PHONE_TYPE, P
 from django.conf import settings
 from counties.models import County
 from memberorgs.models import MemOrg
+from gleanevent.models import PostGlean
 
 class Profile(models.Model):
 	user = models.ForeignKey(User, blank=True, unique=True, editable=False)
@@ -44,9 +45,16 @@ class Profile(models.Model):
 	accepts_email = models.BooleanField(default=True, editable=False)
 	unsubscribe_key = models.CharField("Unsubscribe key, for emails", max_length=30, blank=True, null=True, editable=False)
 
-	waiver = models.BooleanField()
-	agreement = models.BooleanField()
-	photo_release = models.BooleanField()
+	waiver = models.BooleanField("Do you agree to the Waiver of Liability?")
+	agreement = models.BooleanField("Do you agree to the Volunteer Agreement?")
+	photo_release = models.BooleanField("Do you consent to the Photo Release?")
+
+	def get_hours(self):
+		pgs = PostGlean.objects.filter(user = self.user)
+		total = 0
+		for pg in pgs:
+			total += pg.hours
+		return total
 			
 	def __unicode__(self):
 		return u'%s %s %s' % (self.first_name, self.last_name, self.user)
@@ -56,6 +64,7 @@ class Profile(models.Model):
 			("auth", "Member Organization Level Permissions"),
 			("uniauth", "Universal Permission Level"),
 		)
+
 
 class ProfileForm(forms.ModelForm):
 	class Meta:
@@ -81,8 +90,8 @@ class EmailForm(forms.Form):
 
 class UniPromoteForm(forms.Form):
 	member_organization = forms.ModelChoiceField(queryset=MemOrg.objects.all(), label="Member Organization")
-	executive = forms.BooleanField(label="Is this person an Executive Director?", required=False)
-	promote = forms.BooleanField(label="Are you sure you want to promote this person?", required=False)
+	promote = forms.BooleanField(label="Confirm Administrator Privileges", required=False)
+	executive = forms.BooleanField(label="Confirm Additional Program Director Privileges", required=False)
 
 class PromoteForm(forms.Form):
 	promote = forms.BooleanField(label="Are you sure you want to promote this person to Glean Coordinator?", required=False)

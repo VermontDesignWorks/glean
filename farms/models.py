@@ -18,7 +18,6 @@ from memberorgs.models import MemOrg
 # Create your models here.
 class Farm(models.Model):
 	name = models.CharField(max_length=200)
-	farm_type = models.CharField(choices=FARM_TYPE, max_length=20)
 	description = models.TextField(blank=True)
 
 	address_one = models.CharField('Physical Address (line one)', max_length=200, blank=True)
@@ -66,6 +65,7 @@ class FarmLocation(models.Model):
 	name = models.CharField(max_length=200)
 	description = models.TextField(blank=True)
 	directions = models.TextField(blank=True)
+	instructions = models.TextField("Instructions", blank=True)
 	counties = models.ManyToManyField(County, blank=True, null=True)
 
 	address_one = models.CharField('Address (line one)', max_length=200, blank=True)

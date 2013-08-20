@@ -5,6 +5,18 @@ Farm Index
 {% endblock title %}
 
 {% block body %}
+<div class="row-fluid">
+	<div class="span6">
+<h3>Farm Index</h3>
+<p>This list of farms automatically updates as you add new farms. To create a new farm, click on the button on the right, which will allow you to enter all information necessary to create a farm and add locations, information which will auto-populate your Glean Event Forms.</p>
+</div>
+<div class="span6">
+<br />
+<br />
+<br />
+<p><a href="{% url 'farms:newfarm' %}" class="btn btn-danger">New Farm</a></p>
+</div>
+</div>
 {% if farms %}
 <div class="row-fluid">
 	<div class="span4">

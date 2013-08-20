@@ -56,14 +56,16 @@ Gleaning Details
 <p>
   <a href="{% url 'announce:announceglean' glean.id %}" class="btn btn-primary">Create Announcement</a> <a href="{% url 'gleanevent:editglean' glean.id %}"class="btn btn-warning">Edit Glean</a>
 </p>
+  {% else %}
 <p>
   <a href="{% url 'gleanevent:postglean' glean.id %}" class="btn btn-danger">
     Enter Volunteer Hours
   </a>
   <a href="{% url 'gleanevent:postgleanedit' glean.id %}" class="btn btn-warning">
     Edit Volunteer Hours
-  </a>
-  <a href="{% url 'gleanevent:postgleanview' glean.id %}" class="btn btn-success">
+  </a></p>
+
+ <p> <a href="{% url 'gleanevent:postgleanview' glean.id %}" class="btn btn-success">
     View Volunteer Hours
   </a>
 </p>

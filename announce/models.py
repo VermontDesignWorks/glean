@@ -41,7 +41,7 @@ class Announcement(models.Model):
 	glean = models.ForeignKey(GleanEvent, blank=True, null=True, editable=False)
 	title = models.CharField("Add a Custom Subject", max_length=50, null=True, blank=True)
 	message = models.TextField("Add a Custom Message",null=True, blank=True)
-	template = models.ForeignKey( Template, blank=True, null=True, verbose_name="Email Template")
+	template = models.ForeignKey(Template, null=True, verbose_name="Email Template")
 	sent = models.BooleanField(default=False, editable=False)
 	sent_by = models.ForeignKey(User, editable=False, null=True)
 	member_organization = models.ForeignKey(MemOrg, editable=False, verbose_name="Member Organization")
@@ -59,9 +59,11 @@ class Announcement(models.Model):
 		if self.datetime + datetime.timedelta(hours=3) < time.now():
 			return True
 
+
 class AnnouncementForm(ModelForm):
 	class Meta:
 		model = Announcement
+		
 
 class RsvpModel(models.Model):
 	key = models.CharField(max_length=25, primary_key=True)
@@ -71,3 +73,7 @@ class RsvpModel(models.Model):
 class UnsubscribeModel(models.Model):
 	key = models.CharField(max_length=25, primary_key=True)
 	user = models.ForeignKey(User)
+
+class RecipientList(models.Model):
+	announcement = models.ForeignKey(Announcement)
+	recipients = models.ManyToManyField(User)
