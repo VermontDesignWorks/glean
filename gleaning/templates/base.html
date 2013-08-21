@@ -131,16 +131,16 @@
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="/admin">Admin Controls</a></li>
                           {% endif %}
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:selfedit' %}">Edit Profile</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_password_change' %}">Change Password</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'auth_password_change' %}">Change Password</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:emailedit' %}">Change Email</a></li>
                           <li role="presentation" class="divider"></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_logout' %}">Log Out</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'auth_logout' %}">Log Out</a></li>
                         </ul>
                       </li>
                           {% else %}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:auth_login' %}">Login</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'auth_login' %}">Login</a></li>
                           <li role="presentation" class="divider"></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration:registration_register' %}">Register</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration_register' %}">Register</a></li>
                           {% endif %}
 
                       

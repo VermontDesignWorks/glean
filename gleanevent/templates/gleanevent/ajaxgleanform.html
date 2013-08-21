@@ -2,7 +2,8 @@
 	{{form.errors}}
 {% csrf_token %}
 
-<div class="form">
+<div class="row-fluid">
+   <div class="span4">
 <table>
 
 <tbody>
@@ -14,18 +15,30 @@
       
       <td><label for="id_date"><label for="id_date">Date</label></label></td>
       <td>{{form.date}}</td>
+      
+      
+    </tr>
+    <tr>
       <td><label for="id_time"><label for="id_time">Time</label></label></td>
       <td>{{form.time}}</td>
+    </tr>
+    <tr>
       <td><label for="id_duration"><label for="id_duration">Duration</label></label></td>
       <td>{{form.duration}}</td>
     </tr>
-   <tr>
-   <td>
-      <label for="id_farm"><label for="id_farm">Farm</label></label>
-      <label for="id_farm_location"><label for="id_farm_location">Farm location</label></label>
-   </td>
-
-      <td>
+    <tr>
+      <td><label for="id_volunteers_needed"><label for="id_volunteers_needed">Volunteers needed</label></label></td>
+      <td>{{form.volunteers_needed}}</td>
+    </tr>
+    <tr><td><label for="id_description"><label for="id_description">Description</label></label></td>
+      <td>{{form.description}}</td></tr>
+ </tbody>
+</table>
+</div>
+<div class="span4">
+   <table>
+      <tbody>
+         <tr><td><label for="id_farm"><label for="id_farm">Farm</label></label></td><td>
          {{form.farm}}
       <script type="text/javascript">
 
@@ -117,22 +130,25 @@
       });
       
       </script>
-      {{form.farm_location}}
+      
+   </td></tr>
+   <tr>
+   <td>
+
+
+      <label for="id_farm_location"><label for="id_farm_location">Farm location</label></label>
    </td>
-   <td><label for="id_counties"><label for="id_counties">Counties</label></label></td>
+   <td>{{form.farm_location}}</td>
+
+      
+   
+   
+</tr>
+<tr>
+<td><label for="id_counties"><label for="id_counties">Counties</label></label></td>
    <td>{{form.counties}}</td>
-   <td><label for="id_volunteers_needed"><label for="id_volunteers_needed">Volunteers needed</label></label></td>
-   <td>{{form.volunteers_needed}}</td>
 </tr>
 
-<tr>
-   <td><label for="id_description"><label for="id_description">Description</label></label></td>
-      <td>{{form.description}}</td>
-      <td><label for="id_instructions"><label for="id_instructions">Instructions</label></label></td>
-      <td>{{form.instructions}}</td>
-      <td><label for="id_directions"><label for="id_directions">Directions</label></label></td>
-   <td>{{form.directions}}</td>
- </tr>
 
 <tr>
 <td><label for="id_address_one"><label for="id_address_one">Address (line one)</label></label></td>
@@ -158,7 +174,24 @@
 <td><label for="id_zipcode"><label for="id_zipcode">Address Zip Code</label></label></td>
    <td>{{form.zipcode}}</td>
  </tr>
+ </table>
+</div>
+<div class="span4">
+   <table>
+      <tbody>
+
+         <tr>
+   
+      <td><label for="id_directions"><label for="id_directions">Directions</label></label></td>
+   <td>{{form.directions}}</td>
+      <tr><td><label for="id_instructions"><label for="id_instructions">Instructions</label></label></td>
+      <td>{{form.instructions}}</td></tr>
+      
+ </tr>
 </tbody></table>
 </div>
-<input type="submit" value="Submit" />
+</div>
+<div class="form-actions">
+<input type="submit" class="btn btn-primary" value="Submit" />
+</div>
 </form>

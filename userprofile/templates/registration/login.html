@@ -22,5 +22,5 @@
 {% endblock %}
 
 {% block related %}
-<p>Please enter your username and password to access the site. Forgot either one? <a href="{% url 'registration:auth_password_reset' %}">Reset it here.</a> Don't have an account? <a href="{% url 'registration:registration_register' %}">Create a new one</a></p>
+<p>Please enter your username and password to access the site. Forgot either one? <a href="{% url 'auth_password_reset' %}">Reset it here.</a> Don't have an account? <a href="{% url 'registration_register' %}">Create a new one</a></p>
 {% endblock %}

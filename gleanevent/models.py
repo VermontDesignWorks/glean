@@ -106,7 +106,7 @@ class PostGlean(models.Model):
 	first_name = models.CharField(max_length=20, blank=True, null=True)
 	last_name = models.CharField(max_length=20, blank=True, null=True)
 	hours = models.IntegerField(default=0, null=True)
-	hours = models.DecimalField("Hours (e.g. '3.5')", max_digits=5, decimal_places=3)
+	hours = models.DecimalField("Hours (e.g. '3.5')", max_digits=5, decimal_places=3, blank=True, null=True)
 	group = models.CharField(max_length=40, blank=True, null=True)
 	members = models.CharField(max_length=20, blank=True, null=True)
 	notes = models.CharField(max_length=200, blank=True, null=True)
