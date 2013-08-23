@@ -1,5 +1,11 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.1.4.b - "Ajax and Friends"
+*Completed Recipient List Changes
+*Revised the Announcement Page
+*Made hooks easier for changing Email code (an eventuality)
+*Added tests for everthing I wrote, because tests are FUN!
+
 Release 0.1.4.a - "Ajax and Friends"
 *Changed Gleaning List System
 

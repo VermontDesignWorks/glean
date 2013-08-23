@@ -65,18 +65,19 @@ class Announcement(models.Model):
 		self.email_recipients.clear()
 		self.phone_recipients.clear()
 		source = primary_source(self.glean)
-		print "source identified"
 		for county in source.counties.all():
-			print "county identified"
 			for recipient in county.people.all():
-				print "user %s identified" % recipient
 				if recipient.accepts_email:
 					if recipient.preferred_method == '1':
 						self.email_recipients.add(recipient.user)
-						print "user %s added to email list" % recipient
 					else:
 						self.phone_recipients.add(recipient.user)
-						print "user %s added to phone list" % recipient
+
+	def uninvite_user(self, user):
+		if user in self.email_recipients.all():
+			self.email_recipients.remove(user)
+		if user in self.phone_recipients.all():
+			self.phone_recipients.remove(user)
 
 class AnnouncementForm(ModelForm):
 	class Meta:

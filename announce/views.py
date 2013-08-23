@@ -13,6 +13,8 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 
+from django.contrib.auth.models import User
+
 from announce.models import Template, TemplateForm, Announcement, AnnouncementForm, PartialTemplateForm
 from gleanevent.models import GleanEvent
 from userprofile.models import Profile
@@ -162,30 +164,26 @@ def weave_unsubscribe(body, userprofile,announce):
 
 #== Mailing Logic ==#
 def mail_from_source(source, body, announcement):
-	mailed = []
-	if announcement.title:
-		subject = announcement.title
-	else:
-		subject = announcement.glean.title
-	for county in source.counties.all():
-		for recipient in county.people.all():
-			
-			if recipient not in mailed and recipient.accepts_email and recipient.preferred_method == '1':
-				mailed.append(recipient)
-				text = weave_unsubscribe(body,recipient,announcement)
-				msg = EmailMessage(subject, text, 'Salvation Farms', [recipient.user.email])
-				msg.content_subtype = "html"
-				msg.send()
-				#send_mail(announcement.title, text, 'Salvation Farms', [recipient.user.email], fail_silently=False)
-				if recipient not in announcement.glean.invited_volunteers.all():
-					announcement.glean.invited_volunteers.add(recipient.user)
-				if recipient not in announcement.email_recipients.all():
-					announcement.email_recipients.add(recipient.user)
-			elif recipient.preferred_method == '2' and recipient.accepts_email:
-				if recipient not in announcement.phone_recipients.all():
-					announcement.phone_recipients.add(recipient.user)
-	announcement.save()
-	announcement.glean.save()
+	try:
+		if announcement.title:
+			subject = announcement.title
+		else:
+			subject = announcement.glean.title
+		## this is where we hit send ##
+		for recipient in announcement.email_recipients.all():
+			text = weave_unsubscribe(body,recipient,announcement)
+			msg = EmailMessage(subject, text, 'Salvation Farms', [recipient.email])
+			msg.content_subtype = "html"
+			msg.send()
+			if recipient not in announcement.glean.invited_volunteers.all():
+				announcement.glean.invited_volunteers.add(recipient)
+		for recipient in announcement.phone_recipients.all():
+			if recipient not in announcement.glean.invited_volunteers.all():
+				announcement.glean.invited_volunteers.add(recipient)
+		announcement.glean.save()
+		return True
+	except:
+		return False
 
 #==================== Announce System ====================#
 
@@ -377,6 +375,8 @@ def HTMLemail(request, announce_id):
 	return render(request, 'announce/HTMLemail.html', {'body':body, 'subject':subject})
 
 @permission_required('announce.auth')
-def removeUser(request, announce_id, user_id):
-	announcement = get_object_or_404(Announcement, announce_id)
-	user = get_object_or_404(User, user_id)
+def uninviteUser(request, announce_id, user_id):
+	announcement = get_object_or_404(Announcement, pk=announce_id)
+	user = get_object_or_404(User, pk=user_id)
+	announcement.uninvite_user(user)
+	return HttpResponseRedirect(reverse('announce:combinedannounce', args=(announce_id,)))

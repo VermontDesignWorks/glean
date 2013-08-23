@@ -8,7 +8,7 @@
 					<li>{{announcement.email_recipients.all.count}} Email Recipient{% if not announcement.email_recipients.all.count == 1 %}s{% endif %} {% if announcement.phone_recipients.all.count != 0 %}and {{announcement.phone_recipients.all.count}} Gleaner{% if not announcement.phone_recipients.all.count != 1  %}s{% endif %} to Call{% endif %}
 						<ul>
 							{% for recipient in announcement.email_recipients.all %}
-							<li><a href="{}"><i class="icon-remove text-error"></i></a> <a href="{}">{{recipient.profile_set.get.first_name}} {{recipient.profile_set.get.last_name}}</a></li>
+							<li><a href="{% url 'announce:uninviteuser' announcement.id recipient.id %}"><small class="text-error">(remove)</small></a> <a href="{% url 'userprofile:userprofile' recipient.id %}">{{recipient.profile_set.get.first_name}} {{recipient.profile_set.get.last_name}}</a></li>
 							{% endfor %}
 						</ul>
 					</li>
@@ -16,12 +16,17 @@
 			{% else %}
 				<li>Emailed</li>
 				<ul><li>{{announcement.email_recipients.count}} Email Recipients</li></ul> 
+				{% if announcement.phone_recipients.count != 0 %}
 				<li>Phone List</li>
 				<ul>
 					{% for person in announcement.phone_recipients.all %}
 						<li>{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}} - {{person.profile_set.get.phone}}</li>
 					{% endfor %}
 					<li><a href="{% url 'announce:phoneannounce' announcement.id %}">Printable Phone List</a></li>
+				</ul>
+				{% else %}
+				<li>No Phone Based Subscribers to This Glean</li>
+				{% endif %}
 			{% endif %}
 
 		</ul>

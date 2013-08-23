@@ -26,4 +26,17 @@ class AnnouncementTests(TestCase):
 		announce.populate_recipients()
 		self.assertEqual(announce.email_recipients.count(), 20)
 		self.assertEqual(announce.phone_recipients.count(), 3)
-		
+	
+	def test_uninvite_user_method(self):
+		announce = create_announcement()
+		user_email, profile_email = create_user_and_profile()
+		user_phone, profile_phone = create_user_and_profile(preferred_method='2')
+		announce.email_recipients.add(user_email)
+		announce.phone_recipients.add(user_phone)
+		self.assertEqual(announce.email_recipients.count(),1)
+		self.assertEqual(announce.phone_recipients.count(),1)
+		announce.uninvite_user(user_email)
+		self.assertEqual(announce.email_recipients.count(),0)
+		announce.uninvite_user(user_phone)
+		self.assertEqual(announce.phone_recipients.count(),0)
+
