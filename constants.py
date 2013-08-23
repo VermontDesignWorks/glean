@@ -15,14 +15,13 @@ VERMONT_COUNTIES = (
 )
 
 ACCESS_LIST = ['A', 'ED', 'MC', 'V']
+# ACCESS_LEVELS = (
+# 	('AD', 'Salvation Farms Administrator'),
+# 	('MO', 'Member Organization Executive Director'),
+# 	('MC', 'Gleaning Coordinator'),
+# 	('VO', 'Volunteer'),	
+# )
 
-ACCESS_LEVELS = (
-	('AD', 'Salvation Farms Administrator'),
-	('MO', 'Member Organization Executive Director'),
-	('MC', 'Gleaning Coordinator'),
-	('VO', 'Volunteer'),
-	
-)
 
 LINE_TYPE = (
 	('C', 'Cell'),
@@ -65,3 +64,8 @@ STATES = (
 )
 
 DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+ACCESS_LEVELS = (
+	('PD', 'Project Director'),
+	('MC', 'Gleaning Coordinator'),	
+)

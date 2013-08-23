@@ -1,5 +1,11 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.1.5 RC 1 - "Cool Actually"
+*Added new 'create administrator' forms
+*'Create Administrator View also created
+*all of that crap has been tested and works
+*Removed admins from the volunteer rolls
+
 Release 0.1.4.b - "Ajax and Friends"
 *Completed Recipient List Changes
 *Revised the Announcement Page

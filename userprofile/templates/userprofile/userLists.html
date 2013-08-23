@@ -17,13 +17,18 @@
 			<ul>
 				{% if 'userprofile.uniauth' in perms %}
 					{% for person in users %}
-						<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}{% if person.member_organization %} - {{person.member_organization}}{% endif %}</a></li>
-						{% cycle '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div></div><div class="row-fluid"><div class="span4"><ul>' %}
+						
+							<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}{% if person.member_organization %} - {{person.member_organization}}{% endif %}</a></li>
+							{% cycle '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div></div><div class="row-fluid"><div class="span4"><ul>' %}
+						
 					{% endfor %}
 				{% else %}
 					{% for person in users %}
-						<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}</a></li>
-						{% cycle '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div></div><div class="row-fluid"><div class="span4"><ul>' %}
+						{% if person.user.groups.all.count == 0 %}
+						
+							<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}</a></li>
+							{% cycle '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div></div><div class="row-fluid"><div class="span4"><ul>' %}
+						{% endif %}
 					{% endfor %}
 				{% endif %}
 			</ul>

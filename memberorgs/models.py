@@ -6,7 +6,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 from django.contrib import admin
-from constants import STATES, LINE_TYPE
+from constants import STATES, LINE_TYPE, ACCESS_LEVELS
 # Create your models here.
 
 class MemOrg(models.Model):
@@ -70,5 +70,15 @@ class MemOrgCombinedForm(MemOrgForm):
 		profile = Profile(user=user, first_name=first_name, last_name=last_name, phone=phone)
 		super(MemOrgCombinedForm, self).save(*args, **kwargs)
 		
+class NewAdminForm(forms.Form):
+	member_organization = forms.ModelChoiceField(queryset=MemOrg.objects.all(), empty_label=None)
+	access_level = forms.ChoiceField(choices=ACCESS_LEVELS)
+	username = forms.CharField(max_length=20)
+	password = forms.CharField(max_length=50)
+	verify = forms.CharField(max_length=50)
+	email = forms.EmailField()
+	first_name = forms.CharField(max_length=20)
+	last_name = forms.CharField(max_length=20)
+	phone = forms.CharField(max_length=20)
 
 admin.site.register(MemOrg)

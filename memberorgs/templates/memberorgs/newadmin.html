@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+New Administrator
+{% endblock title %}
+
+{% block heading %}
+<h3>New Administrator</h3>
+{% endblock heading %}
+
+{% block content %}
+	<form method="post" action="">
+		{% csrf_token %}
+		{% include 'memberorgs/memorgform.html' %}
+		<input type="submit" name="action" value="Save">
+		<input type="submit" name="action" value="Save And Create Another Administrator">
+	</form>
+{% endblock content %}
