@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 
+from functions import primary_source
+
 
 class Template(models.Model):
 	template_name = models.CharField(max_length=40)
@@ -59,6 +61,22 @@ class Announcement(models.Model):
 		if self.datetime + datetime.timedelta(hours=3) < time.now():
 			return True
 
+	def populate_recipients(self):
+		self.email_recipients.clear()
+		self.phone_recipients.clear()
+		source = primary_source(self.glean)
+		print "source identified"
+		for county in source.counties.all():
+			print "county identified"
+			for recipient in county.people.all():
+				print "user %s identified" % recipient
+				if recipient.accepts_email:
+					if recipient.preferred_method == '1':
+						self.email_recipients.add(recipient.user)
+						print "user %s added to email list" % recipient
+					else:
+						self.phone_recipients.add(recipient.user)
+						print "user %s added to phone list" % recipient
 
 class AnnouncementForm(ModelForm):
 	class Meta:
@@ -77,3 +95,6 @@ class UnsubscribeModel(models.Model):
 class RecipientList(models.Model):
 	announcement = models.ForeignKey(Announcement)
 	recipients = models.ManyToManyField(User)
+
+	def __unicode__(self):
+		return str(self.id) + " Recipient List " 

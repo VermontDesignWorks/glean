@@ -1,5 +1,8 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.1.4.a - "Ajax and Friends"
+*Changed Gleaning List System
+
 Release 0.1.4 - "Ajax and Friends"
 *added Ajax backend
 *cleaned up New Glean Form

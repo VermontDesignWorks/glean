@@ -256,6 +256,7 @@ def announceGlean(request, glean_id):
 			def_template = query.get()
 			new_save = Announcement(title='', message='', glean=glean, member_organization=profile.member_organization, template=def_template)
 			new_save.save()
+			new_save.populate_recipients()
 			return HttpResponseRedirect(reverse('announce:combinedannounce', args=(new_save.id,)))
 		else:
 			return HttpResponse('no default template selected! You need a template to announce a glean!')
@@ -374,3 +375,8 @@ def HTMLemail(request, announce_id):
 	else:
 		subject = glean.title
 	return render(request, 'announce/HTMLemail.html', {'body':body, 'subject':subject})
+
+@permission_required('announce.auth')
+def removeUser(request, announce_id, user_id):
+	announcement = get_object_or_404(Announcement, announce_id)
+	user = get_object_or_404(User, user_id)

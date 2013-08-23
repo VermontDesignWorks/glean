@@ -1,18 +1,18 @@
 <h3>{% if not announcement.sent %}Intended {% endif %}Recipients</h3>
+	
 	{% if source %}
 		<ul>
 
 			{% if not announcement.sent %}
-				{% if recipients %}
-					<li>{{recipients|length}} Email Recipient{% if not recipients|length_is:"1" %}s{% endif %} {% if phone %}and {{phone|length}} Gleaner{% if not phone|length_is:"1" %}s{% endif %} to Call{% endif %}
-				{% else %}
-					{% for county in source.counties.all %}
-						<li><a href="{% url 'counties:detailcounty' county.id %}">{{county}}</a></li>
+				{% if announcement.email_recipients %}
+					<li>{{announcement.email_recipients.all.count}} Email Recipient{% if not announcement.email_recipients.all.count == 1 %}s{% endif %} {% if announcement.phone_recipients.all.count != 0 %}and {{announcement.phone_recipients.all.count}} Gleaner{% if not announcement.phone_recipients.all.count != 1  %}s{% endif %} to Call{% endif %}
 						<ul>
-							<li>{{county.people.count}} Recipient{% if county.people.count > 1 %}s{% endif %}</li>
+							{% for recipient in announcement.email_recipients.all %}
+							<li><a href="{}"><i class="icon-remove text-error"></i></a> <a href="{}">{{recipient.profile_set.get.first_name}} {{recipient.profile_set.get.last_name}}</a></li>
+							{% endfor %}
 						</ul>
-					{% endfor %}
-				{% endif %}
+					</li>
+						{% endif %}
 			{% else %}
 				<li>Emailed</li>
 				<ul><li>{{announcement.email_recipients.count}} Email Recipients</li></ul> 
