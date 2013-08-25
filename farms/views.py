@@ -227,9 +227,9 @@ def download(request):
 			farm.mailing_state,
 
 			farm.phone_1,
-			farm.phone_1_type,
+			farm.get_phone_1_type_display(),
 			farm.phone_2,
-			farm.phone_2_type,
+			farm.get_phone_2_type_display(),
 
 			farm.email,
 			farm.directions,

@@ -9,8 +9,11 @@ New County
 {% block content %}
 	<form method="post" action="">
 		{% csrf_token %}
-		{% include 'counties/countyform.html' %}
-		<input type="submit" value="Go!">
+		{% include 'counties/customcounty.html' %}
+		<div class="form-actions">
+			<span class="pull-left"><span class="text-error" style="font-size:1.2em">*</span>Denotes a Required Field</span>
+			<input type="submit" class="pull-right btn btn-success" value="Save">
+		</div>
 	</form>
 {% endblock content %}
 {% block related %}
