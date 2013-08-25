@@ -9,16 +9,19 @@ New Farm!
 {% endblock heading %}
 
 
-{% block content %}
+{% block body %}
+
+
 	<form method="post" action="">
 		{% csrf_token %}
-		{% include 'farms/farmform.html' %}
-		<span style="text-align:center;">
-		<input type="submit" class="btn btn-success" name="action" value="Save And View" />
-		<input type="submit" class="btn btn-danger" name="action" value="Save and Create Additional Field Location" />
-		<span>
+		{% include 'farms/customform.html' %}
+		<div class="form-actions">
+			<input type="submit" class="btn btn-success" name="action" value="Save And View" />
+			<input type="submit" class="btn btn-danger" name="action" value="Save and Create Additional Field Location" />
+			<span class="pull-right"><span class="text-error">*</span><span>Denotes a Required Field</span></span>
+		</div>
 	</form>
-{% endblock content %}
+{% endblock body %}
 {% block related %}
 <p>Creating this profile for a new farm adds it to the Farm Index. Farms must have a profile in the Interface for you to enter harvest and distribution data, so <b>make sure you fill out this form for any farm you glean with.</b></p>
 

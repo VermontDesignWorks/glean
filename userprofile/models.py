@@ -48,6 +48,7 @@ class Profile(models.Model):
 	waiver = models.BooleanField("Do you agree to the Waiver of Liability?")
 	agreement = models.BooleanField("Do you agree to the Volunteer Agreement?")
 	photo_release = models.BooleanField("Do you consent to the Photo Release?")
+	opt_in = models.BooleanField("Would you like to recieve additional newsletters and personal messages from the Gleaning Cooperative?", default=False)
 
 	def get_hours(self):
 		pgs = PostGlean.objects.filter(user = self.user)
@@ -62,6 +63,7 @@ class Profile(models.Model):
 	class Meta:
 		permissions = (
 			("auth", "Member Organization Level Permissions"),
+			("promote", "Ability to Promote Users"),
 			("uniauth", "Universal Permission Level"),
 		)
 

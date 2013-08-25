@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User, Group
 
+from constants import TRUNCATED_LEVELS
+
 from userprofile.models import Profile
 from memberorgs.models import MemOrg, MemOrgForm, NewAdminForm
 from announce.models import Template
@@ -26,13 +28,18 @@ def newMemOrg(request):
 	if request.method == "POST":
 		form = MemOrgForm(request.POST)
 		if form.is_valid():
+			f = open('default_template.html', 'r')
+			body = f.read()
 			new_save = form.save()
 			new_save.save()
 			new_template = Template(template_name="Default Template", member_organization=new_save,
-				body="<html><body><h3 style='text-align:center;color:green'>{{glean.title}}</h3><p>{{glean.description}}</p><p>{{custom}}</p><p>For more information, click on the {{info}} link!</p><p>To no longer receive emails about gleaning, click on the {{unsubscribe}} link.</p></body></html>",
+				body=body,
 				default=True)
 			new_template.save()
-			return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(new_save.id,) ))
+			if request.POST['action'] == "Save":
+				return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(new_save.id,) ))
+			else:
+				return HttpResponseRedirect(reverse('memorgs:newadmin', args=(new_save.id,)))
 		else:
 			return render(request, 'memberorgs/new_memorg.html', {'form':form, 'error':'Your Member Organization Form Was Not Valid'})
 	else:
@@ -51,7 +58,8 @@ def editMemOrg(request, memorg_id):
 			new_save.id = memorg_id
 			new_save.created = memorg.created
 			new_save.save()
-			return HttpResponseRedirect(reverse('memorgs:index'))
+			form.save_m2m()
+			return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(memorg_id,)))
 		else:
 			return render(request, 'memberorgs/edit_memorg.html', {'form':form, 'memorg':memorg, 'error':'form needs some work', 'editmode':True})
 	form = MemOrgForm(instance = memorg)
@@ -81,6 +89,7 @@ def newMemOrgAndSuperUser(request):
 		return render(request, 'memberorgs/new_memorg.html', {'form':form})
 
 @permission_required('memberorgs.auth')
+@permission_required('userprofile.promote')
 def newAdministrator(request, memorg_id):
 	member_organization = get_object_or_404(MemOrg, pk=memorg_id)
 	profile = request.user.profile_set.get()
@@ -120,6 +129,8 @@ def newAdministrator(request, memorg_id):
 				return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(memorg_id,)))
 			else:
 				form = NewAdminForm()
+				if not request.user.has_perm('userprofile.uniauth'):
+					form.fields['access_level'].choices = TRUNCATED_LEVELS
 				form.fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg_id)
 				notice = 'Administrator account ' + new_user.username + ' has been created'
 				return render(request, 'memberorgs/newadmin.html', {'form':form, 'notice':notice})				
@@ -128,6 +139,8 @@ def newAdministrator(request, memorg_id):
 
 	form = NewAdminForm()
 	form.fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg_id)
+	if not request.user.has_perm('userprofile.uniauth'):
+		form.fields['access_level'].choices = TRUNCATED_LEVELS
 	return render(request, 'memberorgs/newadmin.html', {'form':form})
 
 

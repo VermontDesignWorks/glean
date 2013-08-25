@@ -4,28 +4,33 @@
 Farm Index
 {% endblock title %}
 
+
+{% block heading %}
+{% endblock heading %}
+
 {% block body %}
-<div class="row-fluid">
+<div class="row-fluid index-header">
+	<div class="span6 index-title">
+		<h1>Farm Index</h1>
+		<a href="{% url 'farms:newfarm' %}" class="btn btn-success">New Farm</a>
+		<a href="{% url 'farms:download' %}" class="btn btn-danger">Download</a>
+	</div>
 	<div class="span6">
-<h3>Farm Index</h3>
-<p>This list of farms automatically updates as you add new farms. To create a new farm, click on the button on the right, which will allow you to enter all information necessary to create a farm and add locations, information which will auto-populate your Glean Event Forms.</p>
-</div>
-<div class="span6">
-<br />
-<br />
-<br />
-<p><a href="{% url 'farms:newfarm' %}" class="btn btn-danger">New Farm</a></p>
-</div>
+		<p>This list automatically updates as you add new farms. To create a new farm, click on the button on the left, which will allow you to enter all information necessary to create a farm and add locations, information which will auto-populate your Glean Event Forms.</p>
+		<p>It's important to enter you farm data, it'll make the process of announcing gleans effortless down the line.</p>
+	</div>
 </div>
 {% if farms %}
-<div class="row-fluid">
-	<div class="span4">
-	<ul>
-	{% for farm in farms %}
-	<li><a href="{% url 'farms:detailfarm' farm.id %}">{{ farm.name }}</a> - <a href="{% url 'farms:editfarm' farm.id %}">edit</a></li>
-	{% cycle '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div></div><div class="row-fluid"><div class="span4"><ul>' %}
-	{% endfor %}
-	</ul>
+<div class="index-table">
+	<div class="row-fluid">
+		<div class="span4">
+			<ul>
+			{% for farm in farms %}
+				<li><a href="{% url 'farms:detailfarm' farm.id %}">{{ farm.name }}</a> - <a href="{% url 'farms:editfarm' farm.id %}">edit</a></li>
+			{% cycle '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div></div><div class="row-fluid"><div class="span4"><ul>' %}
+			{% endfor %}
+			</ul>
+		</div>
 	</div>
 </div>
 {% else %}

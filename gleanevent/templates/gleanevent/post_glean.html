@@ -6,6 +6,7 @@ Post Glean Data for {{glean.title}}
 
 {% block heading %}
 <h3>Post Glean Data for {{glean.title}}</h3>
+<h4><a href="{% url 'gleanevent:detailglean' glean.id %}">Go Back To Glean</a></h4>
 {% endblock heading %}
 
 {% block body %}

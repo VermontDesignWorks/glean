@@ -1,5 +1,18 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.2 - "Animal The Animal"
+*Rewrote all Index and Form Templates
+*Added County Notifications
+*Added Download Views and Controls
+*Added 'required' field markers
+*Rewrote Custom new Volunteer Form
+*Fixed H&D
+*Added Popover text
+*Re-Found Sent Announcement Index
+*Fixed? the Harvest & Distro DB
+*Added Member Org Colors
+
+
 Release 0.1.5 RC 1 - "Cool Actually"
 *Added new 'create administrator' forms
 *'Create Administrator View also created

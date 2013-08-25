@@ -13,6 +13,8 @@
 <form method="post" action="">
 		{% csrf_token %}
 		{% include 'gleanevent/postgleanform.html' %}
-<input type="submit" value="Go!">
+		<div class="form-actions">
+			<input type="submit" class="btn btn-success pull-right" value="Save">
+		</div>
 	</form>
 {% endblock body %}

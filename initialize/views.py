@@ -36,8 +36,6 @@ def create(request):
 	ed = Group.objects.get(name="Member Organization Executive Director")
 	if not ed.permissions.all():
 
-		
-
 		mo_list = [Announcement, Template, Distro, GleanEvent, Farm, PostGlean, RecipientSite, Profile, MemOrg, Post]
 		uni_list = [Announcement, Template, Distro, GleanEvent, Farm, FarmLocation, Contact, PostGlean, RecipientSite, Profile, MemOrg, County, Post]
 
@@ -45,6 +43,7 @@ def create(request):
 		sal = Group.objects.get(name="Salvation Farms Administrator")
 		salc = Group.objects.get(name="Salvation Farms Coordinator")
 
+		## --- add the memorg permissions -- ##
 		for model in mo_list:
 			content_type = ContentType.objects.get_for_model(model)
 			perm = Permission.objects.get(codename='auth', content_type=content_type)
@@ -52,16 +51,26 @@ def create(request):
 			mc.permissions.add(perm)
 			sal.permissions.add(perm)
 			salc.permissions.add(perm)
+
+		## -- add the sal farms permissions -- ##
 		for model in uni_list:
 			content_type = ContentType.objects.get_for_model(model)
 			perm = Permission.objects.get(codename='uniauth', content_type=content_type)
 			sal.permissions.add(perm)
 			salc.permissions.add(perm)
+
+		## --- basically shortchange the MemC --- ##
+		content_type = ContentType.objects.get_for_model(Profile)
+		perm = Permission.objects.get(codename='promote', content_type=content_type)
+		ed.permissions.add(perm)
+		sal.permissions.add(perm)
+		salc.permissions.add(perm)
+		## --- end shortchanging --- ##
+
 	if not MemOrg.objects.all():
 		new_memorg = MemOrg(name="Salvation Farms")
 		new_memorg.save()
 		new_memorg.volunteers.add(request.user)
-
 
 
 	return HttpResponse('it worked from scratch')	

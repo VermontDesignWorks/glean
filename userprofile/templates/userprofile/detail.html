@@ -2,13 +2,14 @@
 {% block title %}
 {{person.first_name}} {{person.last_name}}
 {% endblock title %}
+{% block heading %}
+<h3>{{person.first_name}} {{person.last_name}}</h3>
+{% endblock heading %}
 {% block content %}
-<h2>{{person.first_name}} {{person.last_name}}</h2>
-<h4>{{person.user.username}}</h4>
-<p>{{person.address}}</p>
-<p>{{person.city}}</p>
-<p>{{person.state}}</p>
-<p>{{person.zipcode}}</p>
+<h4>{{person.user.username}} - {{person.user.email}}</h4>
+<p>{{person.address_one}}, {{person.address_two}}</p>
+<p>{{person.city}}, {{person.state}} {{person.zipcode}}</p>
+<h5>Total Hours Gleaning:</h5>
 <p>{{person.get_hours}}</p>
 <h4>{{person.first_name}} {{person.last_name}}'s counties</h4>
 {% if person.counties.all %}
@@ -21,6 +22,7 @@
 <p>{{person.first_name}} has{% if not person.agreement %} <b>not</b>{% endif %} agreed to the volunteer agreement.</p>
 <p>{{person.first_name}} has{% if not person.waiver %} <b>not</b>{% endif %} signed the liability waiver.</p>
 <p>{{person.first_name}} has{% if not person.photo_release %} <b>not</b>{% endif %} consented to the photo release.</p>
+<p>{{person.first_name}} has{% if not person.opt_in %} <b>not</b>{% endif %} opted in to email additional email communications.</p>
 
 
 {% endblock content %}
@@ -39,7 +41,7 @@
 <div class="span12">
 <!--h5>User Stats</h5-->
 </div>
-{% if 'userprofile.auth' in perms %}
+{% if 'userprofile.promote' in perms %}
 <div class="span12">
 	<a class="btn btn-success" href="{% url 'userprofile:userpromote' person.user.id %}">Promote This User</a>
 </div>

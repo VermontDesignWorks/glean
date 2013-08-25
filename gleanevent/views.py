@@ -44,8 +44,12 @@ def index(request):
 		gleaning_events_list = GleanEvent.objects.all()
 	else:
 	 	gleaning_events_list = GleanEvent.objects.filter(member_organization=profile.member_organization)
-	gleaning_events_list = gleaning_events_list.filter(date__gte=date_from).filter(date__lte=date_until)
-	return render(request, 'gleanevent/index.html', {'gleans':gleaning_events_list})
+	try:
+		gleaning_events_list = gleaning_events_list.filter(date__gte=date_from).filter(date__lte=date_until).order_by('-date')
+	except:
+		notice = 'Use the Date Picker you Muppets!'
+		return render(request, 'gleanevent/index.html', {'gleans':gleaning_events_list, 'notice':notice})	
+	return render(request, 'gleanevent/index.html', {'gleans':gleaning_events_list, 'notice':''})
 
 @permission_required('gleanevent.auth')
 def newGlean(request):
@@ -239,122 +243,156 @@ def printGlean(request, glean_id):
 
 @permission_required('gleanevent.auth')
 def download(request):
-	response = HttpResponse(mimetype='text/csv')
-	response['Content-Disposition'] = 'attachment; filename=gleanevent.csv'
+	profile = request.user.profile_set.get()
+	if request.method == 'POST':
+		date_from = request.POST['date_from']
+		date_until = request.POST['date_until']
+		if date_from:
+			date_from = date_from[6:] + '-' + date_from[:2] + '-' + date_from[3:5]
+		else:
+			date_from = '2013-01-01'
+		if date_until:
+			date_until = date_until[6:] + '-' + date_until[:2] + '-' + date_until[3:5]
+		else:
+			date_until = '3013-01-01'
+		if request.user.has_perm('gleanevent.uniauth'):
+			gleaning_events_list = GleanEvent.objects.all()
+		else:
+		 	gleaning_events_list = GleanEvent.objects.filter(member_organization=profile.member_organization)
+		try:
+			gleaning_events_list = gleaning_events_list.filter(date__gte=date_from, date__lte=date_until).order_by('-date')
+		except:
+			return render(request, 'gleanevent/downloadglean.html', {'error':'Use the Date Picker, you muppets!'})
+		response = HttpResponse(mimetype='text/csv')
+		response['Content-Disposition'] = 'attachment; filename=gleanevent.csv'
 
-	# Create the CSV writer using the HttpResponse as the "file."
-	writer = csv.writer(response)
-	writer.writerow([
-			'title',
-			'address_one',
-			'address_two',
-			'city',
-			'state',
-
-			'date',
-			'time',
-			'description',
-			'crops',
-
-			'directions',
-			'instructions',
-
-			'volunteers_needed',
-			'duration',
-
-			'farm',
-			'farm_location',
-
-			'created_by',
-			'invited_volunteers',
-
-			'rsvped',
-			'not_rsvped',
-			'waitlist',
-
-			'attending_volunteers',
-			'officiated_by',
-			'counties',
-
-			'member_organization',
-	])
-
-	if request.user.has_perm('gleanevent.uniauth'):
-		gleans = GleanEvent.objects.all()
-	else:
-		gleans = GleanEvent.objects.filter(member_organization=request.user.profile_set.get().member_organization)
-	for glean in gleans:
+		# Create the CSV writer using the HttpResponse as the "file."
+		writer = csv.writer(response)
 		writer.writerow([
-			glean.title,
-			glean.address_one,
-			glean.address_two,
-			glean.city,
-			glean.state,
+				'title',
+				'address_one',
+				'address_two',
+				'city',
+				'state',
 
-			glean.date,
-			glean.time,
-			glean.description,
-			glean.crops,
+				'date',
+				'time',
+				'description',
 
-			glean.directions,
-			glean.instructions,
+				'directions',
+				'instructions',
 
-			glean.volunteers_needed,
-			glean.duration,
+				'volunteers_needed',
+				'duration',
 
-			glean.farm,
-			glean.farm_location,
+				'farm',
+				'farm_location',
 
-			glean.created_by,
-			glean.invited_volunteers.all(),
+				'created_by',
+				'invited_volunteers',
 
-			glean.rsvped.all(),
-			glean.not_rsvped.all(),
-			glean.waitlist.all(),
+				'rsvped',
+				'not_rsvped',
+				'waitlist',
 
-			glean.attending_volunteers.all(),
-			glean.officiated_by.all(),
-			glean.counties.all(),
+				'attending_volunteers',
+				'officiated_by',
+				'counties',
 
-			glean.member_organization,
-			])
+				'member_organization',
+		])
 
-	return response
+		for glean in gleaning_events_list:
+			writer.writerow([
+				glean.title,
+				glean.address_one,
+				glean.address_two,
+				glean.city,
+				glean.state,
+
+				glean.date,
+				glean.time,
+				glean.description,
+
+				glean.directions,
+				glean.instructions,
+
+				glean.volunteers_needed,
+				glean.duration,
+
+				glean.farm,
+				glean.farm_location,
+
+				glean.created_by,
+				glean.invited_volunteers.all(),
+
+				glean.rsvped.all(),
+				glean.not_rsvped.all(),
+				glean.waitlist.all(),
+
+				glean.attending_volunteers.all(),
+				glean.officiated_by.all(),
+				glean.counties.all(),
+
+				glean.member_organization,
+				])
+
+		return response
+	else:
+		return render(request, 'gleanevent/downloadglean.html', {'error':''})
 
 @permission_required('gleanevent.auth')
 def postGleanDownload(request):
-	response = HttpResponse(mimetype='text/csv')
-	response['Content-Disposition'] = 'attachment; filename=postglean.csv'
+	if request.method == 'POST':
+		profile = request.user.profile_set.get()
+		date_from = request.POST['date_from']
+		date_until = request.POST['date_until']
+		if date_from:
+			date_from = date_from[6:] + '-' + date_from[:2] + '-' + date_from[3:5]
+		else:
+			date_from = '2013-01-01'
+		if date_until:
+			date_until = date_until[6:] + '-' + date_until[:2] + '-' + date_until[3:5]
+		else:
+			date_until = '3013-01-01'
+		if request.user.has_perm('gleanevent.uniauth'):
+			post_glean_events_list = PostGlean.objects.all()
+		else:
+		 	post_glean_events_list = PostGlean.objects.filter(glean__member_organization=profile.member_organization)
+		try:
+			post_glean_events_list = post_glean_events_list.filter(glean__date__gte=date_from, glean__date__lte=date_until).order_by('-glean__date')
+		except:
+			return render(request, 'gleanevent/downloadpostglean.html', {'error':'Use the Date Picker You Muppets!'})
+		response = HttpResponse(mimetype='text/csv')
+		response['Content-Disposition'] = 'attachment; filename=volunteer_hours.csv'
 
-	# Create the CSV writer using the HttpResponse as the "file."
-	writer = csv.writer(response)
-	writer.writerow([
-			'glean',
-			'user',
-			'attended',
-			'first_name',
-			'last_name',
-			'hours',
-			'group',
-			'members',
-			'notes',
-	])
-
-	if request.user.has_perm('gleanevent.uniauth'):
-		postgleans = PostGlean.objects.all()
-	else:
-		postgleans = PostGlean.objects.filter(member_organization=request.user.profile_set.get().member_organization)
-	for postglean in postgleans:
+		# Create the CSV writer using the HttpResponse as the "file."
+		writer = csv.writer(response)
 		writer.writerow([
-			postglean.glean,
-			postglean.user,
-			postglean.attended,
-			postglean.first_name,
-			postglean.last_name,
-			postglean.hours,
-			postglean.group,
-			postglean.members,
-			postglean.notes,
-			])
+				'first_name',
+				'last_name',
+				'username',
+				'glean',
+				'attended',
+				'hours',
+				'group',
+				'members',
+				'notes',
+		])
 
-	return response
+		for postglean in post_glean_events_list:
+			writer.writerow([
+				postglean.first_name,
+				postglean.last_name,
+				postglean.user,
+				postglean.glean,
+				postglean.attended,
+				postglean.hours,
+				postglean.group,
+				postglean.members,
+				postglean.notes,
+				])
+
+		return response
+	else:
+		return render(request, 'gleanevent/downloadpostglean.html', {'error':''})

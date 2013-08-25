@@ -13,9 +13,14 @@ New Location for {{farm.name}}!
 {% block content %}
 	<form method="post" action="">
 		{% csrf_token %}
-		{% include 'farms/farmform.html' %}
-		<input type="submit" class="btn btn-success" name='action' value="Save">
-		<input type="submit" class="btn btn-danger" name='action' value="Save and Create Another">
+		{% include 'farms/customlocation.html' %}
+		<div class="form-actions">
+			<span class="pull-left"><span class="text-error">*</span>Denotes A Required Field</span>
+			<div class="pull-right">
+				<input type="submit" class="btn btn-success" name='action' value="Save">
+				<input type="submit" class="btn btn-danger" name='action' value="Save and Create Another">
+			</div>
+		</div>
 	</form>
 {% endblock content %}
 {% block related %}

@@ -1,5 +1,4 @@
-<h3>{% if not announcement.sent %}Intended {% endif %}Recipients</h3>
-	
+<div class="form" style="height:479px;">	
 	{% if source %}
 		<ul>
 
@@ -7,12 +6,15 @@
 				{% if announcement.email_recipients %}
 					<li>{{announcement.email_recipients.all.count}} Email Recipient{% if not announcement.email_recipients.all.count == 1 %}s{% endif %} {% if announcement.phone_recipients.all.count != 0 %}and {{announcement.phone_recipients.all.count}} Gleaner{% if not announcement.phone_recipients.all.count != 1  %}s{% endif %} to Call{% endif %}
 						<ul>
-							{% for recipient in announcement.email_recipients.all %}
+							{% for recipient in announcement.email_recipients.all|slice:"10" %}
 							<li><a href="{% url 'announce:uninviteuser' announcement.id recipient.id %}"><small class="text-error">(remove)</small></a> <a href="{% url 'userprofile:userprofile' recipient.id %}">{{recipient.profile_set.get.first_name}} {{recipient.profile_set.get.last_name}}</a></li>
 							{% endfor %}
+							{% if announcement.email_recipients.all.count >= 11 %}
+							<li><a href="{% url 'announce:recipientlist' announcement.id %}">More...</a></li>
+							{% endif %}
 						</ul>
 					</li>
-						{% endif %}
+				{% endif %}
 			{% else %}
 				<li>Emailed</li>
 				<ul><li>{{announcement.email_recipients.count}} Email Recipients</li></ul> 
@@ -31,3 +33,4 @@
 
 		</ul>
 	{% endif %}
+</div>

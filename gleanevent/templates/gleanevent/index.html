@@ -3,46 +3,48 @@
 {% block title %}Glean Index
 {% endblock title %}
 
-{% block body %}
-<div class="row-fluid">
-	<div class="span6">
-			<p>The Glean Index is a list of all gleans past and upcoming, sorted by date and listed by title. Filter the list by date by entering in a time period, or find the glean you’re looking for in the list below.</p>
-<p>Click on glean titles (past and present) to view and edit the glean event page, send announcements, enter volunteer hours, and post comments.</p></div>
-<div class="span6"><br /><a href="{% url 'gleanevent:newglean' %}" class="btn btn-danger">Create A New Glean</a></div>
-	
+{% block heading %}
+{% endblock %}
 
-<div class="span12">
-<form method="get">
-	<table>
-		<tr>
-			<td>
-				<label for="date_from">From</label>
-			</td>
-			<td>
-				<input id="date_from" maxlength=200 name="date_from" type="text" value="{{date_from}}" class="datepicker"></input>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label for="date_until">Until</label>
-			</td>
-			<td>
-				<input id="date_until" maxlength=200 name="date_until"  type="text" value="{{date_until}}" class="datepicker"></input>
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td>
-			<td>
-				<input type="submit" value="Filter Dates">
-			</td>
-		</tr>
-	</table>
-</form>
+{% block body %}
+<div class="row-fluid index-header">
+	<div class="span6 index-title">
+		<h1>Glean Index</h1>
+		<a href="{% url 'gleanevent:newglean' %}" class="btn btn-success">New Glean</a>
+		<a href="{% url 'gleanevent:download' %}" class="btn btn-danger">Download</a>
+		<a href="{% url 'announce:announcements' %}" class="btn btn-primary">Sent Announcements</a>
+	</div>
+	<div class="span6">
+		<p>The Glean Index is a list of all gleans past and upcoming, sorted by date and listed by title. Filter the list by date by entering in a time period, or find the glean you’re looking for in the list below.</p>
+		<p>Click on glean titles (past and present) to view and edit the glean event page, send announcements, enter volunteer hours, and post comments.</p>
+	</div>
 </div>
+<div class="index-table">
+<div class="row-fluid">
+	<div class="span10 offset1">
+		<form method="get" class="well">
+			<table>
+				<tr>
+					<td>
+						<label for="date_from">From</label>
+					</td>
+					<td>
+						<input id="date_from" maxlength=200 name="date_from" type="text" value="{{date_from}}" class="datepicker"></input>
+					</td>
+					<td>
+						<label for="date_until">Until</label>
+					</td>
+					<td>
+						<input id="date_until" maxlength=200 name="date_until"  type="text" value="{{date_until}}" class="datepicker"></input>
+					</td>
+					<td width="100%" class="text-center">
+						<input type="submit" class="btn btn-primary" value="Filter Dates">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
 </div>
-<style>
-.glean-index-table{border:1px #e5e5e5 solid; min-height: 340px; padding:20px;}
-</style>
-<div class="glean-index-table">
 	{% if gleans %}
 	<div class="row-fluid">
 		<div class="span6">

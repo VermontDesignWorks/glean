@@ -69,3 +69,14 @@ ACCESS_LEVELS = (
 	('PD', 'Project Director'),
 	('MC', 'Gleaning Coordinator'),	
 )
+TRUNCATED_LEVELS = (
+	('MC', 'Gleaning Coordinator'),	
+)
+
+COLORS = (
+	('text-error', 'Red'),
+	('text-warning', 'Gold'),
+	('text-info', 'Blue'),
+	('text-success', 'Green'),
+	('muted', 'White'),
+)

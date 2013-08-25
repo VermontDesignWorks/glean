@@ -5,7 +5,7 @@ Recipient Site Index
 {% endblock title %}
 
 {% block body %}
-<div class="row-fluid">
+<div class="row-fluid index-header">
 	<div class="span6" style="text-align:center;">
 		<h1>Recipient Site Index</h1>
 		<a href="{% url 'site:newsite' %}" class="btn btn-success">Create a New Site</a>
@@ -18,6 +18,7 @@ Recipient Site Index
 		</p>
 	</div>
 </div>
+<div class="index-table">
 <div class="row-fluid">
 	<div class="span12">
 		{% if sites %}
@@ -32,5 +33,6 @@ Recipient Site Index
 		<span>(Nothing here at the moment)</span>
 		{% endif %}
 	</div>
+</div>
 </div>
 {% endblock body %} 

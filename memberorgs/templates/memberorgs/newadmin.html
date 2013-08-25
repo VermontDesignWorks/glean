@@ -12,7 +12,7 @@ New Administrator
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'memberorgs/memorgform.html' %}
-		<input type="submit" name="action" value="Save">
-		<input type="submit" name="action" value="Save And Create Another Administrator">
+		<input type="submit" class="btn btn-success" name="action" value="Save">
+		<input type="submit" class="btn btn-danger" name="action" value="Save And Create Another Administrator">
 	</form>
 {% endblock content %}

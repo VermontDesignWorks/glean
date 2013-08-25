@@ -6,7 +6,11 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+from test_functions import *
 
+class County_Model_Methods(TestCase):
+	def alert_project_directors(self):
+		pass
 
 class SimpleTest(TestCase):
     def test_basic_addition(self):

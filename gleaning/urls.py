@@ -29,7 +29,7 @@ urlpatterns = patterns('',
                            name='registration_register'),
 	# #url(r'^accounts/', include('userprofile.registration.MyBackEnd.urls')),
 	url(r'^accounts/', include('registration.backends.default.urls')),
-	url(r'^accounts/', include('registration.backends.default.urls', namespace="registration")),
+#	url(r'^accounts/', include('registration.backends.default.urls', namespace="registration")),
 
 	# Examples:
 	# url(r'^$', 'gleaning.views.home', name='home'),

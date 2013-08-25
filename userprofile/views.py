@@ -6,7 +6,6 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
 
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
 
@@ -18,7 +17,7 @@ from memberorgs.models import MemOrg
 from constants import VERMONT_COUNTIES
 
 from django import forms
-from gleaning.customreg import ExtendedRegistrationForm
+from gleaning.customreg import AdminExtendedRegistrationForm
 
 @login_required
 def userDetailEntry(request):
@@ -66,7 +65,7 @@ def userLists(request):
 		users = Profile.objects.all().order_by('member_organization', 'last_name')
 	else:
 		member_organization = request.user.profile_set.get().member_organization
-		user_objects = member_organization.volunteers.all()
+		user_objects = member_organization.volunteers.all().order_by('-last_name')
 		users = []
 		for user_object in user_objects:
 			users.append(user_object.profile_set.get())
@@ -133,7 +132,7 @@ def download(request):
 	writer = csv.writer(response)
 	writer.writerow([
 	'Username',
-	'Access',
+	'Email',
 	'First Name',
 	'Last Name',
 	'Address',
@@ -145,7 +144,6 @@ def download(request):
 	'Phone',
 	'Phone Type',
 	'Member Org',
-	'Primary MO Only',
 	'Contact Method',
 	"Join Date",
 	'EC First',
@@ -156,33 +154,34 @@ def download(request):
 	])
 
 	if request.user.has_perm('userprofile.uniauth'):
-		profiles = Profile.objects.all()
+		profiles = User.objects.all()
 	else:
 		profiles = request.user.profile_set.get().member_organization.volunteers.all()
-	for profile in profiles:
-		writer.writerow([
-			profile.user.username,
-			profile.user.groups.all(),
-			profile.last_name,
-			profile.first_name,
-			profile.address_one,
-			profile.address_two,
-			profile.city,
-			profile.state,
-			profile.counties.all(),
-			profile.age,
-			profile.phone,
-			profile.phone_type,
-			profile.member_organization,
-			profile.mo_emails_only,
-			profile.preferred_method,
-			profile.joined,
-			profile.ecfirst_name,
-			profile.eclast_name,
-			profile.ecphone,
-			profile.ecrelationship,
-			profile.accepts_email,
-			])
+	for person in profiles:
+		if person.groups.all().count() == 0:
+			profile = person.profile_set.get()
+			writer.writerow([
+				profile.user.username,
+				profile.user.email,
+				profile.first_name,
+				profile.last_name,
+				profile.address_one,
+				profile.address_two,
+				profile.city,
+				profile.state,
+				profile.counties.all(),
+				profile.age,
+				profile.phone,
+				profile.phone_type,
+				person.member_organizations.all(),
+				profile.preferred_method,
+				profile.joined,
+				profile.ecfirst_name,
+				profile.eclast_name,
+				profile.ecphone,
+				profile.ecrelationship,
+				profile.accepts_email,
+				])
 
 	return response
 
@@ -190,7 +189,7 @@ def download(request):
 def newUser(request):
 	notice = ''
 	if request.method == 'POST':
-		form = ExtendedRegistrationForm(request.POST)
+		form = AdminExtendedRegistrationForm(request.POST)
 		if form.is_valid():
 			new_user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password1'])
 			profile = Profile(
@@ -211,15 +210,20 @@ def newUser(request):
 				waiver=form.cleaned_data['waiver'],
 				agreement=form.cleaned_data['agreement'],
 				photo_release=form.cleaned_data['photo_release'],
-				member_organization=request.user.profile_set.get().member_organization,
+				opt_in = form.cleaned_data['opt_in'],
 			)
 			profile.save()
-			if new_user not in profile.member_organization.volunteers.all():
-				profile.member_organization.volunteers.add(new_user)
+			
+			for county in form.cleaned_data['counties']:
+				profile.counties.add(county)
+				county.affix_to_memorgs(new_user)
 			notice = 'New Volunteer ' + profile.first_name + ' ' + profile.last_name + ' has been created.'
-			#return HttpResponseRedirect(reverse('userprofile:userlists'))
+			if request.POST['action'] == 'Save':
+				return HttpResponseRedirect(reverse('userprofile:userlists'))
+			else:
+				form = AdminExtendedRegistrationForm()
 	else:
-		form = ExtendedRegistrationForm()
+		form = AdminExtendedRegistrationForm()
 	if request.user.has_perm('userprofile.uniauth'):
 		users = User.objects.all().order_by('-date_joined')[:20]
 	else:

@@ -10,9 +10,9 @@ from recipientsite.models import RecipientSite, SiteForm
 @permission_required('recipientsite.auth')
 def index(request):
 	if request.user.has_perm('recipientsite.uniauth'):
-		sites_list = RecipientSite.objects.all()
+		sites_list = RecipientSite.objects.all().order_by('member_organization', 'name')
 	else:
-		sites_list = RecipientSite.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+		sites_list = RecipientSite.objects.filter(member_organization=request.user.profile_set.get().member_organization).order_by('name')
 	return render(request, 'recipientsite/index.html', {'sites':sites_list})
 
 @permission_required('recipientsite.auth')
@@ -23,7 +23,12 @@ def newSite(request):
 			new_save = form.save(commit=False)
 			new_save.member_organization = request.user.profile_set.get().member_organization
 			new_save.save()
-			return HttpResponseRedirect(reverse('site:detailsite', args=(new_save.id,) ))
+			if request.POST['action'] == 'Save':
+				return HttpResponseRedirect(reverse('site:detailsite', args=(new_save.id,) ))
+			else:
+				form = SiteForm()
+				notice = "Recipient Site %s Saved" %s (new_save.name)
+				return render(request, 'recipientsite/new_site.html', {'form':form, 'notice':notice})		
 		else:
 			return render(request, 'recipientsite/new_site.html')
 	else:

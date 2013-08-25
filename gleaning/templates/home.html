@@ -6,27 +6,19 @@ Welcome to the Gleaning Interface!
 {% endblock %}
 {% block body %}
      <div class="span12">
-<div class="row" id="calendar" style="margin:0 auto;">
+	<div class="row" id="calendar" style="margin:0 auto;">
 	<style>
-	.day{width:14.158%;border:1px #e5e5e5 solid;float:left;height:250px;}
-	.day + .day{border-left:none;
-	.day-title {width:100%; margin:0; padding:6px 0 0; height:28px; border-bottom: 1px #e5e5e5 solid; text-align: center;}
-	a.day-name{text-decoration:none; color:#444; font-weight: bold;}
-	.future-link{margin:20px 0 0 0;}
-	.post-title{color:black;margin: 20px 0 0px 40px;}
-	.post-subheading{color:#555;margin:0 0 8px 80px;}
-	.day > ul {list-style:none;margin: 0; text-align:center; }
 	</style>
 	{% for day in days %}
-	<div class="day">
+	<div class="day-class">
 		<a class="day-name" href="{% url 'gleanevent:index' %}
 		?date_from={{day.0|date:"m"}}%2F{{day.0|date:"d"}}%2F{{day.0.year}}
 		&date_until={{day.0|date:"m"}}%2F{{day.0|date:"d"}}%2F{{day.0.year}}">
 		<div class="day-title">{{day.0|date:"l - d"}}</div></a>
 		<br />
-		<ul>
+		<ul style="">
 			{% for glean in day.1 %}
-			<li><a href="{% url 'gleanevent:detailglean' glean.id %}"><span class="label label-success">{{glean.member_organization}}</span></a></li>
+			<li><a href="{% url 'gleanevent:detailglean' glean.id %}"><span class="{{glean.member_organization.color}}">{{glean.member_organization}}</span></a></li>
 			{% endfor %}
 			{% if day.2 %}
 			<li><a href="{% url 'gleanevent:index' %}

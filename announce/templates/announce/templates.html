@@ -4,20 +4,25 @@
 Announcement Index
 {% endblock title %}
 
-
-{% block heading %}
-<h3>Template Index</h3>
-{% endblock heading %}
-
-
-{% block content %}
-
-	{% if templates %}
+{% block body %}
+<div class="row-fluid index-header">
+	<div class="span6 index-title">
+		<h1>Template Index</h1>
+		<a class="btn btn-success" href="{% url 'announce:newtemplate' %}" >New Template</a>
+	</div>
+	<div class="span6">
+		<p>Here are listed the templates that are available to your organization. It is not recommended you edit them unless you are already quite familiar with HTML and psuedo-HTML coding practices.</p>
+		<p>If you do venture into editing your templates, beware! What you see (with HTML email) is not necessarily what you'll get!</p>
+	</div>
+</div>
+<div class="index-table">
+	<div class="row-fluid">
+		<div class="span12">
 		{% if 'announce.uniauth' in perms %}
 			<ul>
 				{% for template in templates %}
 					<li>
-						<a href="{% url 'announce:detailtemplate' template.id %}">{{template.member_organization}} - {{ template.template_name }}</a> - <a href="{% url 'announce:edittemplate' template.id %}" class="btn btn-warning">Edit Template</a>
+						<small><a class="text-warning" href="{% url 'announce:edittemplate' template.id %}">edit</a></small> - <a href="{% url 'announce:detailtemplate' template.id %}">{{template.member_organization}} - {{ template.template_name }}</a>
 					</li>
 				{% endfor %}
 			</ul>
@@ -25,17 +30,13 @@ Announcement Index
 			<ul>
 				{% for template in templates %}
 					<li>
-						<a href="{% url 'announce:detailtemplate' template.id %}">{{ template.template_name }}</a> - <a href="{% url 'announce:edittemplate' template.id %}" class="btn btn-warning">Edit Template</a>
+						<small><a class="text-warning" href="{% url 'announce:edittemplate' template.id %}">edit</a></small> - <a href="{% url 'announce:detailtemplate' template.id %}">{{ template.template_name }}</a>
 					</li>
 				{% endfor %}
 			</ul>
 		{% endif %}
-	{% else %}
-		<span>No templates :(</span>
-	{% endif %}
-{% endblock content %} 
+		</div>
+	</div>
+</div>
 
-
-{% block related %}
-	<a class="btn btn-info" href="{% url 'announce:newtemplate' %}" >New Template</a>
-{% endblock related %}
+{% endblock body %} 

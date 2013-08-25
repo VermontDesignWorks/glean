@@ -11,10 +11,17 @@ New Recipient Site
 
 
 {% block content %}
+<h3 class="text-success">{{notice}}</h3>
 	<form method="post" action="">
 		{% csrf_token %}
-		{% include 'recipientsite/siteform.html' %}
-		<input type="submit" value="Go!">
+		{% include 'recipientsite/custom_recipient.html' %}
+		<div class="form-actions">
+			<span class="pull-left"><span class="text-error">*</span>Denotes A Required Field</span>
+			<div class="pull-right">
+				<input type="submit" class="btn btn-success" name='action' value="Save">
+				<input type="submit" class="btn btn-danger" name='action' value="Save and Create Another">
+			</div>
+		</div>
 	</form>
 {% endblock content %}
 {% block related %}

@@ -1,4 +1,4 @@
-from registration.backends.default.views import RegistrationView
+from registration.backends.default.views import RegistrationView, ActivationView
 from registration.forms import RegistrationForm
 
 from django.http import HttpResponse
@@ -37,6 +37,37 @@ class ExtendedRegistrationForm(RegistrationForm):
 	# seriously?
 	photo_release = forms.BooleanField(label="Do you accept the Photo Release?")
 
+	opt_in = forms.BooleanField(label="Do you wish to recieve newsletters and personalized messages?")
+
+class AdminExtendedRegistrationForm(RegistrationForm):
+	first_name = forms.CharField(label="First Name", max_length=20)
+	last_name = forms.CharField(label="Last Name", max_length=20)
+	address_one = forms.CharField(label="Address", max_length=200)
+	address_two = forms.CharField(label="Address (line two)", max_length=200, required=False)
+	city = forms.CharField(label="City", max_length=200)
+	state = forms.ChoiceField(label="State",choices=STATES, initial='VT')
+	zipcode = forms.CharField(label="Zipcode", max_length=11, required=False)
+	counties = forms.ModelMultipleChoiceField(queryset=County.objects.all(), label="Counties")
+	age = forms.ChoiceField(label="Age",
+							choices=AGE_RANGES)
+	phone = forms.CharField(label="Primary Phone", max_length=200)
+	phone_type = forms.ChoiceField(label="Phone Type", choices=PHONE_TYPE,initial='1')
+	preferred_method = forms.ChoiceField(label="Primary Contact Method",choices=PREFERRED_CONTACT,initial='1')
+	#member_organization = forms.ModelChoiceField(queryset=MemOrg.objects.all())
+
+	ecfirst_name = forms.CharField(label="Emergency Contact First Name", max_length=200)
+	eclast_name = forms.CharField(label="Emergency Contact Last Name", max_length=200)
+	ecphone = forms.CharField(label="Emergency Contact Phone", max_length=200)
+	ecrelationship = forms.CharField(label="Relationship", max_length=200)
+
+	waiver = forms.BooleanField(label="Signed Waiver of Liability?", required=True)
+
+	agreement = forms.BooleanField(label="Signed Volunteer Agreement?", required=True)
+	# seriously?
+	photo_release = forms.BooleanField(label="Signed Photo Release?")
+
+	opt_in = forms.BooleanField(label="Signed Email Opt-In?")
+
 
 class MyRegistrationView(RegistrationView):
 	form_class = ExtendedRegistrationForm
@@ -65,10 +96,21 @@ class MyRegistrationView(RegistrationView):
 			user=user,
 			waiver = form.cleaned_data['waiver'],
 			agreement = form.cleaned_data['agreement'],
-			photo_release = form.cleaned_data['photo_release']
+			photo_release = form.cleaned_data['photo_release'],
+			opt_in = form.cleaned_data['opt_in']
 			)
 		profile.save()
 		for county in form.cleaned_data['counties']:
 			profile.counties.add(county)
+			county.affix_to_memorgs(user)
 		return user
 
+# class MyActivationView(ActivationView):
+# 	def activate(self, *args, **kwargs):
+# 		user = super(MyActivationView, self).activate(*args, **kwargs)
+# 		profile = user.profile_set.get()
+# 		counties = profile.counties.all()
+# 		memorgs = []
+# 		for county in counties:
+# 			for memorg in couny.member_organization_set.all():
+# 				quick_mail(subject, text, recipient)

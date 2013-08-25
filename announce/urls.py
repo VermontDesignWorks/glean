@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 	url(r'^(?P<announce_id>\d+)/send$', views.sendAnnounce, name='sendannounce'),
 	url(r'^(?P<announce_id>\d+)/htmlemail$', views.HTMLemail, name='htmlemail'),
 	url(r'^(?P<announce_id>\d+)/remove/(?P<user_id>\d+)$', views.uninviteUser, name='uninviteuser'),
+	url(r'^(?P<announce_id>\d+)/recipientlist$', views.recipientList, name='recipientlist'),
 
 
 	#==================# Template Urls #==================#

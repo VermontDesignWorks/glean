@@ -3,52 +3,86 @@
 Details of {{ farm.name }}
 {% endblock title %}
 
+{% block heading %}
+{% endblock heading %}
+
 {% block body %}
-<h3>Details of {{ farm.name }}</h3>
+
 <div class="row-fluid">
-	<div class="span9">
-		<h2>{{farm.name}}</h2>
-		<p>{{farm.description}}</p>
-		<p>{{farm.address1}}</p>
-		<p>{{farm.directions}}</p>
-		<p>{{farm.instructions}}</p>
+	<div class="span7 text-center">
+	<h1>{{farm.name}}</h1>
 		<a class="btn btn-warning" href="{% url 'farms:editfarm' farm.id %}">Edit this Farm</a>
-		<a class="btn btn-info" href="{% url 'farms:newlocation' farm.id %}">Add a New Location for This Farm</a>
-		<a class="btn btn-info" href="{% url 'farms:newcontact' farm.id %}">Create a New Contact For This Farm</a> - <small><a href="{% url 'farms:deletefarm' farm.id %}">(delete)</a></small>
+		<a class="btn btn-danger" href="{% url 'farms:deletefarm' farm.id %}">Delete</a>
+	</div>
+	<div class="span5">
+		<p style="margin-top:30px;">{{farm.description}}</p>
 	</div>
 	{% if farm.gleanevent_set.all %}
 	
-<div class="span3">
-	<h4>Recent Gleans</h4>
-	<ul>
-{% for glean in farm.gleanevent_set.all %}
-<li class=""><a href="{% url 'gleanevent:detailglean' glean.id %}">{{glean.title}}</a></li>
-{% endfor %}
-</ul>
+	
+	{% endif %}
 </div>
-{% endif %}
+<div class="span12">&nbsp;</div>
+<div class="row-fluid">
+	<div class="span3">
+		<h5>Address</h5>
+		{{farm.address_one}}<br />
+		{% if farm.address_two %}
+		{{farm.address_two}}<br />
+		{% endif %}
+		{{farm.city}}<br />
+		{{farm.state}}<br />
+		{% if farm.zipcode %}
+		{{farm.zipcode}}<br />
+		{% endif %}
+	</div>
+	<div class="span3">
+			<h5>Farm Directions</h5>
+			<p>{{farm.directions}}</p>
+	</div>
+	<div class="span3">
+			<h5>Farm Instructions</h5>
+			<p>{{farm.instructions}}</p>
+	</div>
+	<div class="span3">
+		<h5>Recent Gleans</h5>
+		<ul>
+			{% for glean in farm.gleanevent_set.all|slice:"5" %}
+			<li class=""><a href="{% url 'gleanevent:detailglean' glean.id %}">{{glean.title}}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+
 </div>
-{% if farm.contact_set.all %}
-<h5>Farm Contacts</h5>
-<ul>
+<div class="row-fluid">
+	<div class="span6">
+	{% if farm.farmlocation_set.all %}
+	<h3>Farm Locations <a class="btn btn-success" href="{% url 'farms:newlocation' farm.id %}">New Location</a></h3>
+		<div class="row-fluid">
+			{% for location in farm.farmlocation_set.all %}
+				<div class="span6">
+					<div class="location">
+						<h4>{{location.name}}</h4>
+						<p><a href="{% url 'farms:editlocation' farm.id location.id %}" class="btn btn-warning">edit</a></p>
+
+						<p>{{location.description}}</p>
+						<p>{{location.directions}}</p>
+					</div>
+				</div>
+				{% cycle '' '</div><div class="row-fluid">' %}
+			{% endfor %}
+		</div>
+	</div>
+	<div class="span6">
+	<h3>Farm Contacts - <a class="btn btn-success" href="{% url 'farms:newcontact' farm.id %}">New</a></h5>
+		<ul>
 	{% for contact in farm.contact_set.all %}
 	<li style="list-style-type:{% if contact.glean_contact %}disc{% else %}circle{% endif %}">{{contact.first_name}} {{contact.last_name}} - {{contact.relation}} - {% if contact.email %}<a href="mailto:{{contact.email}}" >email</a> - {% endif %}{% if contact.phone %}<a href="tel:{{contact.phone}}" >{{contact.phone}}</a> - {% endif %}<a href="{% url 'farms:editcontact' farm.id contact.id %}">edit</a> </li>
+	{% empty %}
+	<li>No Contacts in System</li>
 	{% endfor %}
 </ul>
-{% endif %}
-{% if farm.farmlocation_set.all %}
-<br />
-<h2>Farm Locations</h2>
-<div class="row-fluid">
-	{% for location in farm.farmlocation_set.all %}
-		<div class="span4">
-			<h3>{{location.name}}</h3>
-			<p><a href="{% url 'farms:editlocation' farm.id location.id %}">(edit)</a></p>
+	</div>
 
-			<p>{{location.description}}</p>
-			<p>{{location.directions}}</p>
-		</div>
-	{% endfor %}
-</div>
 {% endif %}
 {% endblock body %}

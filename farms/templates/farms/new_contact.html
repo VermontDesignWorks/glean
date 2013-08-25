@@ -13,8 +13,14 @@ New Contact for {{farm.name}}
 {% block content %}
 	<form method="post" action="">
 		{% csrf_token %}
-		{% include 'farms/farmform.html' %}
-		<input type="submit" value="Go!">
+		{% include 'farms/custom_contact.html' %}
+		<div class="form-actions">
+			<span class="pull-left"><span class="text-error">*</span>Denotes a required field</span>
+			<div class="pull-right">
+			<input type="submit" name="action" class="btn btn-success" value="Save">
+			<input type="submit" name="action" class="btn btn-danger" value="Save and Create Another">
+			</div>
+		</div>
 	</form>
 {% endblock content %}
 {% block related %}

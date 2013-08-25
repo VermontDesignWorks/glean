@@ -15,11 +15,44 @@ from django.contrib.auth.decorators import permission_required
 
 from django.forms.models import modelformset_factory
 
+from farms.models import Farm
 from distro.models import Distro
+from recipientsite.models import RecipientSite
+
+@permission_required('distro.auth')
+def index(request):
+	date_from = request.GET.get('date_from', '')
+	date_until = request.GET.get('date_until', '')
+	if date_from:
+		date_from = date_from[6:] + '-' + date_from[:2] + '-' + date_from[3:5]
+	else:
+		date_from = '2013-01-01'
+	if date_until:
+		date_until = date_until[6:] + '-' + date_until[:2] + '-' + date_until[3:5]
+	else:
+		date_until = '3013-01-01'
+	if request.user.has_perm('distro.uniauth'):
+		try:
+			data = Distro.objects.filter(date_d__gte=date_from, date_d__lte=date_until).order_by('-date_d')[:30]
+			notice = ''
+		except:
+			data = Distro.objects.all().order_by('-date_d')[:30]
+			notice='Use the Date Picker, you Muppets!'
+	else:
+		try:
+			data = Distro.objects.filter(member_organization=request.user.profile_set.get().member_organization,
+				date_d__gte=date_from,
+				date_d__lte=date_until,
+				).order_by('-date_d')[:25]
+			notice=''
+		except:
+			data = Distro.objects.filter(member_organization=request.user.profile_set.get().member_organization).order_by('-date_d')[:30]
+			notice='Use the Date Picker, you Muppets!'
+	return render(request, 'distribution/index.html', {'data':data, 'notice':notice})
 
 @permission_required('distro.auth')
 def entry(request):
-	DistroFormSet = modelformset_factory(Distro, extra=int(50))
+	DistroFormSet = modelformset_factory(Distro, extra=int(10))
 	if request.method == 'POST':
 		formset = DistroFormSet(request.POST)
 		formset.is_valid()
@@ -33,6 +66,10 @@ def entry(request):
 		return HttpResponseRedirect(reverse('distro:entry'))
 	else:
 		form = DistroFormSet(queryset=Distro.objects.none())
+		if not request.user.has_perm('distro.uniauth'):
+			for fo in form.forms:
+				fo.fields['farm'].queryset=Farm.objects.filter(member_organization__name=request.user.profile_set.get().member_organization.name)
+				fo.fields['recipient'].queryset = RecipientSite.objects.filter(member_organization__name=request.user.profile_set.get().member_organization.name)
 		debug = dir(form)
 		return render(request, 'distribution/entry.html', {'formset':form, 'range':range(50), 'debug':debug})
 

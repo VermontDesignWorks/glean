@@ -47,7 +47,7 @@ def editFarm(request, farm_id):
 		form = FarmForm(request.POST, instance=farm)
 		if form.is_valid():
 			new_save = form.save()
-			return HttpResponseRedirect(reverse('farms:index'))
+			return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
 		else:
 			return render(request, 'farms/edit.html', {'form':form, 'farm':farm, 'error':'form needs some work'})
 	form = FarmForm(instance = farm)
@@ -135,16 +135,21 @@ def newContact(request, farm_id):
 	if request.method == 'POST':
 		form = ContactForm(request.POST)
 		if form.is_valid():
-			new_contact = Contact(**form.cleaned_data)
+			new_contact = form.save()
 			new_contact.farm = farm
 			new_contact.save()
-			return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
+			if request.POST['action'] == 'Save':
+				return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
+			else:
+				form = ContactForm()
+				notice = 'Contact %s %s has been saved' % (new_contact.first_name, new_contact.last_name)
+				return render(request, 'farms/new_contact.html', {'form':form, 'farm':farm, 'notice':notice})		
 
 		else:
 			return render(request, 'farms/new_contact.html', {'form':form, 'farm':farm, 'error':'Form was incorrectly filled out'})
 	else:
 		form = ContactForm()
-		return render(request, 'farms/new_contact.html', {'form':form, 'farm':farm})
+		return render(request, 'farms/new_contact.html', {'form':form, 'farm':farm, 'notice':''})
 
 @permission_required('farms.auth')
 def editContact(request, farm_id, contact_id):
@@ -155,7 +160,7 @@ def editContact(request, farm_id, contact_id):
 	if request.method == 'POST':
 		form = ContactForm(request.POST)
 		if form.is_valid():
-			new_save = Contact(**form.cleaned_data)
+			new_save = form.save(commit=False)
 			new_save.id = contact_id
 			new_save.farm = farm
 			new_save.save()
@@ -175,7 +180,6 @@ def download(request):
 	writer = csv.writer(response)
 	writer.writerow([
 			'name',
-			'type',
 			'description',
 
 			'physical address',
@@ -197,7 +201,6 @@ def download(request):
 			'email',
 			'direction',
 			'instructions',
-			'famers',
 			'counties',
 
 			'member organization',
@@ -210,7 +213,6 @@ def download(request):
 	for farm in farms:
 		writer.writerow([
 			farm.name,
-			farm.farm_type,
 			farm.description,
 
 			farm.address_one,
@@ -232,7 +234,6 @@ def download(request):
 			farm.email,
 			farm.directions,
 			farm.instructions,
-			farm.farmers.all(),
 			farm.counties.all(),
 
 			farm.member_organization.get(),

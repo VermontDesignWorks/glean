@@ -6,7 +6,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 from django.contrib import admin
-from constants import STATES, LINE_TYPE, ACCESS_LEVELS
+from constants import STATES, LINE_TYPE, ACCESS_LEVELS, COLORS
 # Create your models here.
 
 class MemOrg(models.Model):
@@ -16,6 +16,8 @@ class MemOrg(models.Model):
 	counties = models.ManyToManyField(County, blank=True, null=True)
 	created = models.DateTimeField(auto_now_add=True)
 	volunteers = models.ManyToManyField(User, editable=False, related_name="member_organizations")
+
+	color = models.CharField('Color', choices=COLORS,max_length=20, default='muted')
 
 	address_one = models.CharField('Physical Address (line one)', max_length=30, blank=True, null=True)
 	address_two = models.CharField('Physical Address (line two)', max_length=30, blank=True, null=True)
@@ -35,9 +37,11 @@ class MemOrg(models.Model):
 	phone_2 = models.CharField('Secondary phone', max_length=200, blank=True)
 	phone_2_type = models.CharField('Secondary Phone Type', choices=LINE_TYPE,max_length=10,blank=True)
 
-	first_name = models.CharField("Executive Director First Name", max_length=20)
-	last_name = models.CharField("Executive Director Last Name", max_length=20)
+	first_name = models.CharField("Executive Director First Name", max_length=20, blank=True)
+	last_name = models.CharField("Executive Director Last Name", max_length=20, blank=True)
 	phone = models.CharField("Director's Direct Phone Number", max_length=15, blank=True, null=True)
+
+	notify = models.BooleanField('Notify on New Volunteer Signup?', default=False)
 
 	def __unicode__(self):
 		return self.name
@@ -51,34 +55,16 @@ class MemOrg(models.Model):
 class MemOrgForm(forms.ModelForm):
 	class Meta:
 		model = MemOrg
-
-class MemOrgCombinedForm(MemOrgForm):
-	username = forms.CharField(max_length=20)
-	password = forms.CharField(max_length=50, widget=forms.widgets.PasswordInput)
-	verify = forms.CharField(max_length=50, widget=forms.widgets.PasswordInput)
-	email = forms.EmailField()
-	first_name = forms.CharField(max_length=20)
-	last_name = forms.CharField(max_length=20)
-	phone = forms.CharField(max_length=20)
-	def is_valid(self):
-		if password != verify:
-			return False
-		return super(MemOrgCombinedForm, self).is_valid()
-
-	def save(self, *args, **kwargs):
-		user = User.objects.create_user(username=username, password=password, email=email)
-		profile = Profile(user=user, first_name=first_name, last_name=last_name, phone=phone)
-		super(MemOrgCombinedForm, self).save(*args, **kwargs)
 		
 class NewAdminForm(forms.Form):
 	member_organization = forms.ModelChoiceField(queryset=MemOrg.objects.all(), empty_label=None)
-	access_level = forms.ChoiceField(choices=ACCESS_LEVELS)
-	username = forms.CharField(max_length=20)
-	password = forms.CharField(max_length=50)
-	verify = forms.CharField(max_length=50)
-	email = forms.EmailField()
-	first_name = forms.CharField(max_length=20)
-	last_name = forms.CharField(max_length=20)
-	phone = forms.CharField(max_length=20)
+	access_level = forms.ChoiceField(choices=ACCESS_LEVELS, required=False)
+	username = forms.CharField(max_length=20, required=False)
+	password = forms.CharField(max_length=50, required=False)
+	verify = forms.CharField(max_length=50,required=False)
+	email = forms.EmailField(required=False)
+	first_name = forms.CharField(max_length=20,required=False)
+	last_name = forms.CharField(max_length=20,required=False)
+	phone = forms.CharField(max_length=20,required=False)
 
 admin.site.register(MemOrg)

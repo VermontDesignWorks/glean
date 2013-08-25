@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}Download Glean Data
+{% endblock title %}
+{% block heading %}
+<h3>Download Glean Data</h3>
+{% endblock heading %}
+{% block body %}
+<div class="row-fluid">
+	<div class="span6">
+			<p>This tool allows you to download a spreadsheet detailing all gleans performed by your organization.</p>
+			<p>Select a range of dates (or leave blank to select all dates) and press the Download button to get a Comma Seperated Value file, which can be opened with Excel.</p>
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span12">
+	<form method="post">
+		{% csrf_token %}
+		<table>
+			<tr>
+				<td>
+					<label for="date_from">From</label>
+				</td>
+				<td>
+					<input id="date_from" maxlength=200 name="date_from" type="text" value="{{date_from}}" class="datepicker"></input>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="date_until">Until</label>
+				</td>
+				<td>
+					<input id="date_until" maxlength=200 name="date_until"  type="text" value="{{date_until}}" class="datepicker"></input>
+				</td>
+			</tr>
+		</table>
+		<div class="row-fluid">
+			<div class="form-actions span4">
+				<input type="submit" class="btn btn-block btn-danger" value="Download CSV">
+				<span class="text-error" style="text-align:center;">{{error}}</span>
+			</div>
+		</div>
+	</form>
+	</div>
+</div>
+{% endblock body %}

@@ -12,14 +12,14 @@ Welcome to the Gleaning Interface!
 			<h3>The Gleaners Interface</h3>
 			<p class="span12" style="text-align:left;padding-left:5%">
 				No account? 
-				<a class="" href="{% url 'registration:registration_register' %}">
+				<a class="" href="{% url 'registration_register' %}">
 					Register Here
 				</a>
 			</p>
 			<br />
 			<br />
 			<p>	
-				<form method="POST" class="form-inline" action="{% url 'registration:auth_login' %}?next=/">
+				<form method="POST" class="form-inline" action="{% url 'auth_login' %}?next=/">
 					{% csrf_token %}
 				
 					<div class="row-fluid">

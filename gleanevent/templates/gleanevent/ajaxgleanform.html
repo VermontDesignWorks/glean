@@ -1,46 +1,210 @@
 <form action="" method="post">
-	{{form.errors}}
+	{{form.errors.as_ul}}
 {% csrf_token %}
 
 <div class="row-fluid">
    <div class="span4">
+   <div class="table-form table-important">
+         <h4 class="text-center">Primary Fields</h4>
 <table>
 
 <tbody>
    <tr>
-      <td><label for="id_title"><label for="id_title">Title</label></label></td>
-      <td>{{form.title}}</td>
+      <td><label for="id_title"><label for="id_title">Title<span class="text-error">*</span></label></label></td>
+      <td><div class="input-append">{{form.title}}<button class="btn" id="title-popover" type="button">i</button></div></td>
+      <script type="text/javascript">
+      $('#title-popover').popover({
+         'title':"Title",
+         'content':"This is the name of your glean. It is how you will identify this glean from others on this day or week, and it also will also be the default Title to any Announcement Emails that are sent."
+      });
+      </script>
    </tr>
    <tr>
       
-      <td><label for="id_date"><label for="id_date">Date</label></label></td>
+      <td><label for="id_date"><label for="id_date">Date<span class="text-error">*</span></label></label></td>
       <td>{{form.date}}</td>
       
       
     </tr>
     <tr>
-      <td><label for="id_time"><label for="id_time">Time</label></label></td>
+      <td><label for="id_time"><label for="id_time">Time<span class="text-error">*</span></label></label></td>
       <td>{{form.time}}</td>
     </tr>
     <tr>
       <td><label for="id_duration"><label for="id_duration">Duration</label></label></td>
-      <td>{{form.duration}}</td>
+      <td>{{form.duration}}
+      </td>
     </tr>
     <tr>
-      <td><label for="id_volunteers_needed"><label for="id_volunteers_needed">Volunteers needed</label></label></td>
+      <td><label for="id_volunteers_needed"><label for="id_volunteers_needed">Volunteers<span class="text-error">*</span></label></label></td>
       <td>{{form.volunteers_needed}}</td>
     </tr>
-    <tr><td><label for="id_description"><label for="id_description">Description</label></label></td>
-      <td>{{form.description}}</td></tr>
+    <tr><td><label for="id_description"><label for="id_description">Description<span class="text-error">*</span></label></label></td>
+      <td><div class="input-append">{{form.description}}<button id="description-button" class="btn" type="button">i</button>
+      <script type="text/javascript">
+      $('#description-button').popover({
+         'title':"Description of the Glean",
+         'content':"This field will be visible on the Glean Page, and tells Volunteers what to expect. It is copied automatically into any Announcements made for this glean."
+      });
+      </script></td></tr>
  </tbody>
 </table>
 </div>
+</div>
 <div class="span4">
+   <div class="table-form table-important">
+
    <table>
       <tbody>
          <tr><td><label for="id_farm"><label for="id_farm">Farm</label></label></td><td>
-         {{form.farm}}
-      <script type="text/javascript">
+         <div class="input-append">{{form.farm}}<button id="farm-button" class="btn" type="button">i</button></div>
+         <script type="text/javascript">
+            $('#farm-button').popover({
+               'title':"Farm and Farm Location",
+               'content':"By Choosing a farm (and optionally a Farm Location) the remainder of the form auto-populates with Farm-specific Data."
+            });
+      </script>
+   </td></tr>
+   <tr>
+   <td>
+
+
+      <label for="id_farm_location"><label for="id_farm_location">Farm location</label></label>
+   </td>
+   <td>{{form.farm_location}}</td>
+      </tbody>
+   </table>
+   </div>
+   <div class="table-form">
+   <table>
+      <tbody>
+      
+   
+   
+      </tr>
+      <tr>
+      <td><label for="id_counties"><label for="id_counties">Counties<span class="text-error">*</span></label></label></td>
+         <td><div class="input-append">{{form.counties}}<button id="counties-button" type="button" class="btn">i</button></div></td>
+         <script type="text/javascript">
+               $('#counties-button').popover({
+            'title':"Counties",
+            'content':"Volunteers are notified of gleans based on which counties they're interested in gleaning in."
+         });
+         </script>
+      </tr>
+
+
+      <tr>
+      <td><label for="id_address_one"><label for="id_address_one">Address (line one)</label></label></td>
+         <td>{{form.address_one}}</td>
+       </tr>
+
+      <tr>
+      <td><label for="id_address_two"><label for="id_address_two">Address (line two)</label></label></td>
+         <td>{{form.address_two}}</td>
+       </tr>
+
+      <tr>
+      <td><label for="id_city"><label for="id_city">Address (City)</label></label></td>
+         <td>{{form.city}}</td>
+       </tr>
+
+      <tr>
+      <td><label for="id_state"><label for="id_state">State</label></label></td>
+         <td>{{form.state}}</td>
+       </tr>
+
+      <tr>
+      <td><label for="id_zipcode"><label for="id_zipcode">Address Zip Code</label></label></td>
+         <td>{{form.zipcode}}</td>
+       </tr>
+       </table>
+    </div>
+</div>
+<div class="span4">
+   <div class="table-form">
+      <table>
+         <tbody>
+
+         <tr>
+   
+      <td><label for="id_directions"><label for="id_directions">Directions</label></label></td>
+   <td>{{form.directions}}</td>
+      <tr><td><label for="id_instructions"><label for="id_instructions">Instructions</label></label></td>
+      <td>{{form.instructions}}</td></tr>
+      
+ </tr>
+         </tbody>
+      </table>
+   </div>
+</div>
+</div>
+<div class="form-actions">
+<span class="text-error pull-left">*</span><span>Denotes a Required Field</span>
+<input type="submit" class="btn btn-primary pull-right" value="Submit" />
+<!--<button href="#testGoogle" data-toggle="modal" type="button" class="btn btn-info">Test Location</button>-->
+
+ 
+<!-- Modal -->
+<div id="testGoogle" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Google Maps Test</h3>
+  </div>
+  <div class="modal-body">
+    <div id="map-canvas" style="height:400px;"></div>
+  </div>
+  <script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHs-DW2GgXZL0nvZ4xj8q5AhdJQ9sNpaY&sensor=false">
+</script>
+<script type="text/javascript">
+
+var geocoder;
+var map;
+function initialize() {
+  geocoder = new google.maps.Geocoder();
+  var latlng = new google.maps.LatLng(44.554283, -72.601981);
+  var mapOptions = {
+    zoom: 9,
+    center: latlng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+}
+
+function codeAddress(one, city, state, zipcode) {
+  var address = one + ' ' + city+ ','+ state + ' ' + zipcode;
+  geocoder.geocode( { 'address': address}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      map.setCenter(results[0].geometry.location);
+      var marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location
+      });
+    } else {
+      
+    }
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+$('#testGoogle').click(function(){
+      var one = $('#id_address_one').val();
+      var city = $('#id_city').val();
+      var state = $('#id_state option:selected').val();
+      var zip = $('#id_zip').val();
+      codeAddress(one, city, state, zip);
+});
+
+</script>
+  <div class="modal-footer">
+      <span>May Take a Few Seconds...</span>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+   </div>
+</div>
+</div>
+</form>
+<script type="text/javascript">
 
       function setupFarmChoices(data){
 
@@ -130,68 +294,3 @@
       });
       
       </script>
-      
-   </td></tr>
-   <tr>
-   <td>
-
-
-      <label for="id_farm_location"><label for="id_farm_location">Farm location</label></label>
-   </td>
-   <td>{{form.farm_location}}</td>
-
-      
-   
-   
-</tr>
-<tr>
-<td><label for="id_counties"><label for="id_counties">Counties</label></label></td>
-   <td>{{form.counties}}</td>
-</tr>
-
-
-<tr>
-<td><label for="id_address_one"><label for="id_address_one">Address (line one)</label></label></td>
-   <td>{{form.address_one}}</td>
- </tr>
-
-<tr>
-<td><label for="id_address_two"><label for="id_address_two">Address (line two)</label></label></td>
-   <td>{{form.address_two}}</td>
- </tr>
-
-<tr>
-<td><label for="id_city"><label for="id_city">Address (City)</label></label></td>
-   <td>{{form.city}}</td>
- </tr>
-
-<tr>
-<td><label for="id_state"><label for="id_state">State</label></label></td>
-   <td>{{form.state}}</td>
- </tr>
-
-<tr>
-<td><label for="id_zipcode"><label for="id_zipcode">Address Zip Code</label></label></td>
-   <td>{{form.zipcode}}</td>
- </tr>
- </table>
-</div>
-<div class="span4">
-   <table>
-      <tbody>
-
-         <tr>
-   
-      <td><label for="id_directions"><label for="id_directions">Directions</label></label></td>
-   <td>{{form.directions}}</td>
-      <tr><td><label for="id_instructions"><label for="id_instructions">Instructions</label></label></td>
-      <td>{{form.instructions}}</td></tr>
-      
- </tr>
-</tbody></table>
-</div>
-</div>
-<div class="form-actions">
-<input type="submit" class="btn btn-primary" value="Submit" />
-</div>
-</form>

@@ -40,68 +40,24 @@
                     <a class="brand" href="/">The Gleaning Interface</a>
                     <ul class="nav" role="navigation">
                       {% if 'gleanevent.auth' in perms %}
-                      <li class="dropdown">
-                        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Gleans <b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'gleanevent:index' %}">Glean Index</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'gleanevent:newglean' %}">New Glean</a></li>
-                          <li role="presentation" class="divider"></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'gleanevent:download' %}">Download Glean Data</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'gleanevent:postdownload' %}">Download Post Glean Data</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'announce:announcements' %}">Sent Announcements</a></li>
-                        </ul>
-                      </li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'gleanevent:index' %}">Gleans</a></li>
                       {% endif %}
                       {% if 'farms.auth' in perms %}
-                      <li class="dropdown">
-                        <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">Farms <b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'farms:index' %}">Farm Index</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'farms:newfarm' %}">New Farm</a></li>
-                          <li role="presentation" class="divider"></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'farms:download' %}">Download Farm List</a></li>
-                        </ul>
-                      </li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'farms:index' %}">Farms</a></li>
                       {% endif %}
                       {% if 'counties.uniauth' in perms %}
-                      <li class="dropdown">
-                        <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">Counties <b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'counties:index' %}">County Index</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'counties:newcounty' %}">New County</a></li>
-                        </ul>
-                      </li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'counties:index' %}">Counties</a></li>
                       {% endif %}
                       {% if 'userprofile.auth' in perms %}
-                      <li class="dropdown">
-                        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Volunteers <b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:userlists' %}">Volunteer Lists</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:newuser' %}">Input New Volunteers</a></li>
-                          <li role="presentation" class="divider"></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:download' %}">Download Volunteer Rolls</a></li>
-
-                        </ul>
-                      </li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:userlists' %}">Volunteers</a></li>
                       {% endif %}
                       {% if 'announce.auth' in perms %}
-                      <li class="dropdown">
-                        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Templates <b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'announce:templates' %}">Email Templates</a></li>
-                        </ul>
-                      </li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'announce:templates' %}">Templates</a></li>
                       {% endif %}
                       {% if 'memberorgs.auth' in perms %}
                       
                         {% if 'announce.uniauth' in perms %}
-                        <li class="dropdown">
-                          <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Member Orgs <b class="caret"></b></a>
-                          <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:index' %}">Index</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:newmemorg' %}">New Member Org</a></li>
-                          </ul>
-                        </li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:index' %}">Member Organizations</a></li>
                           {% else %}
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:index' %}">Member Organization</a></li>
                           {% endif %}
@@ -111,12 +67,8 @@
                       <li class="dropdown">
                         <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Harvest and Distribution Data <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'distro:entry' %}">Enter Distribution Data</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'distro:edit' %}">Edit Distribution Data</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'distro:index' %}">H&D Index</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'site:index' %}">Distribution Sites Index</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'site:newsite' %}">Create New Distribution Site</a></li>
-                          <li role="presentation" class="divider"></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'distro:download' %}">Download Data</a></li>
                         </ul>
                       </li>
                       {% endif %}
@@ -139,7 +91,7 @@
                       </li>
                           {% else %}
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'auth_login' %}">Login</a></li>
-                          <li role="presentation" class="divider"></li>
+                          <!--li role="presentation" class="divider"></li-->
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration_register' %}">Register</a></li>
                           {% endif %}
 

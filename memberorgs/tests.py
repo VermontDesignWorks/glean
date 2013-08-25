@@ -10,14 +10,6 @@ from django.utils import unittest
 
 from memberorgs.models import MemOrg
 
-
-class SimpleTest(TestCase):
-	def test_basic_addition(self):
-		"""
-		Tests that 1 + 1 always equals 2.
-		"""
-		self.assertEqual(1 + 1, 2)
-
 class MemOrgModelTests(TestCase):
 	def setUp(self):
 		MemOrg.objects.create(name="member organization 1")

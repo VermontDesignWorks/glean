@@ -1,26 +1,36 @@
 {% extends 'base.html' %}
 {% load url from future %}
 {% block title %}User Lists{% endblock title %}
+
+{% block heading %}
+{% endblock heading %}
 {% block body %}
-<style>
-.user-rows{
-	border:1px #e5e5e5 solid;
-	padding:20px;
-	min-height:200px;
-}
-.row-fluid + .row-fluid{padding-top:30px;}
-</style>
-<div class="user-rows">
-<h3>Volunteers for {{user.profile_set.get.member_organization.name}}</h3>
+<div class="row-fluid index-header">
+	<div class="span6 index-title">
+		<h1>Volunteer Index</h1>
+		<a href="{% url 'userprofile:newuser' %}" class="btn btn-success">New Volunteer</a>
+		<a href="{% url 'userprofile:download' %}" class="btn btn-danger">Download</a>
+	</div>
+	<div class="span6">
+		{% if 'userprofile.uniauth' in perms %}
+		<p>This is a list of all volunteers that exist in the Gleaning Interface System. As a Salvation Farms Administrator, you have access to all of this information and can edit any of these profiles at will. Be careful! With great power comes the ability to really screw things up.</p>
+		{% else %}
+		<p>These users have all signed up for information about gleaning in the counties you service. From here you can view and edit their profiles. </p>
+		{% endif %}
+	</div>
+</div>
+<div class="index-table">
+
 	<div class="row-fluid">
 		<div class="span4">
 			<ul>
 				{% if 'userprofile.uniauth' in perms %}
-					{% for person in users %}
 						
+					{% for person in users %}
+						{% if person.user.groups.all.count == 0 %}
 							<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}{% if person.member_organization %} - {{person.member_organization}}{% endif %}</a></li>
 							{% cycle '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span4"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div></div><div class="row-fluid"><div class="span4"><ul>' %}
-						
+						{% endif %}
 					{% endfor %}
 				{% else %}
 					{% for person in users %}

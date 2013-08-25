@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block heading %}
+<h3>Recipient List for {{announcement}}</h3>
+{% endblock heading %}
+{% block body %}
+				<ul>
+					<li>{{announcement.email_recipients.all.count}} Email Recipient{% if not announcement.email_recipients.all.count == 1 %}s{% endif %} {% if announcement.phone_recipients.all.count != 0 %}and {{announcement.phone_recipients.all.count}} Gleaner{% if not announcement.phone_recipients.all.count != 1  %}s{% endif %} to Call{% endif %}
+						<ul>
+							{% for recipient in announcement.email_recipients.all %}
+							<li><a href="{% url 'announce:uninviteuser' announcement.id recipient.id %}"><small class="text-error">(remove)</small></a> <a href="{% url 'userprofile:userprofile' recipient.id %}">{{recipient.profile_set.get.first_name}} {{recipient.profile_set.get.last_name}}</a></li>
+							{% endfor %}
+						</ul>
+					</li>
+				</ul>
+{% endblock %}

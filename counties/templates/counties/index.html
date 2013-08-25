@@ -4,16 +4,32 @@
 County Index
 {% endblock title %}
 {% block body %}
-<h3>County Index</h3>
-{% if counties %}
-<ul>
-{% for county in counties %}
-<li>
-<a href="{% url 'counties:detailcounty' county.id %}">{{ county.name }}</a> - <a href="{% url 'counties:editcounty' county.id %}">edit</a>
-</li>
-{% endfor %}
-</ul>
-{% else %}
-<span>No counties :(</span>
-{% endif %}
+<div class="row-fluid index-header">
+	<div class="span6 index-title">
+		<h1>County Index</h1>
+		<a href="{% url 'counties:newcounty' %}" class="btn btn-success">New County</a>
+	</div>
+	<div class="span6">
+		<p>This is where you can enter county information, which is used to coordinate member organizations with their volunteers.</p>
+		<p>For the time being, only Salvation Farms members can see anything outside of the County's "Name", so don't worry about the specifics!</p>
+	</div>
+</div>
+<div class="index-table">
+	<div class="row-fluid">
+		<div class="span4">
+			{% if counties %}
+			<ul>
+			{% for county in counties %}
+			<li>
+				<a href="{% url 'counties:editcounty' county.id %}"><small class="text-warning">edit</small></a> - 
+			<a href="{% url 'counties:detailcounty' county.id %}">{{ county.name }}</a>
+			</li>
+			{% endfor %}
+			</ul>
+			{% else %}
+			<span>No counties :(</span>
+			{% endif %}
+		</div>
+	</div>
+</div>
 {% endblock body %} 

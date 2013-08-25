@@ -12,22 +12,88 @@
 /*label{display:inline-block;}*/
 
 tr > td {text-align:right;padding-right:8px;vertical-align: top}
-td + td{text-align:left;padding-left:20px;}
+td + td{text-align:left;}
 td label {font-size:0.95em;font-weight:bold;}
 .form{border:1px #e5e5e5 solid; padding:35px;margin-bottom:15px;}
 .distroform{border:1px #e5e5e5 solid; padding:35px;margin-bottom:15px;}
-.distroform > table > tbody > tr > td > input {width:80px;padding-right:0px;}
-.distroform > table > tbody > tr > td > select {width:80px;padding-right:0px;}
+.distroform > table > tbody > tr > td > input {width:100%;padding-right:0px;}
+.distroform > table > tbody > tr > td > select {width:100%;padding-right:0px;}
 .previewpane {border:#e5e5e5 1px solid; min-height:520px; width:420px; padding:20px;float:left;}
 
+/* ==========================================================================
+   Index Pages
+   ========================================================================== */
+   
+.index-table{border:1px #e5e5e5 solid; min-height: 340px; padding:20px;}
+.index-table > .row-fluid + .row-fluid{padding-top:30px;}
+.index-header{margin-bottom:20px;}
+.index-title{text-align:center;}
 
+/* ==========================================================================
+   Generic Forms Page
+   ========================================================================== */
+   
+.table-form{
+	border:1px #e5e5e5 solid;
+	border-radius:5px;
+	padding:13px;
+}
+.table-important{
+	background-color:#f7f5f5;
+}
+.table-form + .table-form{
+	margin-top:42px;
+}
 
+/* ==========================================================================
+   Glean Page
+   ========================================================================== */
+   
+.glean-title{text-align: center;color:#444;}
+.glean-title:hover{color:#000;text-decoration: none;}
+.glean-details{border: 1px solid #e5e5e5; padding:2%;}
+.glean-half{width:48%;float:left;text-align:center;}
+.glean-half>ul {list-style:none;margin:0 0 0 0;}
+.glean-quarter{width:48%;margin:0 1%; float:left;}
+.divider{width:100%; clear:both; border-bottom:dotted #444 1px;margin:10px 0;}
+.glean-address{text-align: center;margin-bottom:0px;}
+.glean-date{text-align: center;margin-top:0px;}
+#id_comment{height:20px;width:50%;margin-left:2%;}
+.comments{border: 1px solid #e5e5e5; margin:2%;padding:2%;}
+.admin-controls{text-align:center;}
 
+/* ==========================================================================
+   Post Glean Form
+   ========================================================================== */
+   
+.post-glean-form{border:1px #e5e5e5 solid; padding:35px;margin-bottom:15px;}
+.post-glean-form > table > tbody > tr > td > input {width:100%;padding-right:0px;}
+.post-glean-form > table > tbody > tr > td > select {width:100%;padding-right:0px;}
 
+/* ==========================================================================
+   Farm Page
+   ========================================================================== */
+   
+.location {
+   border: 1px solid #e5e5e5;
+   border-radius:5px;
+   padding:8px;
+}
+/* ==========================================================================
+   Front Page
+   ========================================================================== */
+   
 
-
-
-
-
-
-
+   .day-class{width:14.158%;border:1px #e5e5e5 solid;float:left;height:250px;}
+   .day-class{width:14.158%;border:1px #e5e5e5 solid;height:250px;}
+   .day-class + .day-class{border-left:none;}
+   .day-title {width:100%; margin:0; padding:6px 0 0; height:28px; border-bottom: 1px #e5e5e5 solid; text-align: center;}
+   .day-class > ul {list-style-type:none; margin:0 5px;}
+   .day-class > ul > li {margin:1px 0;font-size:0.9em;line-height:1.1em;}
+   
+   a.day-name{text-decoration:none; color:#444; font-weight: bold;}
+   .future-link{margin:20px 0 0 0;}
+   .post-title{color:black;margin: 20px 0 0px 40px;}
+   
+   .post-subheading{color:#555;margin:0 0 8px 80px;}
+   .day-class > ul {list-style:none;margin: 0; text-align:center; }

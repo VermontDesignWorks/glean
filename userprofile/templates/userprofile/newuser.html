@@ -9,16 +9,22 @@ Create a New User
 	<h4>{{user.member_organization.get}}</h4>
 {% endblock heading %}
 
-
 {% block content %}
 <h5 class='text-success' style="text-align:center;">{{notice}}</h5>
 <h5 class='text-danger' style="text-align:center;">{{form.errors}}</h5>
 <form method="POST">
 	{% csrf_token %}
-	{% include 'userprofile/profileform.html' %}
-	<input type="submit" value="Create this user!">
+	{% include 'userprofile/customadd.html' %}
+	<div class="form-actions" style="text-align:right;">
+		<span class="pull-left"><span class="text-error">All Fields</span> <small>(except zipcode and address 2)</small> <span class="text-error">are required</span></span>
+		<div class="pull-right">
+			<input type="submit" name='action' class="btn btn-success" value="Save">
+			<input type="submit" name='action' class="btn btn-danger" value="Save and Create Another">
+		</div>
+	</div>
 </form>
 {% endblock %}
+
 {% block related %}
 <h3>Recently added members</h3>
 {% if 'userprofile.uniauth' in perms %}

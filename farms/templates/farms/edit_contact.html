@@ -13,6 +13,9 @@ Edit This Contact for {{farm.name}}
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'farms/farmform.html' %}
-		<input type="submit" value="Go!">
+
+		<div class="form-actions">
+			<span class="pull-left"><span class="text-error">*</span>Denotes a required Field</span><input type="submit" class="btn btn-success pull-right" value="Save">
+		</div>
 	</form>
 {% endblock content %}

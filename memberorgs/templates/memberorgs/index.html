@@ -5,16 +5,31 @@ Member Organization Index
 {% endblock title %}
 
 {% block body %}
-<h1>Member Organization Index</h1>
-{% if memorgs %}
-<ul>
-{% for memorg in memorgs %}
-<li>
-<a href="{% url 'memorgs:detailmemorg' memorg.id %}">{{ memorg.name }}</a> - <a href="{% url 'memorgs:editmemorg' memorg.id %}">edit</a>
-</li>
-{% endfor %}
-</ul>
-{% else %}
-<span>No memorgs :(</span>
-{% endif %}
+<div class="row-fluid index-header">
+	<div class="span6 index-title">
+		<h1>Member Organization Index</h1>
+		<a href="{% url 'memorgs:newmemorg' %}" class="btn btn-success">New Member Organization</a>
+	</div>
+	<div class="span6">
+		<p>Member Organization Index Page- this is something that only Salvation Farms members get to see. If you'd like to check a Member Organization's data, just click on their name. As a Sal Farms member you have full editing rights over their content, but be careful, with great power comes the great ability to royally screw things up!</p>
+		<p>Creating a new Member Organization automatically creates a default email template for them, as well as gives you the opportunity to make administrative users.<p>
+	</div>
+</div>
+<div class="index-table">
+	<div class="row-fluid">
+		<div class="span6">
+			{% if memorgs %}
+			<ul>
+			{% for memorg in memorgs %}
+			<li>
+			<a href="{% url 'memorgs:detailmemorg' memorg.id %}">{{ memorg.name }}</a> - <a href="{% url 'memorgs:editmemorg' memorg.id %}">edit</a>
+			</li>
+			{% endfor %}
+			</ul>
+			{% else %}
+			<span>No memorgs :(</span>
+			{% endif %}
+		</div>
+	</div>
+</div>
 {% endblock body %} 
