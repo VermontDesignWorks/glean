@@ -56,7 +56,6 @@ Details of {{ farm.name }}
 </div>
 <div class="row-fluid">
 	<div class="span6">
-	{% if farm.farmlocation_set.all %}
 	<h3>Farm Locations <a class="btn btn-success" href="{% url 'farms:newlocation' farm.id %}">New Location</a></h3>
 		<div class="row-fluid">
 			{% for location in farm.farmlocation_set.all %}
@@ -83,6 +82,4 @@ Details of {{ farm.name }}
 	{% endfor %}
 </ul>
 	</div>
-
-{% endif %}
 {% endblock body %}

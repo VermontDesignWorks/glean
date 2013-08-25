@@ -14,7 +14,10 @@ Edit {{site.name}}
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'recipientsite/siteform.html' %}
-		<input type="submit" value="Go!">
+		<span class="pull-left"><span class="text-error">*</span>Denotes A Required Field</span>
+			<div class="pull-right">
+				<input type="submit" class="btn btn-success" name='action' value="Save">
+			</div>
 	</form>
 {% endblock content %}
 {% block related %}

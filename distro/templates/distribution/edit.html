@@ -64,7 +64,10 @@
 			<form method="post" action="">
 				{% csrf_token %}
 				{% include 'distribution/distroformedit.html' %}
-				<input type="submit" value="Go!">
+				<span class="pull-left"><span class="text-error">*</span>Denotes A Required Field</span>
+			<div class="pull-right">
+				<input type="submit" class="btn btn-success" name='action' value="Save">
+			</div>
 			</form>
 		 {% else %}
 		 No Data to Show!

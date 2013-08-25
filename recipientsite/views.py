@@ -27,7 +27,7 @@ def newSite(request):
 				return HttpResponseRedirect(reverse('site:detailsite', args=(new_save.id,) ))
 			else:
 				form = SiteForm()
-				notice = "Recipient Site %s Saved" %s (new_save.name)
+				notice = "Recipient Site %s Saved" % (new_save.name)
 				return render(request, 'recipientsite/new_site.html', {'form':form, 'notice':notice})		
 		else:
 			return render(request, 'recipientsite/new_site.html')

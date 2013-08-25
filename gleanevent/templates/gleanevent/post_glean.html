@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load url from future %}
 {% block title %}
-Post Glean Data for {{glean.title}}
+Volunteer Hours for {{glean.title}}
 {% endblock title %}
 
 {% block heading %}
-<h3>Post Glean Data for {{glean.title}}</h3>
+<h3>Volunteer Hours for {{glean.title}}</h3>
 <h4><a href="{% url 'gleanevent:detailglean' glean.id %}">Go Back To Glean</a></h4>
 {% endblock heading %}
 

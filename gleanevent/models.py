@@ -56,7 +56,11 @@ class GleanEvent(models.Model):
 
 	def happened(self):
 		now = datetime.date.today()
-		return now > self.date
+		return now >= self.date
+
+	def upcomming(self):
+		now = datetime.date.today()
+		return now <= self.date
 
 	def data_entered(self):
 		if self.postglean_set.count() != 0:

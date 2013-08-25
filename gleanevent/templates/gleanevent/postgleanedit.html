@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% load url from future %}
-{% block title %}Post Glean
+{% block title %}Volunteer Hours
 {% endblock title %}
 
 {% block body %}
-<h3>Edit Post Glean Data</h3>
+<h3>Edit Volunteer Hours</h3>
 <form method="post" action="">
 		{% csrf_token %}
 		{% include 'gleanevent/postgleanform.html' %}
 		<div class="form-actions">
-			<input class="btn btn-success pull-right" type="submit" value="Go!">
+			<input class="btn btn-success pull-right" type="submit" value="Save">
 		</div>
 	</form>
 {% endblock body %}

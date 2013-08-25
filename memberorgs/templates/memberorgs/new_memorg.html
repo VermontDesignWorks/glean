@@ -12,10 +12,14 @@ New Member Organization
 	<form method="post" action="">
 		{{form.errors.as_ul}}
 		{% csrf_token %}
-		{% include 'memberorgs/memorgform.html' %}
-		<div class="form-actions text-right">
+		{% include 'memberorgs/custommemorg.html' %}
+		
+		<div class="form-actions">
+			<span class="pull-left"><span class="text-error" style="font-size:1.3em">*</span>Denotes a Required Field</span>
+			<div class="pull-right">
 			<input type="submit" name="action" class="btn btn-success" value="Save">
 			<input type="submit" name="action" class="btn btn-danger" value="Save and Create Administrator">
+			</div>
 		</div>
 	</form>
 {% endblock content %}

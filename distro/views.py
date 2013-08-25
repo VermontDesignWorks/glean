@@ -60,10 +60,13 @@ def entry(request):
 		#else:
 	#		return HttpResponse(formset.errors)
 		instances = formset.save(commit=False)
+		count = 0
 		for instance in instances:
 			instance.member_organization = request.user.profile_set.get().member_organization
 			instance.save()
-		return HttpResponseRedirect(reverse('distro:entry'))
+			count += 1
+		form = DistroFormSet(queryset=Distro.objects.none())
+		return render(request, 'distribution/entry.html', {'formset':form, 'range':range(50), 'message':str(count) + ' Items Saved To the Database'})
 	else:
 		form = DistroFormSet(queryset=Distro.objects.none())
 		if not request.user.has_perm('distro.uniauth'):

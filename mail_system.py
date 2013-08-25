@@ -16,7 +16,8 @@ def weave_template_and_body_and_glean(template, announcement, glean):
 	glean_link = "<a href='" + site.domain + str(reverse('gleanevent:detailglean', args=(glean.id,))) + "'>Glean Info</a>"
 	replace = {
 		'{{custom}}':announcement.message,
-		'{{glean.title}}':glean.title, 
+		'{{glean.title}}':glean.title,
+		'{{date}}':glean.date.strftime('%A, %B %d'),
 		'{{glean.description}}':glean.description,
 		#'{{info}}':glean_link,
 	}

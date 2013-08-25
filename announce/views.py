@@ -171,7 +171,8 @@ def announceGlean(request, glean_id):
 	if not glean.happened():
 		empty_announcements = Announcement.objects.filter(title='', message='', sent=False)
 		for ann in empty_announcements:
-			ann.delete()
+			if not ann.active():
+				ann.delete()
 		query = Template.objects.filter(member_organization = profile.member_organization, default=True)
 		if query.exists():
 			def_template = query.get()

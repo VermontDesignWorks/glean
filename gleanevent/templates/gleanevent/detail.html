@@ -19,7 +19,7 @@ Gleaning Details
   <h3 class="glean-date">{{glean.date}} {% if glean.time %}- {{glean.time}}{% endif %}</h3></h3>
 
   <div class="glean-half">
-  {% if not glean.happened %}
+  {% if glean.upcomming %}
   <h5>Will you attend?</h5>
   <a href="{% url 'gleanevent:confirmlink' glean.id %}" class="btn btn-success">Yes!</a>
   <a href="{% url 'gleanevent:denylink' glean.id %}" class="btn btn-danger">No :(</a>
@@ -41,11 +41,12 @@ Gleaning Details
   <div class="divider">&nbsp;</div>
   <div class="admin-controls">
   {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
-  {% if not glean.happened %}
+  {% if glean.upcomming %}
 <p>
   <a href="{% url 'announce:announceglean' glean.id %}" class="btn btn-primary">Create Announcement</a> <a href="{% url 'gleanevent:editglean' glean.id %}"class="btn btn-warning">Edit Glean</a>
 </p>
-  {% else %}
+{% endif %}
+  {% if glean.happened %}
 <p>
   <a href="{% url 'gleanevent:postglean' glean.id %}" class="btn btn-success">
     Enter Volunteer Hours

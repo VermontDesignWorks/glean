@@ -88,23 +88,21 @@ def editGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
 	if glean.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('gleanevent.uniauth'):
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
-	if not glean.happened():
-		if request.method == "POST":
-			form = GleanForm(request.POST, instance = glean)
-			if form.is_valid():
-				new_save = form.save()
-				return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(new_save.id,) ))
-			else:
-				form.fields['farm'].queryset=Farm.objects.filter(member_organization=glean.member_organization)
-				form.fields['farm_location'].queryset=FarmLocation.objects.filter(farm=glean.farm)
-				return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':form.errors})
+
+	if request.method == "POST":
+		form = GleanForm(request.POST, instance = glean)
+		if form.is_valid():
+			new_save = form.save()
+			return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(new_save.id,) ))
 		else:
-			form = GleanForm(instance = glean)
 			form.fields['farm'].queryset=Farm.objects.filter(member_organization=glean.member_organization)
 			form.fields['farm_location'].queryset=FarmLocation.objects.filter(farm=glean.farm)
-			return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':''})
+			return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':form.errors})
 	else:
-		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
+		form = GleanForm(instance = glean)
+		form.fields['farm'].queryset=Farm.objects.filter(member_organization=glean.member_organization)
+		form.fields['farm_location'].queryset=FarmLocation.objects.filter(farm=glean.farm)
+		return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':''})
 
 @login_required
 def detailGlean(request, glean_id):

@@ -9,7 +9,8 @@
 	<div class="span6 index-title">
 		<h1>Volunteer Index</h1>
 		<a href="{% url 'userprofile:newuser' %}" class="btn btn-success">New Volunteer</a>
-		<a href="{% url 'userprofile:download' %}" class="btn btn-danger">Download</a>
+		<a href="{% url 'userprofile:download' %}" class="btn btn-danger">Volunteer Info</a>
+		<a href="{% url 'gleanevent:postdownload' %}" class="btn btn-primary">Volunteer Hours</a>
 	</div>
 	<div class="span6">
 		{% if 'userprofile.uniauth' in perms %}

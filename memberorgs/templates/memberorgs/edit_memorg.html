@@ -12,6 +12,9 @@ Edit {{memorg.name}}
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'memberorgs/memorgform.html' %}
-		<input type="submit" value="Go!">
+		<span>class="pull-left"><span class="text-error" style="font-size:1.3em">*</span>Denotes a Required Field</span>
+		<div class="form-actions pull-right">
+			<input type="submit" name="action" class="btn btn-success" value="Save">
+		</div>
 	</form>
 {% endblock content %}

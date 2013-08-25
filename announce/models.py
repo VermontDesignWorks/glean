@@ -58,8 +58,10 @@ class Announcement(models.Model):
 		return self.datetime.strftime('%y:%m:%d %H:%M:%S') + self.member_organization.name
 
 	def active(self):
-		if self.datetime + datetime.timedelta(hours=3) < time.now():
+		if self.datetime + datetime.timedelta(hours=3) >= timezone.now():
 			return True
+		else:
+			return False
 
 	def populate_recipients(self):
 		self.email_recipients.clear()
