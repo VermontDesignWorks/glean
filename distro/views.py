@@ -55,18 +55,21 @@ def entry(request):
 	DistroFormSet = modelformset_factory(Distro, extra=int(10))
 	if request.method == 'POST':
 		formset = DistroFormSet(request.POST)
-		formset.is_valid()
+		if formset.is_valid():
+			instances = formset.save(commit=False)
 		#	pass
 		#else:
 	#		return HttpResponse(formset.errors)
-		instances = formset.save(commit=False)
-		count = 0
-		for instance in instances:
-			instance.member_organization = request.user.profile_set.get().member_organization
-			instance.save()
-			count += 1
-		form = DistroFormSet(queryset=Distro.objects.none())
-		return render(request, 'distribution/entry.html', {'formset':form, 'range':range(50), 'message':str(count) + ' Items Saved To the Database'})
+			count = 0
+			for instance in instances:
+				instance.member_organization = request.user.profile_set.get().member_organization
+				instance.save()
+				count += 1
+			form = DistroFormSet(queryset=Distro.objects.none())
+			return render(request, 'distribution/entry.html', {'formset':form, 'range':range(50), 'message':str(count) + ' Items Saved To the Database'})
+		else:
+			return render(request, 'distribution/entry.html', {'formset':formset, 'range':range(50), 'error':"Form was Not Valid. If Any fields are formed out in a row, both Date fields and the Recipient Field must be included."})
+
 	else:
 		form = DistroFormSet(queryset=Distro.objects.none())
 		if not request.user.has_perm('distro.uniauth'):

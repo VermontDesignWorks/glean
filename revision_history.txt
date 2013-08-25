@@ -1,5 +1,16 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.2.1 - "Animal the Animal" (hotfix 1)
+*Fixed a handful of Distro Site wordings to Recipient Site wordings
+*Added soft Announce locking mechanism
+*Farm Form had a 'required' tag on an unrequired field
+*'Date' added to mail_system.py and generic template
+*Added Required Tags to MemberOrg Forms
+*H&D Database invalid form was throwing errors, fixed view logic
+*Fixed A 'Counties not Saving bug' in userprofile:newuser view def
+*Changed Member Org Detail to display admins as  "Staff" if all users have ability to promote
+*reordered MemOrg Index for SalFarms users (now Alphabetical)
+
 Release 0.2 - "Animal The Animal"
 *Rewrote all Index and Form Templates
 *Added County Notifications
