@@ -12,7 +12,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 
-from userprofile.models import Profile, ProfileForm, UserForm, LoginForm, EmailForm, EditProfileForm, UniPromoteForm, PromoteForm
+from userprofile.models import Profile, ProfileForm, UserForm, LoginForm, EmailForm, EditProfileForm, UniPromoteForm, PromoteForm, AdminProfileForm
 from memberorgs.models import MemOrg
 from constants import VERMONT_COUNTIES
 
@@ -41,7 +41,10 @@ def userDetailEntry(request):
 def selfEdit(request):
 	if request.method == "POST":
 		instance = Profile.objects.get(user=request.user)
-		form = EditProfileForm(request.POST, instance=instance)
+		if request.user.has_perm('userprofile.auth'):
+			form = AdminProfileForm(request.POST, instace=instance)
+		else:
+			form = EditProfileForm(request.POST, instance=instance)
 		if form.is_valid():
 			new_save = form.save(commit=False)
 			#new_save.member_organization = instance.member_organization
@@ -53,10 +56,16 @@ def selfEdit(request):
 	else:
 		if Profile.objects.filter(user=request.user).exists():
 			profile = Profile.objects.get(user=request.user)
-			form = EditProfileForm(instance = profile)
+			if request.user.has_perm('userprofile.auth'):
+				form = AdminProfileForm(instance = profile)
+			else:
+				form = EditProfileForm(instance = profile)
 			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':'','editmode':True})
 		else:
-			form = EditProfileForm()
+			if request.user.has_perm('userprofile.auth'):
+				form = AdminProfileForm()
+			else:
+				form = EditProfileForm()
 			return render(request, 'userprofile/userEdit.html', {'form':form, 'error':'','editmode':True})
 
 @permission_required('userprofile.auth')

@@ -16,7 +16,8 @@
    	<script type="text/javascript">
             $('#directions-popover').popover({
                'title':"Farm Directions",
-               'content':"The Directions listed here will automatically be used whenever a Glean is at this farm. The Glean will also include a map, so only a couple of sentences are necessary."
+               'trigger':"hover",
+               'content':"The Directions listed here, like all information in this grey box, will automatically be used whenever a Glean is at this farm. The Glean will also include a map, so only a couple of sentences are necessary."
             });
       </script>
    </td>
@@ -28,6 +29,7 @@
    	<script type="text/javascript">
             $('#instructions-popover').popover({
                'title':"Farm Instructions",
+               'trigger':"hover",
                'content':"These instructions will also be used when whenever a Glean is at this farm. This is a good place to put a couple general reminders about this farm, again only a couple of sentences are necessary."
             });
       </script>
@@ -35,7 +37,16 @@
  </tr>
 <tr>
 <td><label for="id_counties"><label for="id_counties">Counties<span class="text-error">*</span></label></label></td>
-   <td>{{form.counties}}</td>
+   <td><div class="input-append">{{form.counties}}<button type="button" class="btn" id="counties-popover">i</button></div>
+      <script type="text/javascript">
+            $('#counties-popover').popover({
+               'title':"Counties",
+               'trigger':"hover",
+               'content':"This determines what volunteers will be notified when a glean is taking place at this farm."
+            });
+      </script>
+
+   </td>
  </tr>
 
 <tr>

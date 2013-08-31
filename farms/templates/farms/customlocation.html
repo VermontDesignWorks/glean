@@ -1,8 +1,18 @@
+<div class="row-fluid">
+   <div class="span6">
+      <div class="table-form table-important">
+         <h3 class="text-center">Necessary Information</h3>
 <table>
-
 <tbody><tr>
 <td><label for="id_name"><label for="id_name">Name<span class="text-error">*</span></label></label></td>
-   <td>{{form.name}}</td>
+   <td><div class="input-append">{{form.name}}<button type="button" class="btn" id="name-popover">i</button></div>
+      <script type="text/javascript">
+            $('#name-popover').popover({
+               'title':"Location Name",
+               'trigger':"hover",
+               'content':"This is how you will identify this field or location from others. It is best to keep this simple but descriptive, like 'Back Field' or 'Wolcott Entrance'. This will help voluteers go to the right place, as the glean page will already reflect which farm this field is a subset of."
+            });
+      </script></td>
  </tr>
 
 <tr>
@@ -12,17 +22,38 @@
 
 <tr>
 <td><label for="id_directions"><label for="id_directions">Directions<span class="text-error">*</span></label></label></td>
-   <td>{{form.directions}}</td>
+   <td><div class="input-append">{{form.directions}}<button type="button" class="btn" id="directions-popover">i</button></div>
+      <script type="text/javascript">
+            $('#directions-popover').popover({
+               'title':"Farm Directions",
+               'trigger':"hover",
+               'content':"The Directions listed here, like all information in this grey box, will automatically be used whenever a Glean is at this farm. The Glean will also include a map, so only a couple of sentences are necessary."
+            });
+      </script></td>
  </tr>
 
 <tr>
 <td><label for="id_instructions"><label for="id_instructions">Instructions<span class="text-error">*</span></label></label></td>
-   <td>{{form.instructions}}</td>
+   <td><div class="input-append">{{form.instructions}}<button type="button" class="btn" id="instructions-popover">i</button></div>
+      <script type="text/javascript">
+            $('#instructions-popover').popover({
+               'title':"Farm Instructions",
+               'trigger':"hover",
+               'content':"These instructions will also be used when whenever a Glean is at this farm location. This is a good place to put a couple general reminders about this farm, again only a couple of sentences are necessary."
+            });
+      </script></td>
  </tr>
 
 <tr>
 <td><label for="id_counties"><label for="id_counties">Counties<span class="text-error">*</span></label></label></td>
-   <td>{{form.counties}}</td>
+   <td><div class="input-append">{{form.counties}}<button type="button" class="btn" id="counties-popover">i</button></div>
+      <script type="text/javascript">
+            $('#counties-popover').popover({
+               'title':"Counties",
+               'trigger':"hover",
+               'content':"This determines what region of volunteers will be notified when a glean is taking place at this farm location."
+            });
+      </script></td>
  </tr>
 
 <tr>
@@ -49,10 +80,50 @@
 <td><label for="id_zipcode"><label for="id_zipcode">Address Zip Code</label></label></td>
    <td>{{form.zipcode}}</td>
  </tr>
+</tbody></table>
+</div>
+</div>
+<div class="span6">
+   <div class="table-form">
+      <h3 class="text-center">Mailing Information</h3>
+<tbody><table>
+<tr>
+
+<td><label for="id_physical_is_mailing"><label for="id_physical_is_mailing">Address is Mailing Address</label></label></td>
+   <td>{{form.physical_is_mailing}}</td>
+ </tr>
+ <td><label for="id_mailing_address_one"><label for="id_mailing_address_one">Mailing Address (line one)</label></label></td>
+   <td><div class="input-append">{{form.mailing_address_one}}<button type="button" class="btn" id="physical_is_mailing-popover">i</button></div>
+      <script type="text/javascript">
+            $('#physical_is_mailing-popover').popover({
+               'title':"Mailing Information",
+               'trigger':"hover",
+               'content':"This information is optional and for reference use only."
+            });
+      </script></td>
+ </tr>
 
 <tr>
-<td><label for="id_is_mailing"><label for="id_is_mailing">Address is Mailing Address</label></label></td>
-   <td>{{form.is_mailing}}</td>
+<td><label for="id_mailing_address_two"><label for="id_mailing_address_two">Mailing Address (line two)</label></label></td>
+   <td>{{form.mailing_address_two}}</td>
+ </tr>
+
+<tr>
+<td><label for="id_mailing_city"><label for="id_mailing_city">Mailing Address (City)</label></label></td>
+   <td>{{form.mailing_city}}</td>
+ </tr>
+
+<tr>
+<td><label for="id_mailing_state"><label for="id_mailing_state">Mailing Address (State)</label></label></td>
+   <td>{{form.mailing_state}}</td>
+ </tr>
+
+<tr>
+<td><label for="id_mailing_zip"><label for="id_mailing_zip">Mailing Address Zipcode</label></label></td>
+   <td>{{form.mailing_zip}}</td>
  </tr>
 
 </tbody></table>
+</div>
+</div>
+</div>

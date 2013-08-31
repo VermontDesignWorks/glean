@@ -10,7 +10,9 @@ Edit Template {{template.template_name}}
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'announce/templateform.html' %}
-		<input type="submit" value="Go!">
+		<div class="form-actions">
+			<input type="submit" value="Save Changes" class="btn btn-info">
+		</div>
 	</form>
 {% endblock content %}
 

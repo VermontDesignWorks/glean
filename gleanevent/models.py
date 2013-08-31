@@ -2,13 +2,13 @@ import datetime
 from django.utils import timezone
 
 from django.db import models
-from django.forms import TextInput
+from django.forms import TextInput, RadioSelect
 from django.forms import ModelForm
 
 from django.forms.fields import ChoiceField
 
 from django.conf import settings
-from constants import VERMONT_COUNTIES, STATES
+from constants import VERMONT_COUNTIES, STATES, TIME_OF_DAY
 
 from django.contrib.auth.models import User
 from farms.models import Farm, FarmLocation
@@ -23,6 +23,7 @@ class GleanEvent(models.Model):
 	title = models.CharField(max_length=200)
 	date = models.DateField('Date', blank=True, null=True)
 	time = models.CharField('Time', max_length=40, blank=True, null=True)
+	time_of_day = models.CharField('General Time of Day', choices=TIME_OF_DAY, max_length=2, default="NA")
 	farm = models.ForeignKey(Farm, blank=True, null=True)
 	farm_location = models.ForeignKey(FarmLocation, blank=True, null=True)
 	description = models.TextField(blank=True)

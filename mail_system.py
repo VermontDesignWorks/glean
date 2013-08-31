@@ -17,13 +17,14 @@ def weave_template_and_body_and_glean(template, announcement, glean):
 	replace = {
 		'{{custom}}':announcement.message,
 		'{{glean.title}}':glean.title,
-		'{{date}}':glean.date.strftime('%A, %B %d'),
+		'{{date}}':glean.date.strftime('%A, %B %d'
+			) if glean.time_of_day == 'NA' else glean.date.strftime('%A, %B %d') + ' ' + ('Morning' if glean.time_of_day =='AM' else 'Afternoon'),
 		'{{glean.description}}':glean.description,
 		#'{{info}}':glean_link,
 	}
 	returnable = template.body
 	for key, value in replace.iteritems():
-		if returnable.find(key) != -1:
+		while returnable.find(key) != -1:
 			try:
 				start = returnable.find(key)
 				finish = returnable.find(key)+len(key)
@@ -58,13 +59,15 @@ def weave_unsubscribe(body, userprofile, announce):
 		'{{glean.title}}':announce.glean.title, 
 		'{{glean.description}}':announce.glean.description,
 		'{{info}}':glean_link,
+		'{{date}}':announce.glean.date.strftime('%A, %B %d'
+			) if announce.glean.time_of_day == 'NA' else announce.glean.date.strftime('%A, %B %d') + ' ' + ('Morning' if announce.glean.time_of_day =='AM' else 'Afternoon'),
 		'{{raw_glean_link}}':raw_glean_link,
 		'{{unsubscribe}}': unsub_link,
 		'{{subject}}':subject,
 	}
 	returnable = announce.template.body
 	for key, value in replace.iteritems():
-		if returnable.find(key) != -1:
+		while returnable.find(key) != -1:
 			try:
 				start = returnable.find(key)
 				finish = returnable.find(key)+len(key)

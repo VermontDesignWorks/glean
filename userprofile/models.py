@@ -16,7 +16,7 @@ class Profile(models.Model):
 
 	first_name = models.CharField("First Name", max_length=20)
 	last_name = models.CharField("Last Name", max_length=20)
-	address_one = models.CharField("Address (line one)", max_length=200, blank=True)
+	address_one = models.CharField("Address (line one)", max_length=200, blank=True, null=True)
 	address_two = models.CharField("Address (line two)", max_length=200, blank=True, null=True)
 	city = models.CharField("City", max_length=200, blank=True)
 	state = models.CharField("State", max_length=2, choices=STATES, default='VT')
@@ -76,6 +76,22 @@ class EditProfileForm(forms.ModelForm):
 	class Meta:
 		model = Profile
 		exclude = ('member_organization',)
+
+class AdminProfileForm(EditProfileForm):
+	class Meta:
+		model = Profile
+		fields = ('first_name',
+				'last_name',
+				'address_one',
+				'address_two',
+				'city',
+				'state',
+				'zipcode',
+				'counties',
+				'phone',
+				'phone_type',
+				)
+
 
 class UserForm(forms.Form):
 	username = forms.CharField(max_length=20)

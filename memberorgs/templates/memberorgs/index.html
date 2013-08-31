@@ -22,7 +22,7 @@ Member Organization Index
 			<ul>
 			{% for memorg in memorgs %}
 			<li>
-			<a href="{% url 'memorgs:detailmemorg' memorg.id %}">{{ memorg.name }}</a> - <a href="{% url 'memorgs:editmemorg' memorg.id %}">edit</a>
+			<a href="{% url 'memorgs:detailmemorg' memorg.id %}">{{ memorg.name }}</a>
 			</li>
 			{% endfor %}
 			</ul>

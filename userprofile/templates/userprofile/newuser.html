@@ -16,7 +16,7 @@ Create a New User
 	{% csrf_token %}
 	{% include 'userprofile/customadd.html' %}
 	<div class="form-actions" style="text-align:right;">
-		<span class="pull-left"><span class="text-error">All Fields</span> <small>(except zipcode and address 2)</small> <span class="text-error">are required</span></span>
+		<span class="pull-left"><span class="text-error">*</span> Denotes a required field (most are required)</span>
 		<div class="pull-right">
 			<input type="submit" name='action' class="btn btn-success" value="Save">
 			<input type="submit" name='action' class="btn btn-danger" value="Save and Create Another">

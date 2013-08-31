@@ -7,7 +7,14 @@
 
 <tr>
 <td><label for="id_website"><label for="id_website">Website</label></label></td>
-   <td>{{form.website}}</td>
+   <td><div class="input-append">{{form.website}}<button id="website-button" class="btn" type="button">i</button>
+      <script type="text/javascript">
+      $('#website-button').popover({
+         'title':"Member Organization Information",
+         'trigger':"hover",
+         'content':"This field, as well as all fields except 'Name' and 'Counties', are for internal use only. It will only be available to Salvation Farms members, as well as the administrators of this specific member organization."
+      });
+      </script></div></td>
  </tr>
 
 <tr>
@@ -17,7 +24,14 @@
 
 <tr>
 <td><label for="id_counties"><label for="id_counties">Counties<span class="text-error" style="font-size:1.3em">*</span></label></label></td>
-   <td>{{form.counties}}</td>
+   <td><div class="input-append">{{form.counties}}<button id="counties-button" class="btn" type="button">i</button>
+      <script type="text/javascript">
+      $('#counties-button').popover({
+         'title':"Counties",
+         'trigger':"hover",
+         'content':"The Counties selected determines which volunteers this member organization has access to, in terms of sending announcements, and looking up volunteer data."
+      });
+      </script></div></td>
  </tr>
 
 <tr>
@@ -102,7 +116,14 @@
 
 <tr>
 <td><label for="id_first_name"><label for="id_first_name">Executive Director First Name</label></label></td>
-   <td>{{form.first_name}}</td>
+   <td><div class="input-append">{{form.first_name}}<button id="ed-button" class="btn" type="button">i</button>
+      <script type="text/javascript">
+      $('#ed-button').popover({
+         'title':"Executive Director",
+         'trigger':"hover",
+         'content':"This information is for internal descriptive purposes only, to create an Administrator account for this member organization select 'Save and Create Administrator' when you have filled outthis form."
+      });
+      </script></div></td>
  </tr>
 
 <tr>

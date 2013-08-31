@@ -41,7 +41,7 @@ class Announcement(models.Model):
 	phone_recipients = models.ManyToManyField(User, null=True, blank=True, related_name="Phone List", editable=False)
 	datetime = models.DateTimeField(auto_now_add=True, editable=False)
 	glean = models.ForeignKey(GleanEvent, blank=True, null=True, editable=False)
-	title = models.CharField("Add a Custom Subject", max_length=50, null=True, blank=True)
+	title = models.CharField("Email Subject Line", max_length=50, null=True, blank=True)
 	message = models.TextField("Add a Custom Message",null=True, blank=True)
 	template = models.ForeignKey(Template, null=True, verbose_name="Email Template")
 	sent = models.BooleanField(default=False, editable=False)

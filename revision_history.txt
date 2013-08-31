@@ -1,5 +1,24 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.2.2 "Billowous Burt"
+*Added printable user list (with ec and photo info)
+*Removed edit link from indecies
+*fixed {{date}} bugs
+*fixed ajax api bugs (in the instances of more than one farm with the same name)
+*Added popovers to member organization form
+*added popovers to farm location form
+*truncated administrator profile edit page
+*fixed comment system bug
+*added mailing address to recipient sites
+*added subject line to sent announcement index
+*added 'home' to 'phone type' dropdowns
+*added mailing address to farm location and cleaned up form
+*sandboxed counties, so memorgs can only create gleans in their own counties
+*added 'Sending...' button to announce form
+*Added some minimums to poorly-responsive pages. Quick fix for now, I suppose
+*Added mailing address and contact info to recipient sites
+*Fixed profile address_one snafu
+
 Release 0.2.1 - "Animal the Animal" (hotfix 1)
 *Fixed a handful of Distro Site wordings to Recipient Site wordings
 *Added soft Announce locking mechanism

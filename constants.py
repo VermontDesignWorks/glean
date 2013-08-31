@@ -31,6 +31,7 @@ LINE_TYPE = (
 
 PHONE_TYPE = (
 	('C', 'Cell'),
+	('H', 'Home'),
 	('O', 'Office'),
 )
 
@@ -79,4 +80,10 @@ COLORS = (
 	('text-info', 'Blue'),
 	('text-success', 'Green'),
 	('muted', 'White'),
+)
+
+TIME_OF_DAY = (
+	('NA', '--'),
+	('AM', 'AM'),
+	('PM', 'PM'),
 )

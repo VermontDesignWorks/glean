@@ -1,9 +1,24 @@
+<div class="table-form table-important">
 <table>
 
 <tbody><tr>
-<td><label for="id_name"><label for="id_name">Name<span class="text-error">*</span></label></label></td>
-   <td>{{form.name}}</td>
+<td width="231px"><label for="id_name"><label for="id_name">Name<span class="text-error">*</span></label></label></td>
+   <td><div class="input-append">{{form.name}}<button type="button" class="btn" id="name-popover">i</button></div>
+   	<script type="text/javascript">
+            $('#name-popover').popover({
+               'title':"Recipient Site Name",
+               'trigger':"hover",
+               'content':"This is the only required field for recipient sites, filling it out and submitting this site will allow you to select it in the H&D Database. The additional fields, listed below, are important for internal data compilation and state wide glean tracking, so fill out what you can!"
+            });
+      </script></td>
  </tr>
+</tbody></table>
+</div>
+
+<div class="table-form">
+<table>
+
+<tbody>
 
 <tr>
 <td><label for="id_description"><label for="id_description">Description</label></label></td>
@@ -27,7 +42,7 @@
 
 <tr>
 <td><label for="id_state"><label for="id_state">State</label></label></td>
-   <td>{{form.state}}</td>
+   <td>{{form.state}}></td>
  </tr>
 
 <tr>
@@ -35,4 +50,50 @@
    <td>{{form.zipcode}}</td>
  </tr>
 
+<tr>
+<td><label for="id_physical_is_mailing"><label for="id_physical_is_mailing">Physical Address is Mailing Address</label></label></td>
+   <td>{{form.physical_is_mailing}}</td>
+ </tr>
+
+<tr>
+<td><label for="id_mailing_address_one"><label for="id_mailing_address_one">Mailing Address (line one)</label></label></td>
+   <td>{{form.mailing_address_one}}</td>
+ </tr>
+
+<tr>
+<td><label for="id_mailing_address_two"><label for="id_mailing_address_two">Mailing Address (line two)</label></label></td>
+   <td>{{form.mailing_address_two}}</td>
+ </tr>
+
+<tr>
+<td><label for="id_mailing_city"><label for="id_mailing_city">Mailing Address (City)</label></label></td>
+   <td>{{form.mailing_city}}</td>
+ </tr>
+
+<tr>
+<td><label for="id_mailing_state"><label for="id_mailing_state">Mailing Address (State)</label></label></td>
+   <td>{{form.mailing_state}}</td>
+ </tr>
+
+<tr>
+<td><label for="id_mailing_zip"><label for="id_mailing_zip">Mailing Address Zipcode</label></label></td>
+   <td>{{form.mailing_zip}}</td>
+ </tr>
+
+<tr>
+<td><label for="id_primary_contact"><label for="id_primary_contact">Primary Contact Last Name</label></label></td>
+   <td>{{form.primary_contact}}</td>
+ </tr>
+
+<tr>
+<td><label for="id_phone"><label for="id_phone">Primary Phone</label></label></td>
+   <td>{{form.phone}}</td>
+ </tr>
+
+<tr>
+<td><label for="id_email"><label for="id_email">Email</label></label></td>
+   <td>{{form.email}}</td>
+ </tr>
+
 </tbody></table>
+</div>

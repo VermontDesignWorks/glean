@@ -5,6 +5,7 @@
 Welcome to the Gleaning Interface!
 {% endblock %}
 {% block body %}
+<div class="row-fluid non-responsive"> 
      <div class="span12">
 	<div class="row" id="calendar" style="margin:0 auto;">
 	<style>
@@ -45,5 +46,6 @@ Welcome to the Gleaning Interface!
 		{% get_comment_count for post as comment_count %}
 		<p><small>{{comment_count}} Comment{% if comment_count != 1 %}s{% endif %}</small></p>
 	{% endfor %}
+</div>
 </div>
 {% endblock %}

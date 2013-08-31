@@ -22,7 +22,7 @@ Announcement Index
 			<ul>
 				{% for template in templates %}
 					<li>
-						<small><a class="text-warning" href="{% url 'announce:edittemplate' template.id %}">edit</a></small> - <a href="{% url 'announce:detailtemplate' template.id %}">{{template.member_organization}} - {{ template.template_name }}</a>
+						<a href="{% url 'announce:detailtemplate' template.id %}">{{template.member_organization}} - {{ template.template_name }}</a>
 					</li>
 				{% endfor %}
 			</ul>
@@ -30,7 +30,7 @@ Announcement Index
 			<ul>
 				{% for template in templates %}
 					<li>
-						<small><a class="text-warning" href="{% url 'announce:edittemplate' template.id %}">edit</a></small> - <a href="{% url 'announce:detailtemplate' template.id %}">{{ template.template_name }}</a>
+						<a href="{% url 'announce:detailtemplate' template.id %}">{{ template.template_name }}</a>
 					</li>
 				{% endfor %}
 			</ul>

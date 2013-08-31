@@ -48,7 +48,7 @@
 					<p>{{announcement.message}}</p>
 				{% endif %}
 				{% if not announcement.title and not announcement.message %}
-					<p>No Custom Information</p>
+				<p>No Custom Information</p>
 				{% endif %}
 			</div>
 		{% endif %}
@@ -65,9 +65,15 @@
 		<h4><small>Announcment Controls: </small></h4>
 					<form method="POST" action="{% url 'announce:sendannounce' announcement.id %}">{% csrf_token %}
 						<div class="well">
-							<input type="submit" class="btn btn-success" value="SEND" data-loading-text="Sending..." style="display:inline;">
+							<input type="submit" id="btn-send" class="btn btn-success" data-loading-text="Sending..." value="SEND" data-loading-text="Sending..." style="display:inline;">
 							<a href="{% url 'gleanevent:editglean' announcement.glean.id %}" class="btn btn-warning">Edit Glean</a>
 						</div>
+						<script type="text/javascript">
+							$('#btn-send').button();
+							$('#btn-send').click(function () {
+								$(this).button('loading');
+							});
+						</script>
 					</form>
 
 				{% endif %}

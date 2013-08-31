@@ -2,7 +2,7 @@
 	{{form.errors.as_ul}}
 {% csrf_token %}
 
-<div class="row-fluid">
+<div class="row-fluid non-responsive">
    <div class="span4">
    <div class="table-form table-important">
          <h4 class="text-center">Primary Fields</h4>
@@ -15,6 +15,7 @@
       <script type="text/javascript">
       $('#title-popover').popover({
          'title':"Title",
+         'trigger':"hover",
          'content':"This is the name of your glean. It is how you will identify this glean from others on this day or week, and it also will also be the default Title to any Announcement Emails that are sent."
       });
       </script>
@@ -28,7 +29,7 @@
     </tr>
     <tr>
       <td><label for="id_time"><label for="id_time">Time<span class="text-error">*</span></label></label></td>
-      <td>{{form.time}}</td>
+      <td>{{form.time}}{{form.time_of_day}}</td>
     </tr>
     <tr>
       <td><label for="id_duration"><label for="id_duration">Duration</label></label></td>
@@ -44,9 +45,11 @@
       <script type="text/javascript">
       $('#description-button').popover({
          'title':"Description of the Glean",
+         'trigger':"hover",
          'content':"This field will be visible on the Glean Page, and tells Volunteers what to expect. It is copied automatically into any Announcements made for this glean."
       });
-      </script></td></tr>
+      </script>
+    </div></td></tr>
  </tbody>
 </table>
 </div>
@@ -61,6 +64,7 @@
          <script type="text/javascript">
             $('#farm-button').popover({
                'title':"Farm and Farm Location",
+               'trigger':"hover",
                'content':"By Choosing a farm (and optionally a Farm Location) the remainder of the form auto-populates with Farm-specific Data."
             });
       </script>
@@ -83,11 +87,12 @@
    
       </tr>
       <tr>
-      <td><label for="id_counties"><label for="id_counties">Counties<span class="text-error">*</span></label></label></td>
+      <td><label for="id_counties"><label for="id_counties">Counties</label></label></td>
          <td><div class="input-append">{{form.counties}}<button id="counties-button" type="button" class="btn">i</button></div></td>
          <script type="text/javascript">
                $('#counties-button').popover({
             'title':"Counties",
+            'trigger':"hover",
             'content':"Volunteers are notified of gleans based on which counties they're interested in gleaning in."
          });
          </script>
@@ -258,8 +263,8 @@ $('#testGoogle').click(function(){
       // This is the key code \\
       $(function() {
          $('#id_farm').change(function(){
-            var farm = $(this).children("option:selected").text();
-            if (farm != "---------") {
+            var farm = $(this).children("option:selected").val();
+            if (farm != "") {
                $.ajax({
                   url:"/api/farm/"+farm,
                   success: function(data){
@@ -276,9 +281,9 @@ $('#testGoogle').click(function(){
          });         
          
          $('#id_farm_location').change(function(){
-            var farm = $('#id_farm').children("option:selected").text();
-            var selection = $(this).children("option:selected").text();
-            if (selection != "---------") {
+            var farm = $('#id_farm').children("option:selected").val();
+            var selection = $(this).children("option:selected").val();
+            if (selection != "") {
                $.ajax({
                   url:"/api/farmlocation/"+farm+'/'+selection,
                   success: function(data){

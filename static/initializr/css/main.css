@@ -62,6 +62,25 @@ td label {font-size:0.95em;font-weight:bold;}
 .comments{border: 1px solid #e5e5e5; margin:2%;padding:2%;}
 .admin-controls{text-align:center;}
 
+
+/* ==========================================================================
+   Glean Form
+   ========================================================================== */
+#id_time{
+   display:inline-block;
+   width:48%;
+}
+
+#id_time_of_day{
+   display:inline-block;
+   width:30%;
+   margin-left:5%;
+}
+
+.non-responsive{
+   min-width:1170px !important;
+}
+
 /* ==========================================================================
    Post Glean Form
    ========================================================================== */

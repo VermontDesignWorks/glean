@@ -176,7 +176,7 @@ def announceGlean(request, glean_id):
 		query = Template.objects.filter(member_organization = profile.member_organization, default=True)
 		if query.exists():
 			def_template = query.get()
-			new_save = Announcement(title='', message='', glean=glean, member_organization=profile.member_organization, template=def_template)
+			new_save = Announcement(title=glean.title, message='', glean=glean, member_organization=profile.member_organization, template=def_template)
 			new_save.save()
 			new_save.populate_recipients()
 			return HttpResponseRedirect(reverse('announce:combinedannounce', args=(new_save.id,)))

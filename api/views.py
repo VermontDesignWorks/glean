@@ -33,7 +33,8 @@ from functions import primary_source
 
 #== Farm API ==#
 def apiFarm(request, farm_id):
-	farm = get_object_or_404(Farm, name=farm_id)
+	profile = request.user.profile_set.get()
+	farm = Farm.objects.get(pk=farm_id)
 	farm_locations = FarmLocation.objects.filter(farm=farm)
 	data = {
 		'instructions':farm.instructions,
@@ -54,8 +55,8 @@ def apiFarm(request, farm_id):
 
 #== Farm Location API==#
 def apiFarmLocation(request, farm_id, farm_location_id):
-	farm = get_object_or_404(Farm, name=farm_id)
-	farm_location = get_object_or_404(FarmLocation, name=farm_location_id)
+	farm = Farm.objects.get(pk=farm_id)
+	farm_location = FarmLocation.objects.get(pk=farm_location_id)
 	data = {'instructions':farm_location.instructions,
 		'directions':farm_location.directions, 
 		'address_one':farm_location.address_one,

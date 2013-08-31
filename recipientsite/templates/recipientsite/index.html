@@ -25,7 +25,7 @@ Recipient Site Index
 		<ul>
 		{% for site in sites %}
 		<li>
-		<a href="{% url 'site:detailsite' site.id %}">{{ site.name }}</a> - <a href="{% url 'site:editsite' site.id %}">edit</a>
+			<a href="{% url 'site:detailsite' site.id %}">{{ site.name }}</a>
 		</li>
 		{% endfor %}
 		</ul>

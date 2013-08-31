@@ -51,7 +51,7 @@
 			<ul>
 			{% for glean in gleans %}
 			<li>{{glean.date}} - 
-				<a href="{% url 'gleanevent:detailglean' glean.id %}">{{ glean.title }}</a>{% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %} - <a href="{% url 'gleanevent:editglean' glean.id %}">edit</a>{% endif %}
+				<a href="{% url 'gleanevent:detailglean' glean.id %}">{{ glean.title }}</a>{% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}{% endif %}
 			</li>
 			{% cycle '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div><div class="span6"><ul>' '' '' '' '' '' '' '' '' '' '' '' '' '' '' '</ul></div></div><div class="row-fluid"><div class="span6"><ul>' %}
 			{% endfor %}

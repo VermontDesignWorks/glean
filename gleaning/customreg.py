@@ -42,31 +42,29 @@ class ExtendedRegistrationForm(RegistrationForm):
 class AdminExtendedRegistrationForm(RegistrationForm):
 	first_name = forms.CharField(label="First Name", max_length=20)
 	last_name = forms.CharField(label="Last Name", max_length=20)
-	address_one = forms.CharField(label="Address", max_length=200)
+	address_one = forms.CharField(label="Address", max_length=200, required=False)
 	address_two = forms.CharField(label="Address (line two)", max_length=200, required=False)
-	city = forms.CharField(label="City", max_length=200)
-	state = forms.ChoiceField(label="State",choices=STATES, initial='VT')
+	city = forms.CharField(label="City", max_length=200, required=False)
+	state = forms.ChoiceField(label="State",choices=STATES, initial='VT', required=False)
 	zipcode = forms.CharField(label="Zipcode", max_length=11, required=False)
-	counties = forms.ModelMultipleChoiceField(queryset=County.objects.all(), label="Counties")
+	counties = forms.ModelMultipleChoiceField(queryset=County.objects.all(), label="Counties", required=False)
 	age = forms.ChoiceField(label="Age",
-							choices=AGE_RANGES)
-	phone = forms.CharField(label="Primary Phone", max_length=200)
-	phone_type = forms.ChoiceField(label="Phone Type", choices=PHONE_TYPE,initial='1')
-	preferred_method = forms.ChoiceField(label="Primary Contact Method",choices=PREFERRED_CONTACT,initial='1')
+							choices=AGE_RANGES, required=False)
+	phone = forms.CharField(label="Primary Phone", max_length=200, required=False)
+	phone_type = forms.ChoiceField(label="Phone Type", choices=PHONE_TYPE,initial='1', required=False)
+	preferred_method = forms.ChoiceField(label="Primary Contact Method",choices=PREFERRED_CONTACT,initial='1', required=False)
 	#member_organization = forms.ModelChoiceField(queryset=MemOrg.objects.all())
 
-	ecfirst_name = forms.CharField(label="Emergency Contact First Name", max_length=200)
-	eclast_name = forms.CharField(label="Emergency Contact Last Name", max_length=200)
-	ecphone = forms.CharField(label="Emergency Contact Phone", max_length=200)
-	ecrelationship = forms.CharField(label="Relationship", max_length=200)
+	ecfirst_name = forms.CharField(label="Emergency Contact First Name", max_length=200, required=False)
+	eclast_name = forms.CharField(label="Emergency Contact Last Name", max_length=200, required=False)
+	ecphone = forms.CharField(label="Emergency Contact Phone", max_length=200, required=False)
+	ecrelationship = forms.CharField(label="Relationship", max_length=200, required=False)
 
-	waiver = forms.BooleanField(label="Signed Waiver of Liability?", required=True)
-
-	agreement = forms.BooleanField(label="Signed Volunteer Agreement?", required=True)
+	waiver = forms.BooleanField(label="Waiver of Liability?", required=True)
+	agreement = forms.BooleanField(label="Volunteer Agreement", required=True)
 	# seriously?
-	photo_release = forms.BooleanField(label="Signed Photo Release?")
-
-	opt_in = forms.BooleanField(label="Signed Email Opt-In?")
+	photo_release = forms.BooleanField(label="Photo Release?", required=False)
+	opt_in = forms.BooleanField(label="Email Opt-In?", required=False)
 
 
 class MyRegistrationView(RegistrationView):

@@ -21,8 +21,7 @@ County Index
 			<ul>
 			{% for county in counties %}
 			<li>
-				<a href="{% url 'counties:editcounty' county.id %}"><small class="text-warning">edit</small></a> - 
-			<a href="{% url 'counties:detailcounty' county.id %}">{{ county.name }}</a>
+				<a href="{% url 'counties:detailcounty' county.id %}">{{ county.name }}</a>
 			</li>
 			{% endfor %}
 			</ul>

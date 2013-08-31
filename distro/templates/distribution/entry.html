@@ -10,6 +10,7 @@
 	<div class="span6">
 		<p>Enter your post-glean distribution information here. Don't worry about extra lines, the system rightfully ignores them :D</p>
 		<p>If you need to register more distribution sites, use the Distributon Site area of this website, you can access it on the navbar above!</p>
+		<p>Note: Please enter dates in MM/DD/YYYY format.</p>
 	</div>
 	<div class="span6">
 		<a href="{% url 'distro:index' %}" class="btn btn-success">View Distribution Data</a>
@@ -21,7 +22,7 @@
 	<div class="span12"><h4 class="text-success text-center">{{message}}</h4></div>
 						<h4 class="text-error text-center">{{error}}</h4></div>
 	<div class="span12">
-		<form method="post" action="">
+		<form method="post" action="" autocomplete="off">
 			{% csrf_token %}
 			{% include 'distribution/distroform.html' %}
 			<div class="form-actions">
