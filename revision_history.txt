@@ -1,5 +1,15 @@
 Welcome to the Gleaning Collective App! Here is a quick readme about revisions and what they do.
 
+Release 0.2.3 "Beaker, Because"
+*Reused 'B' letter for release name because Beaker rules
+*Added a HUGE swath of functional tests
+*basically, check out functional_tests.py. It's awesome.
+*Fixed the registration page, and didn't include tests for it (I know)
+*Added SUPER fancy checkboxes. Seriously.
+*Started bumping my JS plugins to main.js. Just cause.
+*Did I mention functional tests? Cause they're p. legit. Functional tests.
+*Also I added some data to development.py that you'll need for the FT's
+
 Release 0.2.2 "Billowous Burt"
 *Added printable user list (with ec and photo info)
 *Removed edit link from indecies

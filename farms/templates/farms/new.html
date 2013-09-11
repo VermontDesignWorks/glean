@@ -16,8 +16,8 @@ New Farm!
 		{% csrf_token %}
 		{% include 'farms/customform.html' %}
 		<div class="form-actions">
-			<input type="submit" class="btn btn-success" name="action" value="Save And View" />
-			<input type="submit" class="btn btn-danger" name="action" value="Save and Create Additional Field Location" />
+			<input id="save-button" type="submit" class="btn btn-success" name="action" value="Save And View" />
+			<input id="save-and-button" type="submit" class="btn btn-danger" name="action" value="Save and Create Additional Field Location" />
 			<span class="pull-right"><span class="text-error">*</span><span>Denotes a Required Field</span></span>
 		</div>
 	</form>

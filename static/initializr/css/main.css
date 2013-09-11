@@ -44,7 +44,16 @@ td label {font-size:0.95em;font-weight:bold;}
 .table-form + .table-form{
 	margin-top:42px;
 }
-
+th>label{
+   float:right;
+   margin-right:18px;
+}
+.tabel-important>td{
+   text-align:left;
+}
+td>input[type="checkbox"]{
+   float:left;
+}
 /* ==========================================================================
    Glean Page
    ========================================================================== */
@@ -79,6 +88,30 @@ td label {font-size:0.95em;font-weight:bold;}
 
 .non-responsive{
    min-width:1170px !important;
+}
+input[type="checkbox"]{
+   -webkit-appearance: none;
+   background-color: #fafafa;
+   border: 1px solid #cacece;
+   box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+   padding: 9px;
+   border-radius: 3px;
+   display: inline-block;
+   position: relative;
+}
+input[type="checkbox"]:checked{
+   background-color: #e9ecee;
+   border: 1px solid #adb8c0;
+   box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+   color: #99a1a7;
+}
+input[type="checkbox"]:checked:after {
+   content: '\2714';
+   font-size: 14px;
+   position: absolute;
+   top: 0px;
+   left: 3px;
+   color: #99a1a7;
 }
 
 /* ==========================================================================
@@ -116,3 +149,5 @@ td label {font-size:0.95em;font-weight:bold;}
    
    .post-subheading{color:#555;margin:0 0 8px 80px;}
    .day-class > ul {list-style:none;margin: 0; text-align:center; }
+
+

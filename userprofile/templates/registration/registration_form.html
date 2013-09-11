@@ -2,22 +2,155 @@
 
 {% block title %}Sign up{% endblock %}
 
-{% block content %}
+{% block body %}
 
   {% if form.errors %}
   <p class="errors">Please correct the errors below: {{ form.non_field_errors }}</p>
   
   {% endif %}
 
-  <h1>Create an account</h1>
   
-  <form method="post" action="" class="wide">
+  <form method="post" action="">
 	{% csrf_token %}
-    {{form}}
-    <p class="submit"><input type="submit" value="Register &rarr;"></p>
+  	<div class="row-fluid">
+	<div class="span6">
+  <h3 class="text-center">Create an account</h3>
+		<div class="table-form table-important">
+    <table>
+		<tbody>
+			<tr class="required"><th><label for="id_username">Username:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.username}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_email">E-mail:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.email}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_password1">Password:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.password}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_password2">Password (again):<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.password2}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_first_name">First Name:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.first_name}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_last_name">Last Name:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.last_name}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_address_one">Address:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.address_one}}
+
+			</td></tr>
+			<tr><th><label for="id_address_two">Address (line two):<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.address_two}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_city">City:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.city}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_state">State:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.state}}
+
+		</td></tr>
+			<tr><th><label for="id_zipcode">Zipcode:</label></th><td>
+
+				{{form.zipcode}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_counties">Counties You&#39;d like to Glean In:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.counties}}
+
+		</td></tr>
+			<tr class="required"><th><label for="id_age">Age:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.age}}
+
+		</td></tr>
+			<tr class="required"><th><label for="id_phone">Primary Phone:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.phone}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_phone_type">Phone Type:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.phone_type}}
+
+		</td></tr>
+			<tr class="required"><th><label for="id_preferred_method">How Should We Contact You?<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.preferred_method}}
+
+		</td></tr>
+			<tr class="required"><th><label for="id_ecfirst_name">Emergency Contact First Name:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.ecfirst_name}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_eclast_name">Emergency Contact Last Name:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.eclast_name}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_ecphone">Emergency Contact Phone:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.ecphone}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_ecrelationship">Relationship:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.ecrelationship}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_waiver">Do you accept the Waiver of Liability?<span class="text-error" style="font-size:1.5em">*</span></label> </th><td>
+
+				{{form.waiver}}  <small> <a href="#">(click here to read the waiver)</a> </small>
+
+			</td></tr>
+			<tr class="required"><th><label for="id_agreement">Do you accept the Volunteer Agreement?<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
+
+				{{form.agreement}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_photo_release">Do you accept the Photo Release?</label></th><td>
+
+				{{form.photo_release}}
+
+			</td></tr>
+			<tr class="required"><th><label for="id_opt_in">Do you wish to recieve newsletters and personalized messages?</label></th><td>
+
+				{{form.opt_in}}
+
+			</td></tr>
+		</tbody>
+	</table>
+<div class="form-actions"><span class="pull-left"><span class="text-error" style="font-size:1.5em">*</span>Designates a required field</span>
+    <input type="submit" class="btn btn-primary pull-right" id="button-save" value="Register &rarr;">
+</div>
+		</div>
+	</div>
+</div>
   </form>
   
 {% endblock %}
+
+
 
 {% block related %}
 <h3>Thanks for your interest in gleaning!</h3>
