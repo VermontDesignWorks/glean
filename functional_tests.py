@@ -52,6 +52,7 @@ class EntryAndFrontPage(unittest.TestCase):
 
 	def tearDown(self):
 		self.browser.quit()
+		time.sleep(sleep_time)
 		
 	def setUp(self):
 		self.browser = webdriver.Firefox()
@@ -91,6 +92,7 @@ class RegisterAndConfirm(unittest.TestCase):
 
 	def tearDown(self):
 		self.browser.quit()
+		time.sleep(sleep_time)
 
 	def test_registration_page_renders(self):
 		go_to_reg_page(self)
@@ -104,6 +106,7 @@ class FarmCRUD(unittest.TestCase):
 
 	def tearDown(self):
 		self.browser.quit()
+		time.sleep(sleep_time)
 		
 	def setUp(self):
 		self.browser = webdriver.Firefox()
