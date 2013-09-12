@@ -37,14 +37,17 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
-DATABASES = {
+try:
+	import development
+	DATABASES = development.MY_DB
+except:
+	DATABASES = {
 	'default': {
-		'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-		'NAME': 'glean',                      # Or path to database file if using sqlite3.
-		'USER': 'glean',                      # Not used with sqlite3.
-		'PASSWORD': 'salvationfarms_007',                  # Not used with sqlite3.
-		'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
+		'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+		'NAME': 'db',                      # Or path to database file if using sqlite3.
+		'USER': '',                      # Not used with sqlite3.
+		'PASSWORD': '',                  # Not used with sqlite3.
+		'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
 		'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
 	}
 }
