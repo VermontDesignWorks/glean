@@ -32,74 +32,7 @@
 <div id="wrapper">
   <div class="row-fluid" id="navbar-row">
     <div class="span12">
-
-
-              <div id="navbar-example" class="navbar navbar-static">
-                <div class="navbar-inner">
-                  <div class="container" style="width: auto;">
-                    <a class="brand" href="/">The Gleaning Interface</a>
-                    <ul class="nav" role="navigation">
-                      {% if 'gleanevent.auth' in perms %}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'gleanevent:index' %}">Gleans</a></li>
-                      {% endif %}
-                      {% if 'farms.auth' in perms %}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'farms:index' %}">Farms</a></li>
-                      {% endif %}
-                      {% if 'counties.uniauth' in perms %}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'counties:index' %}">Counties</a></li>
-                      {% endif %}
-                      {% if 'userprofile.auth' in perms %}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:userlists' %}">Volunteers</a></li>
-                      {% endif %}
-                      {% if 'announce.auth' in perms %}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'announce:templates' %}">Templates</a></li>
-                      {% endif %}
-                      {% if 'memberorgs.auth' in perms %}
-                      
-                        {% if 'announce.uniauth' in perms %}
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:index' %}">Member Organizations</a></li>
-                          {% else %}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:index' %}">Member Organization</a></li>
-                          {% endif %}
-                      
-                      {% endif %}
-                      {% if 'distro.auth' in perms %}
-                      <li class="dropdown">
-                        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Harvest and Distribution Data <b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'distro:index' %}">H&D Database</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'site:index' %}">Recipient Sites Index</a></li>
-                        </ul>
-                      </li>
-                      {% endif %}
-                    </ul>
-
-                    <ul class="nav pull-right">
-                          {% if user.is_authenticated %}
-                      <li id="fat-menu" class="dropdown">
-                        <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">{% if user.is_anonymous %}User{% else %}{{user.username}}'s{% endif %} Options <b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-                          {% if user.is_staff %}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="/admin">Admin Controls</a></li>
-                          {% endif %}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:selfedit' %}">Edit Profile</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'auth_password_change' %}">Change Password</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:emailedit' %}">Change Email</a></li>
-                          <li role="presentation" class="divider"></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'auth_logout' %}">Log Out</a></li>
-                        </ul>
-                      </li>
-                          {% else %}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'auth_login' %}">Login</a></li>
-                          <!--li role="presentation" class="divider"></li-->
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'registration_register' %}">Register</a></li>
-                          {% endif %}
-
-                      
-                    </ul>
-                  </div>
-                </div>
-              </div> <!-- /navbar-example -->
+        {% include 'navbar.html' %}
     </div>
   </div>
 

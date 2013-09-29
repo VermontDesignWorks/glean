@@ -5,7 +5,6 @@ from gleanevent import views
 
 urlpatterns = patterns('',
 	url(r'^$', views.index, name='index'),
-	#url(r'^calendar/$', views.gleanCalendar, name="gleancalendar"),
 	url(r'^new/$', views.newGlean, name='newglean'),
 	url(r'^download/$', views.download, name='download'),
 	url(r'^postglean/download/$', views.postGleanDownload, name='postdownload'),

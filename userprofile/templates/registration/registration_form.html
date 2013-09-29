@@ -120,17 +120,66 @@
 			</td></tr>
 			<tr class="required"><th><label for="id_waiver">Do you accept the Waiver of Liability?<span class="text-error" style="font-size:1.5em">*</span></label> </th><td>
 
-				{{form.waiver}}  <small> <a href="#">(click here to read the waiver)</a> </small>
+				{{form.waiver}}
+			<a href="#waiver-modal" role="button" class="btn" data-toggle="modal">View Waiver</a>
+
+				<!-- Modal -->
+				<div id="waiver-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				    <h3 id="myModalLabel">Waiver of Liability</h3>
+				  </div>
+				  <div class="modal-body">
+				    {% include 'registration/waiver_of_liability.html' %}
+				  </div>
+				  <div class="modal-footer">
+				    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				  </div>
+				</div>
 
 			</td></tr>
 			<tr class="required"><th><label for="id_agreement">Do you accept the Volunteer Agreement?<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
 
 				{{form.agreement}}
 
+
+				<a href="#agreement-modal" role="button" class="btn" data-toggle="modal">View Agreement</a>
+
+				<!-- Modal -->
+				<div id="agreement-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				    <h3 id="myModalLabel">Volunteer Agreement</h3>
+				  </div>
+				  <div class="modal-body">
+				    {% include 'registration/volunteer_agreement.html' %}
+				  </div>
+				  <div class="modal-footer">
+				    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				  </div>
+				</div>
+
 			</td></tr>
 			<tr class="required"><th><label for="id_photo_release">Do you accept the Photo Release?</label></th><td>
 
 				{{form.photo_release}}
+
+
+				<a href="#photo-release" role="button" class="btn" data-toggle="modal">View Release</a>
+
+				<!-- Modal -->
+				<div id="photo-release" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				    <h3 id="myModalLabel">Photo Release</h3>
+				  </div>
+				  <div class="modal-body">
+				    {% include 'registration/photo_release.html' %}
+				  </div>
+				  <div class="modal-footer">
+				    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				  </div>
+				</div>
 
 			</td></tr>
 			<tr class="required"><th><label for="id_opt_in">Do you wish to recieve newsletters and personalized messages?</label></th><td>
@@ -164,33 +213,4 @@
 
 <p>We also ask that every volunteer sign a waiver of liability and volunteer agreement before entering any farm fields – please read the text below and consider whether you can commit to these agreements.</p>
  <h5>Waiver of Liability</h5>
-<p>I understand that Salvation Farms is designed to let me harvest and process surplus farm produce for donation 
-to vulnerable populations in Vermont through connection with local and state agencies that serve the food 
-and nutritionally insecure.  I understand that I must work safely and treat participating farm and kitchen 
-properties with respect and care.
-With this knowledge, I, and anyone accompanying me, do hereby 
-expressly agree that all our activities shall be at our sole risk and that neither Salvation Farms volunteers or its
-project leaders, nor the donors whose property we enter shall be held liable for any claims, demands, injuries, 
-damages, actions, or causes of action whatsoever, to person or property arising out of or connected with our 
-participation in this farm surplus management project.</p>
-
-<p>[volunteer agreement text]</p>
-
-<h5>Photo Release</h5>
-<p>I, ____________________, hereby authorize Salvation Farms permission to use my likeness in a photograph in 
-any and all of its publications, including but not limited to all Salvation Farms printed and digital publications.  
-I understand and agree that any photograph using my likeness will become property of Salvation Farms and 
-will not be returned.</p>
-<p>I acknowledge that since my participation with Salvation Farms is voluntary, I will receive no financial 
-compensation.</p>
-<p>I hereby irrevocably authorize Salvation Farms to edit, alter, copy, exhibit, publish or distribute photos for 
-purposes of publicizing Salvation Farms programs or for any other lawful purpose.  In addition, I waive the 
-tight to inspect or approve the finished product, including written or electronic copy, wherein my likeness 
-appears.  Additionally, I waive any tight to royalties or other compensation arising or related to the use of 
-photographs.</p>
-I hereby hold harmless and release and forever discharge Salvation Farms from all claims, demands, and 
-causes of action which I, my heirs, representative, executors, administrators, or any other person acting on my 
-behalf or on behalf of my estate have or may have by reason of this authorization.</p>
-<p>I am at least 18 years of age and am competent to contract in my own name. I have read this release before 
-signing below and I fully understand the contents, meaning and impact of this release.</p>
 {% endblock %}

@@ -139,6 +139,7 @@ ROOT_URLCONF = 'gleaning.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'gleaning.wsgi.application'
+CRISPY_TEMPLATE_PACK = 'bootstrap'
 
 try:
 	import development
@@ -178,9 +179,11 @@ INSTALLED_APPS = (
 	'posts',
 	'initialize',
 	'api',
+	'south',
 
 	# third party apps
 	'registration',
+	'crispy_forms',
 
 	# admin:
 	'django.contrib.admin',

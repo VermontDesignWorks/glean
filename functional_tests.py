@@ -11,42 +11,8 @@ import time
 
 sleep_time = 1
 
-def admin_login(self):
-	username = self.browser.find_element_by_name('username')
-	username.send_keys(development.admin_user)
-	password = self.browser.find_element_by_name('password')
-	password.send_keys(development.admin_password)
-	password.submit()
+from selenium_test_functions import admin_login,get_to_farm_index,get_to_new_farm,look_at_random_farm,edit_random_farm,rand_name,go_to_reg_page
 
-def get_to_farm_index(self):
-	time.sleep(sleep_time)
-	farm_link = self.browser.find_element_by_link_text('Farms')
-	farm_link.click()
-
-def get_to_new_farm(self):
-	get_to_farm_index(self)
-	time.sleep(sleep_time)
-	new_farm_link = self.browser.find_element_by_link_text('New Farm')
-	new_farm_link.click()
-
-def look_at_random_farm(self):
-	get_to_farm_index(self)
-	time.sleep(sleep_time)
-	farm_list = self.browser.find_elements_by_partial_link_text('farm ')
-	farm_link = farm_list[random.choice(range(len(farm_list)))]
-	farm_link.click()
-
-def edit_random_farm(self):
-	look_at_random_farm(self)
-	time.sleep(sleep_time)
-	edit_link = self.browser.find_element_by_link_text('Edit this Farm')
-	edit_link.click()
-
-def rand_name(append):
-	random_name = ''
-	for i in range(10):
-		random_name += random.choice('thequickbrownfoxjumpsoverthelazydog')
-	return append + random_name
 
 class EntryAndFrontPage(unittest.TestCase):
 
@@ -79,10 +45,7 @@ class EntryAndFrontPage(unittest.TestCase):
 		admin_login(self)
 		self.assertIn('Welcome', self.browser.title)
 
-def go_to_reg_page(self):
-	reg_link = self.browser.find_element_by_link_text('Register')
-	reg_link.click()
-	time.sleep(sleep_time)
+
 
 class RegisterAndConfirm(unittest.TestCase):
 
@@ -248,7 +211,6 @@ class FarmCRUD(unittest.TestCase):
 		save_button.click()
 		time.sleep(sleep_time)		
 		self.assertIn(self.farm_name, self.browser.title)
-
 
 if __name__ == '__main__':
 	unittest.main()
