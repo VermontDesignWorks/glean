@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import development
 import time
 
-sleep_time = 1
+sleep_time = 2
 
 from selenium_test_functions import admin_login,get_to_farm_index,get_to_new_farm,look_at_random_farm,edit_random_farm,rand_name,go_to_reg_page
 
@@ -202,7 +202,7 @@ class FarmCRUD(unittest.TestCase):
 		edit_random_farm(self)
 		self.assertIn('Edit', self.browser.title)
 
-	def test_updaing_a_random_farm_that_already_exists(self):
+	def test_updating_a_random_farm_that_already_exists(self):
 		edit_random_farm(self)
 		name = self.browser.find_element_by_name('name')
 		self.farm_name = rand_name('edited_farm ')
