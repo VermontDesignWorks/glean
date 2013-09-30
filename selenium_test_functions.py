@@ -1,5 +1,5 @@
 import time
-sleep_time = 1
+sleep_time = 2
 import development
 import random
 
@@ -32,15 +32,18 @@ def look_at_random_farm(self):
     get_to_farm_index(self)
     farm_list = self.browser.find_elements_by_partial_link_text('farm ')
     farm_link = farm_list[random.choice(range(len(farm_list)))]
+    name = farm_link.text
     farm_link.click()
     time.sleep(sleep_time)
+    return name
 
 
 def edit_random_farm(self):
-    look_at_random_farm(self)
+    name = look_at_random_farm(self)
     edit_link = self.browser.find_element_by_link_text('Edit this Farm')
     edit_link.click()
     time.sleep(sleep_time)
+    return name
 
 
 def rand_name(append):
