@@ -1,6 +1,4 @@
 import unittest
-import development
-import time
 
 from userprofile.functional_tests import EntryAndFrontPage, RegisterAndConfirm
 
