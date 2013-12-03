@@ -30,7 +30,7 @@ def newSite(request):
 				notice = "Recipient Site %s Saved" % (new_save.name)
 				return render(request, 'recipientsite/new_site.html', {'form':form, 'notice':notice})		
 		else:
-			return render(request, 'recipientsite/new_site.html')
+			return render(request, 'recipientsite/new_site.html', {'form':form})
 	else:
 		form = SiteForm()
 		return render(request, 'recipientsite/new_site.html', {'form':form})
