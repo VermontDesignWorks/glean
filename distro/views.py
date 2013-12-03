@@ -178,8 +178,7 @@ def download(request):
     writer = csv.writer(response)
     writer.writerow([
         'Distribution Date',
-        'Recipient
-        Site',
+        'Recipient Site',
         'Crops',
         'Pounds',
         'Containers',
