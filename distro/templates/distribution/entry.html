@@ -19,6 +19,9 @@
 	</div>
 </div>
 <div class="row-fluid">
+	{% for site in sites %}
+	{{site}}
+	{% endfor %}
 	<div class="span12"><h4 class="text-success text-center">{{message}}</h4></div>
 						<h4 class="text-error text-center">{{error}}</h4></div>
 	<div class="span12">
@@ -26,6 +29,7 @@
 			{% csrf_token %}
 			{% include 'distribution/distroform.html' %}
 			<div class="form-actions">
+
 				<input type="submit" class="btn btn-danger" value="Save">
 			</div>
 		</form>

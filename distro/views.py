@@ -69,6 +69,8 @@ def entry(request):
     DistroFormSet = modelformset_factory(Distro, extra=int(10))
     member_organization = request.user.profile_set.get(
     ).member_organization
+    sites = RecipientSite.objects.filter(
+        member_organization=member_organization)
     if request.method == 'POST':
         formset = DistroFormSet(request.POST)
         if formset.is_valid():
@@ -85,11 +87,12 @@ def entry(request):
             form = DistroFormSet(queryset=Distro.objects.none())
             return render(
                 request,
-                'distribution/entry.html',
+                "distribution/entry.html",
                 {
-                    'formset': form,
-                    'range': range(50),
-                    'message': str(count) + ' Items Saved To the Database'
+                    "formset": form,
+                    "range": range(50),
+                    "message": str(count) + " Items Saved To the Database",
+                    "sites": sites,
                 }
             )
         else:
@@ -99,6 +102,7 @@ def entry(request):
                 {
                     "formset": formset,
                     "range": range(50),
+                    "sites": sites,
                     "error": "Form Error. Empty rows must be completely blank."
                 }
             )
@@ -109,13 +113,18 @@ def entry(request):
             for fo in form.forms:
                 fo.fields['farm'].queryset = Farm.objects.filter(
                     member_organization=member_organization)
-                fo.fields['recipient'].queryset = RecipientSite.objects.filter(
-                    member_organization=member_organization)
+                fo.fields['recipient'] = TextInput
         debug = dir(form)
         return render(
             request,
+
             'distribution/entry.html',
-            {'formset': form, 'range': range(50), 'debug': debug}
+            {
+                'formset': form,
+                'range': range(50),
+                'sites': sites,
+                'debug': debug,
+            }
         )
 
 

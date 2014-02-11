@@ -8,12 +8,12 @@ LOGIN_URL = "/accounts/login"
 LOGOUT_URL = "/"
 
 try:
-	import development
-	EMAIL_HOST_USER = development.user
-	EMAIL_HOST_PASSWORD = development.password
+    import development
+    EMAIL_HOST_USER = development.user
+    EMAIL_HOST_PASSWORD = development.password
 except:
-	EMAIL_HOST_USER = os.environ['GMAIL_ADDRESS']
-	EMAIL_HOST_PASSWORD = os.environ['GMAIL_PW']
+    EMAIL_HOST_USER = os.environ['GMAIL_ADDRESS']
+    EMAIL_HOST_PASSWORD = os.environ['GMAIL_PW']
 ACCOUNT_ACTIVATION_DAYS = 7
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -26,30 +26,30 @@ DEFAULT_FROM_EMAIL = 'The Gleaning Collective <gleaningcollective@gmail.com>'
 #AUTH_USER_MODEL = User
 
 try:
-	import development
-	DEBUG = True
+    import development
+    DEBUG = True
 except:
-	DEBUG = False
+    DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-	('Timothy Clifford', 'timothy.j.clifford@gmail.com'),
+    ('Timothy Clifford', 'timothy.j.clifford@gmail.com'),
 )
 
 MANAGERS = ADMINS
 try:
-	import development
-	DATABASES = development.MY_DB
+    import development
+    DATABASES = development.MY_DB
 except:
-	DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-		'NAME': 'db',                      # Or path to database file if using sqlite3.
-		'USER': '',                      # Not used with sqlite3.
-		'PASSWORD': '',                  # Not used with sqlite3.
-		'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-		'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-	}
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'db',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
 }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
@@ -100,18 +100,18 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-	#"static/",
+    #"static/",
     os.path.join(PROJECT_DIR, '..', '/static/'),
-	# Put strings here, like "/home/html/static" or "C:/www/django/static".
-	# Always use forward slashes, even on Windows.
-	# Don't forget to use absolute paths, not relative paths.
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
 )
 
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
-	'django.contrib.staticfiles.finders.FileSystemFinder',
-	'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -120,19 +120,19 @@ SECRET_KEY = '6sel4vvgs)0iw3a7_$_o6lj%%=^%-84c9k#a*3l0tg0_o!kn!)'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-	'django.template.loaders.filesystem.Loader',
-	'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
-	'django.middleware.common.CommonMiddleware',
-	'django.contrib.sessions.middleware.SessionMiddleware',
-	'django.middleware.csrf.CsrfViewMiddleware',
-	'django.contrib.auth.middleware.AuthenticationMiddleware',
-	'django.contrib.messages.middleware.MessageMiddleware',
-	# Uncomment the next line for simple clickjacking protection:
-	# 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    # Uncomment the next line for simple clickjacking protection:
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'gleaning.urls'
@@ -142,54 +142,54 @@ WSGI_APPLICATION = 'gleaning.wsgi.application'
 CRISPY_TEMPLATE_PACK = 'bootstrap'
 
 try:
-	import development
-	TEMPLATE_DIRS = (
-		development.templatedir,
-		)
+    import development
+    TEMPLATE_DIRS = (
+        development.templatedir,
+        )
 
 except:
-	PROJECT_DIR = os.path.dirname(__file__)
-	TEMPLATE_DIRS = (
-		os.path.join(PROJECT_DIR, 'templates'),
-		# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-		# Always use forward slashes, even on Windows.
-		# Don't forget to use absolute paths, not relative paths.
-	)
+    PROJECT_DIR = os.path.dirname(__file__)
+    TEMPLATE_DIRS = (
+        os.path.join(PROJECT_DIR, 'templates'),
+        # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+        # Always use forward slashes, even on Windows.
+        # Don't forget to use absolute paths, not relative paths.
+    )
 
 INSTALLED_APPS = (
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.sites',
-	'django.contrib.messages',
-	'django.contrib.staticfiles',
-	'django.contrib.humanize',
-	'django.contrib.comments',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.humanize',
+    'django.contrib.comments',
 
-	# coder installed apps
-	'gleanevent',
-	'farms',
-	'userprofile',
-	'announce',
-	'counties',
-	'testdata',
-	'memberorgs',
-	'recipientsite',
-	'distro',
-	'posts',
-	'initialize',
-	'api',
-	'south',
+    # coder installed apps
+    'gleanevent',
+    'farms',
+    'userprofile',
+    'announce',
+    'counties',
+    'testdata',
+    'memberorgs',
+    'recipientsite',
+    'distro',
+    'posts',
+    'initialize',
+    'api',
+    'south',
 
-	# third party apps
-	'registration',
-	'crispy_forms',
+    # third party apps
+    'registration',
+    'crispy_forms',
 
-	# admin:
-	'django.contrib.admin',
+    # admin:
+    'django.contrib.admin',
 
-	# Uncomment the next line to enable admin documentation:
-	# 'django.contrib.admindocs',
+    # Uncomment the next line to enable admin documentation:
+    # 'django.contrib.admindocs',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -198,27 +198,27 @@ INSTALLED_APPS = (
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
 LOGGING = {
-	'version': 1,
-	'disable_existing_loggers': False,
-	'filters': {
-		'require_debug_false': {
-			'()': 'django.utils.log.RequireDebugFalse'
-		}
-	},
-	'handlers': {
-		'mail_admins': {
-			'level': 'ERROR',
-			'filters': ['require_debug_false'],
-			'class': 'django.utils.log.AdminEmailHandler'
-		}
-	},
-	'loggers': {
-		'django.request': {
-			'handlers': ['mail_admins'],
-			'level': 'ERROR',
-			'propagate': True,
-		},
-	}
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
 }
 ### managing local static files
 STATIC_ROOT = 'staticfiles'
@@ -232,27 +232,27 @@ STATIC_URL = '/static/'
 
 
 try:
-	import development
+    import development
 except:
-	import dj_database_url
-	DATABASES['default'] =  dj_database_url.config()
+    import dj_database_url
+    DATABASES['default'] =  dj_database_url.config()
 
-	# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-	SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    # Honor the 'X-Forwarded-Proto' header for request.is_secure()
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-	# Allow all host headers
-	ALLOWED_HOSTS = ['*']
+    # Allow all host headers
+    ALLOWED_HOSTS = ['*']
 
-	# Static asset configuration
-	#BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-	STATIC_ROOT = 'staticfiles'
-	#STATIC_URL = '/static/'
+    # Static asset configuration
+    #BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    STATIC_ROOT = 'staticfiles'
+    #STATIC_URL = '/static/'
 
-	#STATICFILES_DIRS = (
-	#    os.path.join(BASE_DIR, '../static/'),
-	#)
+    #STATICFILES_DIRS = (
+    #    os.path.join(BASE_DIR, '../static/'),
+    #)
 
 STATICFILES_DIRS = (
-	#"static/",
+    #"static/",
     os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'static')),
     )
