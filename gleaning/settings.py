@@ -4,6 +4,22 @@ import os
 
 PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import os
+# The root of the site:
+SITE_ROOT = "/srv/www/ashtron.info"
+# Where the web server serves from:
+# Trailing blank string ensures trailing forward-slash
+DOC_ROOT = os.path.join(SITE_ROOT, "html", "")
+# Where's our project workspace
+PROJ_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
+
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+TEMPLATE_DIRS = [
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "", "templates"))
+]
+
 LOGIN_URL = "/accounts/login"
 LOGOUT_URL = "/"
 
@@ -12,8 +28,9 @@ try:
     EMAIL_HOST_USER = development.user
     EMAIL_HOST_PASSWORD = development.password
 except:
-    EMAIL_HOST_USER = os.environ['GMAIL_ADDRESS']
-    EMAIL_HOST_PASSWORD = os.environ['GMAIL_PW']
+    pass
+    #EMAIL_HOST_USER = os.environ['GMAIL_ADDRESS']
+    #EMAIL_HOST_PASSWORD = os.environ['GMAIL_PW']
 ACCOUNT_ACTIVATION_DAYS = 7
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -42,15 +59,15 @@ try:
     DATABASES = development.MY_DB
 except:
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'db',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'db',
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '',
+        }
     }
-}
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en//ref/settings/#allowed-hosts
@@ -112,7 +129,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -122,7 +138,6 @@ SECRET_KEY = '6sel4vvgs)0iw3a7_$_o6lj%%=^%-84c9k#a*3l0tg0_o!kn!)'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -151,7 +166,7 @@ except:
     PROJECT_DIR = os.path.dirname(__file__)
     TEMPLATE_DIRS = (
         os.path.join(PROJECT_DIR, 'templates'),
-        # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+        # Put strings here, like "/home/html/django_templates"
         # Always use forward slashes, even on Windows.
         # Don't forget to use absolute paths, not relative paths.
     )
@@ -224,35 +239,31 @@ LOGGING = {
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
-
-
-
 ##heroku additions:
-
-
 
 try:
     import development
 except:
-    import dj_database_url
-    DATABASES['default'] =  dj_database_url.config()
+    import local
+    # import dj_database_url
+    # DATABASES['default'] =  dj_database_url.config()
 
-    # Honor the 'X-Forwarded-Proto' header for request.is_secure()
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    # # Honor the 'X-Forwarded-Proto' header for request.is_secure()
+    # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-    # Allow all host headers
-    ALLOWED_HOSTS = ['*']
+    # # Allow all host headers
+    # ALLOWED_HOSTS = ['*']
 
-    # Static asset configuration
-    #BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    STATIC_ROOT = 'staticfiles'
-    #STATIC_URL = '/static/'
+    # # Static asset configuration
+    # #BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    # STATIC_ROOT = 'staticfiles'
+    # #STATIC_URL = '/static/'
 
-    #STATICFILES_DIRS = (
-    #    os.path.join(BASE_DIR, '../static/'),
-    #)
+    # #STATICFILES_DIRS = (
+    # #    os.path.join(BASE_DIR, '../static/'),
+    # #)
 
 STATICFILES_DIRS = (
     #"static/",
-    os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'static')),
+    os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static')),
     )
