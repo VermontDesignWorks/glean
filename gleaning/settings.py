@@ -42,12 +42,7 @@ DEFAULT_FROM_EMAIL = 'The Gleaning Collective <gleaningcollective@gmail.com>'
 
 #AUTH_USER_MODEL = User
 
-try:
-    import development
-    DEBUG = True
-except:
-    DEBUG = False
-TEMPLATE_DEBUG = DEBUG
+#TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('Timothy Clifford', 'timothy.j.clifford@gmail.com'),
@@ -246,7 +241,7 @@ try:
 except:
     pass
 
-import local
+from local import *
 
     # import dj_database_url
     # DATABASES['default'] =  dj_database_url.config()
