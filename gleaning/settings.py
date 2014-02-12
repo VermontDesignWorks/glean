@@ -244,7 +244,11 @@ STATIC_URL = '/static/'
 try:
     import development
 except:
+    pass
+try:
     import local
+except:
+    pass
     # import dj_database_url
     # DATABASES['default'] =  dj_database_url.config()
 
