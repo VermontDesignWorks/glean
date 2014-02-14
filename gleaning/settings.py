@@ -236,11 +236,6 @@ STATIC_URL = '/static/'
 
 ##heroku additions:
 
-try:
-    import development
-except:
-    pass
-
 from local import *
 
     # import dj_database_url
