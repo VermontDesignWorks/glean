@@ -189,11 +189,11 @@ INSTALLED_APPS = (
     'posts',
     'initialize',
     'api',
-    'south',
 
     # third party apps
     'registration',
     'crispy_forms',
+    'south',
 
     # admin:
     'django.contrib.admin',
