@@ -177,13 +177,13 @@ INSTALLED_APPS = (
     'django.contrib.comments',
 
     # coder installed apps
+    'counties',
+    'memberorgs',
     'gleanevent',
     'farms',
     'userprofile',
     'announce',
-    'counties',
     'testdata',
-    'memberorgs',
     'recipientsite',
     'distro',
     'posts',
