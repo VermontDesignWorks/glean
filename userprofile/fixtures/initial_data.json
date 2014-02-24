@@ -411,6 +411,37 @@
    }
 },
 {
+   "pk": 1, 
+   "model": "memberorgs.memorg", 
+   "fields": {
+        "phone_1_type": "", 
+        "color": "muted", 
+        "last_name": "", 
+        "notify": false, 
+        "mailing_address_two": "", 
+        "physical_is_mailing": true, 
+        "phone_2": "", 
+        "phone_1": "", 
+        "city": null, 
+        "phone_2_type": "", 
+        "zipcode": null, 
+        "address_two": null, 
+        "state": "VT", 
+        "website": null, 
+        "description": null, 
+        "first_name": "", 
+        "mailing_zip": "", 
+        "phone": null, 
+        "mailing_address_one": "", 
+        "counties": [], 
+        "name": "Salvation Farms", 
+        "created": "2014-02-23T23:18:23.146Z", 
+        "mailing_state": "", 
+        "mailing_city": "", 
+        "address_one": null
+   }
+},
+{
    "pk": 2, 
    "model": "userprofile.profile", 
    "fields": {
