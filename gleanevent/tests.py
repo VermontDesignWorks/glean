@@ -27,7 +27,8 @@ def create_profile(user, memorg):
         first_name="John",
         last_name="Doe",
         member_organization=memorg,
-        waiver=True
+        waiver=True,
+        agreement=True
     )
     profile.save()
     return profile
