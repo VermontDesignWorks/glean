@@ -3,7 +3,10 @@
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-
+body{
+   background-image:url("/static/images/arches.jpg");
+   background-repeat:repeat;
+}
 
 #id_honeypot{
 	display:none;
