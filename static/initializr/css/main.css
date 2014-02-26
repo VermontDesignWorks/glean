@@ -75,6 +75,35 @@ body{
 }
 
 /* ==========================================================================
+   anon_home.html
+   ========================================================================== */
+
+.red {
+   background-color:#c61a00;
+   opacity:0.74;
+}
+.login-box{
+   width:565px;
+   padding:23px 21px;
+   clear:left;
+   float:left;
+}
+.slider-holder{
+   margin:0 0 0 15px;
+   padding:11px;
+   color:#ffc64a;
+   opacity:0.74;
+   width:475px;
+   clear:none;
+   float:left;
+}
+.slider-holder > img {
+   opacity:1;
+   height:auto;
+   overflow:hidden;
+}
+
+/* ==========================================================================
    Author's custom styles
    ========================================================================== */
 body{
