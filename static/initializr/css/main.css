@@ -5,11 +5,13 @@
 body{
    background-image:url("/static/images/arches.jpg");
    background-repeat:repeat;
+   font-family:'Kameron', serif;
+   font-size:13px;
 }
 
 #navbar-container{
    width:100%;
-   margin:0 0 70px 0;
+   margin:0 0 24px 0;
    padding:0;
    height:30px;
    background-color:#6e9614;
@@ -27,7 +29,7 @@ body{
 
 #footer-container{
    width:100%;
-   margin:0;
+   margin:73px 0 0 0;
    height:30px;
    background-color:#6e9614;
    text-align:left;
@@ -37,6 +39,15 @@ body{
    z-index:-1;
 }
 
+.header-title {
+   margin: 24px 5px;
+   font-family:'Kameron', serif;
+   letter-spacing: 4px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+   font-weight:normal;
+}
 /* ==========================================================================
    Fighting with the Navbar
    ========================================================================== */
@@ -69,40 +80,91 @@ body{
 
 #gleaners{
    float: right;
-   position: relative;
-   top: -254px;
+   position: absolute;
+   top: -249px;
    z-index:-1;
+   right: 0;
 }
 
 /* ==========================================================================
    anon_home.html
    ========================================================================== */
 
+.anon-login {
+   width: 1169px;
+   padding: 0;
+   margin:0 0 53px;
+
+}
 .red {
-   background-color:#c61a00;
-   opacity:0.74;
+   background-image:url("/static/images/red-pxl.png");
+   background-repeat:repeat;
+}
+.red > form {
+   border:none;
+   padding:0;
 }
 .login-box{
    width:565px;
-   padding:23px 21px;
+   height: 361px;
+   padding:23px 21px 0;
    clear:left;
    float:left;
+   font-size:16px;
 }
-.slider-holder{
-   margin:0 0 0 15px;
+.login-box > h4 {
+   font-size: 18px;
+}
+.login-box > h4 > a{
+   font-size: 18px;
+   font-weight:bold;
+   text-decoration: none;
+   color: #ffc64a;
+}
+.slider-holder {
+   margin:0 0 0 18px;
    padding:11px;
-   color:#ffc64a;
-   opacity:0.74;
+   background-image:url("/static/images/yellow-pxl.png");
+   background-repeat:repeat;
    width:475px;
+   height: 361px;
    clear:none;
    float:left;
 }
 .slider-holder > img {
-   opacity:1;
-   height:auto;
-   overflow:hidden;
+   width:98%;
+}
+.glean-submit {
+   background-color:#ffc64a;
+   margin: 0 5px 10px;
 }
 
+.yellow-green {
+   background-color: #f5f8c5;
+   border-top:5px solid #6e9614;
+}
+.about-box {
+   width: 788px;
+   height: 134px;
+   margin: 0 0 53px;
+}
+.about-box > div > p {
+   margin: 11px 24px;
+   line-height:16px;
+}
+#partners > div > h3{
+   font-size:24px;
+   margin: 31px 0;
+}
+.partner-image{
+   margin-left: 18px;
+}
+
+#glean-submit{
+   margin: 0 6px 9px;
+   background-color: #ffc64a;
+   box-shadow: -2px -2px 2px inset #8e6e29;
+}
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */

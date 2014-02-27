@@ -5,29 +5,55 @@
 Welcome to the Gleaning Interface!
 {% endblock %}
 {% block body %}
-<h1>Vermont Gleaning Collective</h1>
+<h1 class="header-title">Vermont Gleaning Collective</h1>
+<div class="container anon-login">
+    <div class="red login-box">
+        <p>Thanks for your interest in gleaning in Vermont!</p>
 
-<div class="red login-box">
-    <p>Thanks for your interest in gleaning in Vermont!</p>
+        <p>By registering as a gleaner with the Vermont Gleaning Collective here, you will recieve invitations to participate in gleans at your area farms plus view gleans occuriring around the state.</p>
 
-    <p>By registering as a gleaner with the Vermont Gleaning Collective here, you will recieve invitations to participate in gleans at your area farms plus view gleans occuriring around the state.</p>
+        <p>We happily welcome you to our community of gleaners nad look forward to making Vermont a more food independent state with you.</p>
+        <h4>Login:</h4>
+        <form method="POST" class="form" action="{% url 'auth_login' %}?next=/">
+                        {% csrf_token %}
+            <input type="text" name="username" placeholder="Your Username..."><br />
+            <input type="password" name="password" placeholder="Your Password...">
 
-    <p>We happily welcome you to our community of gleaners nad look forward to making Vermont a more food independent state with you.</p>
-    <h4>Login:</h4>
-    <form method="POST" class="form" action="{% url 'auth_login' %}?next=/">
-                    {% csrf_token %}
-        <input type="text" name="username" placeholder="Your Username..."><br />
-        <input type="password" name="password" placeholder="Your Password...">
-
-        <input type="submit" value="Glean!">
-    </form>
-    <h4>Not Registered Yet?</h4>
-    <a class="" href="{% url 'registration_register' %}">
-        Sign up now
-    </a>
+            <input type="submit" id="glean-submit" value="Glean!">
+        </form>
+        <h4>Not A Gleaner Yet?</h4>
+        <h4><a class="" href="{% url 'registration_register' %}">
+            Sign up now
+        </a></h4>
+    </div>
+    <div class="slider-holder">
+        <img src="/static/images/corn.jpg" alt="photo by dccentralkitchen, found on flickr" class="img-polaroid hidden-phone" />
+    </div>
 </div>
-<div class="slider-holder">
-    <img src="/static/images/corn.jpg" alt="photo by dccentralkitchen, found on flickr" class="img-polaroid hidden-phone" />
+<div class="yellow-green about-box">
+    <div class="pull-left"><img src="/static/images/salvations-farms-circle.png"></div>
+    <div class="pull-left">
+        <p>The Vermont Gleaning Collective, and initiative of Salvation Farms,<br>is a network of professionally organized community-based cleaning programs.</p>
+        <p>Salvation Farms' mission is to build increased resilience in Vermont's food systems through<br>
+        agricultural surplus management. With more than ten years' experience managing farm surplus<br>
+        foods through activities like gleaning, salvation Farms is committed to guiding food-focused<br>
+        non-profits in scaling up their regionally-based, farm-fresh food rescue and distribution efforts.
+    </div>
+</div>
+<div id="partners">
+    <div class="pull-left">
+        <h3>Partners:</h3>
+    </div>
+    <div class="pull-left partner-image">
+        <img class="pull-left" src="/static/images/RAFFL.png">
+    </div>
+    <div class="pull-left partner-image">
+        <img class="pull-left" src="/static/images/intervale.png">
+    </div>
+    <div class="pull-left partner-image">
+        <img class="pull-left" src="/static/images/hope.png">
+    </div>
+</div>
 </div>
 
 {% endblock %}
