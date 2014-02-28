@@ -43,10 +43,16 @@ body{
    margin: 24px 5px;
    font-family:'Kameron', serif;
    letter-spacing: 4px;
+   font-weight:bold;
 }
 
 h1, h2, h3, h4, h5, h6 {
    font-weight:normal;
+   color:#222;
+}
+h3 {
+   font-size:24px;
+   font-weight:bold;
 }
 /* ==========================================================================
    Fighting with the Navbar
@@ -165,6 +171,87 @@ h1, h2, h3, h4, h5, h6 {
    background-color: #ffc64a;
    box-shadow: -2px -2px 2px inset #8e6e29;
 }
+
+/* ==========================================================================
+   home.html
+   ========================================================================== */
+
+
+a.day-name {
+   text-decoration:none;
+    color:#444;
+    font-weight: bold;
+
+}
+.future-link {
+   margin:20px 0 0 0;
+
+}
+.post-title {
+   color:black;
+   margin: 20px 0 0px 40px;
+
+}
+.post-subheading{
+   color:#555;
+   margin:0 0 8px 80px;
+}
+
+#calendar {
+   margin:0;
+   width:1162px;
+   border: #6e9614 solid 1px;
+   background-color: #fbf8cc;
+}
+.calendar-container {
+   width: 1170px;
+   padding: 10px;
+}
+.calendar-container > h3 {
+   margin: 12px 2px;
+   width:300px;
+   clear:left;
+}
+
+.calendar-container > .row {
+   margin: 0;
+   padding:2px;
+}
+.day-class {
+   float:left;
+   width:164px;
+   border:#6e9614 solid 1px;
+}
+.day-title {
+   border:#6e9614 solid 2px;
+   border-bottom:none;
+   height:29px;
+   text-align: center;
+}
+.day-title > h4{
+   margin:4px;
+   font-size:13px;
+   font-weight:bold;
+}
+
+.day-body {
+   border: 2px #6c9614 solid;
+   height:119px;
+}
+
+.glean-button{
+   margin: 17px 4px;
+   background-color: #6c9614;
+   color: #eee;
+   font-weight: bold;
+   text-shadow: 0px 0px 1px #eee;
+}
+
+.yellow-bar {
+   width:1190px;
+   height:9px;
+   background-color:#ffc64a;
+}
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
@@ -174,7 +261,7 @@ body{
 }
 
 #id_honeypot{
-	display:none;
+    display:none;
 }
 
 /*label{display:inline-block;}*/
@@ -202,15 +289,15 @@ td label {font-size:0.95em;font-weight:bold;}
    ========================================================================== */
    
 .table-form{
-	border:1px #e5e5e5 solid;
-	border-radius:5px;
-	padding:13px;
+    border:1px #e5e5e5 solid;
+    border-radius:5px;
+    padding:13px;
 }
 .table-important{
-	background-color:#f7f5f5;
+    background-color:#f7f5f5;
 }
 .table-form + .table-form{
-	margin-top:42px;
+    margin-top:42px;
 }
 th>label{
    float:right;
@@ -305,20 +392,5 @@ input[type="checkbox"]:checked:after {
 /* ==========================================================================
    Front Page
    ========================================================================== */
-   
-
-   .day-class{width:14.158%;border:1px #e5e5e5 solid;float:left;height:250px;}
-   .day-class{width:14.158%;border:1px #e5e5e5 solid;height:250px;}
-   .day-class + .day-class{border-left:none;}
-   .day-title {width:100%; margin:0; padding:6px 0 0; height:28px; border-bottom: 1px #e5e5e5 solid; text-align: center;}
-   .day-class > ul {list-style-type:none; margin:0 5px;}
-   .day-class > ul > li {margin:1px 0;font-size:0.9em;line-height:1.1em;}
-   
-   a.day-name{text-decoration:none; color:#444; font-weight: bold;}
-   .future-link{margin:20px 0 0 0;}
-   .post-title{color:black;margin: 20px 0 0px 40px;}
-   
-   .post-subheading{color:#555;margin:0 0 8px 80px;}
-   .day-class > ul {list-style:none;margin: 0; text-align:center; }
 
 
