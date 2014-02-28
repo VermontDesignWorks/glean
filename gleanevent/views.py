@@ -110,16 +110,7 @@ def editGlean(request, glean_id):
 def detailGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
 	address = primary_address(glean)
-	# if glean.address_one:
-	# 	address = glean
-	# elif glean.farm_location and glean.farm_location.address_one:
-	# 	address = glean.farm_location
-	# elif glean.farm and glean.farm.address_one:
-	# 	address = glean.farm
-	# else:
-	# 	address = None
-	#return HttpResponse()
-	return render(request, 'gleanevent/detail.html', {'glean':glean,'address':address})
+	return render(request, 'gleanevent/formatted_detail.html', {'glean':glean,'address':address})
 
 #== Delete Glean View ==#
 @permission_required('gleanevent.auth')

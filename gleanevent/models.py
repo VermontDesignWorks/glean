@@ -73,35 +73,10 @@ class GleanEvent(models.Model):
         if (self.farm and hasattr(self.farm, 'instructions') and
                 self.farm.instructions):
             return unicode(self.farm.instructions)
-
-    def _address_one(self):
-        return self.primary_location.address_one
-
-    def _address_two(self):
-        return self.primary_location.address_two
-
-    def _city(self):
-        return self.primary_location.city
-
-    def _state(self):
-        return self.primary_location.state
-
-    def _zipcode(self):
-        return self.primary_location.zipcode
         
     def render_instructions(self):
         if self.instructions:
             return unicode(self.instructions)
-        if self.farm_location and hasattr(self.farm_location, 'instructions') and self.farm_location.instructions:
-            return unicode(self.farm_location.instructions)
-        if self.farm and hasattr(self.farm, 'instructions') and self.farm.instructions:
-            return unicode(self.farm.instructions)
-        else:
-            return u"Show up early and have fun!"
-
-    def render_address(self):
-        if self.address_one:
-            return unicode(self.address_one)
         if self.farm_location and hasattr(self.farm_location, 'instructions') and self.farm_location.instructions:
             return unicode(self.farm_location.instructions)
         if self.farm and hasattr(self.farm, 'instructions') and self.farm.instructions:

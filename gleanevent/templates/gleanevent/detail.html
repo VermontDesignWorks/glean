@@ -12,6 +12,7 @@ Gleaning Details
       <h1>{{glean.title}}</h1>
       <h2>by {{glean.member_organization}}
     </div>
+
     {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
       <div id="glean-buttons" class="pull-right">
         <button href="">View Hours</button>
@@ -19,46 +20,69 @@ Gleaning Details
         <button href="">Delete</button>
       </div>
     {% endif %}
+
   </div>
 
-<div id="glean-miniwrapper">
-  <div id="glean-left">
-    <div class="yellow-box red-top">
-      <div class="glean-details-left">
-        <div>
-          <h4>{{}}
+  <div id="glean-miniwrapper">
+    <div id="glean-half">
+
+      <div class="yellow-box red-top">
+
+        <div class="glean-details-left">
+          <div class="glean-details">
+            <h4>{{glean.primary_location}}</h4>
+            
+          </div>
+          <div class="glean-details">
+            <h4>{{glean.date}}</h4>
+            <h4>{{glean.time}} {{glean.time_of_day}}</h4>
+            <p>{{glean.description}}
+          </div>
+        </div>
+
+        <div class="glean-details-right">
+          <div class="attendance">
+            {% if glean.upcomming %}
+            <h5>Will you attend?</h5>
+            <a href="{% url 'gleanevent:confirmlink' glean.id %}" class="btn btn-success">Yes!</a>
+            <a href="{% url 'gleanevent:denylink' glean.id %}" class="btn btn-danger">No :(</a>
+            {% else %}
+            <h3 class="text-success">Gleaned!</h3>
+            {% endif %}
+          </div>
+          <div class="glean-info">
+            <h5>Volunteers</h5>
+              <ul>
+                <li>Required:{{glean.volunteers_needed}}</li>
+                <li>Yays:{{glean.rsvped.count}}</li>
+                <li>Nays:{{glean.not_rsvped.count}}</li>
+              </ul>
+          </div>
+
+        </div>
+      </div>
+      <div class="yellow-box green-top">
+        More stuff
       </div>
     </div>
-  </div>
-  <div id="glean-right">
+    <div id="glean-half">
+      &nbsp;
+    </div>
   </div>
 </div>
-
 <div class="span5 glean-details">
 	<a class="glean-title" href="{% url 'gleanevent:detailglean' glean.id %}"><h2>{{glean.title}} </h2></a>
   <h4 class='glean-address'> by {{glean.member_organization}}{% if glean.farm %} at {{glean.farm}}{% endif %}</h4>
 {% if address %}
-  <h4 class='glean-address'>{{address.address_one}} {{address.city}}, {{address.state}}</h4>
+  
 {% endif %}
   <h3 class="glean-date">{{glean.date}} {% if glean.time %}- {{glean.time}}{% endif %}</h3></h3>
 
   <div class="glean-half">
-  {% if glean.upcomming %}
-  <h5>Will you attend?</h5>
-  <a href="{% url 'gleanevent:confirmlink' glean.id %}" class="btn btn-success">Yes!</a>
-  <a href="{% url 'gleanevent:denylink' glean.id %}" class="btn btn-danger">No :(</a>
-  {% else %}
-  <h3 class="text-success">Gleaned!</h3>
-  {% endif %}
+  
   </div>
   <div class="glean-half">
-    <h5>Volunteers</h5>
-      <ul>
-        <li>Required:{{glean.volunteers_needed}}</li>
-        <li>Yays:{{glean.rsvped.count}}</li>
-        <li>Nays:{{glean.not_rsvped.count}}</li>
-
-      </ul>
+    
     
   </div>
   
@@ -106,7 +130,7 @@ Gleaning Details
   #map-canvas { height: 100% }
 </style>
 <script type="text/javascript"
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHs-DW2GgXZL0nvZ4xj8q5AhdJQ9sNpaY&sensor=false">
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHs-DW2GgXZL0nvZ4xj8q5AhdJQ9sNpaY&amp;sensor=false">
 </script>
 <script type="text/javascript">
 

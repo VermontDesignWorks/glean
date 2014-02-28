@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gleaning Details
+{% endblock title %}
+
+{% block body %}
+
+<div id="glean-header">
+    <div id="glean-titles">
+        <h1>{{glean.title}}</h1>
+        <h3>by {{glean.member_organization}}</h3>
+    </div>
+    <div id="glean-buttons">
+        {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
+      <div id="glean-buttons" class="pull-right">
+        <button href="">View Hours</button>
+        <button href="{% url 'gleanevent:editglean' glean.id %}">Edit Glean</button>
+        <button href="{% url 'gleanevent:deleteglean' glean.id %}">Delete</button>
+      </div>
+    {% endif %}
+    </div>
+</div>
+
+<div class="glean-wrapper">
+    <div class="glean-half">
+        <div class="yellow-box red-top glean-details">
+            <div class="glean-details-half">
+                <h3>{% if glean.farm %}{{glean.farm.name}}{% endif %}</h3>
+                <h4 class='glean-address'>{{address.address_one}}<br />
+            {% if address.address_two %}{{address.address_two}}<br />{% endif %}
+            {{address.city}}, {{address.state}} {{address.zipcode}}</h4>
+            </div>
+        </div>
+        <div class="yellow-box green-top">
+            &nbsp;
+        </div>
+    </div>
+
+    <div class="glean-half">
+        <div class="yellow-box green-top">
+            &nbsp;
+        </div>
+    </div>
+</div>
+
+{% endblock %}

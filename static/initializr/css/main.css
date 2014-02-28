@@ -147,10 +147,13 @@ h3 {
 .yellow-box{
    background-color: #f5f8c5;
 }
+.yellow-box + .yellow-box {
+   margin-top:12px;
+}
 .green-top {
    border-top:5px solid #6e9614;
 }
-.green-red {
+.red-top {
    border-top:5px solid #d25231;
 }
 .about-box {
@@ -262,19 +265,46 @@ a.day-name {
    Glean Event
    ========================================================================== */
 
-#glean-wrapper{
-   width:1165px;
-}
-
-.glean-header {
+#glean-header {
    width:100%;
+   clear:both;
+   height:105px;
+   margin: 5px 5px 5px 5px;
 }
 #glean-titles {
    width:45%;
+   clear:none;
+   float:left;
 }
 #glean-buttons{
    width:45%;
+   clear:none;
+   float:right;
+   margin: 39px 0 0 0;
 }
+#glean-wrapper{
+   width:100%;
+   clear:both;
+}
+.glean-half {
+   width:577px;
+   clear:none;
+   float:left;
+}
+.glean-half + .glean-half{
+   margin-left: 15px;
+}
+.glean-details{
+   height:247px;
+}
+.glean-details-half {
+   width:50%;
+   float:left;
+}
+
+.glean-address {
+   margin-bottom:0px;}
+
 
 /* ==========================================================================
    Author's custom styles
@@ -343,11 +373,10 @@ td>input[type="checkbox"]{
 .glean-title{text-align: center;color:#444;}
 .glean-title:hover{color:#000;text-decoration: none;}
 .glean-details{border: 1px solid #e5e5e5; padding:2%;}
-.glean-half{width:48%;float:left;text-align:center;}
 .glean-half>ul {list-style:none;margin:0 0 0 0;}
 .glean-quarter{width:48%;margin:0 1%; float:left;}
 .divider{width:100%; clear:both; border-bottom:dotted #444 1px;margin:10px 0;}
-.glean-address{text-align: center;margin-bottom:0px;}
+
 .glean-date{text-align: center;margin-top:0px;}
 #id_comment{height:20px;width:50%;margin-left:2%;}
 .comments{border: 1px solid #e5e5e5; margin:2%;padding:2%;}
