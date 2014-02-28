@@ -177,23 +177,23 @@ INSTALLED_APPS = (
     'django.contrib.comments',
 
     # coder installed apps
+    'counties',
+    'memberorgs',
     'gleanevent',
     'farms',
     'userprofile',
     'announce',
-    'counties',
     'testdata',
-    'memberorgs',
     'recipientsite',
     'distro',
     'posts',
     'initialize',
     'api',
-    'south',
 
     # third party apps
     'registration',
     'crispy_forms',
+    'south',
 
     # admin:
     'django.contrib.admin',
