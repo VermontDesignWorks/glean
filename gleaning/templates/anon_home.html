@@ -30,30 +30,8 @@ Welcome to the Gleaning Interface!
         <img src="/static/images/corn.jpg" alt="photo by dccentralkitchen, found on flickr" class="img-polaroid hidden-phone" />
     </div>
 </div>
-<div class="yellow-green about-box">
-    <div class="pull-left"><img src="/static/images/salvations-farms-circle.png"></div>
-    <div class="pull-left">
-        <p>The Vermont Gleaning Collective, and initiative of Salvation Farms,<br>is a network of professionally organized community-based cleaning programs.</p>
-        <p>Salvation Farms' mission is to build increased resilience in Vermont's food systems through<br>
-        agricultural surplus management. With more than ten years' experience managing farm surplus<br>
-        foods through activities like gleaning, salvation Farms is committed to guiding food-focused<br>
-        non-profits in scaling up their regionally-based, farm-fresh food rescue and distribution efforts.
-    </div>
-</div>
-<div id="partners">
-    <div class="pull-left">
-        <h3>Partners:</h3>
-    </div>
-    <div class="pull-left partner-image">
-        <img class="pull-left" src="/static/images/RAFFL.png">
-    </div>
-    <div class="pull-left partner-image">
-        <img class="pull-left" src="/static/images/intervale.png">
-    </div>
-    <div class="pull-left partner-image">
-        <img class="pull-left" src="/static/images/hope.png">
-    </div>
-</div>
+{% include "about_box.html" %}
+{% include "partners.html" %}
 </div>
 
 {% endblock %}

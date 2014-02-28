@@ -4,6 +4,7 @@
 {% block title %}
 Welcome to the Gleaning Interface!
 {% endblock %}
+
 {% block body %}
 <h1 class="header-title">Vermont Gleaning Collective</h1>
 <div class="calendar-container red">
@@ -39,25 +40,11 @@ Welcome to the Gleaning Interface!
     </div>
 </div>
 </div>
-<div class="row-fluid non-responsive"> 
-     <div class="span12">
-    
-</div>
-<div class="future-link">
-{% if future %}Upcomming Gleans: <a href="{% url 'gleanevent:index' %}?date_from={{two_weeks|date:"m"}}%2F{{two_weeks|date:"d"}}%2F{{two_weeks.year}}">{{future.count}} Glean{% if future.count != 1 %}s{% endif %}</a>{% endif %}</div>
-<div class="yellow-bar">&nbsp;</div>
-</div>
-</div>
 
-<div class="row-fluid">
-    <div class="span12">
-    {% for post in posts %}
-        <a href="{% url 'posts:detailpost' post.id %}"><h3 class="post-title">{{post.title}}</h3></a>
-        <h5 class="post-subheading">Posted on {{post.datetime|date:"M j"}} by {{post.created_by.profile_set.get.first_name}} {{post.created_by.profile_set.get.last_name}} of {{post.created_by.profile_set.get.member_organization.name}}</h5>
-        {{post.body|linebreaks}}
-        {% get_comment_count for post as comment_count %}
-        <p><small>{{comment_count}} Comment{% if comment_count != 1 %}s{% endif %}</small></p>
-    {% endfor %}
+<div class="yellow-bar">&nbsp;</div>
+
 </div>
+{% include "about_box.html" %}
+{% include "partners.html" %}
 </div>
 {% endblock %}

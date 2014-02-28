@@ -144,10 +144,14 @@ h3 {
    background-color:#ffc64a;
    margin: 0 5px 10px;
 }
-
-.yellow-green {
+.yellow-box{
    background-color: #f5f8c5;
+}
+.green-top {
    border-top:5px solid #6e9614;
+}
+.green-red {
+   border-top:5px solid #d25231;
 }
 .about-box {
    width: 788px;
@@ -211,6 +215,7 @@ a.day-name {
    margin: 12px 2px;
    width:300px;
    clear:left;
+   margin: 0;
 }
 
 .calendar-container > .row {
@@ -250,8 +255,27 @@ a.day-name {
 .yellow-bar {
    width:1190px;
    height:9px;
+   margin: 12px 0 53px 0;
    background-color:#ffc64a;
 }
+/* ==========================================================================
+   Glean Event
+   ========================================================================== */
+
+#glean-wrapper{
+   width:1165px;
+}
+
+.glean-header {
+   width:100%;
+}
+#glean-titles {
+   width:45%;
+}
+#glean-buttons{
+   width:45%;
+}
+
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */

@@ -5,10 +5,34 @@
 Gleaning Details
 {% endblock title %}
 {% block body %}
-<style>
 
+<div id="glean-wrapper">
+  <div id="glean-header">
+    <div id="glean-titles" class="pull-left">
+      <h1>{{glean.title}}</h1>
+      <h2>by {{glean.member_organization}}
+    </div>
+    {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
+      <div id="glean-buttons" class="pull-right">
+        <button href="">View Hours</button>
+        <button href="">Edit Glean</button>
+        <button href="">Delete</button>
+      </div>
+    {% endif %}
+  </div>
 
-</style>
+<div id="glean-miniwrapper">
+  <div id="glean-left">
+    <div class="yellow-box red-top">
+      <div class="glean-details-left">
+        <div>
+          <h4>{{}}
+      </div>
+    </div>
+  </div>
+  <div id="glean-right">
+  </div>
+</div>
 
 <div class="span5 glean-details">
 	<a class="glean-title" href="{% url 'gleanevent:detailglean' glean.id %}"><h2>{{glean.title}} </h2></a>
