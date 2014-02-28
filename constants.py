@@ -55,11 +55,6 @@ AGE_RANGES = (
     ( '6', '70+'),
 )
 
-
-
-
-
-
 STATES = (
     ('VT', 'Vermont'),
     ('NH', 'New Hampshire'),
