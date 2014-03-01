@@ -4,10 +4,15 @@
 
 {% block content %}
 <h1>You've been logged out.</h1>
-<p>Redirecting to the <a href="{% url 'home' %}">home page</a>...</p>
+<div class="red logout">
+	<p>Redirecting to the <a class="login-link" href="{% url 'home' %}">home page</a>...</p>
+</div>
+
+<div class="yellow-bar reset-bar">
+	&nbsp;
+</div>
+
 <script type="text/JavaScript">
-<!--
-setTimeout("location.href = '/';",1500);
--->
+setTimeout("location.href = '/';",5500);
 </script>
 {% endblock %}
