@@ -17,7 +17,7 @@ Welcome to the Gleaning Interface!
     <div>
     <div class="row" id="calendar">
     {% for day in days %}
-    <div class="day-class">
+    <div class="day-class{% if not day.3 %} today{% endif %}">
         <a class="day-name" href="{% url 'gleanevent:index' %}?date_from={{day.0|date:"m"}}%2F{{day.0|date:"d"}}%2F{{day.0.year}}&amp;date_until={{day.0|date:"m"}}%2F{{day.0|date:"d"}}%2F{{day.0.year}}">
         <div class="day-title">
             <h4>{{day.0|date:"l - d"}}</h4>

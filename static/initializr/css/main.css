@@ -230,6 +230,9 @@ a.day-name {
    width:164px;
    border:#6e9614 solid 1px;
 }
+.today {
+   background-color:#FEE0C6;
+}
 .day-title {
    border:#6e9614 solid 2px;
    border-bottom:none;

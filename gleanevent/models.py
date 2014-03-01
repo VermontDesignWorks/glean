@@ -1,4 +1,4 @@
-date datetime
+from datetime import date, datetime
 
 from django.db import models
 from django.forms import TextInput

@@ -23,7 +23,9 @@ def home(request):
     todays_gleans = GleanEvent.objects.filter(date=datetime.date.today())
     l = []
     today = datetime.date.today()
-    for i in range(14):
+    predate = (datetime.date.today().weekday() + 1) % 7
+
+    for i in range(-predate, 14-predate):
         query = GleanEvent.objects.filter(
             date=today+datetime.timedelta(days=i))
         more = False
@@ -33,7 +35,8 @@ def home(request):
         l.append([
             timezone.now()+datetime.timedelta(days=i),
             query,
-            more])
+            more,
+            i])
     posts = Post.objects.order_by('datetime')[:10]
     days = l
     two_weeks = datetime.date.today()+datetime.timedelta(days=14)
