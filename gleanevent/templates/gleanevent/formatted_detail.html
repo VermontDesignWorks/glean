@@ -15,9 +15,9 @@ Gleaning Details
     <div id="glean-buttons">
         {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
       <div id="glean-buttons" class="pull-right">
-        <button href="">View Hours</button>
-        <button href="{% url 'gleanevent:editglean' glean.id %}">Edit Glean</button>
-        <button href="{% url 'gleanevent:deleteglean' glean.id %}">Delete</button>
+        <a href=""><button class="glean-button yellow-button no-margin">View Hours</button></a>
+        <a href="{% url 'gleanevent:editglean' glean.id %}"><button class="glean-button no-margin green-button" href="{% url 'gleanevent:editglean' glean.id %}">Edit Glean</button></a>
+        <button class="glean-button no-margin red-button" href="{% url 'gleanevent:deleteglean' glean.id %}">Delete</button>
       </div>
     {% endif %}
     </div>
@@ -46,8 +46,8 @@ Gleaning Details
                     <div class="attendance">
                         {% if glean.upcomming %}
                         <h5>Will you attend?</h5>
-                        <a href="{% url 'gleanevent:confirmlink' glean.id %}" class="btn btn-success">Yes!</a>
-                        <a href="{% url 'gleanevent:denylink' glean.id %}" class="btn btn-danger">No :(</a>
+                        <a href="{% url 'gleanevent:confirmlink' glean.id %}"><button class="glean-button green-button">Yes!</button></a>
+                        <a href="{% url 'gleanevent:denylink' glean.id %}"><button class="glean-button red-button">No :(</button></a>
                         {% else %}
                         <h3 class="text-success">Gleaned!</h3>
                         {% endif %}
@@ -94,6 +94,10 @@ Gleaning Details
 {% block javascript %}
 <script type="text/javascript"
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHs-DW2GgXZL0nvZ4xj8q5AhdJQ9sNpaY&amp;sensor=false">
+</script>
+<script>
+var $container = $('.comments-holder');
+$container.scrollTop($container.height())
 </script>
 <script src="{% static '/static/initializr/js/google_map.js' %}"></script>
 {% endblock javascript %}

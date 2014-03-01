@@ -1,6 +1,6 @@
 {% load comments %}
 
-<div class="yellow-box green-top">
+<div class="yellow-box green-top comments-holder">
             <div class="comments">
               {% get_comment_list for glean as comment_list %}
 
@@ -28,7 +28,7 @@
                         {{ form.timestamp }}
                         {{ form.security_hash }}
                         <input type="hidden" name="next" value="{% url 'gleanevent:detailglean' glean.id %}" />
-                        <input type="submit" class="btn btn-primary btn-small" value="Post a Comment" id="id_submit" />
+                        <input type="submit" class="glean-button yellow-button" value="Post a Comment" id="id_submit" />
                 </form>
             {% else %}
                 <p>Please <a href="{% url 'auth_login' %}">log in</a> to leave a comment.</p>

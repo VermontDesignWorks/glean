@@ -287,7 +287,21 @@ a.day-name {
    font-weight: bold;
    text-shadow: 0px 0px 1px #eee;
 }
+.green-button {
+   background-color: #6c9614;
+}
+.yellow-button {
+   background-color: #ffc64a;
+   color: #6c9614;
+   text-shadow: 0px 0px 0px #c4d5a1;
 
+}
+.red-button {
+   background-color: #d25231;
+}
+.no-margin {
+   margin: 0;
+}
 .yellow-bar {
    width:1190px;
    height:9px;
@@ -310,7 +324,6 @@ a.day-name {
    float:left;
 }
 #glean-buttons{
-   width:45%;
    clear:none;
    float:right;
    margin: 39px 0 0 0;
@@ -336,7 +349,7 @@ a.day-name {
    float:left;
 }
 .glean-details-quarter{
-   min-height:124px;
+   min-height:98px;
    padding:10px;
    text-align:center;
 }
@@ -358,7 +371,14 @@ a.day-name {
    padding: 0 40px;
 }
 .directions-instructions {
+   padding:0 24px 24px 24px;
+}
+.comments-holder{
+   height:200px;
    padding:10px;
+}
+.comments {
+   /*border: 1px solid #e5e5e5;*/
 }
 
 
@@ -434,7 +454,6 @@ td>input[type="checkbox"]{
 
 .glean-date{text-align: center;margin-top:0px;}
 #id_comment{height:20px;width:50%;margin-left:2%;}
-.comments{border: 1px solid #e5e5e5; margin:2%;padding:2%;}
 .admin-controls{text-align:center;}
 
 
