@@ -1,8 +1,8 @@
 import time
 sleep_time = 2
-import development
 import random
 import datetime
+from django.conf import settings
 
 
 ## -- filler text functions --##
@@ -71,9 +71,9 @@ def go_to_reg_page(self):
 
 def admin_login(self):
     username = self.browser.find_element_by_name('username')
-    username.send_keys(development.admin_user)
+    username.send_keys(settings.admin_user)
     password = self.browser.find_element_by_name('password')
-    password.send_keys(development.admin_password)
+    password.send_keys(settings.admin_password)
     password.submit()
     time.sleep(sleep_time)
 

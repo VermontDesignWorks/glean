@@ -23,14 +23,6 @@ TEMPLATE_DIRS = [
 LOGIN_URL = "/accounts/login"
 LOGOUT_URL = "/"
 
-try:
-    import development
-    EMAIL_HOST_USER = development.user
-    EMAIL_HOST_PASSWORD = development.password
-except:
-    pass
-    #EMAIL_HOST_USER = os.environ['GMAIL_ADDRESS']
-    #EMAIL_HOST_PASSWORD = os.environ['GMAIL_PW']
 ACCOUNT_ACTIVATION_DAYS = 7
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -49,20 +41,17 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-try:
-    import development
-    DATABASES = development.MY_DB
-except:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'db',
-            'USER': '',
-            'PASSWORD': '',
-            'HOST': '',
-            'PORT': '',
-        }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
     }
+}
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en//ref/settings/#allowed-hosts
@@ -151,20 +140,13 @@ ROOT_URLCONF = 'gleaning.urls'
 WSGI_APPLICATION = 'gleaning.wsgi.application'
 CRISPY_TEMPLATE_PACK = 'bootstrap'
 
-try:
-    import development
-    TEMPLATE_DIRS = (
-        development.templatedir,
-        )
-
-except:
-    PROJECT_DIR = os.path.dirname(__file__)
-    TEMPLATE_DIRS = (
-        os.path.join(PROJECT_DIR, 'templates'),
-        # Put strings here, like "/home/html/django_templates"
-        # Always use forward slashes, even on Windows.
-        # Don't forget to use absolute paths, not relative paths.
-    )
+PROJECT_DIR = os.path.dirname(__file__)
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_DIR, 'templates'),
+    # Put strings here, like "/home/html/django_templates"
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -177,23 +159,23 @@ INSTALLED_APPS = (
     'django.contrib.comments',
 
     # coder installed apps
+    'counties',
+    'memberorgs',
     'gleanevent',
     'farms',
     'userprofile',
     'announce',
-    'counties',
     'testdata',
-    'memberorgs',
     'recipientsite',
     'distro',
     'posts',
     'initialize',
     'api',
-    'south',
 
     # third party apps
     'registration',
     'crispy_forms',
+    'south',
 
     # admin:
     'django.contrib.admin',
