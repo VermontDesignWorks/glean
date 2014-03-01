@@ -1,14 +1,12 @@
-from registration.backends.default.views import RegistrationView, ActivationView
+from registration.backends.default.views import RegistrationView
 from registration.forms import RegistrationForm
 
-from django.http import HttpResponse
-
 from counties.models import County
-from memberorgs.models import MemOrg
+
 from userprofile.models import Profile
 
 from django import forms
-from constants import ACCESS_LEVELS, VERMONT_COUNTIES, AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, STATES
+from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, STATES
 
 class ExtendedRegistrationForm(RegistrationForm):
 	first_name = forms.CharField(label="First Name", max_length=20)
@@ -32,12 +30,10 @@ class ExtendedRegistrationForm(RegistrationForm):
 	ecrelationship = forms.CharField(label="Relationship", max_length=200)
 
 	waiver = forms.BooleanField(label="Do you accept the Waiver of Liability?", required=True)
-
 	agreement = forms.BooleanField(label="Do you accept the Volunteer Agreement?", required=True)
 	# seriously?
-	photo_release = forms.BooleanField(label="Do you accept the Photo Release?")
-
-	opt_in = forms.BooleanField(label="Do you wish to recieve newsletters and personalized messages?")
+	photo_release = forms.BooleanField(label="Do you accept the Photo Release?", required=False)
+	opt_in = forms.BooleanField(label="Do you wish to recieve newsletters and personalized messages?", required=False)
 
 class AdminExtendedRegistrationForm(RegistrationForm):
 	first_name = forms.CharField(label="First Name", max_length=20)
@@ -63,8 +59,8 @@ class AdminExtendedRegistrationForm(RegistrationForm):
 	waiver = forms.BooleanField(label="Waiver of Liability?", required=True)
 	agreement = forms.BooleanField(label="Volunteer Agreement", required=True)
 	# seriously?
-	photo_release = forms.BooleanField(label="Photo Release?", required=False)
-	opt_in = forms.BooleanField(label="Email Opt-In?", required=False)
+	photo_release = forms.BooleanField(label="Photo Release?")
+	opt_in = forms.BooleanField(label="Email Opt-In?")
 
 
 class MyRegistrationView(RegistrationView):
@@ -102,13 +98,3 @@ class MyRegistrationView(RegistrationView):
 			profile.counties.add(county)
 			county.affix_to_memorgs(user)
 		return user
-
-# class MyActivationView(ActivationView):
-# 	def activate(self, *args, **kwargs):
-# 		user = super(MyActivationView, self).activate(*args, **kwargs)
-# 		profile = user.profile_set.get()
-# 		counties = profile.counties.all()
-# 		memorgs = []
-# 		for county in counties:
-# 			for memorg in couny.member_organization_set.all():
-# 				quick_mail(subject, text, recipient)
