@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-{% load comments %}
 
 {% block title %}
 Gleaning Details
@@ -11,7 +10,7 @@ Gleaning Details
 <div id="glean-header">
     <div id="glean-titles">
         <h1>{{glean.title}}</h1>
-        <h3>by {{glean.member_organization}}</h3>
+        <h2>by {{glean.member_organization}}</h2>
     </div>
     <div id="glean-buttons">
         {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
@@ -31,14 +30,14 @@ Gleaning Details
 
             <div class="glean-details-half">
                 <div class="glean-details-quarter">
-                    <h4>{% if glean.farm %}{{glean.farm.name}}{% else %}{{glean.title}}{% endif %}</h4>
-                    <h5 class='glean-address'>{{address.address_one}}<br />
+                    <h3>{% if glean.farm %}{{glean.farm.name}}{% else %}{{glean.title}}{% endif %}</h3>
+                    <span class='glean-address'>{{address.address_one}}<br />
                 {% if address.address_two %}{{address.address_two}}<br />{% endif %}
-                {{address.city}}, {{address.state}} {{address.zipcode}}</h5>
+                {{address.city}}, {{address.state}} {{address.zipcode}}</span>
             </div>
                 <div class="glean-details-quarter">
-                <h4>{{glean.date}}</h4>
-                    <h4>{{glean.time}} {{glean.time_of_day}}</h4>
+                <h3>{{glean.date}}</h3>
+                    <h3>{{glean.time}} {{glean.time_of_day}}</h3>
                 </div>
             </div>
 
@@ -56,20 +55,23 @@ Gleaning Details
                 </div>
                 <div class="glean-details-quarter">
                     <h4>Volunteers</h4>
-                    <ul>
+                    <ul class="no-list">
                         <li>Required:{{glean.volunteers_needed}}</li>
                         <li>Yays:{{glean.rsvped.count}}</li>
                         <li>Nays:{{glean.not_rsvped.count}}</li>
                     </ul>
                 </div>
-            </div>
+            </div> <!-- End second glean-details-half -->
+        <div class="description-row">
+            <p id="description">{{glean.description|linebreaks}}</p>
+        </div>
 
         </div> <!-- End glean-details -->
 
-        <div class="yellow-box yellow-top">
-            <h4>Directions</h4>
+        <div class="yellow-box yellow-top directions-instructions">
+            <h3>Directions</h3>
                 <p>{{glean.render_directions|linebreaks}}</p>
-                <h4>Instructions</h4>
+                <h3>Instructions</h3>
                 <p>{{glean.render_instructions|linebreaks}}</p>
             </div> <!-- End Directions Box -->
 
@@ -78,49 +80,20 @@ Gleaning Details
 
     <div class="glean-half"> <!-- Begin First Half -->
 
-        <div id="map-container" class="red">
+        <div id="map-container" class="red" address="{{address.address_one}} {{address.city}}, {{address.state}} {{address.zipcode}}">
             <div id="map-canvas">&nbsp;</div>
         </div>
 
-        <div class="yellow-box green-top">
-            <div class="comments">
-              {% get_comment_list for glean as comment_list %}
-
-              {% if comment_list %}
-                  {% for comment in comment_list %}
-                    <p>{{comment.user.profile_set.get.first_name}} {{comment.user.profile_set.get.last_name}}:&nbsp;&nbsp;{{comment.comment}}</p>
-                  {% endfor %}
-              {% else %}
-                <div style="text-align:center;"><small>Post comments here to discuss rideshares!</small></div>
-              {% endif %}
-            </div>
-        </div>
-
-        <div id="glean-comment-form">
-            {% if user.is_authenticated %}
-                {% get_comment_form for glean as form %}
-                <form action="{% comment_form_target %}" method="POST">
-                        {% csrf_token %}
-                        <!--{{ form.comment }}-->
-                        <input type="text" style="margin-top:12px" id="id_comment" name="comment">
-
-                        {{ form.honeypot }}
-                        {{ form.content_type }}
-                        {{ form.object_pk }}
-                        {{ form.timestamp }}
-                        {{ form.security_hash }}
-                        <input type="hidden" name="next" value="{% url 'gleanevent:detailglean' glean.id %}" />
-                        <input type="submit" class="btn btn-primary btn-small" value="Post a Comment" id="id_submit" />
-                </form>
-            {% else %}
-                <p>Please <a href="{% url 'auth_login' %}">log in</a> to leave a comment.</p>
-            {% endif %}
-        </div>
+        {% include "comments.html" %}
+        
     </div> <!-- End Second Half -->
 </div>
 
+{% endblock body %}
+
+{% block javascript %}
 <script type="text/javascript"
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHs-DW2GgXZL0nvZ4xj8q5AhdJQ9sNpaY&amp;sensor=false">
 </script>
 <script src="{% static '/static/initializr/js/google_map.js' %}"></script>
-{% endblock %}
+{% endblock javascript %}

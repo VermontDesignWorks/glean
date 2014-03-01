@@ -1,0 +1,36 @@
+{% load comments %}
+
+<div class="yellow-box green-top">
+            <div class="comments">
+              {% get_comment_list for glean as comment_list %}
+
+              {% if comment_list %}
+                  {% for comment in comment_list %}
+                    <p>{{comment.user.profile_set.get.first_name}} {{comment.user.profile_set.get.last_name}}:&nbsp;&nbsp;{{comment.comment}}</p>
+                  {% endfor %}
+              {% else %}
+                <div style="text-align:center;"><small>Post comments here to discuss rideshares!</small></div>
+              {% endif %}
+            </div>
+        </div>
+
+        <div id="glean-comment-form">
+            {% if user.is_authenticated %}
+                {% get_comment_form for glean as form %}
+                <form action="{% comment_form_target %}" method="POST">
+                        {% csrf_token %}
+                        <!--{{ form.comment }}-->
+                        <input type="text" style="margin-top:12px" id="id_comment" name="comment">
+
+                        {{ form.honeypot }}
+                        {{ form.content_type }}
+                        {{ form.object_pk }}
+                        {{ form.timestamp }}
+                        {{ form.security_hash }}
+                        <input type="hidden" name="next" value="{% url 'gleanevent:detailglean' glean.id %}" />
+                        <input type="submit" class="btn btn-primary btn-small" value="Post a Comment" id="id_submit" />
+                </form>
+            {% else %}
+                <p>Please <a href="{% url 'auth_login' %}">log in</a> to leave a comment.</p>
+            {% endif %}
+        </div>

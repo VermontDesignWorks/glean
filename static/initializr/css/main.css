@@ -88,6 +88,10 @@ h3 {
 .navbar .nav>li>a {
    padding:5px 15px;
 }
+.no-list {
+   list-style: none;
+   margin: 0;
+}
 /* ==========================================================================
    Footer
    ========================================================================== */
@@ -154,6 +158,7 @@ h3 {
 }
 .yellow-box{
    background-color: #f5f8c5;
+   overflow:auto;
 }
 .yellow-box + .yellow-box {
    margin-top:12px;
@@ -324,7 +329,7 @@ a.day-name {
    width:564px;
 }
 .glean-details{
-   height:247px;
+   
 }
 .glean-details-half {
    width:50%;
@@ -332,12 +337,29 @@ a.day-name {
 }
 .glean-details-quarter{
    min-height:124px;
+   padding:10px;
+   text-align:center;
 }
-.glean-details-quarter > h4 {
+.glean-details-quarter > h3:first-child {
+   margin-top:10px;
+}
+.glean-details-quarter > h3 {
+   font-size: 24px;
    font-weight: bold;
+   margin: 0;
 }
 .glean-address {
-   margin-bottom:0px;}
+   font-size: 24px;
+   margin-bottom:0px;
+}
+.description-row {
+   clear: both;
+   overflow: auto;
+   padding: 0 40px;
+}
+.directions-instructions {
+   padding:10px;
+}
 
 
 /* ==========================================================================
