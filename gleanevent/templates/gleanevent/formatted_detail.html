@@ -1,103 +1,163 @@
-{% extends "base.html" %}
-{% load staticfiles %}
-
+{% extends 'base.html' %}
+{% load url from future %}
+{% load comments %}
 {% block title %}
 Gleaning Details
 {% endblock title %}
-
 {% block body %}
 
-<div id="glean-header">
-    <div id="glean-titles">
-        <h1>{{glean.title}}</h1>
-        <h2>by {{glean.member_organization}}</h2>
+<div id="glean-wrapper">
+  <div id="glean-header">
+    <div id="glean-titles" class="pull-left">
+      <h1>{{glean.title}}</h1>
+      <h2>by {{glean.member_organization}}
     </div>
-    <div id="glean-buttons">
-        {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
+
+    {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
       <div id="glean-buttons" class="pull-right">
-        <a href=""><button class="glean-button yellow-button no-margin">View Hours</button></a>
-        <a href="{% url 'gleanevent:editglean' glean.id %}"><button class="glean-button no-margin green-button" href="{% url 'gleanevent:editglean' glean.id %}">Edit Glean</button></a>
-        <button class="glean-button no-margin red-button" href="{% url 'gleanevent:deleteglean' glean.id %}">Delete</button>
+        <button href="">View Hours</button>
+        <button href="">Edit Glean</button>
+        <button href="">Delete</button>
       </div>
     {% endif %}
+
+  </div>
+
+  <div id="glean-miniwrapper">
+    <div id="glean-half">
+
+      <div class="yellow-box red-top">
+
+        <div class="glean-details-left">
+          <div class="glean-details">
+            <h4>{{glean.primary_location}}</h4>
+            
+          </div>
+          <div class="glean-details">
+            <h4>{{glean.date}}</h4>
+            <h4>{{glean.time}} {{glean.time_of_day}}</h4>
+            <p>{{glean.description}}
+          </div>
+        </div>
+
+        <div class="glean-details-right">
+          <div class="attendance">
+            {% if glean.upcomming %}
+            <h5>Will you attend?</h5>
+            <a href="{% url 'gleanevent:confirmlink' glean.id %}" class="btn btn-success">Yes!</a>
+            <a href="{% url 'gleanevent:denylink' glean.id %}" class="btn btn-danger">No :(</a>
+            {% else %}
+            <h3 class="text-success">Gleaned!</h3>
+            {% endif %}
+          </div>
+          <div class="glean-info">
+            <h5>Volunteers</h5>
+              <ul>
+                <li>Required:{{glean.volunteers_needed}}</li>
+                <li>Yays:{{glean.rsvped.count}}</li>
+                <li>Nays:{{glean.not_rsvped.count}}</li>
+              </ul>
+          </div>
+
+        </div>
+      </div>
+      <div class="yellow-box green-top">
+        More stuff
+      </div>
     </div>
+    <div id="glean-half">
+      &nbsp;
+    </div>
+  </div>
 </div>
+<div class="span5 glean-details">
+    <a class="glean-title" href="{% url 'gleanevent:detailglean' glean.id %}"><h2>{{glean.title}} </h2></a>
+  <h4 class='glean-address'> by {{glean.member_organization}}{% if glean.farm %} at {{glean.farm}}{% endif %}</h4>
+{% if address %}
+  
+{% endif %}
+  <h3 class="glean-date">{{glean.date}} {% if glean.time %}- {{glean.time}}{% endif %}</h3></h3>
 
-<div id="glean-wrapper">
+  <div class="glean-half">
+  
+  </div>
+  <div class="glean-half">
+    
+    
+  </div>
+  
+  <div class="divider">&nbsp;</div>
+  <div class="admin-controls">
+  {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
+  {% if glean.upcomming %}
+<p>
+  <a href="{% url 'announce:announceglean' glean.id %}" class="btn btn-primary">Create Announcement</a> <a href="{% url 'gleanevent:editglean' glean.id %}"class="btn btn-warning">Edit Glean</a> <a href="{% url 'gleanevent:printglean' glean.id %}"class="btn btn-info">Attendee List</a> 
+</p>
+{% endif %}
+  {% if glean.happened %}
+<p>
+  <a href="{% url 'gleanevent:postglean' glean.id %}" class="btn btn-success">
+    Enter Volunteer Hours
+  </a>
+  <a href="{% url 'gleanevent:postgleanedit' glean.id %}" class="btn btn-warning">
+    Edit Volunteer Hours
+  </a></p>
 
-    <div class="glean-half"> <!-- Begin First Half -->
-        <div class="yellow-box red-top glean-details">
-
-            <div class="glean-details-half">
-                <div class="glean-details-quarter">
-                    <h3>{% if glean.farm %}{{glean.farm.name}}{% else %}{{glean.title}}{% endif %}</h3>
-                    <span class='glean-address'>{{address.address_one}}<br />
-                {% if address.address_two %}{{address.address_two}}<br />{% endif %}
-                {{address.city}}, {{address.state}} {{address.zipcode}}</span>
-            </div>
-                <div class="glean-details-quarter">
-                <h3>{{glean.date}}</h3>
-                    <h3>{{glean.time}} {{glean.time_of_day}}</h3>
-                </div>
-            </div>
-
-            <div class="glean-details-half">
-                <div class="glean-details-quarter">
-                    <div class="attendance">
-                        {% if glean.upcomming %}
-                        <h5>Will you attend?</h5>
-                        <a href="{% url 'gleanevent:confirmlink' glean.id %}"><button class="glean-button green-button">Yes!</button></a>
-                        <a href="{% url 'gleanevent:denylink' glean.id %}"><button class="glean-button red-button">No :(</button></a>
-                        {% else %}
-                        <h3 class="text-success">Gleaned!</h3>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="glean-details-quarter">
-                    <h4>Volunteers</h4>
-                    <ul class="no-list">
-                        <li>Required:{{glean.volunteers_needed}}</li>
-                        <li>Yays:{{glean.rsvped.count}}</li>
-                        <li>Nays:{{glean.not_rsvped.count}}</li>
-                    </ul>
-                </div>
-            </div> <!-- End second glean-details-half -->
-        <div class="description-row">
-            <p id="description">{{glean.description|linebreaks}}</p>
-        </div>
-
-        </div> <!-- End glean-details -->
-
-        <div class="yellow-box yellow-top directions-instructions">
-            <h3>Directions</h3>
-                <p>{{glean.render_directions|linebreaks}}</p>
-                <h3>Instructions</h3>
-                <p>{{glean.render_instructions|linebreaks}}</p>
-            </div> <!-- End Directions Box -->
-
-    </div> <!-- End First Half -->
-
-
-    <div class="glean-half"> <!-- Begin First Half -->
-
-        <div id="map-container" class="red" address="{{address.address_one}} {{address.city}}, {{address.state}} {{address.zipcode}}">
-            <div id="map-canvas">&nbsp;</div>
-        </div>
-
-        {% include "comments.html" %}
-        
-    </div> <!-- End Second Half -->
+ <p> <a href="{% url 'gleanevent:postgleanview' glean.id %}" class="btn btn-primary">
+    View Volunteer Hours
+  </a>
+</p>
+  {% endif %}
+  {% endif %}
+  </div>
+  
+  {% if glean.description %}
+    <p>{{glean.description|linebreaks}}</p>
+  {% endif %}
+  <h6>Expected Duration: {{glean.duration}}</h6>
+  <div class="glean-half">
+    <h4>Directions</h4>
+  <p>{{glean.render_directions|linebreaks}}</p>
+  </div>
+  <div class="glean-half">
+  <h4>Instructions</h4>
+  <p>{{glean.render_instructions|linebreaks}}</p>
+  </div>
+</div>
+<style type="text/css">
+  html { height: 100% }
+  body { height: 100%; margin: 0; padding: 0 }
+  #map-canvas { height: 100% }
+</style>
+<div class="span6" id="map-canvas" style="height:400px;"></div>
+<div class="span6">
+  <div class="comments">
+  {% get_comment_list for glean as comment_list %}
+  {% if comment_list %}
+  {% for comment in comment_list %}
+  <p>{{comment.user.profile_set.get.first_name}} {{comment.user.profile_set.get.last_name}}:&nbsp;&nbsp;{{comment.comment}}</p>
+  {% endfor %}
+  {% else %}
+  <div style="text-align:center;"><small>Post comments here to discuss rideshares!</small></div>
+  {% endif %}
+  </div>
+  {% get_comment_form for glean as form %}
+  {% if user.is_authenticated %}
+    <form action="{% comment_form_target %}" method="POST">
+            {% csrf_token %}
+            <!--{{ form.comment }}-->
+            <input type="text" style="margin-top:12px" id="id_comment" name="comment">
+            {{ form.honeypot }}
+            {{ form.content_type }}
+            {{ form.object_pk }}
+            {{ form.timestamp }}
+            {{ form.security_hash }}
+            <input type="hidden" name="next" value="{% url 'gleanevent:detailglean' glean.id %}" />
+            <input type="submit" class="btn btn-primary btn-small" value="Post a Comment" id="id_submit" />
+    </form>
+{% else %}
+    <p>Please <a href="{% url 'auth_login' %}">log in</a> to leave a comment.</p>
+{% endif %}
 </div>
 
 {% endblock body %}
-
-{% block javascript %}
-<script type="text/javascript"
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHs-DW2GgXZL0nvZ4xj8q5AhdJQ9sNpaY&amp;sensor=false">
-</script>
-<script>
-var $container = $('.comments-holder');
-$container.scrollTop($container.height())
-</script>
-<script src="{% static '/static/initializr/js/google_map.js' %}"></script>
-{% endblock javascript %}

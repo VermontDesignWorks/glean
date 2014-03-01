@@ -158,19 +158,22 @@ h3 {
 }
 .yellow-box{
    background-color: #f5f8c5;
-   overflow:auto;
+   overflow: auto;
 }
 .yellow-box + .yellow-box {
-   margin-top:12px;
+   margin-top: 12px;
 }
 .green-top {
-   border-top:5px solid #6e9614;
+   border-top: 10px solid #6e9614;
+}
+.green-top-slim {
+   border-top: 5px solid #6e9614;
 }
 .red-top {
-   border-top:10px solid #d25231;
+   border-top: 10px solid #d25231;
 }
 .yellow-top {
-   border-top:10px solid #ffc64a;
+   border-top: 10px solid #ffc64a;
 }
 .about-box {
    width: 788px;
