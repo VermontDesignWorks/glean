@@ -98,10 +98,12 @@ Gleaning Details
 
         <div id="glean-comment-form">
             {% if user.is_authenticated %}
+                {% get_comment_form for glean as form %}
                 <form action="{% comment_form_target %}" method="POST">
                         {% csrf_token %}
                         <!--{{ form.comment }}-->
                         <input type="text" style="margin-top:12px" id="id_comment" name="comment">
+
                         {{ form.honeypot }}
                         {{ form.content_type }}
                         {{ form.object_pk }}
