@@ -156,7 +156,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'django.contrib.comments',
+    #'django.contrib.comments',
 
     # coder installed apps
     'counties',
@@ -176,6 +176,7 @@ INSTALLED_APPS = (
     'registration',
     'crispy_forms',
     'south',
+    'django_comments',
 
     # admin:
     'django.contrib.admin',

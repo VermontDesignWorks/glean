@@ -75,11 +75,11 @@ $('#physical_is_mailing-button').popover({
    'content':"This information is optional and for reference use only."
 });
 
-$(document).ready(function() {
+/*$(document).ready(function() {
   $(window).keydown(function(event){
     if(event.keyCode == 13) {
       event.preventDefault();
       return false;
     }
   });
-});
+});*/

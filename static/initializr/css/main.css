@@ -7,7 +7,16 @@ body{
    background-repeat:repeat;
    font-family:'Kameron', serif;
    font-size:13px;
+   padding: 0;
 }
+.container{
+   margin: 0;
+}
+
+.body-container {
+   width:1170px;
+}
+
 
 #navbar-container{
    width:100%;
@@ -28,7 +37,6 @@ body{
 }
 
 #footer-container{
-   width:100%;
    margin:73px 0 0 0;
    height:30px;
    background-color:#6e9614;
@@ -154,7 +162,10 @@ h3 {
    border-top:5px solid #6e9614;
 }
 .red-top {
-   border-top:5px solid #d25231;
+   border-top:10px solid #d25231;
+}
+.yellow-top {
+   border-top:10px solid #ffc64a;
 }
 .about-box {
    width: 788px;
@@ -165,18 +176,25 @@ h3 {
    margin: 11px 24px;
    line-height:16px;
 }
-#partners > div > h3{
+#partners > div > h3 {
    font-size:24px;
    margin: 31px 0;
 }
-.partner-image{
+.partner-image {
    margin-left: 18px;
 }
 
-#glean-submit{
+#glean-submit {
    margin: 0 6px 9px;
    background-color: #ffc64a;
    box-shadow: -2px -2px 2px inset #8e6e29;
+}
+#map-container {
+   margin-bottom:14px;
+   padding:10px;
+}
+#map-canvas {
+   height:383px;
 }
 
 /* ==========================================================================
@@ -249,7 +267,14 @@ a.day-name {
    border: 2px #6c9614 solid;
    height:119px;
 }
+.day-body > ul {
+   list-style: none;
+   margin: 0;
+   text-align: center;
+}
+#glean-wrapper{
 
+}
 .glean-button{
    margin: 17px 4px;
    background-color: #6c9614;
@@ -269,9 +294,9 @@ a.day-name {
    ========================================================================== */
 
 #glean-header {
-   width:100%;
-   clear:both;
-   height:105px;
+   width: 1154px;
+   clear: both;
+   height: 105px;
    margin: 5px 5px 5px 5px;
 }
 #glean-titles {
@@ -294,8 +319,9 @@ a.day-name {
    clear:none;
    float:left;
 }
-.glean-half + .glean-half{
+.glean-half + .glean-half {
    margin-left: 15px;
+   width:564px;
 }
 .glean-details{
    height:247px;
@@ -304,7 +330,12 @@ a.day-name {
    width:50%;
    float:left;
 }
-
+.glean-details-quarter{
+   min-height:124px;
+}
+.glean-details-quarter > h4 {
+   font-weight: bold;
+}
 .glean-address {
    margin-bottom:0px;}
 
@@ -375,7 +406,6 @@ td>input[type="checkbox"]{
    
 .glean-title{text-align: center;color:#444;}
 .glean-title:hover{color:#000;text-decoration: none;}
-.glean-details{border: 1px solid #e5e5e5; padding:2%;}
 .glean-half>ul {list-style:none;margin:0 0 0 0;}
 .glean-quarter{width:48%;margin:0 1%; float:left;}
 .divider{width:100%; clear:both; border-bottom:dotted #444 1px;margin:10px 0;}

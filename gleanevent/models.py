@@ -1,4 +1,4 @@
-from datetime import date, datetime
+import datetime
 
 from django.db import models
 from django.forms import TextInput
@@ -96,6 +96,19 @@ class GleanEvent(models.Model):
         if (self.farm and hasattr(self.farm, 'instructions')
                 and self.farm.instructions):
             return unicode(self.farm.instructions)
+        else:
+            return u"Show up early and have fun!"
+
+    def render_directions(self):
+        if self.directions:
+            return unicode(self.directions)
+        if (self.farm_location and
+                hasattr(self.farm_location, 'directions') and
+                self.farm_location.directions):
+            return unicode(self.farm_location.directions)
+        if (self.farm and hasattr(self.farm, 'directions')
+                and self.farm.directions):
+            return unicode(self.farm.directions)
         else:
             return u"Show up early and have fun!"
 

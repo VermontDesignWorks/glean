@@ -25,7 +25,13 @@ Welcome to the Gleaning Interface!
         <div class="day-body">
             <ul>
                 {% for glean in day.1 %}
-                <li><a href="{% url 'gleanevent:detailglean' glean.id %}"><span class="{{glean.member_organization.color}}">{{glean.member_organization}}</span></a></li>
+                <li><a href="{% url 'gleanevent:detailglean' glean.id %}"><span class="{{glean.member_organization.color}}">
+                {% if glean.counties.all.0 %}
+                    {{glean.counties.all.0}}
+                {% else %}
+                    {{glean.member_organization}}
+                {% endif %}
+                </span></a></li>
                 {% endfor %}
                 {% if day.2 %}
                 <li><a href="{% url 'gleanevent:index' %}
