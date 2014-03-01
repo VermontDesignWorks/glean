@@ -4,23 +4,51 @@
 
 {% block content %}
 
-<h1>Log in</h1>
+<div class="red login-page-box">
+	<p class="error no-margin">
+	{% if form.errors %}
+		Please correct the errors below:
+	{% else %}
+		&nbsp; 
+	{% endif %}
+	</p>
+	<div class="form-row">
+		<form method="post" class="no-margin" action="?next={{ next|default:"/" }}">
+		{% csrf_token %}
+			<div class="form-third">
+					<h4 for="id_username">Username:</h4>
+					{{ form.username }}
+					<p class="error">
+					{% if form.username.errors %}
+						{{ form.username.errors|join:", " }}
+					{% else %}
+						&nbsp;
+					{% endif %}
+					</p>
+			</div>
+			<div class="form-third">
+					<h4 for="id_password">Password:</h4>
+					{{ form.password }}
+					<p class="error">
+						{% if form.password.errors %}
+							{{ form.password.errors|join:", " }}
+						{% else %}
+							&nbsp;
+						{% endif %}
+					</p>
+			</div>
+			<div class="form-third">
+				<input type="submit" class="glean-button yellow-button login-margin" value="Glean!" />
+			</div>
+		</form>
+	</div>
 
-{% if form.errors %}
-<p class="error">Please correct the errors below:</p>
-{% endif %}
-
-<form method="post" action="?next={{ next|default:"/" }}">{% csrf_token %}
-<dl>
-<dt><label for="id_username">Username:</label>{% if form.username.errors %} <span class="error">{{ form.username.errors|join:", " }}</span>{% endif %}</dt>
-<dd>{{ form.username }}</dd>
-<dt><label for="id_password">Password:</label>{% if form.password.errors %} <span class="error">{{ form.password.errors|join:", " }}</span>{% endif %}</dt>
-<dd>{{ form.password }}</dd>
-<dt><input type="submit" value="Log in" /></dt>
-</dl>
-</form>
-{% endblock %}
-
-{% block related %}
-<p>Please enter your username and password to access the site. Forgot either one? <a href="{% url 'auth_password_reset' %}">Reset it here.</a> Don't have an account? <a href="{% url 'registration_register' %}">Create a new one</a></p>
-{% endblock %}
+	<div class="login-span">
+		<h4> <a class="login-link" href="{% url 'auth_password_reset' %}">Forgot your password?</a></h4>
+		<p>Not a gleaner yet? <a class="login-link" href="{% url 'registration_register' %}">Sign Up Now</a></p>
+	</div>
+</div>
+<div class="yellow-bar short-bar">
+	&nbsp;
+</div>
+	{% endblock %}
