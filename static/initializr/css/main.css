@@ -384,6 +384,30 @@ a.day-name {
    /*border: 1px solid #e5e5e5;*/
 }
 
+/* ==========================================================================
+   Farm Detail
+   ========================================================================== */
+#farm-header {
+   width: 1170px;
+   clear: both;
+   height: 65px;
+   margin-bottom: 5px;
+}
+.farm-third {
+   padding: 0 20px 20px 20px;
+   width: 350px;
+   float: left;
+   min-height: 100px;
+}
+.farm-third > ul {
+   font-size: 18px;
+}
+.farm-buttons {
+   margin: 39px 0 0 0;
+}
+.location > h4 {
+   font-weight: bold;
+}
 
 /* ==========================================================================
    Author's custom styles
