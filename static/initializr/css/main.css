@@ -474,6 +474,34 @@ a.day-name {
 
 
 /* ==========================================================================
+   Forms!
+   ========================================================================== */
+.table-form{
+    border:1px #e5e5e5 solid;
+    border-radius:5px;
+    padding:13px;
+}
+.table-important{
+    /*background-color:#f7f5f5;*/
+}
+.table-form + .table-form{
+    margin-top:42px;
+}
+th>label{
+   float:right;
+   margin-right:18px;
+}
+.tabel-important>td{
+   text-align:left;
+}
+td>input[type="checkbox"]{
+   float:left;
+}
+.modal-header h3{
+   text-align:left;
+}
+
+/* ==========================================================================
    Author's custom styles
    ========================================================================== */
 body{
@@ -505,34 +533,6 @@ td label {font-size:0.95em;font-weight:bold;}
 .index-header{margin-bottom:20px;}
 .index-title{text-align:center;}
 
-/* ==========================================================================
-   Generic Forms Page
-   ========================================================================== */
-   
-.table-form{
-    border:1px #e5e5e5 solid;
-    border-radius:5px;
-    padding:13px;
-}
-.table-important{
-    background-color:#f7f5f5;
-}
-.table-form + .table-form{
-    margin-top:42px;
-}
-th>label{
-   float:right;
-   margin-right:18px;
-}
-.tabel-important>td{
-   text-align:left;
-}
-td>input[type="checkbox"]{
-   float:left;
-}
-.modal-header h3{
-   text-align:left;
-}
 /* ==========================================================================
    Glean Page
    ========================================================================== */
