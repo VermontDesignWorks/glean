@@ -1,35 +1,52 @@
 {% extends 'base.html' %}
 {% load url from future %}
 {% block title %}
-Member Organization Index
+Farm Index
 {% endblock title %}
 
 {% block body %}
-<div class="row-fluid index-header">
-	<div class="span6 index-title">
-		<h1>Member Organization Index</h1>
-		<a href="{% url 'memorgs:newmemorg' %}" class="btn btn-success">New Member Organization</a>
-	</div>
-	<div class="span6">
-		<p>Member Organization Index Page- this is something that only Salvation Farms members get to see. If you'd like to check a Member Organization's data, just click on their name. As a Sal Farms member you have full editing rights over their content, but be careful, with great power comes the great ability to royally screw things up!</p>
-		<p>Creating a new Member Organization automatically creates a default email template for them, as well as gives you the opportunity to make administrative users.<p>
+
+<div id="glean-index-header">
+	<h1 class="pull-left">Member Organization Index</h1>
+	<div id="glean-buttons">
+		<a href="{% url 'memorgs:newmemorg' %}">
+			<button class="glean-button green-button no-margin">
+				Add a New Member Organization
+			</button>
+		</a>
 	</div>
 </div>
-<div class="index-table">
-	<div class="row-fluid">
-		<div class="span6">
-			{% if memorgs %}
+
+<div class="glean-index-red red">
+	<h3>Our Member Organizations Index page</h3>
+	<p>This is something that only Salvation Farms members get to see. If you'd like to check a Member Organization's data, just click on their name. As a Sal Farms member you have full editing rights over their content, but be careful, with great power comes the great ability to royally screw things up!</p>
+	<p>Creating a new Member Organization automatically creates a default email template for them, as well as gives you the opportunity to make administrative users.</p>
+</div>
+
+<br />
+
+<div id="glean-index" class="yellow-box yellow-top">
+	{% if memorgs %}
+	
+		<div class="glean-column">
 			<ul>
 			{% for memorg in memorgs %}
-			<li>
-			<a href="{% url 'memorgs:detailmemorg' memorg.id %}">{{ memorg.name }}</a>
+			{% if forloop.counter|divisibleby:10 %}
+			</ul>
+		</div>
+		<div class="glean-column">
+			<ul>
+			{% endif %}
+			<li><a href="{% url 'memorgs:detailmemorg' memorg.id %}">{{ memorg.name }}</a>
 			</li>
 			{% endfor %}
 			</ul>
-			{% else %}
-			<span>No memorgs :(</span>
-			{% endif %}
 		</div>
 	</div>
+	{% else %}
+	<span>No memorgs :(</span>
+	{% endif %}
 </div>
-{% endblock body %} 
+{% include "about_box.html" %}
+{% include "partners.html" %}
+{% endblock body %}
