@@ -1,3 +1,16 @@
+from crispy_forms.bootstrap import (FieldWithButtons,
+                                    InlineCheckboxes,
+                                    StrictButton,
+                                    AppendedText)
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import (Layout,
+                                 Fieldset,
+                                 ButtonHolder,
+                                 Field,
+                                 Row,
+                                 Submit,
+                                 Div,
+                                 HTML)
 from registration.backends.default.views import RegistrationView
 from registration.forms import RegistrationForm
 
@@ -10,6 +23,65 @@ from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, STATES
 
 
 class ExtendedRegistrationForm(RegistrationForm):
+    def __init__(self, *args, **kwargs):
+        super(ExtendedRegistrationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = "id-custom-registration-form"
+        self.helper.form_method = "post"
+        self.helper.layout = Layout(
+            Fieldset(
+                "",
+                HTML("<h3 class='lbl'>Basic User Information</h3>"
+                     "<h4>Please fill in all the below information"
+                     " to create your account.</h4>"),
+                Row("username", "email"),
+                Row("password1", "password2"),
+                Row("first_name", "last_name"),
+                Row("address_one", "address_two"),
+                Row("city", "state"),
+                Row("zipcode", "age"),
+                Row("phone", "phone_type"),
+                Row("preferred_method", "")
+            ),
+            Fieldset(
+                "",
+                HTML("<h3 class='lbl'>Emergency Contact Information</h3>"),
+                Row("ecfirst_name",
+                    "eclast_name"),
+                Row("ecphone",
+                    "ecrelationship"),
+            ),
+            Fieldset(
+                "",
+                HTML("<h3 class='lbl'>Counties You'd Like to Glean In</h3>"),
+                Div(InlineCheckboxes("counties"),
+                    css_class="form-checkboxes")
+            ),
+            Fieldset(
+                "",
+                HTML("<h3 class='lbl'>We want you to be safe and happy...</h3>"
+                     "<h4>Please read and consider these agreements"
+                     " before committing to be a gleaner.</h4>"),
+                AppendedText('waiver', '<a href="#waiver-modal" role="button"'
+                             ' data-toggle="modal"><button class="glean-button'
+                             ' yellow-button no-margin">View Waiver'
+                             '</button></a>'),
+                AppendedText('agreement', '<a href="#agreement-modal" '
+                             'role="button" data-toggle="modal"><button'
+                             ' class="glean-button yellow-button no-margin">'
+                             'View Volunteer Agreement</button></a>'),
+                AppendedText('photo_release', '<a href="#photo-release" '
+                             'role="button" data-toggle="modal"><button'
+                             ' class="glean-button yellow-button no-margin">'
+                             'View Photo Release</button></a>'),
+                HTML("<h4>Keep me in the loop! <small>(with periodic email "
+                     "updates &amp; newsletters from Salvation Farms)</small>"
+                     "</h4>"),
+                "opt_in"
+            ),
+            Submit('submit', 'Register', css_class='glean-button green-button')
+        )
+
     first_name = forms.CharField(label="First Name", max_length=20)
     last_name = forms.CharField(label="Last Name", max_length=20)
     address_one = forms.CharField(label="Address", max_length=200)
@@ -24,7 +96,6 @@ class ExtendedRegistrationForm(RegistrationForm):
     counties = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
         queryset=County.objects.all(),
-        label="Counties You'd like to Glean In",
         required=False
     )
     age = forms.ChoiceField(label="Age",
@@ -39,10 +110,10 @@ class ExtendedRegistrationForm(RegistrationForm):
     )
 
     ecfirst_name = forms.CharField(
-        label="Emergency Contact First Name", max_length=200)
+        label="First Name", max_length=200)
     eclast_name = forms.CharField(
-        label="Emergency Contact Last Name", max_length=200)
-    ecphone = forms.CharField(label="Emergency Contact Phone", max_length=200)
+        label="Last Name", max_length=200)
+    ecphone = forms.CharField(label="Phone", max_length=200)
     ecrelationship = forms.CharField(label="Relationship", max_length=200)
 
     waiver = forms.BooleanField(
@@ -52,10 +123,7 @@ class ExtendedRegistrationForm(RegistrationForm):
     # seriously?
     photo_release = forms.BooleanField(
         label="Do you accept the Photo Release?", required=False)
-    opt_in = forms.BooleanField(
-        label="Do you wish to recieve newsletters and personalized messages?",
-        required=False
-    )
+    opt_in = forms.BooleanField(label="", required=False)
 
 
 class AdminExtendedRegistrationForm(RegistrationForm):

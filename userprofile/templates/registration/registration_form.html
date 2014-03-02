@@ -1,206 +1,26 @@
 {% extends "base.html" %}
-
+{% load crispy_forms_tags %}
 {% block title %}Sign up{% endblock %}
 
 {% block body %}
-
-  {% if form.errors %}
-  <p class="errors">Please correct the errors below: {{ form.non_field_errors }}</p>
-  
-  {% endif %}
-
-  
-  <form method="post" action="">
-	{% csrf_token %}
-  	<div class="row-fluid">
-	<div class="span6">
-  <h3 class="text-center">Create an account</h3>
-		<div class="table-form table-important">
-    <table>
-		<tbody>
-			<tr class="required"><th><label for="id_username">Username:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.username}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_email">E-mail:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.email}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_password1">Password:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.password1}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_password2">Password (again):<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.password2}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_first_name">First Name:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.first_name}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_last_name">Last Name:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.last_name}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_address_one">Address:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.address_one}}
-
-			</td></tr>
-			<tr><th><label for="id_address_two">Address (line two):</label></th><td>
-
-				{{form.address_two}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_city">City:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.city}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_state">State:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.state}}
-
-		</td></tr>
-			<tr><th><label for="id_zipcode">Zipcode:</label></th><td>
-
-				{{form.zipcode}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_counties">Counties You&#39;d like to Glean In:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.counties}}
-
-		</td></tr>
-			<tr class="required"><th><label for="id_age">Age:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.age}}
-
-		</td></tr>
-			<tr class="required"><th><label for="id_phone">Primary Phone:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.phone}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_phone_type">Phone Type:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.phone_type}}
-
-		</td></tr>
-			<tr class="required"><th><label for="id_preferred_method">How Should We Contact You?<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.preferred_method}}
-
-		</td></tr>
-			<tr class="required"><th><label for="id_ecfirst_name">Emergency Contact First Name:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.ecfirst_name}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_eclast_name">Emergency Contact Last Name:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.eclast_name}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_ecphone">Emergency Contact Phone:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.ecphone}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_ecrelationship">Relationship:<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.ecrelationship}}
-
-			</td></tr>
-			<tr class="required"><th><label for="id_waiver">Do you accept the Waiver of Liability?<span class="text-error" style="font-size:1.5em">*</span></label> </th><td>
-
-				{{form.waiver}}
-			<a href="#waiver-modal" role="button" class="btn" data-toggle="modal">View Waiver</a>
-
-				<!-- Modal -->
-				<div id="waiver-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				  <div class="modal-header">
-				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				    <h3 id="myModalLabel">Waiver of Liability</h3>
-				  </div>
-				  <div class="modal-body">
-				    {% include 'registration/waiver_of_liability.html' %}
-				  </div>
-				  <div class="modal-footer">
-				    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-				  </div>
-				</div>
-
-			</td></tr>
-			<tr class="required"><th><label for="id_agreement">Do you accept the Volunteer Agreement?<span class="text-error" style="font-size:1.5em">*</span></label></th><td>
-
-				{{form.agreement}}
-
-
-				<a href="#agreement-modal" role="button" class="btn" data-toggle="modal">View Agreement</a>
-
-				<!-- Modal -->
-				<div id="agreement-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				  <div class="modal-header">
-				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				    <h3 id="myModalLabel">Volunteer Agreement</h3>
-				  </div>
-				  <div class="modal-body">
-				    {% include 'registration/volunteer_agreement.html' %}
-				  </div>
-				  <div class="modal-footer">
-				    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-				  </div>
-				</div>
-
-			</td></tr>
-			<tr class="required"><th><label for="id_photo_release">Do you accept the Photo Release?</label></th><td>
-
-				{{form.photo_release}}
-
-
-				<a href="#photo-release" role="button" class="btn" data-toggle="modal">View Release</a>
-
-				<!-- Modal -->
-				<div id="photo-release" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				  <div class="modal-header">
-				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				    <h3 id="myModalLabel">Photo Release</h3>
-				  </div>
-				  <div class="modal-body">
-				    {% include 'registration/photo_release.html' %}
-				  </div>
-				  <div class="modal-footer">
-				    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-				  </div>
-				</div>
-
-			</td></tr>
-			<tr class="required"><th><label for="id_opt_in">Do you wish to recieve newsletters and personalized messages?</label></th><td>
-
-				{{form.opt_in}}
-
-			</td></tr>
-		</tbody>
-	</table>
-<div class="form-actions"><span class="pull-left"><span class="text-error" style="font-size:1.5em">*</span>Designates a required field</span>
-    <input type="submit" class="btn btn-primary pull-right" id="fu" value="Register &rarr;">
+<h1>Create an Account</h1>
+<div class="red reg-box">
+	<h4>Thanks for your interest in gleaning!</h4>
+	<p>Before you head out to farms, we need to know how to contact you and keep you safe. Please provide the following info to get connected to a gleaning program near you.</p>
+	<h4>How and when will I be contacted?</h4>
+	<p>We'll send you a confirmation email when you submit this form. We will not share your contact information with anyone except the Gleaning Collective partners who organize gleaning in the region(s) you have selected to glean in.</p>
 </div>
-		</div>
-	</div>
-</div>
-  </form>
-  
-{% endblock %}
 
+{% crispy form %}
 
+<style>
+.add-on {
+	background-color: transparent !important;
+	border: none !important;
+}
 
+</style>
+{% endblock body %}
 {% block related %}
 <h3>Thanks for your interest in gleaning!</h3>
 
