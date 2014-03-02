@@ -454,7 +454,7 @@ a.day-name {
 }
 #index-controls {
    height:31px;
-   padding:10px;
+   padding:10px ;
 }
 .location > h4 {
    font-weight: bold;
@@ -544,7 +544,8 @@ legend .no-margin {
     padding: 13px;
 }
 .table-important{
-    /*background-color: #f7f5f5;*/
+   background-image:url("/static/images/red-pxl.png");
+   background-repeat:repeat;
 }
 .table-form + .table-form{
     margin-top: 42px;
