@@ -4,11 +4,64 @@
 Farm Index
 {% endblock title %}
 
-
-{% block heading %}
-{% endblock heading %}
-
 {% block body %}
+
+<div id="glean-index-header">
+	<h1 class="pull-left">Farm Index</h1>
+	<div id="glean-buttons">
+		<a href="{% url 'farms:newfarm' %}">
+			<button class="glean-button green-button no-margin">
+				Add a New Farm
+			</button>
+		</a>
+	</div>
+</div>
+
+<div class="glean-index-red red">
+	<h3>The Farms We Work With</h3>
+	<p>This list automatically updates as you add new farms. To create a new farm, click on the button on the left, which will allow you to enter all information necessary to create a farm and add locations, information which will auto-populate your Glean Event Forms.</p>
+	<p>It's important to enter you farm data, it'll make the process of announcing gleans effortless down the line.</p>
+</div>
+
+<div id="index-controls">
+	<div class="more-buttons">
+		<a href="{% url 'farms:download' %}">
+			<button id="download-list" class="glean-button red-button">
+				Download List
+			</button>
+		</a>
+	</div>
+</div>
+
+<div id="glean-index" class="yellow-box yellow-top">
+	{% if farms %}
+	
+		<div class="glean-column">
+			<ul>
+			{% for farm in farms %}
+			{% if forloop.counter|divisibleby:10 %}
+			</ul>
+		</div>
+		<div class="glean-column">
+			<ul>
+			{% endif %}
+			<li><a href="{% url 'farms:detailfarm' farm.id %}">{{ farm.name }}</a>
+			</li>
+			{% endfor %}
+			</ul>
+		</div>
+	</div>
+	{% else %}
+	<span>No farms :(</span>
+	{% endif %}
+</div>
+{% include "about_box.html" %}
+{% include "partners.html" %}
+{% endblock body %}
+
+
+
+
 <div class="row-fluid index-header">
 	<div class="span6 index-title">
 		<h1>Farm Index</h1>
@@ -36,4 +89,3 @@ Farm Index
 {% else %}
 <span>No farms :(</span>
 {% endif %}
-{% endblock body %} 

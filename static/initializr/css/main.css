@@ -325,37 +325,80 @@ a.day-name {
    height: 105px;
    margin: 5px 5px 5px 5px;
 }
-#glean-titles {
-   width:45%;
-   clear:none;
-   float:left;
+#glean-index-header {
+   width: 1165px;
+   clear: both;
+   height: 66px;
+   margin: 5px 5px 5px 5px;
 }
-#glean-buttons{
-   clear:none;
-   float:right;
+.glean-index-red {
+   padding: 0 20px 20px 20px;
+   font-size: 18px;
+}
+.glean-index-red > h3 {
+   color: #ffc64a;
+   margin-bottom: 0;
+   
+}
+#glean-titles {
+   width: 45%;
+   clear: none;
+   float: left;
+}
+#glean-buttons {
+   clear: none;
+   float: right;
    margin: 39px 0 0 0;
 }
-#glean-wrapper{
-   width:100%;
-   clear:both;
+#glean-wrapper {
+   width: 100%;
+   clear: both;
+}
+#glean-index-controls {
+   margin: 10px auto 0 auto;
+}
+#glean-index-form {
+   float: left;
+}
+#glean-index-form > input + label, #glean-index-form > input + input  {
+   margin-left: 18px;
+}
+#glean-index {
+   width: 1130px;
+   min-height: 200px;
+   padding: 20px;
+   overflow: auto;
+   margin-bottom: 40px;
+}
+.glean-column {
+   width: 330px;
+   clear: none;
+   float: left;
+   margin: 20px 20px;
+
+}
+
+#download-list {
+   margin: 0 0 0 18px;
 }
 .glean-half {
-   width:577px;
-   clear:none;
+   width: 577px;
+   clear: none;
+   float: left;
+}
+.more-buttons {
    float:left;
+   margin: 2px 0 0 18px;
 }
 .glean-half + .glean-half {
    margin-left: 15px;
    width:564px;
 }
-.glean-details{
-   
-}
 .glean-details-half {
    width:50%;
    float:left;
 }
-.glean-details-quarter{
+.glean-details-quarter {
    min-height:98px;
    padding:10px;
    text-align:center;
@@ -408,6 +451,10 @@ a.day-name {
 }
 .farm-buttons {
    margin: 39px 0 0 0;
+}
+#index-controls {
+   height:31px;
+   padding:10px;
 }
 .location > h4 {
    font-weight: bold;
