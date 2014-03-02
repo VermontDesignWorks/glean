@@ -104,23 +104,13 @@
    "model": "counties.county", 
    "fields": {
       "towns": "", 
-      "state": "VT", 
-      "name": "Rutland", 
-      "description": ""
-   }
-},
-{
-   "pk": 12, 
-   "model": "counties.county", 
-   "fields": {
-      "towns": "", 
       "state": "NY", 
       "name": "Washington", 
       "description": ""
    }
 },
 {
-   "pk": 13, 
+   "pk": 12, 
    "model": "counties.county", 
    "fields": {
       "towns": "", 
@@ -130,7 +120,7 @@
    }
 },
 {
-   "pk": 14, 
+   "pk": 13, 
    "model": "counties.county", 
    "fields": {
       "towns": "", 
