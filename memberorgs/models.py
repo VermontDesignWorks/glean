@@ -64,6 +64,12 @@ class MemOrg(models.Model):
     notify = models.BooleanField(
         'Notify on New Volunteer Signup?', default=False)
 
+    testing = models.BooleanField(
+        "Relay Announcement Emails to Testing Address", default=True)
+
+    testing_email = models.CharField(
+        "Testing Email Address", max_length="200", blank=True)
+
     def __unicode__(self):
         return self.name
 

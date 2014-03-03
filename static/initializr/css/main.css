@@ -607,6 +607,9 @@ label.checkbox {
    width: 33%;
    float: left;
 }
+#announce-well, textarea {
+   background-color: #fbf8cc !important;
+}
 
 /* ==========================================================================
    Author's custom styles
