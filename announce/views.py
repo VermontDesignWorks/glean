@@ -333,7 +333,6 @@ def combinedAnnounce(request, announce_id):
             profile.member_organization != announce.member_organization):
         return HttpResponseRedirect(
             reverse('announce:detailannounce', args=(announce_id,)))
-    #return HttpResponse(announce.template.body)
     glean = announce.glean
     if announce.title:
         subject = announce.title
