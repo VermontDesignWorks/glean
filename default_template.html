@@ -332,7 +332,7 @@
                                     <table border="0" cellpadding="10" cellspacing="0" width="100%">
                                     	<tr>
                                         	<td valign="top">
-                                            	<div mc:edit="std_preheader_content">Come glean with us on [day of the week]!</div>
+                                            	<div mc:edit="std_preheader_content">Come glean with us!</div>
                                             </td>
                                             <!-- *|IFNOT:ARCHIVE_PAGE|* -->
 											<td valign="top" width="190">
@@ -378,15 +378,15 @@
                                                 <table border="0" cellpadding="20" cellspacing="0" width="100%">
                                                     <tr>
                                                         <td valign="top">
-                                                            <div mc:edit="std_content00"><h1 class="h1">[title]</h1>
+                                                            <div mc:edit="std_content00"><h1 class="h1">{{glean.title}}</h1>
 
 <h2 class="h2" style="line-height: 30px;"><br>
-Join us for a&nbsp;glean&nbsp;in the [morning/afternoon] on [day, month date] &nbsp;&nbsp;</h2>
-<strong>For more information and to RSVP, head to the Gleaners Interface.&nbsp;</strong>If that link doesn&#39;t work, copy and paste this one into your web browser: [link]
+Join us for a&nbsp;glean&nbsp;on {{date}} &nbsp;&nbsp;</h2>
+<strong>For more information and to RSVP, click here for {{info}}&nbsp;</strong>If that link doesn&#39;t work, copy and paste this one into your web browser: http://{{raw_glean_link}}
 
 <h4 class="h4" style="line-height: 22px;"><br>
 Hope to see you soon!&nbsp;</h4>
-- [collective member] and the Vermont Gleaning Collective</div>
+- Vermont Gleaning Collective</div>
 														</td>
                                                     </tr>
                                                 </table>
@@ -425,7 +425,7 @@ Hope to see you soon!&nbsp;</h4>
                                                             <div mc:edit="std_utility"><div style="text-align: center;"><span style="text-align:start"><font color="#222222" face="arial, sans-serif"><span style="line-height:normal">You are&nbsp;receiving&nbsp;this email because you registered as a volunteer gleaner&nbsp;<br>
 with the&nbsp;Vermont Gleaning Collective</span></font></span></div>
 
-<div style="text-align: center;">&nbsp;<a href="*|UNSUB|*">unsubscribe from this list</a> | <a href="*|UPDATE_PROFILE|*">update subscription preferences</a>&nbsp;</div>
+<div style="text-align: center;">&nbsp;{{unsubscribe}} from this list</a></div>
 </div>
                                                         </td>
                                                     </tr>

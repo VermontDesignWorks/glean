@@ -41,10 +41,18 @@ urlpatterns = patterns(
     #==================# Template Urls #==================#
     url(r'^templates/$', views.Templates, name='templates'),
     url(r'^templates/new/$', views.newTemplate, name='newtemplate'),
-    url(r'^templates/(?P<template_id>\d+)/$', views.detailTemplate, name='detailtemplate'),
-    url(r'^templates/(?P<template_id>\d+)/delete/$', views.deleteTemplate, name='deletetemplate'),
-    url(r'^templates/(?P<template_id>\d+)/edit/$', views.editTemplate, name='edittemplate'),
+    url(r'^templates/(?P<template_id>\d+)/$',
+        views.detailTemplate,
+        name='detailtemplate'),
+    url(r'^templates/(?P<template_id>\d+)/delete/$',
+        views.deleteTemplate,
+        name='deletetemplate'),
+    url(r'^templates/(?P<pk>\d+)/edit/$',
+        views.editTemplateClass.as_view(),
+        name='edittemplate'),
 
     #=================# RSVP & Sub Urls #=================#
-    url(r'^unsubscribe/(?P<key>\w+)$', views.unsubscribeLink, name='unsubscribelink'),
+    url(r'^unsubscribe/(?P<key>\w+)$',
+        views.unsubscribeLink,
+        name='unsubscribelink'),
 )

@@ -40,6 +40,17 @@ def Templates(request):
 
 
 #== Template Edit View ==#
+
+
+class editTemplateClass(generic.UpdateView):
+    model = Template
+    form_class = PartialTemplateForm
+    template_name = 'announce/edit_template.html'
+
+    def get_success_url(self):
+        return reverse('announce:detailtemplate', kwargs={'template_id': self.object.pk})
+
+
 @permission_required('announce.auth')
 def editTemplate(request, template_id):
     template = get_object_or_404(Template, pk=template_id)
