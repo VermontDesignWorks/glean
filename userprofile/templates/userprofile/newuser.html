@@ -1,40 +1,72 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}
 Create a New User
 {% endblock %}
 
+{% block body %}
+<div class="two-thirds">
+	<h5 class='text-success' style="text-align:center;">{{notice}}</h5>
+	<h5 class='text-danger' style="text-align:center;">{{form.errors}}</h5>
+		{% crispy form %}
+	<style>
+	.add-on {
+		background-color: transparent !important;
+		border: none !important;
+	}
+	.row {
+		margin-left: 0px !important;
+	}
+	</style>
 
-{% block heading %}
-	<h3>Input New Volunteers</h3>
-	<h4>{{user.member_organization.get}}</h4>
-{% endblock heading %}
-
-{% block content %}
-<h5 class='text-success' style="text-align:center;">{{notice}}</h5>
-<h5 class='text-danger' style="text-align:center;">{{form.errors}}</h5>
-<form method="POST">
-	{% csrf_token %}
-	{% include 'userprofile/customadd.html' %}
-	<div class="form-actions" style="text-align:right;">
-		<span class="pull-left"><span class="text-error">*</span> Denotes a required field (most are required)</span>
-		<div class="pull-right">
-			<input type="submit" name='action' class="btn btn-success" value="Save">
-			<input type="submit" name='action' class="btn btn-danger" value="Save and Create Another">
-		</div>
+	<div id="waiver-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Waiver of Liability</h3>
+	  </div>
+	  <div class="modal-body">
+	    {% include 'registration/waiver_of_liability.html' %}
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	  </div>
 	</div>
-</form>
+	<div id="agreement-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Volunteer Agreement</h3>
+	  </div>
+	  <div class="modal-body">
+	    {% include 'registration/volunteer_agreement.html' %}
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	  </div>
+	</div>
+	<div id="photo-release" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Photo Release</h3>
+	  </div>
+	  <div class="modal-body">
+	    {% include 'registration/photo_release.html' %}
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	  </div>
+	</div>
+</div>
+</div class="one-third">
+	<h3>Recently added members</h3>
+	{% if 'userprofile.uniauth' in perms %}
+	{% for person in users %}
+	<li><a href="{% url 'userprofile:userprofile' person.id %}">{% if person.profile_set.get.member_organization %}{{person.profile_set.get.member_organization}} {% endif %}{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}}{% if person.member_organizations.all %} - {% for memorg in person.member_organizations.all %}{{person.member_organization}} - {% endfor %}{% endif %}</a></li>
+	{% endfor %}
+	{% else %}
+	{% for person in users %}
+	<li><a href="{% url 'userprofile:userprofile' person.id %}">{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}}</a></li>
+	{% endfor %}
+	{% endif %}
+	</ul>
+</div>
 {% endblock %}
-
-{% block related %}
-<h3>Recently added members</h3>
-{% if 'userprofile.uniauth' in perms %}
-{% for person in users %}
-<li><a href="{% url 'userprofile:userprofile' person.id %}">{% if person.profile_set.get.member_organization %}{{person.profile_set.get.member_organization}} {% endif %}{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}}{% if person.member_organizations.all %} - {% for memorg in person.member_organizations.all %}{{person.member_organization}} - {% endfor %}{% endif %}</a></li>
-{% endfor %}
-{% else %}
-{% for person in users %}
-<li><a href="{% url 'userprofile:userprofile' person.id %}">{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}}</a></li>
-{% endfor %}
-{% endif %}
-</ul>
-{% endblock related %}

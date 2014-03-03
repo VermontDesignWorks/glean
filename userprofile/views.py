@@ -17,7 +17,7 @@ from memberorgs.models import MemOrg
 from constants import VERMONT_COUNTIES
 
 from django import forms
-from gleaning.customreg import AdminExtendedRegistrationForm
+from gleaning.customreg import ExtendedRegistrationForm
 
 @login_required
 def userDetailEntry(request):
@@ -198,7 +198,7 @@ def download(request):
 def newUser(request):
 	notice = ''
 	if request.method == 'POST':
-		form = AdminExtendedRegistrationForm(request.POST)
+		form = ExtendedRegistrationForm(request.POST)
 		if form.is_valid():
 			new_user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password1'])
 			profile = Profile(
@@ -227,12 +227,9 @@ def newUser(request):
 				profile.counties.add(county)
 				county.affix_to_memorgs(new_user)
 			notice = 'New Volunteer ' + profile.first_name + ' ' + profile.last_name + ' has been created.'
-			if request.POST['action'] == 'Save':
-				return HttpResponseRedirect(reverse('userprofile:userlists'))
-			else:
-				form = AdminExtendedRegistrationForm()
+			form = ExtendedRegistrationForm()
 	else:
-		form = AdminExtendedRegistrationForm()
+		form = ExtendedRegistrationForm()
 	if request.user.has_perm('userprofile.uniauth'):
 		users = User.objects.all().order_by('-date_joined')[:20]
 	else:

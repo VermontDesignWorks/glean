@@ -34,8 +34,8 @@ class Profile(models.Model):
         "Phone Type", choices=PHONE_TYPE, max_length=1, default='1')
     mo_emails_only = models.BooleanField(
         default=False, editable=False)
-    preferred_method = models.CharField
-    (choices=PREFERRED_CONTACT, max_length=1, default='1')
+    preferred_method = models.CharField(
+        choices=PREFERRED_CONTACT, max_length=1, default='1')
     member_organization = models.ForeignKey(
         MemOrg, blank=True, null=True, editable=False)
 

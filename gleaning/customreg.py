@@ -79,7 +79,9 @@ class ExtendedRegistrationForm(RegistrationForm):
                      "</h4>"),
                 "opt_in"
             ),
-            Submit('submit', 'Register', css_class='glean-button green-button')
+            HTML("<input type='submit' "
+                 "class='glean-button green-button' "
+                 "name='submit' value='Register'>")
         )
 
     first_name = forms.CharField(label="First Name", max_length=20)
@@ -168,8 +170,8 @@ class AdminExtendedRegistrationForm(RegistrationForm):
     waiver = forms.BooleanField(label="Waiver of Liability?", required=True)
     agreement = forms.BooleanField(label="Volunteer Agreement", required=True)
     # seriously?
-    photo_release = forms.BooleanField(label="Photo Release?")
-    opt_in = forms.BooleanField(label="Email Opt-In?")
+    photo_release = forms.BooleanField(label="Photo Release?", required=False)
+    opt_in = forms.BooleanField(label="Email Opt-In?", required=False)
 
 
 class MyRegistrationView(RegistrationView):
