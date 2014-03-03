@@ -15,6 +15,7 @@ Gleaning Details
     <div id="glean-buttons">
         {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
       <div id="glean-buttons" class="pull-right">
+        <a href="{% url 'announce:announceglean' glean.id %}"><button class="glean-button red-button nomargin">Send Announcement</button></a>
         <a href="{% url 'gleanevent:postgleanview' glean.id %}"><button class="glean-button yellow-button no-margin">View Hours</button></a>
         <a href="{% url 'gleanevent:editglean' glean.id %}"><button class="glean-button no-margin green-button" href="{% url 'gleanevent:editglean' glean.id %}">Edit Glean</button></a>
         <a href="{% url 'gleanevent:deleteglean' glean.id %}"><button class="glean-button no-margin red-button">Delete</button></a>
