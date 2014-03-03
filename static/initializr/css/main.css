@@ -421,11 +421,11 @@ a.day-name {
    padding: 0 40px;
 }
 .directions-instructions {
-   padding:0 24px 24px 24px;
+   padding: 0 24px 24px 24px;
 }
 .comments-holder{
-   height:200px;
-   padding:10px;
+   height: 100px;
+   padding: 10px;
 }
 .comments {
    /*border: 1px solid #e5e5e5;*/
