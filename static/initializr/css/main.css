@@ -542,6 +542,7 @@ legend .no-margin {
     border: 1px #e5e5e5 solid;
     border-radius: 5px;
     padding: 13px;
+    background-color: #6c9614;
 }
 .table-important{
    background-image:url("/static/images/red-pxl.png");
