@@ -638,7 +638,7 @@ td label {font-size:0.95em;font-weight:bold;}
    Index Pages
    ========================================================================== */
    
-.index-table{border:1px #e5e5e5 solid; min-height: 340px; padding:20px;}
+.index-table{border:1px #e5e5e5 solid; min-height: 340px; padding:20px;background-color:#fbf8cc;}
 .index-table > .row-fluid + .row-fluid{padding-top:30px;}
 .index-header{margin-bottom:20px;}
 .index-title{text-align:center;}
