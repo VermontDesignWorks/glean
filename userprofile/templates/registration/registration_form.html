@@ -18,8 +18,44 @@
 	background-color: transparent !important;
 	border: none !important;
 }
-
 </style>
+
+<div id="waiver-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Waiver of Liability</h3>
+  </div>
+  <div class="modal-body">
+    {% include 'registration/waiver_of_liability.html' %}
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+<div id="agreement-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Volunteer Agreement</h3>
+  </div>
+  <div class="modal-body">
+    {% include 'registration/volunteer_agreement.html' %}
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+<div id="photo-release" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Photo Release</h3>
+  </div>
+  <div class="modal-body">
+    {% include 'registration/photo_release.html' %}
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
 {% endblock body %}
 {% block related %}
 <h3>Thanks for your interest in gleaning!</h3>
