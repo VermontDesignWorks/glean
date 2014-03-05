@@ -33,7 +33,11 @@ class ExtendedRegistrationForm(RegistrationForm):
                 "",
                 HTML("<h3 class='lbl'>Basic User Information</h3>"
                      "<h4>Please fill in all the below information"
-                     " to create your account.</h4>"),
+                     " to create your account.</h4>"
+                     "<h4>If you are under 18, please have a parent"
+                     " or guardian review them too -<br /> Checking the box"
+                     " indicates their acceptance of the terms on your"
+                     " behalf.</h4>"),
                 Row("username", "email"),
                 Row("password1", "password2"),
                 Row("first_name", "last_name"),
@@ -74,8 +78,8 @@ class ExtendedRegistrationForm(RegistrationForm):
                              'role="button" data-toggle="modal"><button'
                              ' class="glean-button yellow-button no-margin">'
                              'View Photo Release</button></a>'),
-                HTML("<h4>Keep me in the loop! <small>(with periodic email "
-                     "updates &amp; newsletters from Salvation Farms)</small>"
+                HTML("<h4>Keep me in the loop! Click to recieve email "
+                     "updates &amp; newsletters from Salvation Farms."
                      "</h4>"),
                 "opt_in"
             ),

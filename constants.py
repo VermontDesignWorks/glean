@@ -1,17 +1,17 @@
 VERMONT_COUNTIES = (
-    ( '1', 'Addison' ),
-    ( '2', 'Bennington' ), 
-    ( '3', 'Caledonia' ), 
-    ( '4', 'Chittenden' ), 
-    ( '5', 'Essex' ), 
-    ( '6', 'Franklin' ), 
-    ( '7', 'Lamoille' ), 
-    ( '8', 'Orleans' ), 
-    ( '9', 'Orange' ),
-    ( '10', 'Rutland' ),
-    ( '11', 'Washington' ),
-    ( '12', 'Windham' ),
-    ( '13', 'Windsor' ),
+    ('1', 'Addison'),
+    ('2', 'Bennington'),
+    ('3', 'Caledonia'),
+    ('4', 'Chittenden'),
+    ('5', 'Essex'),
+    ('6', 'Franklin'),
+    ('7', 'Lamoille'),
+    ('8', 'Orleans'),
+    ('9', 'Orange'),
+    ('10', 'Rutland'),
+    ('11', 'Washington'),
+    ('12', 'Windham'),
+    ('13', 'Windsor'),
 )
 
 ACCESS_LIST = ['A', 'ED', 'MC', 'V']
@@ -19,7 +19,7 @@ ACCESS_LIST = ['A', 'ED', 'MC', 'V']
 #   ('AD', 'Salvation Farms Administrator'),
 #   ('MO', 'Member Organization Executive Director'),
 #   ('MC', 'Gleaning Coordinator'),
-#   ('VO', 'Volunteer'),    
+#   ('VO', 'Volunteer'),
 # )
 
 
@@ -46,13 +46,15 @@ PREFERRED_CONTACT = (
     ('2', 'Phone'),
 )
 
-AGE_RANGES = ( 
-    ( '1', 'under 13'),
-    ( '2', '13-18'),
-    ( '3', '19-30'),
-    ( '4', '31-54'),
-    ( '5', '55-69'),
-    ( '6', '70+'),
+AGE_RANGES = (
+    ('1', 'under 12'),
+    ('2', '13-18'),
+    ('3', '19-25'),
+    ('4', '26-35'),
+    ('5', '36-45'),
+    ('6', '46-55'),
+    ('7', '66-75'),
+    ('8', '76+'),
 )
 
 STATES = (
@@ -62,14 +64,22 @@ STATES = (
     ('NY', 'New York')
 )
 
-DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+DAYS = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+]
 
 ACCESS_LEVELS = (
     ('PD', 'Project Director'),
-    ('MC', 'Gleaning Coordinator'), 
+    ('MC', 'Gleaning Coordinator'),
 )
 TRUNCATED_LEVELS = (
-    ('MC', 'Gleaning Coordinator'), 
+    ('MC', 'Gleaning Coordinator'),
 )
 
 COLORS = (
