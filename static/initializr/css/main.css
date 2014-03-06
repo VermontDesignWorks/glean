@@ -538,6 +538,9 @@ legend .no-margin {
 /* ==========================================================================
    Forms!
    ========================================================================== */
+input[disabled] {
+   background-color:#b5ca89;
+}
 .table-form{
     border: 1px #e5e5e5 solid;
     border-radius: 5px;
