@@ -17,7 +17,7 @@ Gleaning Details
       <div id="glean-buttons" class="pull-right">
         <a href="{% url 'announce:announceglean' glean.id %}"><button class="glean-button red-button nomargin">Send Announcement</button></a>
         {% if glean.data_entered %}
-            <a href="{% url 'gleanevent:viewgleanview' glean.id %}"><button class="glean-button yellow-button no-margin">View Hours</button></a>
+            <a href="{% url 'gleanevent:postgleanview' glean.id %}"><button class="glean-button yellow-button no-margin">View Hours</button></a>
         {% else %}
             <a href="{% url 'gleanevent:postglean' glean.id %}"><button class="glean-button yellow-button no-margin">Enter Hours</button></a>
         {% endif %}
