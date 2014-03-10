@@ -44,10 +44,10 @@ class Distro(models.Model):
         default='g',
         verbose_name="Collection Method"
     )
-    date = models.DateField("Date of Harvest")
+    date = models.DateField("Harvest Date")
+    farm = models.ForeignKey(Farm, null=True, blank=True)
     crops = models.CharField(max_length=50, blank=True, null=True,
                              verbose_name="Crop/Item")
-    farm = models.ForeignKey(Farm, null=True, blank=True)
     pounds = models.CharField(max_length=5, blank=True, null=True)
     other = models.CharField(max_length=50, blank=True, null=True,
                              verbose_name="Count")
