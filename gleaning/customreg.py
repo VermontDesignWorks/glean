@@ -102,7 +102,7 @@ class ExtendedRegistrationForm(RegistrationForm):
     counties = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
         queryset=County.objects.all(),
-        required=False
+        required=True
     )
     age = forms.ChoiceField(label="Age",
                             choices=AGE_RANGES)
