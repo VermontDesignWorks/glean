@@ -614,6 +614,10 @@ label.checkbox {
 #announce-well, textarea {
    background-color: #fbf8cc !important;
 }
+.form-actions {
+   background-color:transparent;
+   border-top:none;
+}
 
 /* ==========================================================================
    Author's custom styles
