@@ -58,6 +58,7 @@
           </div>
 
         <div class="body-container">
+          {% include 'beta.html' %}
               {% block body %}
                 <div class="span7">
                     {% block content %}
@@ -82,9 +83,16 @@
 
           
             
-          <!--script src="{% static 'datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script-->
-{% block javascript %}
-{% endblock javascript %}
+          <!--script src="{% static 'datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script-->\
+{% if not_notified %}
+  {% block javascript %}
+  <script>
+    $(function(){
+      $("#the-beta-button").click()
+    })
+  </script>
+  {% endblock javascript %}
+{% endif %}
 
   <script>
       $(function() {

@@ -44,6 +44,8 @@ def home(request):
 
     days = l
     memberorgs = MemOrg.objects.all()
+    profile = request.user.profile_set.get()
+    not_notified = getattr(profile, "not_notified", False)
     return render(
         request,
         'home.html',
@@ -52,6 +54,7 @@ def home(request):
             'days': days,
             'future': future,
             'two_weeks': two_weeks,
-            'memberorgs': memberorgs
+            'memberorgs': memberorgs,
+            'not_notified': not_notified,
         }
     )
