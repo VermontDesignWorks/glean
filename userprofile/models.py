@@ -73,6 +73,8 @@ class Profile(models.Model):
         "Would you like to recieve additional newsletters and personal"
         " messages from the Gleaning Cooperative?", default=False)
 
+    not_notified = models.BooleanField(editable=False, default=True)
+
     def get_hours(self):
         pgs = PostGlean.objects.filter(user=self.user)
         total = 0

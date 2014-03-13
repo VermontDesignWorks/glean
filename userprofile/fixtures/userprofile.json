@@ -1,0 +1,61 @@
+[
+{
+   "pk": 1, 
+   "model": "auth.user", 
+   "fields": {
+      "username": "gregor", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": true, 
+      "is_staff": true, 
+      "last_login": "2014-02-23T23:17:55.862Z", 
+      "groups": [
+         [
+            "Salvation Farms Administrator"
+         ]
+      ], 
+      "user_permissions": [], 
+      "password": "pbkdf2_sha256$12000$C4jXJeznxmwx$w+IeX/+Qxd+LeRg15eI3AOkG04Je5nZcksajgDNVjUo=", 
+      "email": "tim@clifford.io", 
+      "date_joined": "2014-02-23T22:30:50.319Z"
+   }
+},
+{
+   "pk": 2, 
+   "model": "userprofile.profile", 
+   "fields": {
+      "phone_type": "C", 
+      "last_name": "Clifford", 
+      "photo_release": true, 
+      "city": "Carlisle", 
+      "first_name": "Tim", 
+      "ecphone": "asd", 
+      "member_organization": 1, 
+      "zipcode": "01741", 
+      "accepts_email": true, 
+      "address_two": "", 
+      "state": "MA", 
+      "counties": [], 
+      "ecrelationship": "asd", 
+      "attended": 0, 
+      "agreement": true, 
+      "hours": "0.00", 
+      "phone": "5084794632", 
+      "eclast_name": "asd", 
+      "rsvped": 0, 
+      "unsubscribe_key": null, 
+      "ecfirst_name": "er", 
+      "opt_in": true, 
+      "age": "", 
+      "joined": "2014-02-23T23:18:43.044Z", 
+      "preferred_method": "1", 
+      "address_one": "296 Brook Street", 
+      "mo_emails_only": false, 
+      "waiver": true, 
+      "user": [
+         "gregor"
+      ]
+   }
+}
+]
