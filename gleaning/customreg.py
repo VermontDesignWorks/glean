@@ -112,7 +112,6 @@ class ExtendedRegistrationForm(RegistrationForm):
     preferred_method = forms.ChoiceField(
         label="How Should We Contact You?",
         choices=PREFERRED_CONTACT,
-        initial='1'
     )
 
     ecfirst_name = forms.CharField(
@@ -158,7 +157,6 @@ class AdminExtendedRegistrationForm(RegistrationForm):
     preferred_method = forms.ChoiceField(
         label="Primary Contact Method",
         choices=PREFERRED_CONTACT,
-        initial='1',
         required=False
     )
 

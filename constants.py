@@ -30,6 +30,7 @@ LINE_TYPE = (
 )
 
 PHONE_TYPE = (
+    ('', '-----'),
     ('C', 'Cell'),
     ('H', 'Home'),
     ('O', 'Office'),
@@ -42,11 +43,13 @@ FARM_TYPE = (
 )
 
 PREFERRED_CONTACT = (
+    ('', '-----'),
     ('1', 'Email'),
     ('2', 'Phone'),
 )
 
 AGE_RANGES = (
+    ('', '-----'),
     ('1', 'under 12'),
     ('2', '13-18'),
     ('3', '19-25'),
