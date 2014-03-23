@@ -15,7 +15,7 @@ class EntryAndFrontPage(unittest.TestCase):
         time.sleep(sleep_time)
 
     def setUp(self):
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.Chrome()
         self.browser.get('http://localhost:8000')
         time.sleep(sleep_time)
 
@@ -45,7 +45,7 @@ class EntryAndFrontPage(unittest.TestCase):
 class RegisterAndConfirm(unittest.TestCase):
 
     def setUp(self):
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.Chrome()
         self.browser.get('http://localhost:8000')
         time.sleep(sleep_time)
 

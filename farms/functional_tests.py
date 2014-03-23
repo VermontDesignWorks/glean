@@ -19,7 +19,7 @@ class FarmCRUD(unittest.TestCase):
         time.sleep(sleep_time)
 
     def setUp(self):
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.Chrome()
         self.browser.get('http://localhost:8000')
         time.sleep(sleep_time)
         admin_login(self)

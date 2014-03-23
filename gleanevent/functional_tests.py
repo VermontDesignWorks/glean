@@ -31,7 +31,7 @@ from selenium_test_functions import (admin_login,
 
 class GleanEventPageCrud(unittest.TestCase):
     def setUp(self):
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.Chrome()
         self.browser.get('http://localhost:8000')
         time.sleep(sleep_time)
 
