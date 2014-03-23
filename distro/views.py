@@ -24,7 +24,7 @@ from recipientsite.models import RecipientSite
 def index(request):
     date_from = request.GET.get('date_from', '')
     date_until = request.GET.get('date_until', '')
-    profle = request.user.profile_set.get()
+    profile = request.user.profile_set.get()
     if date_from:
         date_from = date_from[6:] + '-' + date_from[:2] + '-' + date_from[3:5]
     else:
