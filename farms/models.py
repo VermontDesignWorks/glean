@@ -3,8 +3,13 @@ from django.contrib import admin
 
 from django.utils import timezone
 import datetime
-from django.forms.fields import ChoiceField
-from constants import VERMONT_COUNTIES, LINE_TYPE, PHONE_TYPE, PREFERRED_CONTACT, FARM_TYPE, STATES
+from django.forms.fields import ChoiceField, Select
+from constants import (VERMONT_COUNTIES,
+                       LINE_TYPE,
+                       PHONE_TYPE,
+                       PREFERRED_CONTACT,
+                       FARM_TYPE,
+                       STATES)
 
 from django.forms import ModelForm
 
@@ -59,6 +64,9 @@ class FarmForm(ModelForm):
     class Meta:
         model = Farm
         exclude = ['farmers']
+        widgets = {
+            'counties': Select(),
+        }
 
 class FarmLocation(models.Model):
     farm = models.ForeignKey(Farm, blank=True, editable=False, null=True)
@@ -115,3 +123,6 @@ class Contact(models.Model):
 class ContactForm(ModelForm):
     class Meta:
         model = Contact
+        widgets = {
+            'counties': Select(),
+        }

@@ -1,7 +1,7 @@
 import datetime
 
 from django.db import models
-from django.forms import TextInput
+from django.forms import TextInput, Select
 from django.forms import ModelForm
 
 from constants import STATES, TIME_OF_DAY
@@ -130,6 +130,7 @@ class GleanForm(ModelForm):
         ]
         widgets = {
             'date': TextInput({'class': 'datepicker'}),
+            'counties': Select(),
         }
 
 
