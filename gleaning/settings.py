@@ -177,6 +177,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'south',
     'django_comments',
+    'django_extensions',
 
     # admin:
     'django.contrib.admin',
