@@ -88,7 +88,7 @@ def newGlean(request):
         if not request.user.has_perm('gleanevent.uniauth'):
             form.fields['farm'].queryset = Farm.objects.filter(
                 member_organization=profile.member_organization)
-            form.fields['counties'].queryset = profile.member_organization.counites.all()
+            #form.fields['counties'].queryset = profile.member_organization.counties.all()
         if form.cleaned_data['farm']:
             farm = Farm.objects.get(name=form.cleaned_data['farm'])
             form.fields['farm_location'].queryset = FarmLocation.objects.filter(farm=farm)
@@ -97,7 +97,7 @@ def newGlean(request):
     else:
         form = GleanForm()
         if not request.user.has_perm('gleanevent.uniauth'):
-            form.fields['counties'].queryset = profile.member_organization.counties.all()
+            #form.fields['counties'].queryset = profile.member_organization.counties.all()
             form.fields['farm'].queryset = Farm.objects.filter(
                 member_organization=request.user.profile_set.get().member_organization)
             form.fields['farm_location'].queryset = FarmLocation.objects.none()
@@ -123,7 +123,7 @@ def editGlean(request, glean_id):
         form = GleanForm(instance = glean)
         form.fields['farm'].queryset=Farm.objects.filter(member_organization=glean.member_organization)
         form.fields['farm_location'].queryset=FarmLocation.objects.filter(farm=glean.farm)
-        form.fields['counties'].queryset=glean.member_organization.counties.all()
+        #form.fields['counties'].queryset=glean.member_organization.counties.all()
         return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':''})
 
 @login_required
