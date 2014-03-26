@@ -113,7 +113,7 @@ def entry(request):
             for fo in form.forms:
                 fo.fields['farm'].queryset = Farm.objects.filter(
                     member_organization=member_organization)
-                fo.fields['recipient'] = TextInput
+                #fo.fields['recipient'] = TextInput
         debug = dir(form)
         return render(
             request,
