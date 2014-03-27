@@ -185,7 +185,8 @@ def download(request):
 
     # Create the CSV writer using the HttpResponse as the "file."
     writer = csv.writer(response)
-    writer.writerow([
+
+    headings = [
         'Distribution Date',
         'Recipient Site',
         'Crops',
@@ -196,24 +197,30 @@ def download(request):
         'Harvest Date',
         'Farm Delivery/Field Glean/Farmers Market',
         'Pickup/DropOff'
-    ])
+    ]
 
+    attributes = [
+        'date_d',
+        'recipient',
+        'crops',
+        'pounds',
+        'containers',
+        'farm',
+        'other',
+        'date',
+        'field_or_farm',
+        'del_or_pick'
+    ]
     if request.user.has_perm('distro.uniauth'):
         group = Distro.objects.all()
+        headings = ["Member Organization"] + headings
+        attributes = ['member_organization'] + attributes
     else:
         group = Distro.objects.filter(member_organization=mo)
+
+    writer.writerow(headings)
+
     for line in group:
-        writer.writerow([
-            line.date_d,
-            line.recipient,
-            line.crops,
-            line.pounds,
-            line.containers,
-            line.farm,
-            line.other,
-            line.date,
-            line.field_or_farm,
-            line.del_or_pick,
-        ])
+        writer.writerow([getattr(line, attr) for attr in attributes])
 
     return response
