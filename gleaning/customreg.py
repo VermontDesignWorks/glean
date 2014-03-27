@@ -78,7 +78,7 @@ class ExtendedRegistrationForm(RegistrationForm):
                              'role="button" data-toggle="modal"><button'
                              ' class="glean-button yellow-button no-margin">'
                              'View Photo Release</button></a>'),
-                HTML("<h4>Keep me in the loop! Click to recieve email "
+                HTML("<h4>Keep me in the loop! Click to receive email "
                      "updates &amp; newsletters from Salvation Farms."
                      "</h4>"),
                 "opt_in"
