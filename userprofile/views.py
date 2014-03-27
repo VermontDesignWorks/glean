@@ -223,7 +223,7 @@ def download(request):
         profiles = request.user.profile_set.get(
             ).member_organization.volunteers.all()
     for person in profiles:
-        if person.groups.all().count() == 0:
+        #if person.groups.all().count() == 0:
             profile = person.profile_set.get()
             writer.writerow([
                 profile.user.username,
