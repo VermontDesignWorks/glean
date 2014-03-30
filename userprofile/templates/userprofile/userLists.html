@@ -50,7 +50,7 @@ Farm Index
 		<div class="glean-column">
 			<ul>
 			{% endif %}
-			<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.last_name}}, {{person.first_name}} - {{person.user.username}}</a>
+			<li><a href="{% url 'userprofile:userprofile' person.pk %}">{{person.last_name}}, {{person.first_name}} - {{person.user.username}}</a>
 			</li>
 			{% endfor %}
 			</ul>
