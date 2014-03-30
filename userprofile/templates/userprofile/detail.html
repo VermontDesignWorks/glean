@@ -1,28 +1,28 @@
 {% extends 'base.html' %}
 {% block title %}
-{{person.first_name}} {{person.last_name}}
+{{object.first_name}} {{object.last_name}}
 {% endblock title %}
 {% block heading %}
-<h3>{{person.first_name}} {{person.last_name}}</h3>
+<h3>{{object.first_name}} {{object.last_name}}</h3>
 {% endblock heading %}
 {% block content %}
-<h4>{{person.user.username}} - {{person.user.email}}</h4>
-<p>{{person.address_one}}, {{person.address_two}}</p>
-<p>{{person.city}}, {{person.state}} {{person.zipcode}}</p>
+<h4>{{object.user.username}} - {{object.user.email}}</h4>
+<p>{{object.address_one}}, {{object.address_two}}</p>
+<p>{{object.city}}, {{object.state}} {{object.zipcode}}</p>
 <h5>Total Hours Gleaning:</h5>
-<p>{{person.get_hours}}</p>
-<h4>{{person.first_name}} {{person.last_name}}'s counties</h4>
-{% if person.counties.all %}
-<p>{% for county in person.counties.all %}</p>
+<p>{{object.get_hours}}</p>
+<h4>{{object.first_name}} {{object.last_name}}'s counties</h4>
+{% if object.counties.all %}
+<p>{% for county in object.counties.all %}</p>
 <p>{{county}}</p>
 {% endfor %}
 {% else %}
-<p>This person is not signed up for gleaning in any counties.</p>
+<p>This object is not signed up for gleaning in any counties.</p>
 {% endif %}
-<p>{{person.first_name}} has{% if not person.agreement %} <b>not</b>{% endif %} agreed to the volunteer agreement.</p>
-<p>{{person.first_name}} has{% if not person.waiver %} <b>not</b>{% endif %} signed the liability waiver.</p>
-<p>{{person.first_name}} has{% if not person.photo_release %} <b>not</b>{% endif %} consented to the photo release.</p>
-<p>{{person.first_name}} has{% if not person.opt_in %} <b>not</b>{% endif %} opted in to email additional email communications.</p>
+<p>{{object.first_name}} has{% if not object.agreement %} <b>not</b>{% endif %} agreed to the volunteer agreement.</p>
+<p>{{object.first_name}} has{% if not object.waiver %} <b>not</b>{% endif %} signed the liability waiver.</p>
+<p>{{object.first_name}} has{% if not object.photo_release %} <b>not</b>{% endif %} consented to the photo release.</p>
+<p>{{object.first_name}} has{% if not object.opt_in %} <b>not</b>{% endif %} opted in to email additional email communications.</p>
 
 
 {% endblock content %}
@@ -30,12 +30,12 @@
 <div class="row-fluid">
 <div class="span12">
 <h5>Emergency Contact</h5>
-<p>{{person.ecfirst_name}} {{person.eclast_name}}</p>
-<p>Phone: {{person.ecphone}}</p>
-<p>{{person.ecrelationship}}</p>
+<p>{{object.ecfirst_name}} {{object.eclast_name}}</p>
+<p>Phone: {{object.ecphone}}</p>
+<p>{{object.ecrelationship}}</p>
 </div>
 <div class="span12">
-	<a class="btn btn-info" href="{% url 'userprofile:useredit' person.user.id %}">Edit this Profile</a>
+	<a class="btn btn-info" href="{% url 'userprofile:useredit' object.user.id %}">Edit this Profile</a>
 </div>
 
 <div class="span12">
@@ -43,15 +43,15 @@
 </div>
 {% if 'userprofile.promote' in perms %}
 <div class="span12">
-	<a class="btn btn-success" href="{% url 'userprofile:userpromote' person.user.id %}">Promote This User</a>
+	<a class="btn btn-success" href="{% url 'userprofile:userpromote' object.user.id %}">Promote This User</a>
 </div>
 {% endif %}
 <div class="span12">
 <!--h5>User Stats</h5-->
 </div>
-{% if not person.accepts_email %}
+{% if not object.accepts_email %}
 <div class="span12">
-	<a class="btn btn-danger" href="{% url 'userprofile:reaccept' person.user.id %}">This person opted back into recieving emails</a>
+	<a class="btn btn-danger" href="{% url 'userprofile:reaccept' object.user.id %}">This object opted back into recieving emails</a>
 </div>
 {% endif %}
 </div>
