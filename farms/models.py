@@ -47,7 +47,7 @@ class Farm(models.Model):
     directions = models.TextField("Directions", blank=True)
     instructions = models.TextField("Instructions", blank=True)
     farmers = models.ManyToManyField(User, blank=True, null=True, editable=False)
-    counties = models.ManyToManyField(County, blank=True, null=True)
+    counties = models.ForeignKey(County, blank=True, null=True)
 
     member_organization = models.ManyToManyField(MemOrg, editable=False)
 
@@ -64,9 +64,6 @@ class FarmForm(ModelForm):
     class Meta:
         model = Farm
         exclude = ['farmers']
-        widgets = {
-            'counties': Select(),
-        }
 
 class FarmLocation(models.Model):
     farm = models.ForeignKey(Farm, blank=True, editable=False, null=True)
@@ -74,7 +71,7 @@ class FarmLocation(models.Model):
     description = models.TextField(blank=True)
     directions = models.TextField(blank=True)
     instructions = models.TextField("Instructions", blank=True)
-    counties = models.ManyToManyField(County, blank=True, null=True)
+    counties = models.ForeignKey(County, blank=True, null=True)
 
     address_one = models.CharField('Address (line one)', max_length=200, blank=True)
     address_two = models.CharField('Address (line two)',max_length=200, blank=True)
@@ -123,6 +120,3 @@ class Contact(models.Model):
 class ContactForm(ModelForm):
     class Meta:
         model = Contact
-        widgets = {
-            'counties': Select(),
-        }

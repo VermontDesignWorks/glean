@@ -54,7 +54,7 @@ class GleanEvent(models.Model):
         User, null=True, blank=True, related_name="attending_voluntters")
     officiated_by = models.ManyToManyField(
         User, blank=True, related_name="officiated_by")
-    counties = models.ManyToManyField(County, blank=True, null=True)
+    counties = models.ForeignKey(County, blank=True, null=True)
 
     member_organization = models.ForeignKey(MemOrg, editable=False, blank=True)
 
@@ -128,14 +128,10 @@ class GleanForm(ModelForm):
             'attending_volunteers',
             'officiated_by'
         ]
-        widgets = {
-            'date': TextInput({'class': 'datepicker'}),
-            'counties': Select(),
-        }
 
 
 class PostGlean(models.Model):
-    glean = models.ForeignKey(GleanEvent, editable=False)
+    glean = models.ForeignKey(GleanEvent, editable=False, null=True)
     user = models.ForeignKey(User, editable=False, null=True)
     attended = models.BooleanField(default=False)
     first_name = models.CharField(max_length=20, blank=True, null=True)
