@@ -10,7 +10,6 @@ urlpatterns = patterns(
     url(r'^lists/$', views.userLists, name="userlists"),
     url(r'^download/$', views.download, name='download'),
     url(r'^new/$', views.newUser, name='newuser'),
-    #url(r'^(?P<user_id>\d+)/$', views.userProfile, name='userprofile'),
     url(r'^(?P<pk>\d+)/$',
         views.UserProfileDetailView.as_view(),
         name='userprofile'),
