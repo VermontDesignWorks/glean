@@ -1,16 +1,23 @@
 # Create your views here.
 import csv
 
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse
-from django.views import generic
+from django import forms
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
+from django.core.urlresolvers import reverse
+from django.db.models import Q
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.views import generic
+
+from constants import VERMONT_COUNTIES
+from memberorgs.models import MemOrg
+from gleanevent.models import PostGleanForm
+from gleaning.customreg import ExtendedRegistrationForm
 
 from userprofile.models import (Profile,
                                 ProfileForm,
@@ -21,11 +28,6 @@ from userprofile.models import (Profile,
                                 UniPromoteForm,
                                 PromoteForm,
                                 AdminProfileForm)
-from memberorgs.models import MemOrg
-from constants import VERMONT_COUNTIES
-
-from django import forms
-from gleaning.customreg import ExtendedRegistrationForm
 
 
 @login_required
@@ -133,6 +135,22 @@ def userProfile(request, user_id):
         return HttpResponseRedirect(reverse('home'))
     person = Profile.objects.get(user=user)
     return render(request, 'userprofile/detail.html', {'person': person})
+
+
+class UserProfileDetailView(generic.DetailView):
+    model = Profile
+    template_name = "userprofile/detail.html"
+
+    def get_queryset(self):
+        if self.request.user.has_perm('userprofile.uniauth'):
+            return Profile.objects.all()
+        request_profile = self.request.user.profile_set.get()
+        memorg = request_profile.member_organization
+        counties = memorg.counties.all()
+        profiles = Profile.objects.filter(Q(counties__in=counties) &
+                                          Q(member_organization=memorg)
+                                          ).distinct()
+        return profiles
 
 
 @permission_required('userprofile.auth')
