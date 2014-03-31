@@ -12,7 +12,7 @@ def index(request):
 	if request.user.has_perm('recipientsite.uniauth'):
 		sites_list = RecipientSite.objects.all().order_by('member_organization', 'name')
 	else:
-		sites_list = RecipientSite.objects.filter(member_organization=request.user.profile_set.get().member_organization).order_by('name')
+		sites_list = RecipientSite.objects.filter(member_organization=request.user.profile.member_organization).order_by('name')
 	return render(request, 'recipientsite/index.html', {'sites':sites_list})
 
 @permission_required('recipientsite.auth')
@@ -21,7 +21,7 @@ def newSite(request):
 		form = SiteForm(request.POST)
 		if form.is_valid():
 			new_save = form.save(commit=False)
-			new_save.member_organization = request.user.profile_set.get().member_organization
+			new_save.member_organization = request.user.profile.member_organization
 			new_save.save()
 			if request.POST['action'] == 'Save':
 				return HttpResponseRedirect(reverse('site:detailsite', args=(new_save.id,) ))
@@ -38,7 +38,7 @@ def newSite(request):
 @permission_required('recipientsite.auth')
 def editSite(request, site_id):
 	site = get_object_or_404(RecipientSite, pk=site_id)
-	if site.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('recipientsite.uniauth'):
+	if site.member_organization != request.user.profile.member_organization and not request.user.has_perm('recipientsite.uniauth'):
 		return HttpResponseRedirect(reverse('site:index'))
 	if request.method == "POST":
 		form = SiteForm(request.POST)
@@ -57,7 +57,7 @@ def editSite(request, site_id):
 @permission_required('recipientsite.auth')
 def detailSite(request, site_id):
 	site = get_object_or_404(RecipientSite, pk=site_id)
-	if site.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('recipientsite.uniauth'):
+	if site.member_organization != request.user.profile.member_organization and not request.user.has_perm('recipientsite.uniauth'):
 		return HttpResponseRedirect(reverse('site:index'))
 	return render(request, 'recipientsite/detail_site.html', {'site':site})
 
@@ -65,7 +65,7 @@ def detailSite(request, site_id):
 @permission_required('recipientsite.auth')
 def deleteSite(request, site_id):
 	site = get_object_or_404(RecipientSite, pk=site_id)
-	if site.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('recipientsite.uniauth'):
+	if site.member_organization != request.user.profile.member_organization and not request.user.has_perm('recipientsite.uniauth'):
 		return HttpResponseRedirect(reverse('site:index'))
 	if request.method == 'POST':
 		site.delete()

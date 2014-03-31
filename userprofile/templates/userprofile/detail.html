@@ -2,8 +2,74 @@
 {% block title %}
 {{object.first_name}} {{object.last_name}}
 {% endblock title %}
+{% block body %}
+<div class="body-container">
+    <div id="farm-header">
+        <div class="pull-left">
+            <h1>{{object.first_name}} {{object.last_name}} - {{object.user.username}}</h1>
+        </div>
+        <div class="pull-right farm-buttons">
+            {% if 'userprofile.promote' in perms %}
+            <a href="{% url "userprofile:userpromote" object.user.id %}">
+                <button class="glean-button green-button no-margin">
+                    Promote
+                </button>
+            </a>
+            {% endif %}
+            <a href="{% url "userprofile:useredit" object.user.id %}">
+                <button class="glean-button yellow-button no-margin">
+                    Edit
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <div class="yellow-box red-top">
+        <div class="farm-third">
+            <h3>Address</h3>
+            <ul class="no-list">
+            <li>{{object.address_one}}</li>
+            {% if object.address_two %}
+                <li>{{object.address_two}}</li>
+            {% endif %}
+            <li>{{object.city}}</li>
+            <li>{{object.state}} {{object.zipcode}}</li>
+            </ul>
+        </div>
+
+        <div class="farm-third">
+            <h3>Contact</h3>
+            <ul class="no-list">
+            <li>{{object.phone}}</li>
+            <li>{{object.user.email}}</li>
+            <li>Preferred Method: {% if object.preferred_method == 1%}Phone{% else %}Email{% endif %}</li>
+        </div>
+
+        <div class="farm-third">
+        
+        <h3>Forms</h3>
+        <ul class="no-list">
+            <li>Waiver: {% if object.waiver %}Yes{% else %}No{% endif %}</li>
+            <li>Volunteer Agreement: {% if object.agreement %}Yes{% else %}No{% endif %}</li>
+            <li>Photo Release: {% if object.photo_release %}Yes{% else %}No{% endif %}</li>
+            <li>Ok To Send Newsletters: {% if object.opt_in %}Yes{% else %}No{% endif %}</li>
+        </ul>
+        </div>
+
+    </div>
+
+    </div>
+    <div class="yellow-box red-top">
+        <form method="post">
+            {{form}}
+            <input type="submit" class="glean-button red-button">
+        </form>
+    </div>
+</div>
+{% endblock body %}
+
+
 {% block heading %}
-<h3>{{object.first_name}} {{object.last_name}}</h3>
 {% endblock heading %}
 {% block content %}
 <h4>{{object.user.username}} - {{object.user.email}}</h4>
@@ -35,7 +101,7 @@
 <p>{{object.ecrelationship}}</p>
 </div>
 <div class="span12">
-	<a class="btn btn-info" href="{% url 'userprofile:useredit' object.user.id %}">Edit this Profile</a>
+    <a class="btn btn-info" href="{% url 'userprofile:useredit' object.user.id %}">Edit this Profile</a>
 </div>
 
 <div class="span12">
@@ -43,7 +109,7 @@
 </div>
 {% if 'userprofile.promote' in perms %}
 <div class="span12">
-	<a class="btn btn-success" href="{% url 'userprofile:userpromote' object.user.id %}">Promote This User</a>
+    <a class="btn btn-success" href="{% url 'userprofile:userpromote' object.user.id %}">Promote This User</a>
 </div>
 {% endif %}
 <div class="span12">
@@ -51,7 +117,7 @@
 </div>
 {% if not object.accepts_email %}
 <div class="span12">
-	<a class="btn btn-danger" href="{% url 'userprofile:reaccept' object.user.id %}">This object opted back into recieving emails</a>
+    <a class="btn btn-danger" href="{% url 'userprofile:reaccept' object.user.id %}">This object opted back into recieving emails</a>
 </div>
 {% endif %}
 </div>

@@ -18,7 +18,7 @@ def index(request):
 	if request.user.has_perm('memberorgs.uniauth'):
 		memorgs_list = MemOrg.objects.all().order_by('name')
 	else:
-		memorg_id = request.user.profile_set.get().member_organization.id
+		memorg_id = request.user.profile.member_organization.id
 		return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(memorg_id,)))
 	return render(request, 'memberorgs/index.html', {'memorgs':memorgs_list})
 
@@ -49,7 +49,7 @@ def newMemOrg(request):
 @permission_required('memberorgs.auth')
 def editMemOrg(request, memorg_id):
 	memorg = get_object_or_404(MemOrg, pk=memorg_id)
-	if memorg != request.user.profile_set.get().member_organization and not request.user.has_perm('memberorgs.uniauth'):
+	if memorg != request.user.profile.member_organization and not request.user.has_perm('memberorgs.uniauth'):
 		return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(memorg.id,)))
 	if request.method == "POST":
 		form = MemOrgForm(request.POST)
@@ -96,7 +96,7 @@ def newMemOrgAndSuperUser(request):
 @permission_required('userprofile.promote')
 def newAdministrator(request, memorg_id):
 	member_organization = get_object_or_404(MemOrg, pk=memorg_id)
-	profile = request.user.profile_set.get()
+	profile = request.user.profile
 	if not request.user.has_perm('memberorgs.uniauth') and member_organization != profile.member_organization:
 		return HttpResponseRedirect(reverse('memorgs:detailmemorg', args=(memorg_id,)))
 	if request.method == 'POST':

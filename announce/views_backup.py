@@ -33,14 +33,14 @@ def Templates(request):
 	if request.user.has_perm('announce.uniauth'):
 		templates = Template.objects.all()
 	else:
-		templates = Template.objects.filter(member_organization=request.user.profile_set.get().member_organization)	
+		templates = Template.objects.filter(member_organization=request.user.profile.member_organization)	
 	return render(request, 'announce/templates.html', {'templates':templates})
 
 #== Template Edit View ==#
 @permission_required('announce.auth')
 def editTemplate(request, template_id):
 	template = get_object_or_404(Template, pk=template_id)
-	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != template.member_organization:
+	if not request.user.has_perm('announce.uniauth') and request.user.profile.member_organization != template.member_organization:
 		return HttpResponseRedirect(reverse('announce:templates'))
 	if request.method == 'POST':
 		form = PartialTemplateForm(request.POST)
@@ -67,7 +67,7 @@ def newTemplate(request):
 		if form.is_valid():
 			newTemplate = form.save(commit=False)
 			if form.cleaned_data['body'].find('{{custom}}') != -1:
-				newTemplate.member_organization = request.user.profile_set.get().member_organization
+				newTemplate.member_organization = request.user.profile.member_organization
 				newTemplate.save()
 				return HttpResponseRedirect(reverse('announce:templates'))
 			else:
@@ -89,7 +89,7 @@ def detailTemplate(request, template_id):
 @permission_required('announce.auth')
 def deleteTemplate(request, template_id):
 	template = get_object_or_404(Template, pk=template_id)
-	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != template.member_organization:
+	if not request.user.has_perm('announce.uniauth') and request.user.profile.member_organization != template.member_organization:
 		return HttpResponseRedirect(reverse('announce:templates'))
 	if request.method == 'POST':
 		template.delete()
@@ -191,7 +191,7 @@ def mail_from_source(source, body, announcement):
 @permission_required('announce.auth')
 def detailAnnounce(request, announce_id):
 	announcement = get_object_or_404(Announcement, pk=announce_id)
-	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != announcement.member_organization:
+	if not request.user.has_perm('announce.uniauth') and request.user.profile.member_organization != announcement.member_organization:
 		return HttpResponseRedirect(reverse('announce:announcements'))
 	body = weave_template_and_body_and_glean(announcement.template, announcement, announcement.glean)
 	glean = announcement.glean
@@ -209,7 +209,7 @@ def detailAnnounce(request, announce_id):
 @permission_required('announce.auth')
 def deleteAnnounce(request, announce_id):
 	announce = get_object_or_404(Announcement, pk=announce_id)
-	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != announce.member_organization:
+	if not request.user.has_perm('announce.uniauth') and request.user.profile.member_organization != announce.member_organization:
 		return HttpResponseRedirect(reverse('announce:annoucements'))
 	if announce.glean.happened():
 		return HttpResponseRedirect(reverse('announce:annoucements'))
@@ -222,7 +222,7 @@ def deleteAnnounce(request, announce_id):
 @permission_required('announce.auth')
 def phoneAnnounce(request, announce_id):
 	announcement = get_object_or_404(Announcement, pk=announce_id)
-	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != announcement.member_organization:
+	if not request.user.has_perm('announce.uniauth') and request.user.profile.member_organization != announcement.member_organization:
 		return HttpResponseRedirect(reverse('announce:announcements'))
 	glean = announcement.glean
 	source = primary_source(announcement.glean)
@@ -234,15 +234,15 @@ def Announcements(request):
 	if request.user.has_perm('announce.uniauth'):
 		announcements = Announcement.objects.filter(sent=True).order_by('datetime')
 	else:
-		announcements= Announcement.objects.filter(member_organization=request.user.profile_set.get().member_organization, sent=True).order_by('datetime')
+		announcements= Announcement.objects.filter(member_organization=request.user.profile.member_organization, sent=True).order_by('datetime')
 	return render(request, 'announce/announcements.html', {'announcements':announcements})
-	#return HttpResponse(request.user.profile_set.get().member_organization)
+	#return HttpResponse(request.user.profile.member_organization)
 
 #== New Announcement View ==#
 @permission_required('announce.auth')
 def announceGlean(request, glean_id):
 	glean = get_object_or_404(GleanEvent, pk=glean_id)
-	profile = request.user.profile_set.get()
+	profile = request.user.profile
 	if not request.user.has_perm('announce.uniauth') and profile.member_organization != glean.member_organization:
 		return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 	if not glean.happened():
@@ -265,7 +265,7 @@ def announceGlean(request, glean_id):
 @permission_required('announce.auth')
 def editAnnounce(request, announce_id):
 	announce = get_object_or_404(Announcement, pk=announce_id)
-	profile = request.user.profile_set.get()
+	profile = request.user.profile
 	if not request.user.has_perm('announce.uniauth') and profile.member_organization != announce.member_organization:
 		return HttpResponseRedirect(reverse('announce:detailannounce', args=(announce_id,)))
 	templates = Template.objects.all(member_organization=profile.member_organization)
@@ -302,7 +302,7 @@ def unsubscribeLink(request, key):
 @permission_required('announce.auth')
 def combinedAnnounce(request, announce_id):
 	announce = get_object_or_404(Announcement, pk=announce_id)
-	profile = request.user.profile_set.get()
+	profile = request.user.profile
 	if not request.user.has_perm('announce.uniauth') and profile.member_organization != announce.member_organization:
 		return HttpResponseRedirect(reverse('announce:detailannounce', args=(announce_id,)))
 	#return HttpResponse(announce.template.body)
@@ -350,7 +350,7 @@ def combinedAnnounce(request, announce_id):
 @permission_required('announce.auth')
 def sendAnnounce(request, announce_id):
 	announcement = get_object_or_404(Announcement, pk=announce_id)
-	if not request.user.has_perm('announce.uniauth') and request.user.profile_set.get().member_organization != announcement.member_organization:
+	if not request.user.has_perm('announce.uniauth') and request.user.profile.member_organization != announcement.member_organization:
 		return HttpResponseRedirect(reverse('announce:announcements'))
 	if request.method == 'POST' and announcement.sent == False:
 		glean = announcement.glean

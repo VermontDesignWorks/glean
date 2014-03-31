@@ -33,7 +33,7 @@ from functions import primary_source
 
 #== Farm API ==#
 def apiFarm(request, farm_id):
-	profile = request.user.profile_set.get()
+	profile = request.user.profile
 	farm = Farm.objects.get(pk=farm_id)
 	farm_locations = FarmLocation.objects.filter(farm=farm)
 	data = {

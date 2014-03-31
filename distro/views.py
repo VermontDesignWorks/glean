@@ -24,7 +24,7 @@ from recipientsite.models import RecipientSite
 def index(request):
     date_from = request.GET.get('date_from', '')
     date_until = request.GET.get('date_until', '')
-    profile = request.user.profile_set.get()
+    profile = request.user.profile
     if date_from:
         date_from = date_from[6:] + '-' + date_from[:2] + '-' + date_from[3:5]
     else:
@@ -132,7 +132,7 @@ def entry(request):
 def edit(request):
     date_from = request.GET.get('date_from', '')
     date_until = request.GET.get('date_until', '')
-    mo = request.user.profile_set.get().member_organization
+    mo = request.user.profile.member_organization
     if date_from:
         date_from = "{0}-{1}-{2}".format(
             date_from[6:],
@@ -179,7 +179,7 @@ def edit(request):
 
 @permission_required('distro.auth')
 def download(request):
-    mo = request.user.profile_set.get().member_organization
+    mo = request.user.profile.member_organization
     response = HttpResponse(mimetype='text/csv')
     response['Content-Disposition'] = 'attachment; filename=distribution.csv'
 

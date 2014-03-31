@@ -12,7 +12,13 @@ from gleanevent.models import PostGlean
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, blank=True, unique=True, editable=False)
+    user = models.OneToOneField(
+        User,
+        blank=True,
+        unique=True,
+        editable=False,
+        related_name="profile"
+    )
 
     first_name = models.CharField("First Name", max_length=20)
     last_name = models.CharField("Last Name", max_length=20)

@@ -99,7 +99,7 @@ def mail_from_source(body, announcement):
         counter = 0
         if announcement.member_organization.testing:
             for recipient in announcement.email_recipients.all():
-                rprofile = recipient.profile_set.get()
+                rprofile = recipient.profile
                 text = weave_unsubscribe(body,rprofile,announcement)
                 if recipient not in announcement.glean.invited_volunteers.all():
                     announcement.glean.invited_volunteers.add(recipient)
@@ -113,7 +113,7 @@ def mail_from_source(body, announcement):
             msg.send()
         else:
             for recipient in announcement.email_recipients.all():
-                rprofile = recipient.profile_set.get()
+                rprofile = recipient.profile
                 text = weave_unsubscribe(body,rprofile,announcement)
                 msg = EmailMessage(subject, text, 'The Gleaners Interface', [recipient.email])
                 msg.content_subtype = "html"

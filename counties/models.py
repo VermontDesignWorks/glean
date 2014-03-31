@@ -20,7 +20,7 @@ class County(models.Model):
 			)
 
 	def affix_to_memorgs(self,user):
-		profile = user.profile_set.get()
+		profile = user.profile
 		orgs = self.memorg_set.all()
 		sent= []
 		subject = "New User Registered in " + self.name 

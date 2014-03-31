@@ -46,7 +46,7 @@ def home(request):
     memberorgs = MemOrg.objects.all()
 
     ## BETA CODE
-    profile = request.user.profile_set.get()
+    profile = request.user.profile
     not_notified = getattr(profile, "not_notified", False)
     profile.not_notified = False
     profile.save()

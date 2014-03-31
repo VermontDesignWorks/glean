@@ -16,7 +16,7 @@ def index(request):
 	if request.user.has_perm('farms.uniauth'):
 		farms_list = Farm.objects.all().order_by('name')
 	else:
-		farms_list = Farm.objects.filter(member_organization=request.user.profile_set.get().member_organization).order_by('name')
+		farms_list = Farm.objects.filter(member_organization=request.user.profile.member_organization).order_by('name')
 	return render(request, 'farms/index.html', {'farms':farms_list})
 
 @permission_required('farms.auth')
@@ -26,7 +26,7 @@ def newFarm(request):
 		form = FarmForm(request.POST)
 		if form.is_valid():
 			new_save = form.save()
-			new_save.member_organization.add(request.user.profile_set.get().member_organization)
+			new_save.member_organization.add(request.user.profile.member_organization)
 			new_save.save()
 			if request.POST['action'] == "Save And View":
 				return HttpResponseRedirect(reverse('farms:detailfarm', args=(new_save.id,) ))
@@ -34,18 +34,18 @@ def newFarm(request):
 				return HttpResponseRedirect(reverse('farms:newlocation', args=(new_save.id,) ))
 		else:
 			#if not request.user.has_perm('farms.uniauth'):
-			#	form.fields['counties'].queryset=request.user.profile_set.get().member_organization.counties.all()
+			#	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 			return render(request, 'farms/new.html', {'form':form, 'error':'Your Farm Form Was Not Valid'})
 	else:
 		form = FarmForm()
 		#if not request.user.has_perm('farms.uniauth'):
-		#	form.fields['counties'].queryset=request.user.profile_set.get().member_organization.counties.all()
+		#	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 		return render(request, 'farms/new.html', {'form':form})
 
 @permission_required('farms.auth')
 def editFarm(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
-	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+	if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
 		return HttpResponseRedirect(reverse('farms:index'))
 	if request.method == "POST":
 		form = FarmForm(request.POST, instance=farm)
@@ -54,18 +54,18 @@ def editFarm(request, farm_id):
 			return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
 		else:
 			#if not request.user.has_perm('farms.uniauth'):
-			#	form.fields['counties'].queryset=request.user.profile_set.get().member_organization.counties.all()
+			#	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 			return render(request, 'farms/edit.html', {'form':form, 'farm':farm, 'error':'form needs some work'})
 	form = FarmForm(instance = farm)
 	#if not request.user.has_perm('farms.uniauth'):
-	#	form.fields['counties'].queryset=request.user.profile_set.get().member_organization.counties.all()
+	#	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 
 	return render(request, 'farms/edit.html', {'form':form, 'farm':farm})
 
 @permission_required('farms.auth')
 def detailFarm(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
-	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+	if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
 		return HttpResponseRedirect(reverse('farms:index'))
 	return render(request, 'farms/detail.html', {'farm':farm})
 
@@ -73,7 +73,7 @@ def detailFarm(request, farm_id):
 @permission_required('farms.auth')
 def deleteFarm(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
-	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+	if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
 		return HttpResponseRedirect(reverse('farms:index'))
 	if request.method == 'POST':
 		contacts = Contact.objects.filter(farm=farm)
@@ -92,7 +92,7 @@ def deleteFarm(request, farm_id):
 @permission_required('farms.auth')
 def newLocation(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
-	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+	if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
 		return HttpResponseRedirect(reverse('farms:index'))
 	if request.method == 'POST':
 		form = LocationForm(request.POST)
@@ -107,23 +107,23 @@ def newLocation(request, farm_id):
 				return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
 			else:
 				#if not request.user.has_perm('farms.uniauth'):
-				#	form.fields['counties'].queryset=request.user.profile_set.get().member_organization.counties.all()
+				#	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 				return render(request, 'farms/new_location.html', {'form':form, 'farm':farm, 'error':'That Location Name is Taken'})	
 
 		else:
 			#if not request.user.has_perm('farms.uniauth'):
-		#		form.fields['counties'].queryset=request.user.profile_set.get().member_organization.counties.all()
+		#		form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 			return render(request, 'farms/new_location.html', {'form':form, 'farm':farm, 'error':'Form was incorrectly filled out'})
 	else:
 		form = LocationForm()
 		#if not request.user.has_perm('farms.uniauth'):
-	#		form.fields['counties'].queryset=request.user.profile_set.get().member_organization.counties.all()
+	#		form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 		return render(request, 'farms/new_location.html', {'form':form, 'farm':farm})
 
 @permission_required('farms.auth')
 def editLocation(request, farm_id, location_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
-	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+	if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
 		return HttpResponseRedirect(reverse('farms:index'))
 	location = get_object_or_404(FarmLocation, pk=location_id)
 	if request.method == 'POST':
@@ -133,18 +133,18 @@ def editLocation(request, farm_id, location_id):
 			return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
 		else:
 			#if not request.user.has_perm('farms.uniauth'):
-			#	form.fields['counties'].queryset=request.user.profile_set.get().member_organization.counties.all()
+			#	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 			return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'error':'Form Had an Error'})
 	else:
 		form = LocationForm(instance = location)
 		#if not request.user.has_perm('farms.uniauth'):
-	#		form.fields['counties'].queryset=request.user.profile_set.get().member_organization.counties.all()
+	#		form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 		return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'editmode':True})
 
 @permission_required('farms.auth')
 def newContact(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
-	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+	if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
 		return HttpResponseRedirect(reverse('farms:index'))
 	if request.method == 'POST':
 		form = ContactForm(request.POST)
@@ -168,7 +168,7 @@ def newContact(request, farm_id):
 @permission_required('farms.auth')
 def editContact(request, farm_id, contact_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
-	if request.user.profile_set.get().member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+	if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
 		return HttpResponseRedirect(reverse('farms:index'))
 	contact = get_object_or_404(Contact, pk=contact_id)
 	if request.method == 'POST':
@@ -223,7 +223,7 @@ def download(request):
 	if request.user.has_perm('farms.uniauth'):
 		farms = Farm.objects.all()
 	else:
-		farms = Farm.objects.filter(member_organization=request.user.profile_set.get().member_organization)
+		farms = Farm.objects.filter(member_organization=request.user.profile.member_organization)
 	for farm in farms:
 		writer.writerow([
 			farm.name,

@@ -16,7 +16,7 @@ from django.views import generic
 
 from constants import VERMONT_COUNTIES
 from memberorgs.models import MemOrg
-from gleanevent.models import PostGleanForm
+from gleanevent.models import PostGleanForm, PostGlean
 from gleaning.customreg import ExtendedRegistrationForm
 
 from userprofile.models import (Profile,
@@ -111,13 +111,12 @@ def userLists(request):
             'member_organization',
             'last_name')
     else:
-        member_organization = request.user.profile_set.get(
-            ).member_organization
+        member_organization = request.user.profile.member_organization
         user_objects = member_organization.volunteers.all().order_by(
             '-last_name')
         users = []
         for user_object in user_objects:
-            users.append(user_object.profile_set.get())
+            users.append(user_object.profile)
 
     return render(
         request,
@@ -128,7 +127,7 @@ def userLists(request):
 @permission_required('userprofile.auth')
 def userProfile(request, user_id):
     user = get_object_or_404(User, pk=user_id)
-    member_organization = request.user.profile_set.get().member_organization
+    member_organization = request.user.profile.member_organization
     if request.user.has_perm('userprofile.uniauth'):
         pass
     elif user not in member_organization.volunteers.all():
@@ -138,26 +137,44 @@ def userProfile(request, user_id):
 
 
 class UserProfileDetailView(generic.DetailView):
-    model = Profile
+    model = User
     template_name = "userprofile/detail.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserProfileDetailView, self).get_context_data(*args, **kwargs)
+        #context["hours"] = sum([x.hours])
+        context["form"] = PostGleanForm()
+        print("Here is where you test")
+        return context
+
+    def get_object(self, *args, **kwargs):
+        obj = super(UserProfileDetailView, self).get_object(*args, **kwargs)
+        return obj.profile
 
     def get_queryset(self):
         if self.request.user.has_perm('userprofile.uniauth'):
-            return Profile.objects.all()
-        request_profile = self.request.user.profile_set.get()
+            return User.objects.all()
+        request_profile = self.request.user.profile
         memorg = request_profile.member_organization
         counties = memorg.counties.all()
-        profiles = Profile.objects.filter(Q(counties__in=counties) &
-                                          Q(member_organization=memorg)
+        users = User.objects.filter(Q(profile__counties__in=counties) &
+                                          Q(profile__member_organization=memorg)
                                           ).distinct()
-        return profiles
+        return users
+
+    def post(self, request, *args, **kwargs):
+        ## BUILT WITHOUT PRECAUTION, FIX THIS IMMEDIATELY##
+        form = PostGleanForm(request.POST)
+        if form.is_valid():
+            form.save()
+
 
 
 @permission_required('userprofile.auth')
 def userEdit(request, user_id):
     user = get_object_or_404(User, pk=user_id)
-    target_memorg = user.profile_set.get().member_organization
-    memorg = request.user.profile_set.get().member_organization
+    target_memorg = user.profile.member_organization
+    memorg = request.user.profile.member_organization
     if target_memorg != memorg and not request.user.has_perm(
             'userprofile.uniauth'):
         return HttpResponseRedirect(reverse('home'))
@@ -241,7 +258,7 @@ def download(request):
         profiles = request.user.profile_set.get(
             ).member_organization.volunteers.all()
     for person in profiles:
-            profile = person.profile_set.get()
+            profile = person.profile
             writer.writerow([
                 profile.user.username,
                 profile.user.email,
@@ -323,8 +340,8 @@ def newUser(request):
 @permission_required('userprofile.auth')
 def userPromote(request, user_id):
     user = get_object_or_404(User, pk=user_id)
-    profile = user.profile_set.get()
-    rq_memorg = request.user.profile_set.get().member_organization
+    profile = user.profile
+    rq_memorg = request.user.profile.member_organization
     ed = Group.objects.get(name="Member Organization Executive Director")
     memc = Group.objects.get(name="Member Organization Glean Coordinator")
     sal = Group.objects.get(name="Salvation Farms Administrator")

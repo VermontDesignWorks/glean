@@ -67,7 +67,7 @@ def index(request):
 
 @permission_required('gleanevent.auth')
 def newGlean(request):
-    profile = request.user.profile_set.get()
+    profile = request.user.profile
     if request.method == "POST":
         form = GleanForm(request.POST)
         if form.is_valid():
@@ -99,7 +99,7 @@ def newGlean(request):
         if not request.user.has_perm('gleanevent.uniauth'):
             #form.fields['counties'].queryset = profile.member_organization.counties.all()
             form.fields['farm'].queryset = Farm.objects.filter(
-                member_organization=request.user.profile_set.get().member_organization)
+                member_organization=request.user.profile.member_organization)
             form.fields['farm_location'].queryset = FarmLocation.objects.none()
         return render(request, 'gleanevent/new.html', {'form' : form})
 
@@ -107,7 +107,7 @@ def newGlean(request):
 @permission_required('gleanevent.auth')
 def editGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
-    if glean.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('gleanevent.uniauth'):
+    if glean.member_organization != request.user.profile.member_organization and not request.user.has_perm('gleanevent.uniauth'):
         return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
 
     if request.method == "POST":
@@ -136,7 +136,7 @@ def detailGlean(request, glean_id):
 @permission_required('gleanevent.auth')
 def deleteGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
-    if glean.member_organization != request.user.profile_set.get().member_organization and u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
+    if glean.member_organization != request.user.profile.member_organization and u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
         return HttpResponseRedirect(reverse('gleanevent:index'))
     if request.method == 'POST':
         announces = Announcement.objects.filter(glean=glean)
@@ -154,7 +154,7 @@ def confirmLink(request, glean_id):
     if not glean.happened():
         if request.user not in glean.rsvped.all():
             glean.rsvped.add(request.user)
-            profile = request.user.profile_set.get()
+            profile = request.user.profile
             profile.rsvped += 1
             profile.save()
             if request.user not in glean.member_organization.volunteers.all():
@@ -174,7 +174,7 @@ def denyLink(request, glean_id):
             glean.not_rsvped.add(request.user)
             if request.user in glean.rsvped.all():
                 glean.rsvped.remove(request.user)
-                profile = request.user.profile_set.get()
+                profile = request.user.profile
                 profile.rsvped -= 1
                 profile.save()
             glean.save()
@@ -189,7 +189,7 @@ def denyLink(request, glean_id):
 @permission_required('gleanevent.auth')
 def postGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
-    if glean.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('gleanevent.uniauth'):#u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
+    if glean.member_organization != request.user.profile.member_organization and not request.user.has_perm('gleanevent.uniauth'):#u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
         return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
     #if not glean.data_entered() and glean.happened():
     count = len(glean.rsvped.all())
@@ -206,7 +206,7 @@ def postGlean(request, glean_id):
             instances[i].glean= glean
             instances[i].user = glean.rsvped.all()[i]
             if instances[i].attended == True:
-                profile = instances[i].user.profile_set.get()
+                profile = instances[i].user.profile
                 profile.attended += 1
                 if instances[i].hours:
                     profile.hours += instances[i].hours
@@ -219,7 +219,7 @@ def postGlean(request, glean_id):
     else:
         initial = []
         for person in glean.rsvped.all():
-            prof = person.profile_set.get()
+            prof = person.profile
             initial.append({'first_name':prof.first_name,
                             'last_name':prof.last_name})
         #return HttpResponse(str(initial))
@@ -269,7 +269,7 @@ def printGlean(request, glean_id):
 
 @permission_required('gleanevent.auth')
 def download(request):
-    profile = request.user.profile_set.get()
+    profile = request.user.profile
     if request.method == 'POST':
         date_from = request.POST['date_from']
         date_until = request.POST['date_until']
@@ -370,7 +370,7 @@ def download(request):
 @permission_required('gleanevent.auth')
 def postGleanDownload(request):
     if request.method == 'POST':
-        profile = request.user.profile_set.get()
+        profile = request.user.profile
         date_from = request.POST['date_from']
         date_until = request.POST['date_until']
         if date_from:

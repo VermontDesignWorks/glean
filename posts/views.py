@@ -20,8 +20,8 @@ def index(request):
 	if request.user.has_perm('posts.uniauth'):
 		posts_list = Post.objects.all()
 	else:
-		posts_list = Post.objects.filter(member_organization=request.user.profile_set.get().member_organization.id)
-		# post_id = request.user.profile_set.get().member_organization.id
+		posts_list = Post.objects.filter(member_organization=request.user.profile.member_organization.id)
+		# post_id = request.user.profile.member_organization.id
 		# return HttpResponseRedirect(reverse('posts:detailpost', args=(post_id,)))
 	return render(request, 'posts/index.html', {'blog_posts':posts_list})
 
@@ -31,7 +31,7 @@ def newPost(request):
 		form = PostForm(request.POST)
 		if form.is_valid():
 			new_save = form.save(commit=False)
-			new_save.member_organization = request.user.profile_set.get().member_organization
+			new_save.member_organization = request.user.profile.member_organization
 			if len(new_save.body) > 200:
 				new_save.excerpt = new_save.body[:197] + '...'
 			else:
@@ -48,7 +48,7 @@ def newPost(request):
 @permission_required('posts.uniauth')
 def editPost(request, post_id):
 	post = get_object_or_404(Post, pk=post_id)
-	if post != request.user.profile_set.get().member_organization and not request.user.has_perm('posts.uniauth'):
+	if post != request.user.profile.member_organization and not request.user.has_perm('posts.uniauth'):
 		return HttpResponseRedirect(reverse('posts:post', args=(post.id,)))
 	if request.method == "POST":
 		form = PostForm(request.POST)
@@ -56,7 +56,7 @@ def editPost(request, post_id):
 			new_save = form.save(commit=False)
 			new_save.id = post_id
 			new_save.datetime = post.datetime
-			new_save.member_organization = request.user.profile_set.get().member_organization
+			new_save.member_organization = request.user.profile.member_organization
 			if len(new_save.body) > 200:
 				new_save.excerpt = new_save.body[:197] + '...'
 			else:
@@ -78,7 +78,7 @@ def detailPost(request, post_id):
 @permission_required('posts.uniauth')
 def deletePost(request, post_id):
 	post = get_object_or_404(Post, pk=post_id)
-	if post.member_organization != request.user.profile_set.get().member_organization and not request.user.has_perm('posts.uniauth'):
+	if post.member_organization != request.user.profile.member_organization and not request.user.has_perm('posts.uniauth'):
 		return HttpResponseRedirect(reverse('posts:index'))
 	if request.method == 'POST':
 		post.delete()

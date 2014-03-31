@@ -132,7 +132,11 @@ class GleanForm(ModelForm):
 
 class PostGlean(models.Model):
     glean = models.ForeignKey(GleanEvent, editable=False, null=True)
-    user = models.ForeignKey(User, editable=False, null=True)
+    user = models.ForeignKey(
+            User,
+            editable=False,
+            null=True,
+            related_name="hours")
     attended = models.BooleanField(default=False)
     first_name = models.CharField(max_length=20, blank=True, null=True)
     last_name = models.CharField(max_length=20, blank=True, null=True)
