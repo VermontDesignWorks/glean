@@ -75,8 +75,7 @@ def newGlean(request):
             #newGlean.save()
             new_save = form.save(commit=False)
             new_save.created_by = request.user
-            new_save.member_organization = request.user.profile_set.get(
-                ).member_organization
+            new_save.member_organization = request.user.profile.member_organization
             new_save.save()
             form.save_m2m()
             # for county in form.cleaned_data['counties']:

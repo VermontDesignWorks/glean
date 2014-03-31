@@ -11,3 +11,12 @@ New Glean!
 {% include 'gleanevent/ajaxgleanform.html' %}
 
 {% endblock body %}
+{% block javascript %}
+<script>
+	$(document).ready(function(){
+		var $datefield = $("#id_date");
+		console.log($datefield);
+		$("#id_date").datepicker();
+	})
+</script>
+{% endblock javascript %}

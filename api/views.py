@@ -47,8 +47,7 @@ def apiFarm(request, farm_id):
 		'counties':[],
 		'farm_locations':{'':"---------"},
 	}
-	for county in farm.counties.all():
-		data['counties'].append(county.id)
+	data['counties'].append(farm.counties.id)
 	for location in farm_locations:
 		data['farm_locations'][location.id] = [location.name]
 	return HttpResponse(json.dumps(data), mimetype="application/json")
