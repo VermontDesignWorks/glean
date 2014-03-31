@@ -219,6 +219,6 @@ def download(request):
     writer.writerow(headings)
 
     for line in group:
-        writer.writerow([getattr(line, attr) for attr in attributes])
+        writer.writerow([getattr(line, attr, "") for attr in attributes])
 
     return response

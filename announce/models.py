@@ -78,13 +78,12 @@ class Announcement(models.Model):
         self.email_recipients.clear()
         self.phone_recipients.clear()
         source = primary_source(self.glean)
-        for county in source.counties.all():
-            for recipient in county.people.all():
-                if recipient.accepts_email:
-                    if recipient.preferred_method == '1':
-                        self.email_recipients.add(recipient.user)
-                    else:
-                        self.phone_recipients.add(recipient.user)
+        for recipient in source.counties.people.all():
+            if recipient.accepts_email:
+                if recipient.preferred_method == '1':
+                    self.email_recipients.add(recipient.user)
+                else:
+                    self.phone_recipients.add(recipient.user)
 
     def uninvite_user(self, user):
         if user in self.email_recipients.all():

@@ -110,7 +110,10 @@ def mail_from_source(body, announcement):
                     [announcement.member_organization.testing_email]
                 )
             msg.content_subtype = "html"
-            msg.send()
+            try:
+                msg.send()
+            except:
+                pass
         else:
             for recipient in announcement.email_recipients.all():
                 rprofile = recipient.profile

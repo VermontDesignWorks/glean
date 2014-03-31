@@ -1,11 +1,11 @@
 
 
 def primary_source(glean):
-	if glean.counties.all():
+	if glean.counties:
 		return glean
-	elif glean.farm_location and glean.farm_location.counties.all():
+	elif glean.farm_location and glean.farm_location.counties:
 		return glean.farm_location
-	elif glean.farm and glean.farm.counties.all():
+	elif glean.farm and glean.farm.counties:
 		return glean.farm
 	else:
 		return glean

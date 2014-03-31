@@ -357,14 +357,13 @@ def combinedAnnounce(request, announce_id):
     recipients = []
     phone = []
 
-    for county in source.counties.all():
-        for recipient in county.people.all():
-            if (recipient not in recipients and recipient.accepts_email and
-                    recipient.preferred_method == '1'):
-                recipients.append(recipient)
-            elif (recipient.preferred_method == '2' and
-                    recipient.accepts_email and recipient not in phone):
-                phone.append(recipient)
+    for recipient in source.counties.people.all():
+        if (recipient not in recipients and recipient.accepts_email and
+                recipient.preferred_method == '1'):
+            recipients.append(recipient)
+        elif (recipient.preferred_method == '2' and
+                recipient.accepts_email and recipient not in phone):
+            phone.append(recipient)
 
     if request.method == 'POST':
         form = AnnouncementForm(request.POST)
