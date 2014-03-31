@@ -6,7 +6,7 @@
 
               {% if comment_list %}
                   {% for comment in comment_list %}
-                    <p>{{comment.user.profile_set.get.first_name}} {{comment.user.profile_set.get.last_name}}:&nbsp;&nbsp;{{comment.comment}}</p>
+                    <p>{{comment.user.profile.first_name}} {{comment.user.profile.last_name}}:&nbsp;&nbsp;{{comment.comment}}</p>
                   {% endfor %}
               {% else %}
                 <div style="text-align:center;"><small>Post comments here to discuss rideshares!</small></div>

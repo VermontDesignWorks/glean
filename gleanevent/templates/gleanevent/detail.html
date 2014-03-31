@@ -13,7 +13,7 @@ Gleaning Details
         <h2>by {{glean.member_organization}}</h2>
     </div>
     <div id="glean-buttons">
-        {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
+        {% if perms.gleanevent.auth and user.profile.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
       <div id="glean-buttons" class="pull-right">
         <a href="{% url 'announce:announceglean' glean.id %}"><button class="glean-button red-button nomargin">Send Announcement</button></a>
         {% if glean.data_entered %}

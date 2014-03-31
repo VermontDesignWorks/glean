@@ -41,14 +41,14 @@
 			{% for person in glean.rsvped.all %}
 			<tr>
 				<td>&nbsp;</td>
-				<td><a href="{% url 'userprofile:userprofile' person.id %}">{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}}</a></td>
+				<td><a href="{% url 'userprofile:userprofile' person.id %}">{{person.profile.first_name}} {{person.profile.last_name}}</a></td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
-				<td>{{person.profile_set.get.photo_release}}</td>
-				<td>{{person.profile_set.get.ecfirst_name}} {{person.profile_set.get.eclast_name}}</td>
-				<td>{{person.profile_set.get.ecphone}}</td>
+				<td>{{person.profile.photo_release}}</td>
+				<td>{{person.profile.ecfirst_name}} {{person.profile.eclast_name}}</td>
+				<td>{{person.profile.ecphone}}</td>
 			</tr>
 			{% endfor %}
 		</table>

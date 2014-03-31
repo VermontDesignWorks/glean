@@ -3,7 +3,7 @@
 	<h1>{{glean.name}} Phone List</h1>
 	<ul>
 		{% for person in announcement.phone_recipients.all %}
-			<li>{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}} - {{person.profile_set.get.phone}}</li>
+			<li>{{person.profile.first_name}} {{person.profile.last_name}} - {{person.profile.phone}}</li>
 		{% endfor %}
 	</ul>
 </body>

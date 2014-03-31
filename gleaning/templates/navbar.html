@@ -8,7 +8,7 @@
                     {% if 'memberorgs.uniauth' in perms %}
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:index' %}">Member Orgs</a></li>
                       {% else %}
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:index' %}">{{user.profile_set.get.member_organization}}</a></li>
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'memorgs:index' %}">{{user.profile.member_organization}}</a></li>
                       {% endif %}
                   
                       {% endif %}

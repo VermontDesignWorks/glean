@@ -13,7 +13,7 @@ Gleaning Details
       <h2>by {{glean.member_organization}}
     </div>
 
-    {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
+    {% if perms.gleanevent.auth and user.profile.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
       <div id="glean-buttons" class="pull-right">
         <button href="">View Hours</button>
         <button href="">Edit Glean</button>
@@ -88,7 +88,7 @@ Gleaning Details
   
   <div class="divider">&nbsp;</div>
   <div class="admin-controls">
-  {% if perms.gleanevent.auth and user.profile_set.get.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
+  {% if perms.gleanevent.auth and user.profile.member_organization == glean.member_organization or perms.gleanevent.uniauth %}
   {% if glean.upcomming %}
 <p>
   <a href="{% url 'announce:announceglean' glean.id %}" class="btn btn-primary">Create Announcement</a> <a href="{% url 'gleanevent:editglean' glean.id %}"class="btn btn-warning">Edit Glean</a> <a href="{% url 'gleanevent:printglean' glean.id %}"class="btn btn-info">Attendee List</a> 
@@ -135,7 +135,7 @@ Gleaning Details
   {% get_comment_list for glean as comment_list %}
   {% if comment_list %}
   {% for comment in comment_list %}
-  <p>{{comment.user.profile_set.get.first_name}} {{comment.user.profile_set.get.last_name}}:&nbsp;&nbsp;{{comment.comment}}</p>
+  <p>{{comment.user.profile.first_name}} {{comment.user.profile.last_name}}:&nbsp;&nbsp;{{comment.comment}}</p>
   {% endfor %}
   {% else %}
   <div style="text-align:center;"><small>Post comments here to discuss rideshares!</small></div>

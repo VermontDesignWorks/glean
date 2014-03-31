@@ -255,8 +255,7 @@ def download(request):
     if request.user.has_perm('userprofile.uniauth'):
         profiles = User.objects.all()
     else:
-        profiles = request.user.profile_set.get(
-            ).member_organization.volunteers.all()
+        profiles = request.user.profile.member_organization.volunteers.all()
     for person in profiles:
             profile = person.profile
             writer.writerow([
@@ -329,8 +328,7 @@ def newUser(request):
     if request.user.has_perm('userprofile.uniauth'):
         users = User.objects.all().order_by('-date_joined')[:20]
     else:
-        users = request.user.profile_set.get(
-            ).member_organization.volunteers.order_by('-date_joined')[:20]
+        users = request.user.profile.member_organization.volunteers.order_by('-date_joined')[:20]
     return render(
         request,
         'userprofile/newuser.html',

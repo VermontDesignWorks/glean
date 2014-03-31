@@ -53,7 +53,7 @@
 		<ul>
 			{% for volunteer in memorg.volunteers.all %}
 				{% if volunteer.groups.all.count == 0 %}
-					<li><a href="{% url 'userprofile:userprofile' volunteer.id %}">{{volunteer.profile_set.get.first_name}} {{volunteer.profile_last_name}}</a></li>
+					<li><a href="{% url 'userprofile:userprofile' volunteer.id %}">{{volunteer.profile.first_name}} {{volunteer.profile.last_name}}</a></li>
 				{% endif %}
 			{% endfor %}
 		</ul>

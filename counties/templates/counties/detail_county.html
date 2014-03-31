@@ -11,7 +11,7 @@
 <p>{{county.description}}</p>
 <ul>
 {% for person in county.user_set.all %}
-<li>{{person.profile_set.get.first_name}} {{person.profile_set.get.last_name}}</li>
+<li>{{person.profile.first_name}} {{person.profile.last_name}}</li>
 {% endfor %}
 </ul>
 {% endblock %}
