@@ -67,8 +67,7 @@ def index(request):
 @permission_required('distro.auth')
 def entry(request):
     DistroFormSet = modelformset_factory(Distro, extra=int(10))
-    member_organization = request.user.profile_set.get(
-    ).member_organization
+    member_organization = request.user.profile.member_organization
     sites = RecipientSite.objects.filter(
         member_organization=member_organization)
     if request.method == 'POST':
@@ -80,8 +79,7 @@ def entry(request):
     #       return HttpResponse(formset.errors)
             count = 0
             for instance in instances:
-                instance.member_organization = request.user.profile_set.get(
-                ).member_organization
+                instance.member_organization = request.user.profile.member_organization
                 instance.save()
                 count += 1
             form = DistroFormSet(queryset=Distro.objects.none())
