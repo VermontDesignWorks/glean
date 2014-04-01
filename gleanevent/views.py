@@ -1,6 +1,6 @@
-import time
-import datetime
 import csv
+import datetime
+import time
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
@@ -11,8 +11,9 @@ from django.forms.models import modelformset_factory
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
+from django.template import RequestContext, loader
 
-from django_xhtml2pdf.utils import generate_pdf
+from weasyprint import HTML
 
 from gleanevent.models import GleanEvent, GleanForm, PostGlean
 from farms.models import Farm, FarmLocation
@@ -294,12 +295,17 @@ def postGleanEdit(request, glean_id):
 
 @permission_required('gleanevent.auth')
 def printGlean(request, glean_id):
+    glean = get_object_or_404(GleanEvent, pk=glean_id)
+
+    template = loader.get_template('gleanevent/print.html')
+    html = template.render(RequestContext(request, {'glean': glean}))
 
     response = HttpResponse(content_type="application/pdf")
+    response[
+        'Content-Disposition'
+    ] = 'attachment; filename="{0} List.pdf"'.format(glean.title)
 
-    glean = get_object_or_404(GleanEvent, pk=glean_id)
-    html = render(request, 'gleanevent/print.html', {'glean': glean})
-    pdf = generate_pdf(html, response)
+    HTML(string=html, url_fetcher=None).write_pdf(response)
     return response
 
 
