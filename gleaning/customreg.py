@@ -19,7 +19,7 @@ from counties.models import County
 from userprofile.models import Profile
 
 from django import forms
-from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, STATES
+from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, STATES, TASKS
 
 
 class ExtendedRegistrationForm(RegistrationForm):
@@ -61,6 +61,13 @@ class ExtendedRegistrationForm(RegistrationForm):
                 HTML("<h3 class='lbl'>Counties You'd Like to Glean In</h3>"),
                 Div(InlineCheckboxes("counties"),
                     css_class="form-checkboxes")
+            ),
+            Fieldset(
+                "",
+                HTML("<h3 class='lbl'>How would you like"
+                     " to participate?</h3>"),
+                Field("tasks"),
+                Field("notes", css_class="form-notes")
             ),
             Fieldset(
                 "",
@@ -121,7 +128,12 @@ class ExtendedRegistrationForm(RegistrationForm):
         label="Last Name", max_length=200)
     ecphone = forms.CharField(label="Phone", max_length=200)
     ecrelationship = forms.CharField(label="Relationship", max_length=200)
-
+    tasks = forms.ChoiceField(label="Which Volunteer Opportunities most "
+                              "interest you?", choices=TASKS,
+                              required=False)
+    notes = forms.CharField(label="Tell us a bit about yourself",
+                            widget=forms.Textarea,
+                            required=False)
     waiver = forms.BooleanField(
         label="Do you accept the Waiver of Liability?", required=True)
     agreement = forms.BooleanField(

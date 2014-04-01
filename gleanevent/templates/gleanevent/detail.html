@@ -75,11 +75,21 @@ Gleaning Details
         </div> <!-- End glean-details -->
 
         <div class="yellow-box yellow-top directions-instructions">
-            <h3>Directions</h3>
-                <p>{{glean.render_directions|linebreaks}}</p>
-                <h3>Instructions</h3>
-                <p>{{glean.render_instructions|linebreaks}}</p>
-            </div> <!-- End Directions Box -->
+            <div class="pull-left half">
+                <h3>Directions</h3>
+                    <p>{{glean.render_directions|linebreaks}}</p>
+                    <h3>Instructions</h3>
+                    <p>{{glean.render_instructions|linebreaks}}</p>
+            </div>
+            <div class="pull-left half">
+                <h3>Coordinator</h3>
+                {% with glean.created_by.profile as profile %}
+                    <p>{{profile.first_name}} {{profile.last_name}}</p>
+                    <p>{{profile.phone}}</p>
+                    <p>{{profile.user.email}}</p>
+                {% endwith %}
+            </div>
+        </div> <!-- End Directions Box -->
 
     </div> <!-- End First Half -->
 

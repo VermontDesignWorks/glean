@@ -62,6 +62,9 @@ h3 {
    font-size:24px;
    font-weight:bold;
 }
+.half {
+   width:50%;
+}
 /* ==========================================================================
    Fighting with the Navbar
    ========================================================================== */
@@ -541,6 +544,9 @@ legend .no-margin {
    Forms!
    ========================================================================== */
 
+.form-notes {
+   width: 526px;
+}
 #hours-form > input, #hours-form > label {
    float: left;
    max-width: 150px;

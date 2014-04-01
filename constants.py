@@ -22,6 +22,13 @@ ACCESS_LIST = ['A', 'ED', 'MC', 'V']
 #   ('VO', 'Volunteer'),
 # )
 
+TASKS = (
+    ("gleaning", "Field Gleaning"),
+    ("pickups", "Farmers Market/Farm Pick-ups"),
+    ("distribution", "Delivery/Distribution"),
+    ("administrative", "Administrative Support"),
+)
+
 
 LINE_TYPE = (
     ('C', 'Cell'),

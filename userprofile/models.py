@@ -4,7 +4,7 @@ from django import forms
 #from registration.forms import RegistrationForm
 #from registration.backends.default import DefaultBackend
 
-from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, STATES
+from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, TASKS, STATES
 
 from counties.models import County
 from memberorgs.models import MemOrg
@@ -68,6 +68,17 @@ class Profile(models.Model):
         null=True,
         editable=False
         )
+
+    tasks = models.CharField(
+        verbose_name="Which Volunteer Opportunities most interest you?",
+        choices=TASKS,
+        max_length=15,
+        default="gleaning",
+        null=True
+    )
+    notes = models.TextField(
+        verbose_name="Please share a little bit about yourself:",
+        null=True)
 
     waiver = models.BooleanField(
         "Do you agree to the Waiver of Liability?", default=False)
