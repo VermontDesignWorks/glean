@@ -12,6 +12,8 @@ from django.forms.models import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 
+from django_xhtml2pdf.utils import generate_pdf
+
 from gleanevent.models import GleanEvent, GleanForm, PostGlean
 from farms.models import Farm, FarmLocation
 from announce.models import Announcement
@@ -75,7 +77,7 @@ def newGlean(request):
             #newGlean.save()
             new_save = form.save(commit=False)
             new_save.created_by = request.user
-            new_save.member_organization = request.user.profile.member_organization
+            new_save.member_organization = profile.member_organization
             new_save.save()
             form.save_m2m()
             # for county in form.cleaned_data['counties']:
@@ -87,55 +89,78 @@ def newGlean(request):
         if not request.user.has_perm('gleanevent.uniauth'):
             form.fields['farm'].queryset = Farm.objects.filter(
                 member_organization=profile.member_organization)
-            #form.fields['counties'].queryset = profile.member_organization.counties.all()
         if form.cleaned_data['farm']:
             farm = Farm.objects.get(name=form.cleaned_data['farm'])
-            form.fields['farm_location'].queryset = FarmLocation.objects.filter(farm=farm)
+            form.fields[
+                'farm_location'
+            ].queryset = FarmLocation.objects.filter(farm=farm)
         return render(request, 'gleanevent/new.html', {'form': form})
-            
+
     else:
         form = GleanForm()
         if not request.user.has_perm('gleanevent.uniauth'):
-            #form.fields['counties'].queryset = profile.member_organization.counties.all()
             form.fields['farm'].queryset = Farm.objects.filter(
                 member_organization=request.user.profile.member_organization)
             form.fields['farm_location'].queryset = FarmLocation.objects.none()
-        return render(request, 'gleanevent/new.html', {'form' : form})
+        return render(request, 'gleanevent/new.html', {'form': form})
 
 
 @permission_required('gleanevent.auth')
 def editGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
-    if glean.member_organization != request.user.profile.member_organization and not request.user.has_perm('gleanevent.uniauth'):
-        return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
+    profile = request.user.profile
+    if (glean.member_organization != profile.member_organization
+            and not request.user.has_perm('gleanevent.uniauth')):
+        return HttpResponseRedirect(
+            reverse('gleanevent:detailglean', args=(glean_id,))
+        )
 
     if request.method == "POST":
-        form = GleanForm(request.POST, instance = glean)
+        form = GleanForm(request.POST, instance=glean)
         if form.is_valid():
             new_save = form.save()
-            return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(new_save.id,) ))
+            return HttpResponseRedirect(
+                reverse('gleanevent:detailglean', args=(new_save.id,)))
         else:
-            form.fields['farm'].queryset=Farm.objects.filter(member_organization=glean.member_organization)
-            form.fields['farm_location'].queryset=FarmLocation.objects.filter(farm=glean.farm)
-            return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':form.errors})
+            form.fields['farm'].queryset = Farm.objects.filter(
+                member_organization=glean.member_organization)
+            form.fields[
+                'farm_location'
+            ].queryset = FarmLocation.objects.filter(farm=glean.farm)
+            return render(
+                request,
+                'gleanevent/edit.html',
+                {'form': form, 'glean': glean, 'error': form.errors})
     else:
-        form = GleanForm(instance = glean)
-        form.fields['farm'].queryset=Farm.objects.filter(member_organization=glean.member_organization)
-        form.fields['farm_location'].queryset=FarmLocation.objects.filter(farm=glean.farm)
-        #form.fields['counties'].queryset=glean.member_organization.counties.all()
-        return render(request, 'gleanevent/edit.html', {'form':form, 'glean':glean, 'error':''})
+        form = GleanForm(instance=glean)
+        form.fields['farm'].queryset = Farm.objects.filter(
+            member_organization=glean.member_organization)
+        form.fields['farm_location'].queryset = FarmLocation.objects.filter(
+            farm=glean.farm)
+
+        return render(
+            request,
+            'gleanevent/edit.html',
+            {'form': form, 'glean': glean, 'error': ''})
+
 
 @login_required
 def detailGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
     address = primary_address(glean)
-    return render(request, 'gleanevent/detail.html', {'glean':glean,'address':address})
+    return render(
+        request,
+        'gleanevent/detail.html',
+        {'glean': glean, 'address': address})
 
-#== Delete Glean View ==#
+
 @permission_required('gleanevent.auth')
 def deleteGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
-    if glean.member_organization != request.user.profile.member_organization and u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
+    profile = request.user.profile
+    if (glean.member_organization != profile.member_organization and
+            u'gleanevent.uniauth' not in
+            request.user.groups.get().permissions.all()):
         return HttpResponseRedirect(reverse('gleanevent:index'))
     if request.method == 'POST':
         announces = Announcement.objects.filter(glean=glean)
@@ -145,7 +170,8 @@ def deleteGlean(request, glean_id):
         glean.delete()
         return HttpResponseRedirect(reverse('gleanevent:index'))
     else:
-        return render(request, 'gleanevent/delete.html', {'glean':glean})
+        return render(request, 'gleanevent/delete.html', {'glean': glean})
+
 
 @login_required
 def confirmLink(request, glean_id):
@@ -161,9 +187,11 @@ def confirmLink(request, glean_id):
             if request.user in glean.not_rsvped.all():
                 glean.not_rsvped.remove(request.user)
             glean.save()
-        return render(request, 'gleanevent/confirm.html', {'glean':glean})
+        return render(request, 'gleanevent/confirm.html', {'glean': glean})
     else:
-        return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
+        return HttpResponseRedirect(
+            reverse('gleanevent:detailglean', args=(glean_id,)))
+
 
 @login_required
 def denyLink(request, glean_id):
@@ -177,34 +205,38 @@ def denyLink(request, glean_id):
                 profile.rsvped -= 1
                 profile.save()
             glean.save()
-            return render(request, 'gleanevent/deny.html', {'glean':glean})
+            return render(request, 'gleanevent/deny.html', {'glean': glean})
         else:
             if request.user in glean.rsvped.all():
                 glean.rsvped.remove(request.user)
-            return render(request, 'gleanevent/deny.html', {'glean':glean})
+            return render(request, 'gleanevent/deny.html', {'glean': glean})
     else:
-        return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
+        return HttpResponseRedirect(
+            reverse('gleanevent:detailglean', args=(glean_id,)))
+
 
 @permission_required('gleanevent.auth')
 def postGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
-    if glean.member_organization != request.user.profile.member_organization and not request.user.has_perm('gleanevent.uniauth'):#u'gleanevent.uniauth' not in request.user.groups.get().permissions.all():
-        return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
-    #if not glean.data_entered() and glean.happened():
+    profile = request.user.profile
+    if (glean.member_organization != profile.member_organization and not
+            request.user.has_perm('gleanevent.uniauth')):
+        return HttpResponseRedirect(
+            reverse('gleanevent:detailglean', args=(glean_id,)))
+
     count = len(glean.rsvped.all())
     unrsvped = int(request.GET.get('extra', 0))
     if int(unrsvped) > 100:
         unrsvped = 100
     PostGleanFormSet = modelformset_factory(PostGlean, extra=count+unrsvped)
-    #formset = PostGleanFormSet(queryset=PostGlean.objects.none())
-    
+
     if request.method == 'POST':
         formset = PostGleanFormSet(request.POST)
         instances = formset.save(commit=False)
         for i in range(count):
-            instances[i].glean= glean
+            instances[i].glean = glean
             instances[i].user = glean.rsvped.all()[i]
-            if instances[i].attended == True:
+            if instances[i].attended is True:
                 profile = instances[i].user.profile
                 profile.attended += 1
                 if instances[i].hours:
@@ -214,57 +246,62 @@ def postGlean(request, glean_id):
             if not hasattr(instance, 'glean'):
                 instance.glean = glean
             instance.save()
-        return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
+        return HttpResponseRedirect(
+            reverse('gleanevent:detailglean', args=(glean_id,)))
     else:
         initial = []
         for person in glean.rsvped.all():
             prof = person.profile
-            initial.append({'first_name':prof.first_name,
-                            'last_name':prof.last_name})
+            initial.append({'first_name': prof.first_name,
+                            'last_name': prof.last_name})
         #return HttpResponse(str(initial))
-        forms=PostGleanFormSet(initial=initial, queryset=PostGlean.objects.none())
-        return render(request, 'gleanevent/postglean.html', {'glean':glean, 'formset':forms})
-    #else:
-    #       return HttpResponseRedirect(reverse('gleanevent:detailglean', args=(glean_id,)))
+        forms = PostGleanFormSet(
+            initial=initial,
+            queryset=PostGlean.objects.none())
+        return render(
+            request,
+            'gleanevent/postglean.html',
+            {'glean': glean, 'formset': forms})
 
 
 def postGleanView(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
     glean_data = PostGlean.objects.filter(glean=glean)
-    return render(request, 'gleanevent/post_glean.html', {'glean':glean, 'glean_data':glean_data})
+    return render(
+        request,
+        'gleanevent/post_glean.html',
+        {'glean': glean, 'glean_data': glean_data})
+
 
 def postGleanEdit(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
-    PostGleanFormSet = modelformset_factory(PostGlean, extra=0, can_delete=True)
+    PostGleanFormSet = modelformset_factory(
+        PostGlean, extra=0, can_delete=True)
     if request.method == 'POST':
         formset = PostGleanFormSet(request.POST)
         if formset.is_valid():
             formset.save()
-            return HttpResponseRedirect(reverse('gleanevent:postgleanview', args=(glean_id,)))
+            return HttpResponseRedirect(
+                reverse('gleanevent:postgleanview', args=(glean_id,)))
 
     forms = PostGleanFormSet(queryset=PostGlean.objects.filter(glean=glean))
 
-    return render(request, 'gleanevent/postgleanedit.html', {'glean':glean, 'formset':forms})
+    return render(
+        request,
+        'gleanevent/postgleanedit.html',
+        {'glean': glean, 'formset': forms})
+
 
 @permission_required('gleanevent.auth')
 def printGlean(request, glean_id):
-    # # Create the HttpResponse object with the appropriate PDF headers.
-    # response = HttpResponse(content_type='application/pdf')
-    # response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
 
-    # # Create the PDF object, using the response object as its "file."
-    # p = canvas.Canvas(response)
+    response = HttpResponse(content_type="application/pdf")
 
-    # # Draw things on the PDF. Here's where the PDF generation happens.
-    # # See the ReportLab documentation for the full list of functionality.
-    # p.drawString(100, 100, "Hello world.")
-
-    # # Close the PDF object cleanly, and we're done.
-    # p.showPage()
-    # p.save()
-    # return response
     glean = get_object_or_404(GleanEvent, pk=glean_id)
-    return render(request, 'gleanevent/print.html', {'glean':glean})
+    html = render(request, 'gleanevent/print.html', {'glean': glean})
+    pdf = generate_pdf(html, response)
+    return response
+
 
 @permission_required('gleanevent.auth')
 def download(request):
@@ -273,58 +310,69 @@ def download(request):
         date_from = request.POST['date_from']
         date_until = request.POST['date_until']
         if date_from:
-            date_from = date_from[6:] + '-' + date_from[:2] + '-' + date_from[3:5]
+            date_from = (date_from[6:] + '-' +
+                         date_from[:2] + '-' +
+                         date_from[3:5]
+                         )
         else:
             date_from = '2013-01-01'
         if date_until:
-            date_until = date_until[6:] + '-' + date_until[:2] + '-' + date_until[3:5]
+            date_until = (date_until[6:] + '-' +
+                          date_until[:2] + '-' +
+                          date_until[3:5]
+                          )
         else:
             date_until = '3013-01-01'
         if request.user.has_perm('gleanevent.uniauth'):
             gleaning_events_list = GleanEvent.objects.all()
         else:
-            gleaning_events_list = GleanEvent.objects.filter(member_organization=profile.member_organization)
+            gleaning_events_list = GleanEvent.objects.filter(
+                member_organization=profile.member_organization)
         try:
-            gleaning_events_list = gleaning_events_list.filter(date__gte=date_from, date__lte=date_until).order_by('-date')
+            gleaning_events_list = gleaning_events_list.filter(
+                date__gte=date_from, date__lte=date_until).order_by('-date')
         except:
-            return render(request, 'gleanevent/downloadglean.html', {'error':'Use the Date Picker, you muppets!'})
+            return render(
+                request,
+                'gleanevent/downloadglean.html',
+                {'error': 'Use the Date Picker, you muppets!'})
         response = HttpResponse(mimetype='text/csv')
         response['Content-Disposition'] = 'attachment; filename=gleanevent.csv'
 
         # Create the CSV writer using the HttpResponse as the "file."
         writer = csv.writer(response)
         writer.writerow([
-                'title',
-                'address_one',
-                'address_two',
-                'city',
-                'state',
+            'title',
+            'address_one',
+            'address_two',
+            'city',
+            'state',
 
-                'date',
-                'time',
-                'description',
+            'date',
+            'time',
+            'description',
 
-                'directions',
-                'instructions',
+            'directions',
+            'instructions',
 
-                'volunteers_needed',
-                'duration',
+            'volunteers_needed',
+            'duration',
 
-                'farm',
-                'farm_location',
+            'farm',
+            'farm_location',
 
-                'created_by',
-                'invited_volunteers',
+            'created_by',
+            'invited_volunteers',
 
-                'rsvped',
-                'not_rsvped',
-                'waitlist',
+            'rsvped',
+            'not_rsvped',
+            'waitlist',
 
-                'attending_volunteers',
-                'officiated_by',
-                'counties',
+            'attending_volunteers',
+            'officiated_by',
+            'counties',
 
-                'member_organization',
+            'member_organization',
         ])
 
         for glean in gleaning_events_list:
@@ -364,7 +412,8 @@ def download(request):
 
         return response
     else:
-        return render(request, 'gleanevent/downloadglean.html', {'error':''})
+        return render(request, 'gleanevent/downloadglean.html', {'error': ''})
+
 
 @permission_required('gleanevent.auth')
 def postGleanDownload(request):
@@ -373,36 +422,47 @@ def postGleanDownload(request):
         date_from = request.POST['date_from']
         date_until = request.POST['date_until']
         if date_from:
-            date_from = date_from[6:] + '-' + date_from[:2] + '-' + date_from[3:5]
+            date_from = (date_from[6:] + '-' +
+                         date_from[:2] + '-' +
+                         date_from[3:5])
         else:
             date_from = '2013-01-01'
         if date_until:
-            date_until = date_until[6:] + '-' + date_until[:2] + '-' + date_until[3:5]
+            date_until = (date_until[6:] + '-' +
+                          date_until[:2] + '-' +
+                          date_until[3:5])
         else:
             date_until = '3013-01-01'
         if request.user.has_perm('gleanevent.uniauth'):
             post_glean_events_list = PostGlean.objects.all()
         else:
-            post_glean_events_list = PostGlean.objects.filter(glean__member_organization=profile.member_organization)
+            post_glean_events_list = PostGlean.objects.filter(
+                glean__member_organization=profile.member_organization)
         try:
-            post_glean_events_list = post_glean_events_list.filter(glean__date__gte=date_from, glean__date__lte=date_until).order_by('-glean__date')
+            post_glean_events_list = post_glean_events_list.filter(
+                glean__date__gte=date_from, glean__date__lte=date_until
+            ).order_by('-glean__date')
         except:
-            return render(request, 'gleanevent/downloadpostglean.html', {'error':'Use the Date Picker You Muppets!'})
+            return render(
+                request,
+                'gleanevent/downloadpostglean.html',
+                {'error': 'Use the Date Picker You Muppets!'})
         response = HttpResponse(mimetype='text/csv')
-        response['Content-Disposition'] = 'attachment; filename=volunteer_hours.csv'
+        response['Content-Disposition'] = 'attachment;'
+        ' filename=volunteer_hours.csv'
 
         # Create the CSV writer using the HttpResponse as the "file."
         writer = csv.writer(response)
         writer.writerow([
-                'first_name',
-                'last_name',
-                'username',
-                'glean',
-                'attended',
-                'hours',
-                'group',
-                'members',
-                'notes',
+            'first_name',
+            'last_name',
+            'username',
+            'glean',
+            'attended',
+            'hours',
+            'group',
+            'members',
+            'notes',
         ])
 
         for postglean in post_glean_events_list:
@@ -420,4 +480,7 @@ def postGleanDownload(request):
 
         return response
     else:
-        return render(request, 'gleanevent/downloadpostglean.html', {'error':''})
+        return render(
+            request,
+            'gleanevent/downloadpostglean.html',
+            {'error': ''})
