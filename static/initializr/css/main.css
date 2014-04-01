@@ -540,6 +540,12 @@ legend .no-margin {
 /* ==========================================================================
    Forms!
    ========================================================================== */
+
+#hours-form > input, #hours-form > label {
+   float: left;
+   max-width: 150px;
+   margin: 5px;
+}
 input[disabled] {
    background-color:#b5ca89;
 }

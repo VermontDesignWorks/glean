@@ -4,8 +4,9 @@ from django.db import models
 from django.forms import TextInput, Select
 from django.forms import ModelForm
 
-from constants import STATES, TIME_OF_DAY
+from crispy_forms.helper import FormHelper
 
+from constants import STATES, TIME_OF_DAY
 from django.contrib.auth.models import User
 from farms.models import Farm, FarmLocation
 from memberorgs.models import MemOrg
@@ -131,12 +132,13 @@ class GleanForm(ModelForm):
 
 
 class PostGlean(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
     glean = models.ForeignKey(GleanEvent, editable=False, null=True)
     user = models.ForeignKey(
-            User,
-            editable=False,
-            null=True,
-            related_name="hours")
+        User,
+        editable=False,
+        null=True,
+        related_name="hours")
     attended = models.BooleanField(default=False)
     first_name = models.CharField(max_length=20, blank=True, null=True)
     last_name = models.CharField(max_length=20, blank=True, null=True)
@@ -151,27 +153,20 @@ class PostGlean(models.Model):
     members = models.CharField(max_length=20, blank=True, null=True)
     notes = models.CharField(max_length=200, blank=True, null=True)
 
-    def __unicode__(self):
-        returnable = unicode(self.glean.date)
-        if hasattr(self, 'user') and self.user:
-            returnable += ' - ' + unicode(self.user.username)
-        if hasattr(self, 'group') and self.group:
-            returnable += ' - ' + unicode(self.group)
-        if (self.first_name and self.last_name and
-                not self.user and not self.group):
-            returnable += ' - ' + self.first_name + ' ' + self.last_name
-        if not self.user and not self.group:
-            returnable += ' - (unregistered)'
-
-        return returnable
-
     class Meta:
         permissions = (
             ("auth", "Member Organization Level Permissions"),
             ("uniauth", "Universal Permission Level"),
         )
+        ordering = ['-timestamp']
 
 
 class PostGleanForm(ModelForm):
     class Meta:
         model = PostGlean
+
+    def __init__(self, *args, **kwargs):
+        super(PostGleanForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-inline'
+        helper.field_template = 'bootstrap3/layout/inline_field.html'

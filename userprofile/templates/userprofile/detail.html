@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}
 {{object.first_name}} {{object.last_name}}
 {% endblock title %}
@@ -59,11 +60,20 @@
     </div>
 
     </div>
-    <div class="yellow-box red-top">
-        <form method="post">
+    <div class="yellow-box green-top">
+        <form method="post" id="hours-form">
+            {% csrf_token %}
             {{form}}
             <input type="submit" class="glean-button red-button">
         </form>
+    </div>
+    <div class="yellow-box blue-top">
+        <h2>Hours to Date</h2>
+        <ul>
+        {% for hour in object.user.hours.all|slice:":5" %}
+            <li>{{hour.hours}} - {{hour.notes}}</li>
+        {% endfor %}
+        </ul>
     </div>
 </div>
 {% endblock body %}
@@ -100,8 +110,7 @@
 <p>Phone: {{object.ecphone}}</p>
 <p>{{object.ecrelationship}}</p>
 </div>
-<div class="span12">
-    <a class="btn btn-info" href="{% url 'userprofile:useredit' object.user.id %}">Edit this Profile</a>
+<div class="span12">rm
 </div>
 
 <div class="span12">

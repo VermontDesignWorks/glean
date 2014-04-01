@@ -8,7 +8,7 @@ from django.contrib.auth.models import User, Group
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
@@ -136,38 +136,41 @@ def userProfile(request, user_id):
     return render(request, 'userprofile/detail.html', {'person': person})
 
 
-class UserProfileDetailView(generic.DetailView):
-    model = User
+class UserProfileDetailView(generic.CreateView):
+    model = PostGlean
     template_name = "userprofile/detail.html"
 
+    def get_success_url(self):
+        return reverse_lazy(
+            'userprofile:userprofile', args=(self.kwargs["pk"],))
+
     def get_context_data(self, *args, **kwargs):
-        context = super(UserProfileDetailView, self).get_context_data(*args, **kwargs)
-        #context["hours"] = sum([x.hours])
-        context["form"] = PostGleanForm()
-        print("Here is where you test")
+        user = get_object_or_404(User, pk=self.kwargs["pk"])
+        profile = user.profile
+        context = super(
+            UserProfileDetailView,
+            self
+        ).get_context_data(*args, **kwargs)
+        context["object"] = user.profile
+        context["form"].fields["first_name"].initial = profile.first_name
+        context["form"].fields["first_name"].widget = forms.HiddenInput()
+        context["form"].fields["last_name"].initial = profile.last_name
+        context["form"].fields["last_name"].widget = forms.HiddenInput()
+        context["form"].fields["attended"].initial = True
+        context["form"].fields["attended"].widget = forms.HiddenInput()
         return context
 
-    def get_object(self, *args, **kwargs):
-        obj = super(UserProfileDetailView, self).get_object(*args, **kwargs)
-        return obj.profile
-
-    def get_queryset(self):
-        if self.request.user.has_perm('userprofile.uniauth'):
-            return User.objects.all()
-        request_profile = self.request.user.profile
-        memorg = request_profile.member_organization
-        counties = memorg.counties.all()
-        users = User.objects.filter(Q(profile__counties__in=counties) &
-                                          Q(profile__member_organization=memorg)
-                                          ).distinct()
-        return users
-
-    def post(self, request, *args, **kwargs):
-        ## BUILT WITHOUT PRECAUTION, FIX THIS IMMEDIATELY##
-        form = PostGleanForm(request.POST)
-        if form.is_valid():
-            form.save()
-
+    def form_valid(self, form):
+        import pdb
+        pdb.set_trace()
+        user = User.objects.get(pk=self.kwargs["pk"])
+        instance = PostGlean(
+            user=user,
+            **form.cleaned_data
+        )
+        instance.save()
+        print "stop here"
+        return super(UserProfileDetailView, self).form_valid(form)
 
 
 @permission_required('userprofile.auth')
@@ -328,7 +331,8 @@ def newUser(request):
     if request.user.has_perm('userprofile.uniauth'):
         users = User.objects.all().order_by('-date_joined')[:20]
     else:
-        users = request.user.profile.member_organization.volunteers.order_by('-date_joined')[:20]
+        users = request.user.profile.member_organization.volunteers.order_by(
+            '-date_joined')[:20]
     return render(
         request,
         'userprofile/newuser.html',
