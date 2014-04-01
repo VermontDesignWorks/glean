@@ -158,11 +158,11 @@ class UserProfileDetailView(generic.CreateView):
         context["form"].fields["last_name"].widget = forms.HiddenInput()
         context["form"].fields["attended"].initial = True
         context["form"].fields["attended"].widget = forms.HiddenInput()
+        context["form"].fields["members"].widget = forms.HiddenInput()
+        context["form"].fields["group"].widget = forms.HiddenInput()
         return context
 
     def form_valid(self, form):
-        import pdb
-        pdb.set_trace()
         user = User.objects.get(pk=self.kwargs["pk"])
         instance = PostGlean(
             user=user,

@@ -64,6 +64,12 @@
         <form method="post" id="hours-form">
             {% csrf_token %}
             {{form}}
+            <style>
+            #id_notes {
+                max-width: 999px !important;
+                width: 664px;
+            }
+            </style>
             <input type="submit" class="glean-button red-button">
         </form>
     </div>
