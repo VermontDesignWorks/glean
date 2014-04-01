@@ -27,7 +27,7 @@ Welcome to the Gleaning Interface!
         </a></h4>
     </div>
     <div class="slider-holder">
-        <img src="/static/images/corn.jpg" alt="photo by dccentralkitchen, found on flickr" class="img-polaroid hidden-phone" />
+        <img id="slider-img" src="/static/images/Slider0.png" alt="photo by dccentralkitchen, found on flickr" class="img-polaroid hidden-phone" />
     </div>
 </div>
 {% include "about_box.html" %}
@@ -35,3 +35,32 @@ Welcome to the Gleaning Interface!
 </div>
 
 {% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    slider_index = 0
+    var prefix = "/static/images/";
+    var images = [
+        "Slider0.png",
+        "Slider1.png",
+        "Slider2.JPG",
+        "Slider3.png",
+        "Slider4.png",
+        "Slider5.png",
+        "Slider6.png"
+        ];
+    var $img = $("#slider-img");
+
+    function nextimage(){
+        $img.fadeOut(300, function(){
+            $img.attr("src", prefix+images[slider_index]);
+        }).delay(300).fadeIn();
+        slider_index = (slider_index + 1) % 7;
+        setTimeout('nextimage()', 5000);
+    }
+
+    $(document).ready(function() {
+        setTimeout('nextimage()', 5000);
+    })
+</script>
+{% endblock javascript %}
