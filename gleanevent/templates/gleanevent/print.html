@@ -10,22 +10,22 @@
            width: 511pt;
         }
         .print-table{
-           font-size: 12pt;
-           width: 100%;
+           font-size: 10pt;
+           width: 512px;
            border-spacing: 0;
            text-align: center;
         }
         .container {
-            margin: 120px 0 0 120px;
+            margin: 5px 0 0 10px;
         }
         h1 {
-            font-size: 46px;
+            font-size: 26px;
             margin-bottom: 0;
         }
         h2 {
-            font-size: 20px;
+            font-size: 12px;
             margin-top: 0;
-            margin-bottom: 60px;
+            margin-bottom: 30px;
         }
         td + td {
             border-left: 1px #444 dashed;
@@ -73,9 +73,18 @@
                             <td>{{glean.rsvped.all.count}}</td>
                         </tr>
                     {% endfor %}
-                    
-                    
-                    
+                    {% for line in extra_lines %}
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

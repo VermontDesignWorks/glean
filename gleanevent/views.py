@@ -298,7 +298,19 @@ def printGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
 
     template = loader.get_template('gleanevent/print.html')
-    html = template.render(RequestContext(request, {'glean': glean}))
+    count = glean.rsvped.all().count()
+    if count < 18:
+        extra_lines = 18 - count
+    else:
+        extra_lines = 24 - ((count - 18) % 24)
+
+    html = template.render(RequestContext(
+        request,
+        {
+            'glean': glean,
+            'extra_lines': [x for x in range(extra_lines)]
+        })
+    )
 
     response = HttpResponse(content_type="application/pdf")
     response[
