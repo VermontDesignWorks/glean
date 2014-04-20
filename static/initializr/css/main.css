@@ -753,3 +753,35 @@ input[type="checkbox"]:checked:after {
    ========================================================================== */
 
 
+#intervale-logo{
+   width: 106px;
+   height: 106px;
+   background-image: url("/static/images/intervale_grayscale.png");
+}
+#intervale-logo:hover{
+   background-image: url("/static/images/intervale.png");
+}
+#RAFFL-logo{
+   width: 106px;
+   height: 106px;
+   background-image: url("/static/images/RAFFL_grayscale.png");
+}
+#RAFFL-logo:hover{
+   background-image: url("/static/images/RAFFL.png");
+}
+#hope-logo{
+   width: 141px;
+   height: 104px;
+   background-image: url("/static/images/hope_grayscale.png");
+}
+#hope-logo:hover{
+   background-image: url("/static/images/hope.png");
+}
+#community-harvest-logo{
+   width: 155px;
+   height: 104px;
+   background-image: url("/static/images/community_harvest_grayscale.png");
+}
+#community-harvest-logo:hover{
+   background-image: url("/static/images/community_harvest.png");
+}
