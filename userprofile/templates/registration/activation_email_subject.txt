@@ -1,1 +1,1 @@
-Activate your Vermont Gleaning Collective Account - you have {{ expiration_days }} days!
+Confirm that you are a Gleaner!
