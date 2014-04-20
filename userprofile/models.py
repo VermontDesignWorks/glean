@@ -68,18 +68,30 @@ class Profile(models.Model):
         null=True,
         editable=False
         )
-
-    tasks = models.CharField(
-        verbose_name="Which Volunteer Opportunities most interest you?",
-        choices=TASKS,
-        max_length=15,
-        default="gleaning",
-        null=True
+    tasks_gleaning = models.BooleanField(
+        "Field Gleaning",
+        default=True
+    )
+    tasks_farm_pickups = models.BooleanField(
+        "Farmers Market/Farm Pick-ups",
+        default=False
+    )
+    tasks_delivery = models.BooleanField(
+        "Devilery/Distribution",
+        default=False
+    )
+    tasks_admin = models.BooleanField(
+        "Administrative Support",
+        default=False
+    )
+    tasks_processing = models.BooleanField(
+        "Processing",
+        default=False
     )
     notes = models.TextField(
         verbose_name="Please share a little bit about yourself:",
-        null=True)
-
+        null=True
+    )
     waiver = models.BooleanField(
         "Do you agree to the Waiver of Liability?", default=False)
     agreement = models.BooleanField(

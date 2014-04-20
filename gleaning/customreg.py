@@ -67,7 +67,12 @@ class ExtendedRegistrationForm(RegistrationForm):
                 "",
                 HTML("<h3 class='lbl'>How would you like"
                      " to participate?</h3>"),
-                Field("tasks"),
+                "tasks_gleaning",
+                "tasks_farm_pickups",
+                "tasks_delivery",
+                "tasks_admin",
+                "tasks_processing",
+                HTML("<h3 class='lbl'>Additional Information</h3>"),
                 Field("notes", css_class="form-notes")
             ),
             Fieldset(
@@ -139,7 +144,30 @@ class ExtendedRegistrationForm(RegistrationForm):
     tasks = forms.ChoiceField(label="Which Volunteer Opportunities most "
                               "interest you?", choices=TASKS,
                               required=False)
-    notes = forms.CharField(label="Tell us a bit about yourself",
+    tasks_gleaning = forms.BooleanField(
+        label="Field Gleaning",
+        required=False,
+        initial=True
+    )
+    tasks_farm_pickups = forms.BooleanField(
+        label="Farmers Market/Farm Pick-ups",
+        required=False
+    )
+    tasks_delivery = forms.BooleanField(
+        label="Devilery/Distribution",
+        required=False
+    )
+    tasks_admin = forms.BooleanField(
+        label="Administrative Support",
+        required=False
+    )
+    tasks_processing = forms.BooleanField(
+        label="Processing",
+        required=False
+    )
+    notes = forms.CharField(label="Is there anything we should be aware \
+        of? <br />i.e. I have a pick-up truck, or I would like to bring a group \
+        out to glean.",
                             widget=forms.Textarea,
                             required=False)
     waiver = forms.BooleanField(
