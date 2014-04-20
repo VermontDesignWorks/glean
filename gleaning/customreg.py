@@ -59,7 +59,8 @@ class ExtendedRegistrationForm(RegistrationForm):
             Fieldset(
                 "",
                 HTML("<h3 class='lbl'>Counties You'd Like to Glean In</h3>"),
-                Div(InlineCheckboxes("counties"),
+                Div(InlineCheckboxes("vt_counties"),
+                    InlineCheckboxes("ny_counties"),
                     css_class="form-checkboxes")
             ),
             Fieldset(
@@ -107,10 +108,17 @@ class ExtendedRegistrationForm(RegistrationForm):
         choices=STATES,
         initial='VT')
     zipcode = forms.CharField(label="Zipcode", max_length=11, required=False)
-    counties = forms.ModelMultipleChoiceField(
+    vt_counties = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.all(),
-        required=True
+        queryset=County.objects.filter(state="VT"),
+        label="Vermont",
+        required=False
+    )
+    ny_counties = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="NY"),
+        label="New York",
+        required=False
     )
     age = forms.ChoiceField(label="Age",
                             choices=AGE_RANGES)
@@ -161,6 +169,12 @@ class AdminExtendedRegistrationForm(RegistrationForm):
         queryset=County.objects.all(),
         label="Counties",
         required=False)
+    ny_counties = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="NY"),
+        label="Counties in New York",
+        required=False
+    )
     age = forms.ChoiceField(label="Age",
                             choices=AGE_RANGES, required=False)
     phone = forms.CharField(
@@ -223,7 +237,10 @@ class MyRegistrationView(RegistrationView):
             )
 
         profile.save()
-        for county in form.cleaned_data['counties']:
+        for county in form.cleaned_data['vt_counties']:
+            profile.counties.add(county)
+            county.affix_to_memorgs(user)
+        for county in form.cleaned_data['ny_counties']:
             profile.counties.add(county)
             county.affix_to_memorgs(user)
         return user

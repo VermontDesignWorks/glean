@@ -128,5 +128,25 @@
       "name": "Windsor", 
       "description": ""
    }
+},
+{
+   "pk": 14, 
+   "model": "counties.county", 
+   "fields": {
+      "towns": "", 
+      "state": "VT", 
+      "name": "Grand Ilse", 
+      "description": ""
+   }
+},
+{
+   "pk": 15, 
+   "model": "counties.county", 
+   "fields": {
+      "towns": "", 
+      "state": "VT", 
+      "name": "Washington", 
+      "description": ""
+   }
 }
 ]
