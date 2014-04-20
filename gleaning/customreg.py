@@ -33,12 +33,7 @@ class ExtendedRegistrationForm(RegistrationForm):
                 "",
                 HTML("<h3 class='lbl'>Basic User Information</h3>"
                      "<h4>Please fill in all the below information"
-                     " to create your account.</h4>"
-                     "<h4>If you are under 18, please have a parent"
-                     " or guardian review this form too -<br />"
-                     " When you click the register button at the bottom of"
-                     " this page, you're <br/> indicating their acceptance"
-                     " of the terms on your behalf.</h4>"),
+                     " to create your account.</h4>"),
                 Row("username", "email"),
                 Row("password1", "password2"),
                 Row("first_name", "last_name"),
