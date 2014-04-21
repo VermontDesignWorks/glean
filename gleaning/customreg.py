@@ -74,7 +74,11 @@ class ExtendedRegistrationForm(RegistrationForm):
                 "",
                 HTML("<h3 class='lbl'>We want you to be safe and happy...</h3>"
                      "<h4>Please read and consider these agreements"
-                     " before committing to be a gleaner.</h4>"),
+                     " before committing to be a gleaner.</h4>"
+                     "<h5>If you are under 18, please have a parent or guardian "
+                     "review this form too when you click the register button at "
+                     "the bottom of this page, you+'re indicating their acceptance "
+                     "of the terms on your behalf.</h5>"),
                 AppendedText('waiver', '<a href="#waiver-modal" role="button"'
                              ' data-toggle="modal"><button class="glean-button'
                              ' yellow-button no-margin">View Waiver'
