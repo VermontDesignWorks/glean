@@ -8,7 +8,9 @@
 	<div class="span9 text-center">
 		<h1>{{memorg.name}}</h1>
 			<a href="{% url 'memorgs:editmemorg' memorg.id %}" class="btn btn-warning">Edit Details</a>
+			{% if 'userprofile.uniauth' in user.get_group_permissions %}
 			<a href="{% url 'memorgs:newadmin' memorg.id %}" class="btn btn-primary">New Administrator</a>
+			{% endif %}
 	</div>
 	<div class="span3">
 		<p>{{memorg.description|linebreaks}}</p>
