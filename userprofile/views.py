@@ -320,7 +320,10 @@ def newUser(request):
             )
             profile.save()
 
-            for county in form.cleaned_data['counties']:
+            for county in form.cleaned_data['vt_counties']:
+                profile.counties.add(county)
+                county.affix_to_memorgs(new_user)
+            for county in form.cleaned_data['ny_counties']:
                 profile.counties.add(county)
                 county.affix_to_memorgs(new_user)
             notice = ('New Volunteer ' + profile.first_name +
