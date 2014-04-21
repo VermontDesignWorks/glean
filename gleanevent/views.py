@@ -423,7 +423,7 @@ def download(request):
 
                 glean.attending_volunteers.all(),
                 glean.officiated_by.all(),
-                glean.counties.all(),
+                glean.counties,
 
                 glean.member_organization,
                 ])
