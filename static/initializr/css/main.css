@@ -749,7 +749,7 @@ input[type="checkbox"]:checked:after {
    padding:8px;
 }
 /* ==========================================================================
-   Front Page
+   Partners
    ========================================================================== */
 
 
@@ -784,4 +784,12 @@ input[type="checkbox"]:checked:after {
 }
 #community-harvest-logo:hover{
    background-image: url("/static/images/community_harvest.png");
+}
+/* ==========================================================================
+   Registration Page
+   ========================================================================== */
+
+#div_id_opt_in {
+   position: relative;
+   top: -17px;
 }

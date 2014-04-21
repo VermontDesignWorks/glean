@@ -146,7 +146,7 @@ class ExtendedRegistrationForm(RegistrationForm):
     tasks_gleaning = forms.BooleanField(
         label="Field Gleaning",
         required=False,
-        initial=True
+        initial=False
     )
     tasks_farm_pickups = forms.BooleanField(
         label="Farmers Market/Farm Pick-ups",
