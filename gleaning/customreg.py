@@ -110,13 +110,13 @@ class ExtendedRegistrationForm(RegistrationForm):
     zipcode = forms.CharField(label="Zipcode", max_length=11, required=False)
     vt_counties = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="VT"),
+        queryset=County.objects.filter(state="VT").order_by("name"),
         label="Vermont",
         required=False
     )
     ny_counties = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="NY"),
+        queryset=County.objects.filter(state="NY").order_by("name"),
         label="New York",
         required=False
     )
