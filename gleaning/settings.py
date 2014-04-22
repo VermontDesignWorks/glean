@@ -24,11 +24,9 @@ LOGIN_URL = "/accounts/login"
 LOGOUT_URL = "/"
 
 ACCOUNT_ACTIVATION_DAYS = 7
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
 
 EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL = 'The Gleaning Collective <gleaningcollective@gmail.com>'
+DEFAULT_FROM_EMAIL = 'The Gleaning Collective <no-reply@vermontgleaningcollective.org>'
 
 #from django.contrib.auth.models import User
 
