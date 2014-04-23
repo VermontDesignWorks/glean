@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.core.mail import send_mail, send_mass_mail
 from django.core.mail import EmailMessage
 from django.contrib.sites.models import Site
+from django.utils.text import slugify
 from functions import primary_source
 
 
@@ -53,23 +54,37 @@ def weave_unsubscribe(body, userprofile, announce):
             value += random.choice('abcdefghijklmnopqrstuvwvyz')
         userprofile.unsubscribe_key = value
         userprofile.save()
-    unsub_link = "<a href='" + site.domain + str(reverse('announce:unsubscribelink', args=(value,)))+"'>Click Here Unsubscribe</a> (if the link doesn't work, copy and paste the following address into your browser: " + site.domain+ str(reverse('announce:unsubscribelink', args=(value,)))
-    glean_link = "<a href='" + site.domain + str(reverse('gleanevent:detailglean', args=(announce.glean.id,))) + "'>Glean Time and Location Information</a>"
-    raw_glean_link = site.domain+str(reverse('gleanevent:detailglean', args=(announce.glean.id,)))
+    unsub_link = "<a href='" + site.domain + str(
+        reverse('announce:unsubscribelink', args=(value,))
+    )+"'>Click Here Unsubscribe</a> (if the link doesn't work,"
+    " copy and paste the following address into your "
+    "browser: " + site.domain + str(reverse(
+        'announce:unsubscribelink', args=(value,)))
+    glean_link = "<a href='" + site.domain + str(
+        reverse('gleanevent:detailglean', args=(announce.glean.id,))
+    ) + "'>Glean Time and Location Information</a>"
+    raw_glean_link = site.domain+str(reverse('gleanevent:detailglean', args=(
+        announce.glean.id,)))
     if announce.title:
         subject = announce.title
     else:
         subject = announce.glean.title
+
+    date_entry = announce.glean.date.strftime('%A, %B %d')
+    if announce.glean.time_of_day == "AM":
+        date_entry += ' Morning'
+    elif announce.glean.time_of_day == "PM":
+        date_entry += ' Morning'
+
     replace = {
-        '{{custom}}':announce.message,
-        '{{glean.title}}':announce.glean.title, 
-        '{{glean.description}}':announce.glean.description,
-        '{{info}}':glean_link,
-        '{{date}}':announce.glean.date.strftime('%A, %B %d'
-            ) if announce.glean.time_of_day == 'NA' else announce.glean.date.strftime('%A, %B %d') + ' ' + ('Morning' if announce.glean.time_of_day =='AM' else 'Afternoon'),
-        '{{raw_glean_link}}':raw_glean_link,
+        '{{custom}}': announce.message,
+        '{{glean.title}}': announce.glean.title,
+        '{{glean.description}}': announce.glean.description,
+        '{{info}}': glean_link,
+        '{{date}}': date_entry,
+        '{{raw_glean_link}}': raw_glean_link,
         '{{unsubscribe}}': unsub_link,
-        '{{subject}}':subject,
+        '{{subject}}': subject,
     }
     returnable = announce.template.body
     for key, value in replace.iteritems():
@@ -78,7 +93,7 @@ def weave_unsubscribe(body, userprofile, announce):
                 start = returnable.find(key)
                 finish = returnable.find(key)+len(key)
                 returnable = returnable[:start] + value + returnable[finish:]
-            except: #in the case that the key ends the document
+            except:  # in the case that the key ends the document
                 start = returnable.find(key)
                 finish = returnable.find(key)+len(key)
                 returnable = returnable[:start] + value
@@ -87,43 +102,63 @@ def weave_unsubscribe(body, userprofile, announce):
 
 #== Mailing Logic ==#
 def quick_mail(subject, text, recipient):
-    msg = EmailMessage(subject, text, 'The Gleaners Interface', [recipient.email])
+    msg = EmailMessage(
+        subject,
+        text,
+        'no-reply@vermontgleaningcollective.org',
+        [recipient.email]
+    )
     msg.content_subtype = "html"
     msg.send()
 
+
 def mail_from_source(body, announcement):
+        mo = announcement.member_organization
+        glean = announcement.glean
+
+        from_address = slugify(
+            unicode(mo)
+        ) + "@vermontgleaningcollective.org"
+
         if announcement.title:
             subject = announcement.title
         else:
-            subject = announcement.glean.title
-        counter = 0
-        if announcement.member_organization.testing:
+            subject = glean.title
+        if mo.testing:
             for recipient in announcement.email_recipients.all():
-                rprofile = recipient.profile
-                text = weave_unsubscribe(body,rprofile,announcement)
-                if recipient not in announcement.glean.invited_volunteers.all():
-                    announcement.glean.invited_volunteers.add(recipient)
-            msg = EmailMessage(
+                profile = recipient.profile
+                text = weave_unsubscribe(
+                    body,
+                    profile,
+                    announcement)
+                if recipient not in glean.invited_volunteers.all():
+                    glean.invited_volunteers.add(recipient)
+
+            if mo.testing_email:
+                msg = EmailMessage(
                     subject,
                     text,
-                    'The Gleaners Interface',
-                    [announcement.member_organization.testing_email]
+                    from_address,
+                    [mo.testing_email]
                 )
-            msg.content_subtype = "html"
-            try:
-                msg.send()
-            except:
-                pass
-        else:
-            for recipient in announcement.email_recipients.all():
-                rprofile = recipient.profile
-                text = weave_unsubscribe(body,rprofile,announcement)
-                msg = EmailMessage(subject, text, 'The Gleaners Interface', [recipient.email])
                 msg.content_subtype = "html"
                 msg.send()
-                if recipient not in announcement.glean.invited_volunteers.all():
-                    announcement.glean.invited_volunteers.add(recipient)
+
+        else:
+            for recipient in announcement.email_recipients.all():
+                profile = recipient.profile
+                text = weave_unsubscribe(body, profile, announcement)
+                msg = EmailMessage(
+                    subject,
+                    text,
+                    from_address,
+                    [recipient.email]
+                )
+                msg.content_subtype = "html"
+                msg.send()
+                if recipient not in glean.invited_volunteers.all():
+                    glean.invited_volunteers.add(recipient)
             for recipient in announcement.phone_recipients.all():
-                if recipient not in announcement.glean.invited_volunteers.all():
-                    announcement.glean.invited_volunteers.add(recipient)
-        announcement.glean.save()
+                if recipient not in glean.invited_volunteers.all():
+                    glean.invited_volunteers.add(recipient)
+        glean.save()
