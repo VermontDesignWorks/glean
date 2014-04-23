@@ -13,7 +13,7 @@ $('#description-button').popover({
          'title':"Description of the Glean",
          'trigger':"hover",
          'content':"This field will be visible on the Glean Page, and tells Volunteers what to expect. It is copied automatically into any Announcements made for this glean."
-      });
+});
 
 $('#farm-button').popover({
                'title':"Farm and Farm Location",

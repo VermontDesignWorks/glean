@@ -166,7 +166,7 @@ class ExtendedRegistrationForm(RegistrationForm):
     )
     notes = forms.CharField(label="Is there anything we should be aware \
         of? <br />i.e. I have a pick-up truck, or I would like to bring a group \
-        out to glean.",
+        out to glean.<br />Please be brief.",
                             widget=forms.Textarea,
                             required=False)
     waiver = forms.BooleanField(
