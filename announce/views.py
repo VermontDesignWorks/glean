@@ -278,7 +278,7 @@ def announceGlean(request, glean_id):
                 ' to announce a glean!')
     else:
         return HttpResponseRedirect(
-            reverse('gleanevent:detailglean', args=(glean_id))
+            reverse('gleanevent:detailglean', args=(glean_id,))
         )
 
 
