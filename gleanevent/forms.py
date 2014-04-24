@@ -30,9 +30,9 @@ class GleanForm(forms.ModelForm):
             Div(
                 Div(
                     Row("title", "date"),
+                    Row("time", "time_of_day", "duration"),
                     Row("volunteers_needed"),
                     Row("farm", "farm_location"),
-                    Row("time", "time_of_day", "duration"),
                     Row("address_one", "address_two"),
                     Row("city", "state", "zipcode"),
                     Fieldset(
@@ -73,6 +73,12 @@ class GleanForm(forms.ModelForm):
         label="Counties in New York",
         required=False
     )
+
+    def get_county(self):
+        if self.cleaned_data["vt_counties"].exists():
+            return self.cleaned_data["vt_counties"][0]
+        if self.cleaned_data["ny_counties"].exists():
+            return self.cleaned_data["ny_counties"][0]
 
     class Meta:
         model = GleanEvent
