@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url
+from django.contrib.auth.decorators import permission_required
 
 from userprofile import views
 
@@ -11,8 +12,15 @@ urlpatterns = patterns(
     url(r'^download/$', views.download, name='download'),
     url(r'^new/$', views.newUser, name='newuser'),
     url(r'^(?P<pk>\d+)/$',
-        views.UserProfileDetailView.as_view(),
+        permission_required(
+            'userprofile.auth'
+        )(views.UserProfileDetailView.as_view()),
         name='userprofile'),
+    url(r'^(?P<pk>\d+)/delete/$',
+        permission_required(
+            'userprofile.auth'
+        )(views.UserProfileDelete.as_view()),
+        name="delete"),
     url(r'^(?P<user_id>\d+)/edit/$', views.userEdit, name='useredit'),
     url(r'^(?P<user_id>\d+)/promote/$', views.userPromote, name='userpromote'),
     url(r'^change/email/$', views.emailEdit, name='emailedit'),

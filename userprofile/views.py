@@ -16,7 +16,7 @@ from django.views import generic
 
 from constants import VERMONT_COUNTIES
 from memberorgs.models import MemOrg
-from gleanevent.models import PostGleanForm, PostGlean
+from gleanevent.forms import PostGleanForm, PostGlean
 from gleaning.customreg import ExtendedRegistrationForm
 
 from userprofile.models import (Profile,
@@ -122,6 +122,12 @@ def userLists(request):
         request,
         'userprofile/userLists.html',
         {'users': users})
+
+
+class UserProfileDelete(generic.DeleteView):
+    model = User
+    template_name = "userprofile/delete.html"
+    success_url = reverse_lazy("userprofile:userlists")
 
 
 @permission_required('userprofile.auth')

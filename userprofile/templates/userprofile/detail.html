@@ -10,6 +10,11 @@
             <h1>{{object.first_name}} {{object.last_name}} - {{object.user.username}}</h1>
         </div>
         <div class="pull-right farm-buttons">
+            <a href="{% url "userprofile:delete" object.user.id %}">
+                <button class="glean-button red-button no-margin">
+                    Delete
+                </button>
+            </a>
             {% if 'userprofile.promote' in perms %}
             <a href="{% url "userprofile:userpromote" object.user.id %}">
                 <button class="glean-button green-button no-margin">
