@@ -120,17 +120,6 @@ class GleanEvent(models.Model):
         )
 
 
-class GleanForm(ModelForm):
-
-    class Meta:
-        model = GleanEvent
-        exclude = [
-            'invited_volunteers',
-            'attending_volunteers',
-            'officiated_by'
-        ]
-
-
 class PostGlean(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     glean = models.ForeignKey(GleanEvent, editable=False, null=True)

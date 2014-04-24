@@ -15,7 +15,8 @@ from django.template import RequestContext, loader
 
 from weasyprint import HTML
 
-from gleanevent.models import GleanEvent, GleanForm, PostGlean
+from gleanevent.models import GleanEvent
+from gleanevent.forms import GleanForm, PostGlean
 from farms.models import Farm, FarmLocation
 from announce.models import Announcement
 from userprofile.models import Profile
