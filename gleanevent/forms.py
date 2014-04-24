@@ -37,7 +37,9 @@ class GleanForm(forms.ModelForm):
                     Row("city", "state", "zipcode"),
                     Fieldset(
                         "",
-                        HTML("<h4 class='lbl'>County</h4>"),
+                        HTML("<label for='id_counties' class='" +
+                             "control-label' style='width:212px;" +
+                             "'>Counties</label>"),
                         Div(InlineCheckboxes("vt_counties"),
                             InlineCheckboxes("ny_counties"),
                             css_class="glean-form-checkboxes")
