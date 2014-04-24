@@ -75,9 +75,12 @@ class ExtendedRegistrationForm(RegistrationForm):
                 HTML("<h3 class='lbl'>We want you to be safe and happy...</h3>"
                      "<h4>Please read and consider these agreements"
                      " before committing to be a gleaner.</h4>"
-                     "<h5>If you are under 18, please have a parent or guardian "
-                     "review this form too when you click the register button at "
-                     "the bottom of this page, you+'re indicating their acceptance "
+                     "<h5>If you are under 18, please have"
+                     " a parent or guardian "
+                     "review this form too when"
+                     " you click the register button at "
+                     "the bottom of this page,"
+                     " you+'re indicating their acceptance "
                      "of the terms on your behalf.</h5>"),
                 AppendedText('waiver', '<a href="#waiver-modal" role="button"'
                              ' data-toggle="modal"><button class="glean-button'
@@ -98,7 +101,7 @@ class ExtendedRegistrationForm(RegistrationForm):
             ),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "name='submit' value='Register'>")
+                 "name='submit' value='Ok, It's Ready>")
         )
 
     first_name = forms.CharField(label="First Name", max_length=20)
@@ -164,9 +167,10 @@ class ExtendedRegistrationForm(RegistrationForm):
         label="Processing",
         required=False
     )
-    notes = forms.CharField(label="Is there anything we should be aware \
-        of? <br />i.e. I have a pick-up truck, or I would like to bring a group \
-        out to glean.<br />Please be brief.",
+    notes = forms.CharField(label="Is there anything we should be aware"
+                            " of? <br />i.e. I have a pick-up truck, or "
+                            "I would like to bring a "
+                            "group out to glean.<br />Please be brief.",
                             widget=forms.Textarea,
                             required=False)
     waiver = forms.BooleanField(
