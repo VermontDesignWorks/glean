@@ -56,7 +56,7 @@ class GleanForm(forms.ModelForm):
             ),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "style='clear:both;' name='submit' value='Register'>")
+                 "style='clear:both;' name='submit' value=\"Ok, It's Ready\">")
         )
 
     time_of_day = forms.ChoiceField(label="&nbsp;",
