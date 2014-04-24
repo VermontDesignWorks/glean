@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}
+Confirm Delete User - {{object.username}}
+{% endblock title %}
+
+{% block content %}
+
+<h3>Delete User "{{object.username}}" ({{object.profile.first_name}} {{object.profile.last_name}})?</h3>
+<div class="yellow-box red-top" style="padding:40px; min-height: 100px; margin-bottom:400px">
+<h5>This action is IRREVERSIBLE! Think carefully before you delete this person from the system!!</h5>
+	<form method="post" action="">
+		{% csrf_token %}
+		<input type="submit" class="btn btn-danger" value="Permanently Delete">
+	</form>
+</div>
+{% endblock content %}
