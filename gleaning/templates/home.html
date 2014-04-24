@@ -27,7 +27,7 @@ Welcome to the Gleaning Interface!
                 {% for glean in day.1 %}
                 <li><a href="{% url 'gleanevent:detailglean' glean.id %}"><span class="{{glean.member_organization.color}}">
                 {% if glean.counties %}
-                    {{glean.counties}}
+                    {{glean.counties}}, {{glean.counties.state}}
                 {% else %}
                     {{glean.member_organization}}
                 {% endif %}
