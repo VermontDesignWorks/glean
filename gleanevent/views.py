@@ -4,7 +4,7 @@ import time
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
 from django import forms
 from django.forms.models import modelformset_factory
@@ -67,6 +67,21 @@ def index(request):
         'gleanevent/index.html',
         {'gleans': gleaning_events_list, 'notice': ''}
     )
+
+
+class NewGlean(generic.CreateView):
+    model = GleanEvent
+    form_class = GleanForm
+    template_name = "gleanevent/new.html"
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        user = self.request.user
+        self.object = form.save(commit=False)
+        self.object.member_organization = user.profile.member_organization
+        self.object.created_by = user
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 @permission_required('gleanevent.auth')

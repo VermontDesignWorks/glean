@@ -1,3 +1,4 @@
+from django import forms
 from crispy_forms.bootstrap import (FieldWithButtons,
                                     InlineCheckboxes,
                                     StrictButton,
@@ -11,14 +12,67 @@ from crispy_forms.layout import (Layout,
                                  Submit,
                                  Div,
                                  HTML)
-from Counties.models import County
 
-from gleanevent.models import GleanEvent
+from counties.models import County
+from gleanevent.models import GleanEvent, PostGlean
+from constants import STATES, TIME_OF_DAY
 
-from django import forms
 
+class GleanForm(forms.ModelForm):
 
-class GleanForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(GleanForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = "id-custom-registration-form"
+        self.helper.form_method = "post"
+        self.helper.form_show_errors = False
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Row("title", "date"),
+                    Row("volunteers_needed"),
+                    Row("farm", "farm_location"),
+                    Row("time", "time_of_day", "duration"),
+                    Row("address_one", "address_two"),
+                    Row("city", "state", "zipcode"),
+                    Fieldset(
+                        "",
+                        HTML("<h4 class='lbl'>County</h4>"),
+                        Div(InlineCheckboxes("vt_counties"),
+                            InlineCheckboxes("ny_counties"),
+                            css_class="glean-form-checkboxes")
+                    ),
+                    css_class="glean-form-left pull-left"
+                ),
+                Div(
+                    "description",
+                    "directions",
+                    "instructions",
+                    css_class="glean-form-right pull-left"
+                ),
+                css_class="glean-form-container"
+            ),
+            HTML("<input type='submit' "
+                 "class='glean-button green-button' "
+                 "style='clear:both;' name='submit' value='Register'>")
+        )
+
+    time_of_day = forms.ChoiceField(label="&nbsp;",
+                                    choices=TIME_OF_DAY,
+                                    required=False)
+
+    vt_counties = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="VT").order_by("name"),
+        label="Counties in Vermont",
+        required=False
+    )
+    ny_counties = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="NY").order_by("name"),
+        label="Counties in New York",
+        required=False
+    )
 
     class Meta:
         model = GleanEvent
@@ -29,7 +83,7 @@ class GleanForm(ModelForm):
         ]
 
 
-class PostGleanForm(ModelForm):
+class PostGleanForm(forms.ModelForm):
     class Meta:
         model = PostGlean
 

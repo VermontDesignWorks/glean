@@ -20,7 +20,12 @@ class GleanEvent(models.Model):
     date = models.DateField('Date', blank=True, null=True)
     time = models.CharField('Time', max_length=40, blank=True, null=True)
     time_of_day = models.CharField(
-        'General Time of Day', choices=TIME_OF_DAY, max_length=2, default="NA")
+        '',
+        choices=TIME_OF_DAY,
+        max_length=2,
+        default="NA",
+        blank=True,
+        null=True)
     farm = models.ForeignKey(Farm, blank=True, null=True)
     farm_location = models.ForeignKey(FarmLocation, blank=True, null=True)
     description = models.TextField(blank=True)
@@ -35,7 +40,7 @@ class GleanEvent(models.Model):
     city = models.CharField('Address (City)', max_length=200, blank=True)
     state = models.CharField(
         "State", choices=STATES, default="VT", max_length=2, blank=True)
-    zipcode = models.CharField('Address Zip Code', max_length=11, blank=True)
+    zipcode = models.CharField('Zip Code', max_length=11, blank=True)
 
     directions = models.TextField(blank=True, null=True)
 
@@ -148,14 +153,3 @@ class PostGlean(models.Model):
             ("uniauth", "Universal Permission Level"),
         )
         ordering = ['-timestamp']
-
-
-class PostGleanForm(ModelForm):
-    class Meta:
-        model = PostGlean
-
-    def __init__(self, *args, **kwargs):
-        super(PostGleanForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_class = 'form-inline'
-        helper.field_template = 'bootstrap3/layout/inline_field.html'

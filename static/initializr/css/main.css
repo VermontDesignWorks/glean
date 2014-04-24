@@ -68,6 +68,10 @@ h3 {
 .forty-three {
    width: 43%;
 }
+.row {
+   margin-left: 0;
+}
+
 /* ==========================================================================
    Fighting with the Navbar
    ========================================================================== */
@@ -111,9 +115,23 @@ h3 {
 }
 
 /* ==========================================================================
-   anon_home.html
+   Generic Page
    ========================================================================== */
 
+.medium-bar {
+   width: 897px !important;
+   height:9px;
+   margin: 12px 0 53px 0;
+   clear: both;
+}
+
+.yellow {
+   background-color:#ffc64a;
+}
+
+/* ==========================================================================
+   anon_home.html
+   ========================================================================== */
 .anon-login {
    width: 1169px;
    padding: 0;
@@ -692,19 +710,53 @@ td label {font-size:0.95em;font-weight:bold;}
 /* ==========================================================================
    Glean Form
    ========================================================================== */
-#id_time{
-   display:inline-block;
-   width:48%;
-}
 
-#id_time_of_day{
-   display:inline-block;
-   width:30%;
-   margin-left:5%;
+.glean-form-container {
+   width: 897px;
+   clear: both;
+   height: 683px;
 }
-
-.non-responsive{
-   min-width:1170px !important;
+.glean-form-left {
+    width: 489px;
+}
+#id_time_of_day {
+   width: 87px;
+}
+#id_time {
+   width: 120px;
+}
+#id_state {
+   width:137px;
+}
+#id_zipcode {
+   width: 70px;
+}
+#div_id_zipcode{
+   margin-left:0;
+}
+#div_id_time_of_day{
+   margin-left:0;
+}
+.glean-form-checkboxes {
+   background-color: #fbf8cc;
+   width:444px;
+   -moz-box-shadow: inset 1px 1px 1px #000000;
+   -webkit-box-shadow: inset 1px 1px 1px #000000;
+   box-shadow: inset 1px 1px 1px #000000;
+   padding: 10px;
+}
+.glean-form-checkboxes > .control-group > .controls > label.checkbox.inline {
+   min-width: 111px;
+}
+.glean-form-right {
+   width: 408px;
+}
+.glean-form-right > .control-group > .controls > textarea {
+   width: 395px;
+   height: 175px;
+}
+label.checkbox.inline{
+   font-size: 16px;
 }
 input[type="checkbox"]{
    -webkit-appearance: none;

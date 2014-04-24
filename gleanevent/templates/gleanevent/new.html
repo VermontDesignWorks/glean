@@ -1,22 +1,112 @@
 {% extends 'base.html' %}
-{% load url from future %}
+{% load crispy_forms_tags %}
+
 {% block title %}
 New Glean!
 {% endblock title %}
-{% block heading %}
-<h3 class="text-center">New Glean Form</h3>
-{% endblock %}
 
 {% block body %}
-{% include 'gleanevent/ajaxgleanform.html' %}
-
+<div id="glean-index-header">
+	<h1 class="pull-left">New Glean</h1>
+</div>
+<div class="medium-bar red" style="margin-bottom:10px">&nbsp;</div>
+{% crispy form %}
+<div class="medium-bar yellow">&nbsp;</div>
+<div style="margin-bottom:200px">{{form.errors}}&nbsp;</div>
 {% endblock body %}
 {% block javascript %}
 <script>
 	$(document).ready(function(){
 		var $datefield = $("#id_date");
-		console.log($datefield);
 		$("#id_date").datepicker();
 	})
 </script>
+<script type="text/javascript">
+      function clear_checkboxes(){
+      	var $boxes = $("input[type='checkbox']");
+        $boxes.prop("checked", false);
+      }
+      function updateAddressFields(data){
+         $('#id_instructions').val(data['instructions']);
+         $('#id_directions').val(data['directions']);
+         $('#id_address_one').val(data['address_one']);
+         $('#id_address_two').val(data['address_two']);
+         $('#id_city').val(data['city']);
+         $('#id_state').val(data['state']);
+         $('#id_zipcode').val(data['zipcode']);
+         $('#id_counties').children().prop("selected", false);
+         
+         clear_checkboxes();
+
+         $("input[type='checkbox'][value=" + data["counties"] + "]")
+         	.prop("checked", true);
+      }
+      function clearAddressFields(){
+         $('#id_instructions').val('');
+         $('#id_directions').val('');
+         $('#id_address_one').val('');
+         $('#id_address_two').val('');
+         $('#id_city').val('');
+         $('#id_state').val('');
+         $('#id_zipcode').val('');
+         $('#id_counties').children().prop("selected", false);
+      }
+      function updateFarmLocationChoices(data){
+         var locations = data['farm_locations'];
+            $('#id_farm_location').children().remove()
+            $.each(locations, function(val, text){
+               $('#id_farm_location').append(
+                  $('<option></option>').val(val).html(text)
+                  );
+            });
+            $('#id_farm_location').children([text="---------"]).prop("selected", true)
+      }
+      function clearFarmLocationChoices(){
+         $('#id_farm_location').children().remove()
+      }
+
+      // This is the key code \\
+      $(function() {
+         $("input[type='checkbox']").on("click", function(event){
+     		clear_checkboxes();
+     		$(event.target).prop("checked", true);
+         });
+         $('#id_farm').change(function(){
+            var farm = $(this).children("option:selected").val();
+            if (farm != "") {
+               $.ajax({
+                  url:"/api/farm/"+farm,
+                  success: function(data){
+                     $('#id_address_one').text(data['address_one']);
+                     updateAddressFields(data);
+                     updateFarmLocationChoices(data);
+               },
+            });
+
+            } else {
+                     clearAddressFields();
+                     clearFarmLocationChoices();
+            } 
+         });         
+         
+         $('#id_farm_location').change(function(){
+            var farm = $('#id_farm').children("option:selected").val();
+            var selection = $(this).children("option:selected").val();
+            if (selection != "") {
+               $.ajax({
+                  url:"/api/farmlocation/"+farm+'/'+selection,
+                  success: function(data){
+                     updateAddressFields(data);
+               },
+            });
+
+            } else {
+               clearAddressFields();
+            }
+         });
+         clearFarmLocationChoices();
+      });
+      
+      </script>
+
 {% endblock javascript %}

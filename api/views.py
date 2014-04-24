@@ -33,39 +33,37 @@ from functions import primary_source
 
 #== Farm API ==#
 def apiFarm(request, farm_id):
-	profile = request.user.profile
-	farm = Farm.objects.get(pk=farm_id)
-	farm_locations = FarmLocation.objects.filter(farm=farm)
-	data = {
-		'instructions':farm.instructions,
-		'directions':farm.directions, 
-		'address_one':farm.address_one,
-		'address_two':farm.address_two,
-		'city':farm.city,
-		'state':farm.state,
-		'zipcode':farm.zipcode,
-		'counties':[],
-		'farm_locations':{'':"---------"},
-	}
-	data['counties'].append(farm.counties.id)
-	for location in farm_locations:
-		data['farm_locations'][location.id] = [location.name]
-	return HttpResponse(json.dumps(data), mimetype="application/json")
+    profile = request.user.profile
+    farm = Farm.objects.get(pk=farm_id)
+    farm_locations = FarmLocation.objects.filter(farm=farm)
+    data = {
+        'instructions': farm.instructions,
+        'directions': farm.directions,
+        'address_one': farm.address_one,
+        'address_two': farm.address_two,
+        'city': farm.city,
+        'state': farm.state,
+        'zipcode': farm.zipcode,
+        'counties': farm.counties.id,
+        'farm_locations': {'': "---------"},
+    }
+    for location in farm_locations:
+        data['farm_locations'][location.id] = [location.name]
+    return HttpResponse(json.dumps(data), mimetype="application/json")
+
 
 #== Farm Location API==#
 def apiFarmLocation(request, farm_id, farm_location_id):
-	farm = Farm.objects.get(pk=farm_id)
-	farm_location = FarmLocation.objects.get(pk=farm_location_id)
-	data = {'instructions':farm_location.instructions,
-		'directions':farm_location.directions, 
-		'address_one':farm_location.address_one,
-		'address_two':farm_location.address_two,
-		'city':farm_location.city,
-		'state':farm_location.state,
-		'zipcode':farm_location.zipcode,
-		'counties':[]
-	}
-	for county in farm_location.counties.all().order_by("-name"):
-		data['counties'].append(county.id)
-	return HttpResponse(json.dumps(data), mimetype="application/json")
-		
+    farm = Farm.objects.get(pk=farm_id)
+    farm_location = FarmLocation.objects.get(pk=farm_location_id)
+    data = {
+        'instructions': farm_location.instructions,
+        'directions': farm_location.directions,
+        'address_one': farm_location.address_one,
+        'address_two': farm_location.address_two,
+        'city': farm_location.city,
+        'state': farm_location.state,
+        'zipcode': farm_location.zipcode,
+        'counties': [farm.counties.id]
+    }
+    return HttpResponse(json.dumps(data), mimetype="application/json")

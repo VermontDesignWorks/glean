@@ -1,12 +1,15 @@
 from django.conf.urls import patterns, url
-
+from django.contrib.auth.decorators import permission_required
 from gleanevent import views
 
 
 urlpatterns = patterns(
     '',
     url(r'^$', views.index, name='index'),
-    url(r'^new/$', views.newGlean, name='newglean'),
+    url(r'^new/$',
+        permission_required(
+            'gleanevent.auth'
+        )(views.NewGlean.as_view()), name='newglean'),
     url(r'^download/$', views.download, name='download'),
     url(r'^postglean/download/$',
         views.postGleanDownload,
