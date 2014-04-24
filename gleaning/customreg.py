@@ -115,13 +115,13 @@ class ExtendedRegistrationForm(RegistrationForm):
     vt_counties = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
         queryset=County.objects.filter(state="VT").order_by("name"),
-        label="Vermont",
+        label="Counties in Vermont",
         required=False
     )
     ny_counties = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
         queryset=County.objects.filter(state="NY").order_by("name"),
-        label="New York",
+        label="Counties in New York",
         required=False
     )
     age = forms.ChoiceField(label="Age",
