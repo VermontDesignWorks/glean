@@ -21,16 +21,16 @@ class County(models.Model):
             ("uniauth", "Universal Permission Level"),
             )
 
-    def affix_to_memorgs(self, user):
+    def affix_to_memorgs(self, user, mail=False):
         profile = user.profile
         orgs = self.memorg_set.all()
         subject = "New User Registered in " + self.name
         text = render_to_string(
             "registration/notify.html",
-            {object: profile, county: self}
+            {"object": profile, "county": self}
         )
         for org in orgs:
-            if org.notify:
+            if mail and org.notify:
                 email = getattr(org, "testing_email", False)
                 if email:
                     quick_mail(subject, text, org.testing_email)

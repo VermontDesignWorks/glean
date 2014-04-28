@@ -270,8 +270,8 @@ class MyRegistrationView(RegistrationView):
         profile.save()
         for county in form.cleaned_data['vt_counties']:
             profile.counties.add(county)
-            county.affix_to_memorgs(user)
+            county.affix_to_memorgs(user, mail=True)
         for county in form.cleaned_data['ny_counties']:
             profile.counties.add(county)
-            county.affix_to_memorgs(user)
+            county.affix_to_memorgs(user, mail=True)
         return user
