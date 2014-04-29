@@ -24,11 +24,11 @@ def newSite(request):
 			new_save.member_organization = request.user.profile.member_organization
 			new_save.save()
 			if request.POST['action'] == 'Save':
-				return HttpResponseRedirect(reverse('site:detailsite', args=(new_save.id,) ))
+				return HttpResponseRedirect(reverse('site:detailsite', args=(new_save.id,)))
 			else:
 				form = SiteForm()
 				notice = "Recipient Site %s Saved" % (new_save.name)
-				return render(request, 'recipientsite/new_site.html', {'form':form, 'notice':notice})		
+				return render(request, 'recipientsite/new_site.html', {'form':form, 'notice':notice})
 		else:
 			return render(request, 'recipientsite/new_site.html', {'form':form})
 	else:
@@ -50,7 +50,7 @@ def editSite(request, site_id):
 			return HttpResponseRedirect(reverse('site:index'))
 		else:
 			return render(request, 'recipientsite/edit_site.html', {'form':form, 'site':site, 'error':'form needs some work', 'editmode':True})
-	form = SiteForm(instance = site)
+	form = SiteForm(instance=site)
 
 	return render(request, 'recipientsite/edit_site.html', {'form':form, 'site':site, 'editmode':True})
 
@@ -61,7 +61,7 @@ def detailSite(request, site_id):
 		return HttpResponseRedirect(reverse('site:index'))
 	return render(request, 'recipientsite/detail_site.html', {'site':site})
 
-#== Delete RecipientSite View ==#
+# == Delete RecipientSite View ==#
 @permission_required('recipientsite.auth')
 def deleteSite(request, site_id):
 	site = get_object_or_404(RecipientSite, pk=site_id)
