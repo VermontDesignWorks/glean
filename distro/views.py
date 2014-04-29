@@ -19,8 +19,7 @@ from farms.models import Farm
 from distro.models import Distro, WorkEvent
 from distro.forms import (WorkEventFormHelper,
                           WorkEventFormSet,
-                          EditWorkEventFormSet,
-                          WorkEventForm)
+                          EditWorkEventFormSet)
 from generic.views import DateFilterMixin
 from recipientsite.models import RecipientSite
 

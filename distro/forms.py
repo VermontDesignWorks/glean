@@ -47,8 +47,3 @@ class WorkEventFormHelper(FormHelper):
             )
         )
         self.template = 'bootstrap/table_inline_formset.html'
-
-
-class WorkEventForm(ModelForm):
-    class Meta:
-        model = WorkEvent
