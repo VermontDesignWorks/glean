@@ -71,6 +71,10 @@ h3 {
 .row {
    margin-left: 0;
 }
+.cream-box {
+   background-color:#fbf8cc !important;
+   border: 1px solid #ccc;
+}
 
 /* ==========================================================================
    Fighting with the Navbar
@@ -858,4 +862,35 @@ input[type="checkbox"]:checked:after {
 #div_id_opt_in {
    position: relative;
    top: -17px;
+}
+
+/* ==========================================================================
+   Combined Announcement Page
+   ========================================================================== */
+
+#preview-box {
+   float: left;
+   margin-top: 5px;
+   width: 700px;
+}
+
+#custom-announce-box {
+   float: left;
+   margin: 24px 0 0 23px;
+   width: 296px;
+   height: 665px;
+}
+
+#id_template {
+   width: 100%;
+}
+#custom-announce-box>form>input#id_title {
+   width: 283px;
+}
+#custom-announce-box>form>textarea#id_message {
+   width: 283px;
+}
+#recipient-box {
+   height: 206px;
+   overflow-y: scroll;
 }

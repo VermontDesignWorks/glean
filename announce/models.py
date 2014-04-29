@@ -35,12 +35,12 @@ class Announcement(models.Model):
     datetime = models.DateTimeField(auto_now_add=True, editable=False)
     glean = models.ForeignKey(
         GleanEvent, blank=True, null=True, editable=False)
-    title = models.CharField(
-        "Email Subject Line", max_length=50, null=True, blank=True)
-    message = models.TextField(
-        "Add a Custom Message", null=True, blank=True)
     template = models.ForeignKey(
-        Template, null=True, verbose_name="Email Template")
+        Template, null=True, verbose_name="Template")
+    title = models.CharField(
+        "Change Email Subject line", max_length=50, null=True, blank=True)
+    message = models.TextField(
+        "Add Custom Message", null=True, blank=True)
     sent = models.BooleanField(default=False, editable=False)
     sent_by = models.ForeignKey(User, editable=False, null=True)
     member_organization = models.ForeignKey(

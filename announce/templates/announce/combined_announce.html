@@ -4,41 +4,32 @@
 {% block title %}Announcement for {{glean.title}}
 {% endblock title %}
 
-
-{% block heading %}
-		<h3 style="text-align:center;">Announcement for "{{glean.title}}"</h3>
-{% endblock %}
 {% block body %}
+
+<div id="glean-index-header">
+	<h1 class="pull-left">Send an Announcement</h1>
+</div>
+
+<div class="glean-index-red red">
+	<h3>Get the word out!</h3>
+	<p>Send a message to your volunteers about an upcoming glean. Use any template you've designed, set yoru email's subject line and add a custom message if you'd like and decide below if you want to send it to all or just a small group of your gleaners.</p>
+</div>
+
 <div class="row-fluid">
-	<div class="span6">
-		<h4><small>Preview of Announcement Email</small></h4>
-			<iframe width="100%" height="500px" src="{% url 'announce:htmlemail' announcement.id %}">
+	<div id="preview-box">
+		<h4>Preview of Announcement Email</h4>
+			<iframe width="100%" height="600px" src="{% url 'announce:htmlemail' announcement.id %}">
 			</iframe>	
 	</div>
 
-	<div class="span3">
+	<div id="custom-announce-box">
 
 		{% if not announcement.sent %}
-		<h4 style="text-align:center;"><small>Message Customization Options:</small></h4>
 			<form method="post" action="">
 				{% csrf_token %}
-				{% include 'announce/announceform.html' %}
+					{{form}}
+					<input type="submit" class="glean-button red-button no-margin">
 			</form>
-		{% else %}
-		<h4 style="text-align:center;"><small>Customized Information:</small></h4>
-			<div class="form" style="height:477px;">
-				{% if announcement.title %}
-					<h4><small>Subject:</small></h4>
-					<h4>{{announcement.title}}</h4>
-				{% endif %}
-				{% if announcement.message %}
-					<h4><small>Custom Message:</small></h4>
-					<p>{{announcement.message}}</p>
-				{% endif %}
-				{% if not announcement.title and not announcement.message %}
-				<p>No Custom Information</p>
-				{% endif %}
-			</div>
 		{% endif %}
 		<h4 style="text-align:center;"><small>{% if not announcement.sent %}Intended {% endif %}Recipients</small></h4>
 		{% include 'announce/recipients.html' %}
@@ -48,16 +39,15 @@
 	<div class="span12">
 				{% if announcement.sent %}
 				<h4><small>Status: </small></h4>
-				<div class="well">
 					<h4>Sent on {{announcement.datetime}}</h4>
-				</div>
 				{% else %}
-		<h4><small>Announcment Controls: </small></h4>
 					<form method="POST" action="{% url 'announce:sendannounce' announcement.id %}">{% csrf_token %}
-						<div class="well">
-							<input type="submit" id="btn-send" class="btn btn-success" data-loading-text="Sending..." value="SEND" data-loading-text="Sending..." style="display:inline;">
-							<a href="{% url 'gleanevent:editglean' announcement.glean.id %}" class="btn btn-warning">Edit Glean</a>
-						</div>
+							<input type="submit" id="btn-send" class="glean-button green-button" data-loading-text="Sending..." value="Send" data-loading-text="Sending..." style="display:inline;">
+							<a href="{% url 'gleanevent:editglean' announcement.glean.id %}">
+								<button class="glean-button yellow-button">
+									Edit Glean
+								</button>
+							</a>
 						<script type="text/javascript">
 							$('#btn-send').button();
 							$('#btn-send').click(function () {
