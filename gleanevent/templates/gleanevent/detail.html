@@ -17,11 +17,6 @@ Gleaning Details
       <div id="glean-buttons" class="pull-right">
         <a href="{% url "gleanevent:printglean" glean.id %}"><button class="glean-button yellow-button nomargin">Print Field Sheet</button></a>
         <a href="{% url 'announce:announceglean' glean.id %}"><button class="glean-button red-button nomargin">Send Announcement</button></a>
-        {% if glean.data_entered %}
-            <a href="{% url 'gleanevent:postgleanview' glean.id %}"><button class="glean-button yellow-button no-margin">View Hours</button></a>
-        {% else %}
-            <a href="{% url 'gleanevent:postglean' glean.id %}"><button class="glean-button yellow-button no-margin">Enter Hours</button></a>
-        {% endif %}
         <a href="{% url 'gleanevent:editglean' glean.id %}"><button class="glean-button no-margin green-button" href="{% url 'gleanevent:editglean' glean.id %}">Edit Glean</button></a>
         <a href="{% url 'gleanevent:deleteglean' glean.id %}"><button class="glean-button no-margin red-button">Delete</button></a>
       </div>
