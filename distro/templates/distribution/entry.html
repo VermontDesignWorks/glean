@@ -22,8 +22,6 @@
 	{% for site in sites %}
 	{{site}}
 	{% endfor %}
-	<div class="span12"><h4 class="text-success text-center">{{message}}</h4></div>
-						<h4 class="text-error text-center">{{error}}</h4></div>
 	<div class="span12">
 		<form method="post" action="" autocomplete="off">
 			{% csrf_token %}

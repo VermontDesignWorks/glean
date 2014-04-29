@@ -18,7 +18,7 @@
         <a href="{% url 'gleanevent:newglean' %}">
             <button class="glean-button yellow-button no-margin">
                 Volunteer List
-  %          </button>
+            </button>
         </a>
     </div>
 </div>
@@ -27,11 +27,15 @@
     <h3>Who's Helping Out?</h3>
     <p>Enter your volunteers' here. Don't worry about extra lines, the system rightfully ignores them :D</p>
     <p>If you need to register more volunteers, you can acces it on the navbar above!</p>
-    <p><small><i>Note: Please enter dates in MM/DD/YYYY format.</i></small></p>
+    <p><small><i>Note: Please enter dates in YYYY-MM-DD format.</i></small></p>
+</div>
+<div class="span12">
+    <h4 class="text-success text-center">{{message}}</h4>
+</div>
+    <h4 class="text-error text-center">{{error}}</h4>
 </div>
 
-
-        {% crispy workevent_form helper %}
+        {% crispy formset helper %}
 <div id="glean-index" class="yellow-box yellow-top">
 <h3>All their work, easy to see</h3>
 <p>This tool allows you to view and/or download a spreadsheet detailing all volunteer hours logged by your organization.</p>
@@ -42,11 +46,7 @@
     <label for="date_until">Until</label>
     <input id="date_until" maxlength=200 name="date_until"  type="text" value="{{date_until}}" class="datepicker"></input>
     <input type="submit" name="filter" class="glean-button green-button no-margin" value="View Edit">
-    <a href="{% url 'userprofile:download' %}">
-            <button class="glean-button yellow-button no-margin">
-                Download
-            </button>
-        </a>
+    <input type="submit" name="filter" class="glean-button yellow-button no-margin" value="Download">
 </form>
 </div>
 {% endblock body %}

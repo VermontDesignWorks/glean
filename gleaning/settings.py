@@ -161,7 +161,6 @@ INSTALLED_APPS = (
     'memberorgs',
     'gleanevent',
     'farms',
-    'userprofile',
     'announce',
     'testdata',
     'recipientsite',
@@ -170,6 +169,7 @@ INSTALLED_APPS = (
     'initialize',
     'api',
     'generic',
+    'userprofile',
 
     # third party apps
     'registration',

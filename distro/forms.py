@@ -1,3 +1,4 @@
+from django.forms import ModelForm
 from crispy_forms.bootstrap import (FieldWithButtons,
                                     InlineCheckboxes,
                                     StrictButton,
@@ -18,6 +19,8 @@ from django.forms.models import modelformset_factory
 
 WorkEventFormSet = modelformset_factory(WorkEvent, extra=10)
 
+EditWorkEventFormSet = modelformset_factory(WorkEvent, extra=0)
+
 
 class WorkEventFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
@@ -34,10 +37,18 @@ class WorkEventFormHelper(FormHelper):
                 "task",
                 "miles",
                 "notes"
-                ),
+                )
+        )
+        self.add_input(
             Submit(
                 "Save",
                 "Save",
-                css_class="glean-button red-button no-margin")
+                css_class="glean-button red-button no-margin"
+            )
         )
         self.template = 'bootstrap/table_inline_formset.html'
+
+
+class WorkEventForm(ModelForm):
+    class Meta:
+        model = WorkEvent

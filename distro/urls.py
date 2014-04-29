@@ -9,5 +9,5 @@ urlpatterns = patterns(
     url(r'^entry/$', views.entry, name='entry'),
     url(r'^edit/$', views.edit, name='edit'),
     url(r'^download/$', views.download, name='download'),
-    url(r"^hours/$", views.WorkEventsCreateView.as_view(), name='hours')
+    url(r"^hours/$", views.hours_entry, name='hours')
     )

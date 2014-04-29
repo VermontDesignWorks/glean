@@ -110,7 +110,6 @@ class UpdateGlean(generic.UpdateView):
 def deleteGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
     profile = request.user.profile
-    import pdb; pdb.set_trace()
     if (glean.member_organization != profile.member_organization and
             u'gleanevent.uniauth' not in
             request.user.groups.get().permissions.all()):
