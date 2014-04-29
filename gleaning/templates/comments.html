@@ -2,7 +2,7 @@
 
 <div class="yellow-box green-top comments-holder">
             <div class="comments">
-              {% get_comment_list for glean as comment_list %}
+              {% get_comment_list for object as comment_list %}
 
               {% if comment_list %}
                   {% for comment in comment_list %}
@@ -16,7 +16,7 @@
 
         <div id="glean-comment-form">
             {% if user.is_authenticated %}
-                {% get_comment_form for glean as form %}
+                {% get_comment_form for object as form %}
                 <form action="{% comment_form_target %}" method="POST">
                         {% csrf_token %}
                         <!--{{ form.comment }}-->
@@ -27,7 +27,7 @@
                         {{ form.object_pk }}
                         {{ form.timestamp }}
                         {{ form.security_hash }}
-                        <input type="hidden" name="next" value="{% url 'gleanevent:detailglean' glean.id %}" />
+                        <input type="hidden" name="next" value="{% url 'gleanevent:detailglean' object.id %}" />
                         <input type="submit" class="glean-button yellow-button" value="Post a Comment" id="id_submit" />
                 </form>
             {% else %}

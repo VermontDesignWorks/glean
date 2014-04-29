@@ -85,6 +85,11 @@ class NewGlean(generic.CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
+class DetailGlean(generic.DetailView):
+    model = GleanEvent
+    template_name = "gleanevent/detail.html"
+
+
 class UpdateGlean(generic.UpdateView):
     model = GleanEvent
     form_class = GleanForm
@@ -101,21 +106,11 @@ class UpdateGlean(generic.UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-@login_required
-def detailGlean(request, glean_id):
-    glean = get_object_or_404(GleanEvent, pk=glean_id)
-    address = primary_address(glean)
-    if user in glean.rsvped:
-        return render(
-            request,
-            'gleanevent/detail.html',
-            {'glean': glean, 'address': address})
-
-
 @permission_required('gleanevent.auth')
 def deleteGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
     profile = request.user.profile
+    import pdb; pdb.set_trace()
     if (glean.member_organization != profile.member_organization and
             u'gleanevent.uniauth' not in
             request.user.groups.get().permissions.all()):

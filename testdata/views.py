@@ -23,7 +23,7 @@ from memberorgs.models import MemOrg
 from recipientsite.models import RecipientSite
 from announce.models import Announcement
 from distro.models import Distro
-from gleanevent.models import GleanEvent, PostGlean
+from gleanevent.models import GleanEvent
 from posts.models import Post
 
 county_quant = 7
@@ -114,8 +114,8 @@ def index(request):
 	if not ed.permissions.all():
 		
 
-		mo_list = [Announcement, Template, Distro, GleanEvent, Farm, PostGlean, RecipientSite, Profile, MemOrg, Post]
-		uni_list = [Announcement, Template, Distro, GleanEvent, Farm, FarmLocation, Contact, PostGlean, RecipientSite, Profile, MemOrg, County, Post]
+		mo_list = [Announcement, Template, Distro, GleanEvent, Farm, RecipientSite, Profile, MemOrg, Post]
+		uni_list = [Announcement, Template, Distro, GleanEvent, Farm, FarmLocation, Contact, RecipientSite, Profile, MemOrg, County, Post]
 
 		mc = Group.objects.get(name="Member Organization Glean Coordinator")
 		sal = Group.objects.get(name="Salvation Farms Administrator")

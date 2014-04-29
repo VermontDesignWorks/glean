@@ -18,7 +18,7 @@ urlpatterns = patterns(
     url(r'^postglean/download/$',
         views.postGleanDownload,
         name='postdownload'),
-    url(r'^(?P<glean_id>\d+)/$', views.detailGlean, name='detailglean'),
+    url(r'^(?P<pk>\d+)/$', views.DetailGlean.as_view(), name='detailglean'),
     url(r'^(?P<glean_id>\d+)/print/$', views.printGlean, name='printglean'),
     url(r'^(?P<glean_id>\d+)/delete/$', views.deleteGlean, name='deleteglean'),
     url(r'^(?P<glean_id>\d+)/attending/$',
