@@ -41,7 +41,7 @@
          [
             "auth", 
             "gleanevent", 
-            "postglean"
+            "workobject"
          ], 
          [
             "auth", 
@@ -105,7 +105,7 @@
          [
             "auth", 
             "gleanevent", 
-            "postglean"
+            "workobject"
          ], 
          [
             "auth", 
@@ -204,12 +204,12 @@
          [
             "auth", 
             "gleanevent", 
-            "postglean"
+            "workobject"
          ], 
          [
             "uniauth", 
             "gleanevent", 
-            "postglean"
+            "workobject"
          ], 
          [
             "auth", 
@@ -333,12 +333,12 @@
          [
             "auth", 
             "gleanevent", 
-            "postglean"
+            "workobject"
          ], 
          [
             "uniauth", 
             "gleanevent", 
-            "postglean"
+            "workobject"
          ], 
          [
             "auth", 

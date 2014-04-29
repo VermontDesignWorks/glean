@@ -14,7 +14,7 @@ from crispy_forms.layout import (Layout,
                                  HTML)
 
 from counties.models import County
-from gleanevent.models import GleanEvent, PostGlean
+from gleanevent.models import GleanEvent
 from constants import STATES, TIME_OF_DAY
 
 
@@ -89,14 +89,3 @@ class GleanForm(forms.ModelForm):
             'attending_volunteers',
             'officiated_by'
         ]
-
-
-class PostGleanForm(forms.ModelForm):
-    class Meta:
-        model = PostGlean
-
-    def __init__(self, *args, **kwargs):
-        super(PostGleanForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_class = 'form-inline'
-        helper.field_template = 'bootstrap3/layout/inline_field.html'

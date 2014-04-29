@@ -125,26 +125,15 @@ class GleanEvent(models.Model):
         )
 
 
-class PostGlean(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
-    glean = models.ForeignKey(GleanEvent, editable=False, null=True)
-    user = models.ForeignKey(
-        User,
-        editable=False,
-        null=True,
-        related_name="hours")
-    attended = models.BooleanField(default=False)
+class WorkObject(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True, editable=False)
     first_name = models.CharField(max_length=20, blank=True, null=True)
     last_name = models.CharField(max_length=20, blank=True, null=True)
-    hours = models.DecimalField(
-        "Hours (e.g. '3.5')",
-        max_digits=5,
-        decimal_places=3,
-        blank=True,
-        null=True
-    )
+    date = models.DateField()
+    hours = models.CharField(max_length=10, blank=True, null=True)
     group = models.CharField(max_length=40, blank=True, null=True)
     members = models.CharField(max_length=20, blank=True, null=True)
+    task = models.CharField(max_length=40)
     notes = models.CharField(max_length=200, blank=True, null=True)
 
     class Meta:

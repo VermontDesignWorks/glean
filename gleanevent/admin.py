@@ -1,5 +1,4 @@
 from django.contrib import admin
-from gleanevent.models import GleanEvent, PostGlean
+from gleanevent.models import GleanEvent
 
 admin.site.register(GleanEvent)
-admin.site.register(PostGlean)

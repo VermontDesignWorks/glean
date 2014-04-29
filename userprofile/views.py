@@ -16,7 +16,6 @@ from django.views import generic
 
 from constants import VERMONT_COUNTIES
 from memberorgs.models import MemOrg
-from gleanevent.forms import PostGleanForm, PostGlean
 from gleaning.customreg import ExtendedRegistrationForm
 
 from userprofile.models import (Profile,
@@ -142,41 +141,20 @@ def userProfile(request, user_id):
     return render(request, 'userprofile/detail.html', {'person': person})
 
 
-class UserProfileDetailView(generic.CreateView):
-    model = PostGlean
+class UserProfileDetailView(generic.DetailView):
+    model = User
     template_name = "userprofile/detail.html"
 
     def get_success_url(self):
         return reverse_lazy(
             'userprofile:userprofile', args=(self.kwargs["pk"],))
 
-    def get_context_data(self, *args, **kwargs):
-        user = get_object_or_404(User, pk=self.kwargs["pk"])
-        profile = user.profile
-        context = super(
+    def get_object(self, *args, **kwargs):
+        obj = super(
             UserProfileDetailView,
             self
-        ).get_context_data(*args, **kwargs)
-        context["object"] = user.profile
-        context["form"].fields["first_name"].initial = profile.first_name
-        context["form"].fields["first_name"].widget = forms.HiddenInput()
-        context["form"].fields["last_name"].initial = profile.last_name
-        context["form"].fields["last_name"].widget = forms.HiddenInput()
-        context["form"].fields["attended"].initial = True
-        context["form"].fields["attended"].widget = forms.HiddenInput()
-        context["form"].fields["members"].widget = forms.HiddenInput()
-        context["form"].fields["group"].widget = forms.HiddenInput()
-        return context
-
-    def form_valid(self, form):
-        user = User.objects.get(pk=self.kwargs["pk"])
-        instance = PostGlean(
-            user=user,
-            **form.cleaned_data
-        )
-        instance.save()
-        print "stop here"
-        return super(UserProfileDetailView, self).form_valid(form)
+        ).get_object(*args, **kwargs)
+        return obj.profile
 
 
 @permission_required('userprofile.auth')

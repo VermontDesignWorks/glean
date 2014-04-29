@@ -1,7 +1,7 @@
 import random
 from django.contrib.auth.models import User
 from userprofile.models import Profile
-from gleanevent.models import GleanEvent, PostGlean
+from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 from announce.models import Announcement
 from counties.models import County
@@ -37,12 +37,6 @@ def create_county():
     county = County(name="TestCounty")
     county.save()
     return county
-
-
-def create_post_glean(glean, **kwargs):
-    pg = PostGlean(glean=glean, **kwargs)
-    pg.save()
-    return pg
 
 
 def create_memorg():

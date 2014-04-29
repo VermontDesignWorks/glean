@@ -57,13 +57,3 @@ def create_glean(**kwargs):
             **kwargs)
     glean.save()
     return glean
-
-
-class UserProfileMethods(TestCase):
-    def testing_the_get_volunteer_hours_method(self):
-        user = create_volunteer_user_object()
-        profile = create_profile(user)
-        glean = create_glean(created_by=user)
-        create_post_glean(glean, user=user, hours=1)
-        create_post_glean(glean, user=user, hours=2)
-        self.assertEqual(profile.get_hours(), 3)

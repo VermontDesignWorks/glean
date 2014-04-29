@@ -8,7 +8,6 @@ from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, TASKS, STATES
 
 from counties.models import County
 from memberorgs.models import MemOrg
-from gleanevent.models import PostGlean
 
 
 class Profile(models.Model):
@@ -103,13 +102,6 @@ class Profile(models.Model):
         " messages from the Gleaning Cooperative?", default=False)
 
     not_notified = models.BooleanField(editable=False, default=True)
-
-    def get_hours(self):
-        pgs = PostGlean.objects.filter(user=self.user)
-        total = 0
-        for pg in pgs:
-            total += pg.hours
-        return total
 
     def __unicode__(self):
         return u'%s %s %s' % (self.first_name, self.last_name, self.user)

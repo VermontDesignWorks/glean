@@ -10,7 +10,7 @@ from django.utils import timezone
 import datetime
 
 from django.contrib.auth.models import User
-from gleanevent.models import GleanEvent, PostGlean
+from gleanevent.models import GleanEvent
 from userprofile.models import Profile
 from memberorgs.models import MemOrg
 from farms.models import Farm, FarmLocation
@@ -63,12 +63,6 @@ def create_farm_location(farm, **kwargs):
     farmlocation = FarmLocation(farm=farm, **kwargs)
     farmlocation.save()
     return farmlocation
-
-
-def create_post_glean(glean):
-    pg = PostGlean(glean=glean)
-    pg.save()
-    return pg
 
 
 class GleanEventTests(TestCase):
@@ -170,9 +164,3 @@ class GleanEventTests(TestCase):
         glean = create_glean(
             created_by=user, instructions="Glean instructions")
         self.assertEqual(glean.render_instructions(), glean.instructions)
-
-    def test_data_entered(self):
-        glean = create_glean()
-        self.assertEqual(glean.data_entered(), False)
-        pg1 = create_post_glean(glean)
-        self.assertEqual(glean.data_entered(), True)

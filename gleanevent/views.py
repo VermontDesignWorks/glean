@@ -16,7 +16,7 @@ from django.template import RequestContext, loader
 from weasyprint import HTML
 
 from gleanevent.models import GleanEvent
-from gleanevent.forms import GleanForm, PostGlean
+from gleanevent.forms import GleanForm
 from farms.models import Farm, FarmLocation
 from announce.models import Announcement
 from userprofile.models import Profile
@@ -105,11 +105,11 @@ class UpdateGlean(generic.UpdateView):
 def detailGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
     address = primary_address(glean)
-    if user in glean.rsvped
-    return render(
-        request,
-        'gleanevent/detail.html',
-        {'glean': glean, 'address': address})
+    if user in glean.rsvped:
+        return render(
+            request,
+            'gleanevent/detail.html',
+            {'glean': glean, 'address': address})
 
 
 @permission_required('gleanevent.auth')
@@ -173,81 +173,81 @@ def denyLink(request, glean_id):
             reverse('gleanevent:detailglean', args=(glean_id,)))
 
 
-@permission_required('gleanevent.auth')
-def postGlean(request, glean_id):
-    glean = get_object_or_404(GleanEvent, pk=glean_id)
-    profile = request.user.profile
-    if (glean.member_organization != profile.member_organization and not
-            request.user.has_perm('gleanevent.uniauth')):
-        return HttpResponseRedirect(
-            reverse('gleanevent:detailglean', args=(glean_id,)))
+# @permission_required('gleanevent.auth')
+# def postGlean(request, glean_id):
+#     glean = get_object_or_404(GleanEvent, pk=glean_id)
+#     profile = request.user.profile
+#     if (glean.member_organization != profile.member_organization and not
+#             request.user.has_perm('gleanevent.uniauth')):
+#         return HttpResponseRedirect(
+#             reverse('gleanevent:detailglean', args=(glean_id,)))
 
-    count = len(glean.rsvped.all())
-    unrsvped = int(request.GET.get('extra', 0))
-    if int(unrsvped) > 100:
-        unrsvped = 100
-    PostGleanFormSet = modelformset_factory(PostGlean, extra=count+unrsvped)
+#     count = len(glean.rsvped.all())
+#     unrsvped = int(request.GET.get('extra', 0))
+#     if int(unrsvped) > 100:
+#         unrsvped = 100
+#     PostGleanFormSet = modelformset_factory(PostGlean, extra=count+unrsvped)
 
-    if request.method == 'POST':
-        formset = PostGleanFormSet(request.POST)
-        instances = formset.save(commit=False)
-        for i in range(count):
-            instances[i].glean = glean
-            instances[i].user = glean.rsvped.all()[i]
-            if instances[i].attended is True:
-                profile = instances[i].user.profile
-                profile.attended += 1
-                if instances[i].hours:
-                    profile.hours += instances[i].hours
-                profile.save()
-        for instance in instances:
-            if not hasattr(instance, 'glean'):
-                instance.glean = glean
-            instance.save()
-        return HttpResponseRedirect(
-            reverse('gleanevent:detailglean', args=(glean_id,)))
-    else:
-        initial = []
-        for person in glean.rsvped.all():
-            prof = person.profile
-            initial.append({'first_name': prof.first_name,
-                            'last_name': prof.last_name})
-        #return HttpResponse(str(initial))
-        forms = PostGleanFormSet(
-            initial=initial,
-            queryset=PostGlean.objects.none())
-        return render(
-            request,
-            'gleanevent/postglean.html',
-            {'glean': glean, 'formset': forms})
-
-
-def postGleanView(request, glean_id):
-    glean = get_object_or_404(GleanEvent, pk=glean_id)
-    glean_data = PostGlean.objects.filter(glean=glean)
-    return render(
-        request,
-        'gleanevent/post_glean.html',
-        {'glean': glean, 'glean_data': glean_data})
+#     if request.method == 'POST':
+#         formset = PostGleanFormSet(request.POST)
+#         instances = formset.save(commit=False)
+#         for i in range(count):
+#             instances[i].glean = glean
+#             instances[i].user = glean.rsvped.all()[i]
+#             if instances[i].attended is True:
+#                 profile = instances[i].user.profile
+#                 profile.attended += 1
+#                 if instances[i].hours:
+#                     profile.hours += instances[i].hours
+#                 profile.save()
+#         for instance in instances:
+#             if not hasattr(instance, 'glean'):
+#                 instance.glean = glean
+#             instance.save()
+#         return HttpResponseRedirect(
+#             reverse('gleanevent:detailglean', args=(glean_id,)))
+#     else:
+#         initial = []
+#         for person in glean.rsvped.all():
+#             prof = person.profile
+#             initial.append({'first_name': prof.first_name,
+#                             'last_name': prof.last_name})
+#         #return HttpResponse(str(initial))
+#         forms = PostGleanFormSet(
+#             initial=initial,
+#             queryset=PostGlean.objects.none())
+#         return render(
+#             request,
+#             'gleanevent/postglean.html',
+#             {'glean': glean, 'formset': forms})
 
 
-def postGleanEdit(request, glean_id):
-    glean = get_object_or_404(GleanEvent, pk=glean_id)
-    PostGleanFormSet = modelformset_factory(
-        PostGlean, extra=0, can_delete=True)
-    if request.method == 'POST':
-        formset = PostGleanFormSet(request.POST)
-        if formset.is_valid():
-            formset.save()
-            return HttpResponseRedirect(
-                reverse('gleanevent:postgleanview', args=(glean_id,)))
+# def postGleanView(request, glean_id):
+#     glean = get_object_or_404(GleanEvent, pk=glean_id)
+#     glean_data = PostGlean.objects.filter(glean=glean)
+#     return render(
+#         request,
+#         'gleanevent/post_glean.html',
+#         {'glean': glean, 'glean_data': glean_data})
 
-    forms = PostGleanFormSet(queryset=PostGlean.objects.filter(glean=glean))
 
-    return render(
-        request,
-        'gleanevent/postgleanedit.html',
-        {'glean': glean, 'formset': forms})
+# def postGleanEdit(request, glean_id):
+#     glean = get_object_or_404(GleanEvent, pk=glean_id)
+#     PostGleanFormSet = modelformset_factory(
+#         PostGlean, extra=0, can_delete=True)
+#     if request.method == 'POST':
+#         formset = PostGleanFormSet(request.POST)
+#         if formset.is_valid():
+#             formset.save()
+#             return HttpResponseRedirect(
+#                 reverse('gleanevent:postgleanview', args=(glean_id,)))
+
+#     forms = PostGleanFormSet(queryset=PostGlean.objects.filter(glean=glean))
+
+#     return render(
+#         request,
+#         'gleanevent/postgleanedit.html',
+#         {'glean': glean, 'formset': forms})
 
 
 @permission_required('gleanevent.auth')
