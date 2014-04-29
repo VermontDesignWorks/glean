@@ -2,7 +2,6 @@ import datetime
 from django.utils import timezone
 
 from django.db import models
-from django.forms import ModelForm
 
 from django.contrib.auth.models import User
 
@@ -26,17 +25,6 @@ class Template(models.Model):
             ("auth", "Member Organization Level Permissions"),
             ("uniauth", "Universal Permission Level"),
         )
-
-
-class TemplateForm(ModelForm):
-    class Meta:
-        model = Template
-
-
-class PartialTemplateForm(ModelForm):
-    class Meta:
-        model = Template
-        exclude = ('template_name',)
 
 
 class Announcement(models.Model):
@@ -90,11 +78,6 @@ class Announcement(models.Model):
             self.email_recipients.remove(user)
         if user in self.phone_recipients.all():
             self.phone_recipients.remove(user)
-
-
-class AnnouncementForm(ModelForm):
-    class Meta:
-        model = Announcement
 
 
 class RsvpModel(models.Model):

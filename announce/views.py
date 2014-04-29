@@ -15,11 +15,8 @@ from django.contrib.auth.decorators import permission_required
 
 from django.contrib.auth.models import User
 
-from announce.models import (Template,
-                             TemplateForm,
-                             Announcement,
-                             AnnouncementForm,
-                             PartialTemplateForm)
+from announce.models import Template, Announcement
+from announce.forms import TemplateForm, AnnouncementForm, PartialTemplateForm
 from gleanevent.models import GleanEvent
 from userprofile.models import Profile
 
@@ -48,7 +45,8 @@ class editTemplateClass(generic.UpdateView):
     template_name = 'announce/edit_template.html'
 
     def get_success_url(self):
-        return reverse('announce:detailtemplate', kwargs={'template_id': self.object.pk})
+        return reverse('announce:detailtemplate',
+            kwargs={'template_id': self.object.pk})
 
 
 @permission_required('announce.auth')
