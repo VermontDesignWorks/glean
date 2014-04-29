@@ -169,6 +169,7 @@ INSTALLED_APPS = (
     'posts',
     'initialize',
     'api',
+    'generic',
 
     # third party apps
     'registration',

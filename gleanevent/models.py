@@ -123,22 +123,3 @@ class GleanEvent(models.Model):
             ("auth", "Member Organization Level Permissions"),
             ("uniauth", "Universal Permission Level"),
         )
-
-
-class WorkObject(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True, editable=False)
-    first_name = models.CharField(max_length=20, blank=True, null=True)
-    last_name = models.CharField(max_length=20, blank=True, null=True)
-    date = models.DateField()
-    hours = models.CharField(max_length=10, blank=True, null=True)
-    group = models.CharField(max_length=40, blank=True, null=True)
-    members = models.CharField(max_length=20, blank=True, null=True)
-    task = models.CharField(max_length=40)
-    notes = models.CharField(max_length=200, blank=True, null=True)
-
-    class Meta:
-        permissions = (
-            ("auth", "Member Organization Level Permissions"),
-            ("uniauth", "Universal Permission Level"),
-        )
-        ordering = ['-timestamp']

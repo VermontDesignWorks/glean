@@ -16,7 +16,9 @@ from django.contrib.auth.decorators import permission_required
 from django.forms.models import modelformset_factory
 
 from farms.models import Farm
-from distro.models import Distro
+from distro.models import Distro, WorkEvent
+from distro.forms import WorkEventFormHelper, WorkEventFormSet
+from generic.views import DateFilterMixin
 from recipientsite.models import RecipientSite
 
 
@@ -79,7 +81,8 @@ def entry(request):
     #       return HttpResponse(formset.errors)
             count = 0
             for instance in instances:
-                instance.member_organization = request.user.profile.member_organization
+
+                instance.member_organization = member_organization
                 instance.save()
                 count += 1
             form = DistroFormSet(queryset=Distro.objects.none())
@@ -222,3 +225,72 @@ def download(request):
         writer.writerow([getattr(line, attr, "") for attr in attributes])
 
     return response
+
+
+class WorkEventsListView(generic.ListView):
+    model = WorkEvent
+    template_name = "distribution/workevent_list.html"
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = WorkEvent.objects.all()
+        if not user.has_perm("workevent.uniauth"):
+            memorg = user.profile.member_organization
+            return queryset.filter(member_organization=memorg)
+
+        try:
+            from_d = datetime.date.strptime(
+                self.request.GET["date_until"],
+                "%m/%d/%Y")
+            until_date = datetime.date.strptime(
+                self.request.GET["date_until"],
+                "%m/%d/%Y")
+            queryset = queryset.filter(
+                timestamp__gte=from_d,
+                timestamp__lte=until_d
+            )
+        except:
+            pass
+
+        return queryset.filter
+
+
+class WorkEventsCreateView(DateFilterMixin, generic.CreateView):
+    model = WorkEvent
+    template_name = "distribution/hours_create.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(WorkEventsCreateView, self).get_context_data(**kwargs)
+        context["workevent_form"] = WorkEventFormSet()
+        if self.request.POST:
+            #import pdb; pdb.set_trace()
+            #WorkEventFormSet = modelformset_factory(WorkEvent)
+            context["workevent_form"] = WorkEventFormSet(self.request.POST)
+        else:
+            if self.from_date or self.until_date:
+                queryset = self.get_queryset()
+                context["workevent_form"] = WorkEventFormSet(queryset=queryset)
+        context["helper"] = WorkEventFormHelper()
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        workevent_form = context["workevent_form"]
+        if workevent_form.is_valid():
+            self.object = workevent_form.save()
+            return HttpResponseRedirect(self.get_success_url())
+
+    def get_queryset(self):
+        if self.from_date and self.until_date:
+            return WorkEvent.objects.filter(
+                date__gte=self.from_date,
+                date__lte=self.until_date
+            )
+        elif self.from_date:
+            return WorkEvent.objects.filter(
+                date__gte=self.from_date
+            )
+        elif self.from_date:
+            return WorkEvent.objects.filter(
+                date__lte=self.until_date
+            )

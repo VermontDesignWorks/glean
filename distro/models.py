@@ -66,3 +66,26 @@ class Distro(models.Model):
             '%Y %m %d - %I:%M:%S %p')
 
 admin.site.register(Distro)
+
+
+class WorkEvent(models.Model):
+    member_organization = models.ForeignKey(
+        MemOrg,
+        editable=False,
+        related_name="hours"
+    )
+    first_name = models.CharField(max_length=25, blank=True, null=True)
+    last_name = models.CharField(max_length=25, blank=True, null=True)
+    date = models.DateField(null=True)
+    time = models.CharField(max_length=10, blank=True, null=True)
+    group = models.CharField(max_length=25, blank=True, null=True)
+    members = models.CharField(max_length=10, blank=True, null=True)
+    task = models.CharField(max_length=50, blank=True, null=True)
+    miles = models.CharField(max_length=10, blank=True, null=True)
+    notes = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        permissions = (
+            ("auth", "Member Organization Level Permissions"),
+            ("uniauth", "Universal Permission Level"),
+        )

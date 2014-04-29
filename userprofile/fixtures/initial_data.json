@@ -40,11 +40,6 @@
          ], 
          [
             "auth", 
-            "gleanevent", 
-            "workobject"
-         ], 
-         [
-            "auth", 
             "memberorgs", 
             "memorg"
          ], 
@@ -101,11 +96,6 @@
             "auth", 
             "gleanevent", 
             "gleanevent"
-         ], 
-         [
-            "auth", 
-            "gleanevent", 
-            "workobject"
          ], 
          [
             "auth", 
@@ -200,16 +190,6 @@
             "uniauth", 
             "gleanevent", 
             "gleanevent"
-         ], 
-         [
-            "auth", 
-            "gleanevent", 
-            "workobject"
-         ], 
-         [
-            "uniauth", 
-            "gleanevent", 
-            "workobject"
          ], 
          [
             "auth", 
@@ -329,16 +309,6 @@
             "uniauth", 
             "gleanevent", 
             "gleanevent"
-         ], 
-         [
-            "auth", 
-            "gleanevent", 
-            "workobject"
-         ], 
-         [
-            "uniauth", 
-            "gleanevent", 
-            "workobject"
          ], 
          [
             "auth", 
