@@ -32,9 +32,9 @@ Gleaning Details
             <div class="glean-details-half">
                 <div class="glean-details-quarter">
                     <h3>{% if object.farm %}{{object.farm.name}}{% else %}{{object.title}}{% endif %}</h3>
-                    <span class='glean-address'>{{address.address_one}}<br />
-                {% if address.address_two %}{{address.address_two}}<br />{% endif %}
-                {{address.city}}, {{address.state}} {{address.zipcode}}</span>
+                    <span class='glean-address'>{{object.address_one}}<br />
+                {% if object.address_two %}{{object.address_two}}<br />{% endif %}
+                {{object.city}}, {{object.state}} {{object.zipcode}}</span>
             </div>
                 <div class="glean-details-quarter">
                 <h3>{{object.date}}</h3>
@@ -106,7 +106,7 @@ Gleaning Details
 
     <div class="glean-half"> <!-- Begin First Half -->
 
-        <div id="map-container" class="red" address="{{address.address_one}} {{address.city}}, {{address.state}} {{address.zipcode}}">
+        <div id="map-container" class="red" address="{{object.address_one}} {{object.city}}, {{object.state}} {{object.zipcode}}">
             <div id="map-canvas">&nbsp;</div>
         </div>
 
