@@ -1,11 +1,9 @@
 CairoSVG==1.0.6
 Django==1.6.2
-MySQL-python==1.2.4
 Pillow==2.3.1
 Pyphen==0.9.1
 South==0.8.4
 WeasyPrint==0.21
-argparse==1.2.1
 cairocffi==0.5.3
 cffi==0.8.2
 cssselect==0.9.1

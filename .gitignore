@@ -15,4 +15,5 @@ gleaning/devsettings.py
 devsettings.py
 local.py
 staticfiles
-
+*.pydevproject
+.pydevproject
