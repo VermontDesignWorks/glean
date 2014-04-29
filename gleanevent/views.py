@@ -105,6 +105,7 @@ class UpdateGlean(generic.UpdateView):
 def detailGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
     address = primary_address(glean)
+    if user in glean.rsvped
     return render(
         request,
         'gleanevent/detail.html',
