@@ -40,7 +40,7 @@
          ], 
          [
             "auth", 
-            "gleanevent", 
+            "distro", 
             "workobject"
          ], 
          [
@@ -104,7 +104,7 @@
          ], 
          [
             "auth", 
-            "gleanevent", 
+            "distro", 
             "workobject"
          ], 
          [
@@ -203,12 +203,12 @@
          ], 
          [
             "auth", 
-            "gleanevent", 
+            "distro", 
             "workobject"
          ], 
          [
             "uniauth", 
-            "gleanevent", 
+            "distro", 
             "workobject"
          ], 
          [
@@ -332,12 +332,12 @@
          ], 
          [
             "auth", 
-            "gleanevent", 
+            "distro", 
             "workobject"
          ], 
          [
             "uniauth", 
-            "gleanevent", 
+            "distro", 
             "workobject"
          ], 
          [
