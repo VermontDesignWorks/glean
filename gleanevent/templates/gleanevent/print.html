@@ -55,9 +55,6 @@
                         <th>Emergency<br>Contact<br>Name</th>
                         <th>Emergency<br>Contact<br>Phone</th>
                         <th>Photo<br>Release?</th>
-                        <th>Time in</th>
-                        <th>Time<br>Out</th>
-                        <th>Hours</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,16 +65,10 @@
                             <td>{{person.profile.ecfirst_name}} {{person.profile.ecflast_name}}</td>
                             <td>{{person.profile.ecphone}}</td>
                             <td>{{person.profile.photo_release}}</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>{{glean.rsvped.all.count}}</td>
                         </tr>
                     {% endfor %}
                     {% for line in extra_lines %}
                         <tr>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>

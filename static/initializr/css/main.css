@@ -343,6 +343,20 @@ a.day-name {
    Glean Event
    ========================================================================== */
 
+.not-attending {
+   font-size: 23px;
+   margin-top: 30px;
+   font-weight: bold;
+   color: #d25231;
+}
+
+.attending {
+   font-size: 33px;
+   margin-top: 30px;
+   font-weight: bold;
+   color: #6c9614;
+}
+
 #glean-header {
    width: 1154px;
    clear: both;
