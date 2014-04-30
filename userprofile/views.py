@@ -60,7 +60,7 @@ def selfEdit(request):
     if request.method == "POST":
         instance = Profile.objects.get(user=request.user)
         if request.user.has_perm('userprofile.auth'):
-            form = AdminProfileForm(request.POST, instace=instance)
+            form = AdminProfileForm(request.POST, instance=instance)
         else:
             form = EditProfileForm(request.POST, instance=instance)
         if form.is_valid():
