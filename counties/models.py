@@ -30,11 +30,12 @@ class County(models.Model):
             {"object": profile, "county": self}
         )
         for org in orgs:
-            if mail and org.notify:
-                email = getattr(org, "testing_email", False)
-                if email:
-                    quick_mail(subject, text, org.testing_email)
-            org.volunteers.add(user)
+            if org not in profile.user.member_organizations.all():
+                if mail and org.notify:
+                    email = getattr(org, "testing_email", False)
+                    if email:
+                        quick_mail(subject, text, org.testing_email)
+                org.volunteers.add(user)
 
     def __unicode__(self):
         return self.name

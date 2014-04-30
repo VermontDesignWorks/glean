@@ -68,7 +68,7 @@ class MemOrg(models.Model):
         "Relay Announcement Emails to Testing Address", default=True)
 
     testing_email = models.CharField(
-        "Testing Email Address", max_length="200", blank=True)
+        "Primary Email Address", max_length="200", blank=True)
 
     def __unicode__(self):
         return self.name

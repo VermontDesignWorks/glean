@@ -20,6 +20,7 @@ from userprofile.models import Profile
 
 from django import forms
 from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, STATES, TASKS
+from mail_system import quick_mail
 
 
 class ExtendedRegistrationForm(RegistrationForm):
@@ -263,6 +264,12 @@ class MyRegistrationView(RegistrationView):
             user=user,
             waiver=form.cleaned_data['waiver'],
             agreement=form.cleaned_data['agreement'],
+            tasks_gleaning=form.cleaned_data['tasks_gleaning'],
+            tasks_farm_pickups=form.cleaned_data['tasks_farm_pickups'],
+            tasks_delivery=form.cleaned_data['tasks_delivery'],
+            tasks_admin=form.cleaned_data['tasks_admin'],
+            tasks_processing=form.cleaned_data['tasks_processing'],
+            notes=form.cleaned_data['notes'],
             photo_release=form.cleaned_data['photo_release'],
             opt_in=form.cleaned_data['opt_in']
             )
@@ -274,4 +281,13 @@ class MyRegistrationView(RegistrationView):
         for county in form.cleaned_data['ny_counties']:
             profile.counties.add(county)
             county.affix_to_memorgs(user, mail=True)
+        if user.memberorganizations.count() == 0:
+            memo = MemOrg.objects.get(pk=1)
+            if memo.notify:
+                subject = "New User Notification"
+                text = render_to_string(
+                    "registration/sal_farm_notify.html",
+                    {"object": profile}
+                )
+                quick_mail(subject, text, memo.testing_email)
         return user
