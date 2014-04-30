@@ -89,7 +89,8 @@ class Profile(models.Model):
     )
     notes = models.TextField(
         verbose_name="Please share a little bit about yourself:",
-        null=True
+        null=True,
+        blank=True
     )
     waiver = models.BooleanField(
         "Do you agree to the Waiver of Liability?", default=False)

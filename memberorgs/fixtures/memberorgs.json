@@ -27,12 +27,7 @@
         "created": "2014-02-23T23:18:23.146Z", 
         "mailing_state": "", 
         "mailing_city": "", 
-        "address_one": null, 
-        "volunteers": [
-            [
-                "gregor"
-            ]
-        ]
+        "address_one": null
    }
 }
 ]

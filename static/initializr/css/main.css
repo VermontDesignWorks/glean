@@ -76,6 +76,13 @@ h3 {
    border: 1px solid #ccc;
 }
 
+.slight-margin-top {
+   margin-top:15px;
+}
+.gleaners-space {
+   margin-bottom: 400px;
+}
+
 /* ==========================================================================
    Fighting with the Navbar
    ========================================================================== */
@@ -893,4 +900,19 @@ input[type="checkbox"]:checked:after {
 #recipient-box {
    height: 206px;
    overflow-y: scroll;
+}
+
+/* ==========================================================================
+   UserProfile
+   ========================================================================== */
+
+.yes-text {
+   color: #6e9614;
+   font-size: 15px;
+   font-weight: bold;
+}
+.no-text {
+   color: #d25231;
+   font-size: 15px;
+   font-weight: bold;
 }

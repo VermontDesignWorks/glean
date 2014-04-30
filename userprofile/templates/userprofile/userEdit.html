@@ -1,14 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}
-Edit User
+Edit Your User Information
 {% endblock %}
 
-{% block heading %}
-	<h3>Edit your user details</h3>
-{% endblock heading %}
-
-
 {% block content %}
+	<h3>Edit Your User Information</h3>
 <form method="POST">
 	<span>{{form.errors}}&nbsp;</span>
 	{% csrf_token %}

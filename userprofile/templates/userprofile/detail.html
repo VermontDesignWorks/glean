@@ -65,26 +65,45 @@
     </div>
 
     </div>
-    <div class="yellow-box green-top">
-        <form method="post" id="hours-form">
-            {% csrf_token %}
-            {{form}}
-            <style>
-            #id_notes {
-                max-width: 999px !important;
-                width: 664px;
-            }
-            </style>
-            <input type="submit" class="glean-button red-button">
-        </form>
-    </div>
-    <div class="yellow-box blue-top">
-        <h2>Hours to Date</h2>
-        <ul>
-        {% for hour in object.user.hours.all|slice:":5" %}
-            <li>{{hour.hours}} - {{hour.notes}}</li>
-        {% endfor %}
+    <div class="yellow-box yellow-top slight-margin-top">
+        <h2>Counties</h2>
+        <ul style="list-style:none">
+            {% for county in object.counties.all %}
+                <li>{{county}}</li>
+            {% empty %}
+                <li>No Counties :(</li>
+            {% endfor %}
         </ul>
+    </div>
+    <div class="yellow-box green-top slight-margin-top gleaners-space">
+        <div class="half pull-left">
+            <h2>Forms</h2>
+            <ul style="list-style:none">
+                <li>Photo releases:
+                    {% if object.photo_release %}
+                    <span class="yes-text">Yes</span>
+                    {% else %}
+                    <span class="no-text">No</span>
+                    {% endif %}
+                </li>
+                <li>Ok to Send Newsletters:
+                    {% if object.opt_in %}
+                    <span class="yes-text">Yes</span>
+                    {% else %}
+                    <span class="no-text">No</span>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+        <div class="half pull-left">
+            <h2>Emergency Contact</h2>
+            <ul style="list-style:none">
+                <li>{{object.ecfirst_name}} {{object.eclast_name}}</li>
+                <li>{{object.ecrelationship}}</li>
+                <li>{{object.ecphone}}</li>
+            </ul>
+
+        </div>
     </div>
 </div>
 {% endblock body %}

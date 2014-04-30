@@ -283,8 +283,8 @@ class MyRegistrationView(RegistrationView):
         for county in form.cleaned_data['ny_counties']:
             profile.counties.add(county)
             county.affix_to_memorgs(user, mail=True)
-        if user.member_organizations.count() == 0:
-            memo = MemOrg.objects.get(pk=1)
+        memo = MemOrg.objects.get(pk=1)
+        if memo not in user.member_organizations.all():
             if memo.notify:
                 subject = "New User Notification"
                 text = render_to_string(
