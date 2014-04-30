@@ -34,7 +34,7 @@ class ExtendedRegistrationForm(RegistrationForm):
         self.helper.layout = Layout(
             Fieldset(
                 "",
-                HTML("<h3 class='lbl'>Basic User Information</h3>"
+                HTML("<h3 class='lbl'>Your Information</h3>"
                      "<h4>Please fill in all the below information"
                      " to create your account.</h4>"),
                 Row("username", "email"),
@@ -83,7 +83,7 @@ class ExtendedRegistrationForm(RegistrationForm):
                      "review this form too when"
                      " you click the register button at "
                      "the bottom of this page,"
-                     " you+'re indicating their acceptance "
+                     " you're indicating their acceptance "
                      "of the terms on your behalf.</h5>"),
                 AppendedText('waiver', '<a href="#waiver-modal" role="button"'
                              ' data-toggle="modal"><button class="glean-button'
@@ -104,7 +104,7 @@ class ExtendedRegistrationForm(RegistrationForm):
             ),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "name='submit' value='Ok, It's Ready>")
+                 "name='submit' value='Register'>")
         )
 
     first_name = forms.CharField(label="First Name", max_length=20)

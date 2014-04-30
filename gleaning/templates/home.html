@@ -10,8 +10,9 @@ Welcome to the Gleaning Interface!
 <div class="calendar-container red">
     <div class="row">
         <h3 class="pull-left">Upcoming Gleans</h3>
-        
+        {% if "gleanevent.auth" in perms %}
         <a href="{% url "gleanevent:newglean" %}"><button class="pull-right glean-button" href="">New Glean</button></a>
+        {% endif %}
         
     </div>
     <div>

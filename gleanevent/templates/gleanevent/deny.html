@@ -8,7 +8,7 @@ RSVP Page
 	<p>You will be automatically be redirected to the Glean Event Page. <a href="{% url 'gleanevent:detailglean' glean.id %}">Click Here</a> if you are not automatically redirected....</p>
 	<script type="text/JavaScript">
 <!--
-setTimeout("location.href = '{% url 'gleanevent:detailglean' glean.id %}';",1500);
+setTimeout("location.href = '{% url 'gleanevent:detailglean' glean.id %}';", 3500);
 -->
 </script>
 {% endblock content %}
