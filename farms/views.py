@@ -3,7 +3,12 @@ import csv
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
+# add view for certain type
 from django.views.generic import View
+from django.views.generic.detail import SingleObjectMixin
+# experimenting with edit mixins
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 
@@ -89,31 +94,43 @@ def deleteFarm(request, farm_id):
 		return render(request, 'farms/delete_farm.html', {'farm':farm})
 """
 
-@permission_required('farms.auth')
-class deleteFarm(View):
+class deleteFarm(SingleObjectMixin, View):
+	model = Farm
+	success_url = reverse_lazy("Farm-List")
 
-	def get(self, request):
+	def get(self, request, *args, **kwargs):
+		if not request.user.is_authenticated():
+			return HttpResponseForbidden()
+		self.object = self.get_object()
 		farm = get_object_or_404(Farm, pk=farm_id)
 		if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
 			return HttpResponseRedirect(reverse('farms:index'))
+		return render(request, 'farms/delete_farm.html', {'farm':farm})
 
-	def post(self, request):
-		farm = get_object_or_404(Farm, pk=farm_id)
+	def post(self, request, *args, **kwargs):
+		if not request.user.is_authenticated():
+			return HttpResponseForbidden()
+		self.object = self.get_object()
+		farm = get_object_or_404(Farm, pk=farm.id)
 		if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
 			return HttpResponseRedirect(reverse('farms:index'))
 		contacts = Contact.objects.filter(farm=farm)
 		if contacts.exists():
 			for contact in contacts:
 				contact.delete()
-			locations = FarmLocation.objects.filter(farm=farm)
-			if locations.exists():
-				for location in locations:
-					location.delete()
-			farm.delete()
-			return HttpResponseRedirect(reverse('farms:index'))
-		else:
-			return render(request, 'farms/delete_farm.html', {'farm':farm})
+		locations = FarmLocation.objects.filter(farm=farm)
+		if locations.exists():
+			for location in locations:
+				location.delete()
+		farm.delete()
+		return HttpResponseRedirect(reverse('farms:index'))
 
+
+"""
+class deleteFarm(DeleteView):
+	model = Farm
+	success_url = reverse_lazy('farm-list')
+"""
 
 @permission_required('farms.auth')
 def newLocation(request, farm_id):
