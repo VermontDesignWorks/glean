@@ -93,7 +93,7 @@ def deleteFarm(request, farm_id):
 	else:
 		return render(request, 'farms/delete_farm.html', {'farm':farm})
 """
-
+"""
 class deleteFarm(SingleObjectMixin, View):
 	model = Farm
 	success_url = reverse_lazy("Farm-List")
@@ -124,13 +124,13 @@ class deleteFarm(SingleObjectMixin, View):
 				location.delete()
 		farm.delete()
 		return HttpResponseRedirect(reverse('farms:index'))
-
-
 """
+
+
 class deleteFarm(DeleteView):
 	model = Farm
 	success_url = reverse_lazy('farm-list')
-"""
+
 
 @permission_required('farms.auth')
 def newLocation(request, farm_id):
