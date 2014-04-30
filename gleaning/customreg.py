@@ -1,3 +1,6 @@
+from django import forms
+from django.template.loader import render_to_string
+
 from crispy_forms.bootstrap import (FieldWithButtons,
                                     InlineCheckboxes,
                                     StrictButton,
@@ -15,10 +18,9 @@ from registration.backends.default.views import RegistrationView
 from registration.forms import RegistrationForm
 
 from counties.models import County
-
+from memberorgs.models import MemOrg
 from userprofile.models import Profile
 
-from django import forms
 from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, STATES, TASKS
 from mail_system import quick_mail
 
@@ -272,7 +274,7 @@ class MyRegistrationView(RegistrationView):
             notes=form.cleaned_data['notes'],
             photo_release=form.cleaned_data['photo_release'],
             opt_in=form.cleaned_data['opt_in']
-            )
+        )
 
         profile.save()
         for county in form.cleaned_data['vt_counties']:
@@ -281,7 +283,7 @@ class MyRegistrationView(RegistrationView):
         for county in form.cleaned_data['ny_counties']:
             profile.counties.add(county)
             county.affix_to_memorgs(user, mail=True)
-        if user.memberorganizations.count() == 0:
+        if user.member_organizations.count() == 0:
             memo = MemOrg.objects.get(pk=1)
             if memo.notify:
                 subject = "New User Notification"
