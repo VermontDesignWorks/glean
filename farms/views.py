@@ -93,7 +93,7 @@ def deleteFarm(request, farm_id):
 	else:
 		return render(request, 'farms/delete_farm.html', {'farm':farm})
 """
-"""
+
 class deleteFarm(SingleObjectMixin, View):
 	model = Farm
 	success_url = reverse_lazy("Farm-List")
@@ -102,7 +102,7 @@ class deleteFarm(SingleObjectMixin, View):
 		if not request.user.is_authenticated():
 			return HttpResponseForbidden()
 		self.object = self.get_object()
-		farm = get_object_or_404(Farm, pk=farm_id)
+		farm = get_object_or_404(Farm, pk=self.object.pk)
 		if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
 			return HttpResponseRedirect(reverse('farms:index'))
 		return render(request, 'farms/delete_farm.html', {'farm':farm})
@@ -111,7 +111,7 @@ class deleteFarm(SingleObjectMixin, View):
 		if not request.user.is_authenticated():
 			return HttpResponseForbidden()
 		self.object = self.get_object()
-		farm = get_object_or_404(Farm, pk=farm.id)
+		farm = get_object_or_404(Farm, pk=self.object.pk)
 		if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
 			return HttpResponseRedirect(reverse('farms:index'))
 		contacts = Contact.objects.filter(farm=farm)
@@ -124,13 +124,13 @@ class deleteFarm(SingleObjectMixin, View):
 				location.delete()
 		farm.delete()
 		return HttpResponseRedirect(reverse('farms:index'))
+
+
 """
-
-
 class deleteFarm(DeleteView):
 	model = Farm
 	success_url = reverse_lazy('farm-list')
-
+"""
 
 @permission_required('farms.auth')
 def newLocation(request, farm_id):
