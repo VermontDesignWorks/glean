@@ -1,11 +1,9 @@
 # Create your views here.
 import csv
-
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django.views import generic
-
+from django.views.generic import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 
@@ -29,17 +27,17 @@ def newFarm(request):
 			new_save.member_organization.add(request.user.profile.member_organization)
 			new_save.save()
 			if request.POST['action'] == "Save And View":
-				return HttpResponseRedirect(reverse('farms:detailfarm', args=(new_save.id,) ))
+				return HttpResponseRedirect(reverse('farms:detailfarm', args=(new_save.id,)))
 			else:
-				return HttpResponseRedirect(reverse('farms:newlocation', args=(new_save.id,) ))
+				return HttpResponseRedirect(reverse('farms:newlocation', args=(new_save.id,)))
 		else:
-			#if not request.user.has_perm('farms.uniauth'):
-			#	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
+			# if not request.user.has_perm('farms.uniauth'):
+			# 	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 			return render(request, 'farms/new.html', {'form':form, 'error':'Your Farm Form Was Not Valid'})
 	else:
 		form = FarmForm()
-		#if not request.user.has_perm('farms.uniauth'):
-		#	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
+		# if not request.user.has_perm('farms.uniauth'):
+		# 	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 		return render(request, 'farms/new.html', {'form':form})
 
 @permission_required('farms.auth')
@@ -53,12 +51,12 @@ def editFarm(request, farm_id):
 			new_save = form.save()
 			return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
 		else:
-			#if not request.user.has_perm('farms.uniauth'):
-			#	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
+			# if not request.user.has_perm('farms.uniauth'):
+			# 	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 			return render(request, 'farms/edit.html', {'form':form, 'farm':farm, 'error':'form needs some work'})
-	form = FarmForm(instance = farm)
-	#if not request.user.has_perm('farms.uniauth'):
-	#	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
+	form = FarmForm(instance=farm)
+	# if not request.user.has_perm('farms.uniauth'):
+	# 	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 
 	return render(request, 'farms/edit.html', {'form':form, 'farm':farm})
 
@@ -69,7 +67,8 @@ def detailFarm(request, farm_id):
 		return HttpResponseRedirect(reverse('farms:index'))
 	return render(request, 'farms/detail.html', {'farm':farm})
 
-#== Delete Farm View ==#
+# == Delete Farm View ==#
+"""
 @permission_required('farms.auth')
 def deleteFarm(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id)
@@ -88,6 +87,33 @@ def deleteFarm(request, farm_id):
 		return HttpResponseRedirect(reverse('farms:index'))
 	else:
 		return render(request, 'farms/delete_farm.html', {'farm':farm})
+"""
+
+@permission_required('farms.auth')
+class deleteFarm(View):
+
+	def get(self, request):
+		farm = get_object_or_404(Farm, pk=farm_id)
+		if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+			return HttpResponseRedirect(reverse('farms:index'))
+
+	def post(self, request):
+		farm = get_object_or_404(Farm, pk=farm_id)
+		if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+			return HttpResponseRedirect(reverse('farms:index'))
+		contacts = Contact.objects.filter(farm=farm)
+		if contacts.exists():
+			for contact in contacts:
+				contact.delete()
+			locations = FarmLocation.objects.filter(farm=farm)
+			if locations.exists():
+				for location in locations:
+					location.delete()
+			farm.delete()
+			return HttpResponseRedirect(reverse('farms:index'))
+		else:
+			return render(request, 'farms/delete_farm.html', {'farm':farm})
+
 
 @permission_required('farms.auth')
 def newLocation(request, farm_id):
@@ -97,27 +123,27 @@ def newLocation(request, farm_id):
 	if request.method == 'POST':
 		form = LocationForm(request.POST)
 		if form.is_valid():
-			#new_location = FarmLocation(**form.cleaned_data)
+			# new_location = FarmLocation(**form.cleaned_data)
 			if not FarmLocation.objects.filter(name=form.cleaned_data['name'], farm=farm).exists():
-				#.farm = farm
-				#new_location.save()
+				# .farm = farm
+				# new_location.save()
 				new_save = form.save(commit=False)
-				new_save .farm=farm
+				new_save .farm = farm
 				new_save.save()
 				return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
 			else:
-				#if not request.user.has_perm('farms.uniauth'):
-				#	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
-				return render(request, 'farms/new_location.html', {'form':form, 'farm':farm, 'error':'That Location Name is Taken'})	
+				# if not request.user.has_perm('farms.uniauth'):
+				# 	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
+				return render(request, 'farms/new_location.html', {'form':form, 'farm':farm, 'error':'That Location Name is Taken'})
 
 		else:
-			#if not request.user.has_perm('farms.uniauth'):
-		#		form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
+			# if not request.user.has_perm('farms.uniauth'):
+		# 		form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 			return render(request, 'farms/new_location.html', {'form':form, 'farm':farm, 'error':'Form was incorrectly filled out'})
 	else:
 		form = LocationForm()
-		#if not request.user.has_perm('farms.uniauth'):
-	#		form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
+		# if not request.user.has_perm('farms.uniauth'):
+	# 		form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 		return render(request, 'farms/new_location.html', {'form':form, 'farm':farm})
 
 @permission_required('farms.auth')
@@ -132,13 +158,13 @@ def editLocation(request, farm_id, location_id):
 			new_save = form.save()
 			return HttpResponseRedirect(reverse('farms:detailfarm', args=(farm_id,)))
 		else:
-			#if not request.user.has_perm('farms.uniauth'):
-			#	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
+			# if not request.user.has_perm('farms.uniauth'):
+			# 	form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 			return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'error':'Form Had an Error'})
 	else:
-		form = LocationForm(instance = location)
-		#if not request.user.has_perm('farms.uniauth'):
-	#		form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
+		form = LocationForm(instance=location)
+		# if not request.user.has_perm('farms.uniauth'):
+	# 		form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
 		return render(request, 'farms/edit_location.html', {'form':form, 'farm':farm, 'editmode':True})
 
 @permission_required('farms.auth')
@@ -157,7 +183,7 @@ def newContact(request, farm_id):
 			else:
 				form = ContactForm()
 				notice = 'Contact %s %s has been saved' % (new_contact.first_name, new_contact.last_name)
-				return render(request, 'farms/new_contact.html', {'form':form, 'farm':farm, 'notice':notice})		
+				return render(request, 'farms/new_contact.html', {'form':form, 'farm':farm, 'notice':notice})
 
 		else:
 			return render(request, 'farms/new_contact.html', {'form':form, 'farm':farm, 'error':'Form was incorrectly filled out'})
@@ -182,8 +208,8 @@ def editContact(request, farm_id, contact_id):
 		else:
 			return render(request, 'farms/edit_contact.html', {'form':form, 'farm':farm, 'error':'Form Had an Error'})
 	else:
-		form = ContactForm(instance = contact)
-		return render(request, 'farms/edit_contact.html', {'form':form, 'farm':farm,})
+		form = ContactForm(instance=contact)
+		return render(request, 'farms/edit_contact.html', {'form':form, 'farm':farm, })
 
 @permission_required('farms.auth')
 def download(request):

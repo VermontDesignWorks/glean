@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-
+from django.views.generic import View
 from farms import views
 
 urlpatterns = patterns('',
@@ -8,8 +8,9 @@ urlpatterns = patterns('',
 	url(r'^download/$', views.download, name='download'),
 	url(r'^(?P<farm_id>\d+)/$', views.detailFarm, name='detailfarm'),
 	url(r'^(?P<farm_id>\d+)/edit/$', views.editFarm, name='editfarm'),
-	url(r'^(?P<farm_id>\d+)/delete/$', views.deleteFarm, name='deletefarm'),
-
+	# url(r'^(?P<farm_id>\d+)/delete/$', views.deleteFarm, name='deletefarm'),
+	# url(r'^(?P<farm_id>\d+)/delete/$', TemplateView.as_view(template_name='delete_farm.html')),
+	url(r'^(?P<farm_id>\d+)/delete/$', views.deleteFarm.as_view()),
 	url(r'^(?P<farm_id>\d+)/location/new/$', views.newLocation, name='newlocation'),
 	url(r'^(?P<farm_id>\d+)/location/edit/(?P<location_id>\d+)/$', views.editLocation, name='editlocation'),
 	url(r'^(?P<farm_id>\d+)/contact/new/$', views.newContact, name='newcontact'),
