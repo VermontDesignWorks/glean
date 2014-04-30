@@ -106,7 +106,7 @@ def quick_mail(subject, text, recipient):
         subject,
         text,
         'no-reply@vermontgleaningcollective.org',
-        [recipient.email]
+        [recipient]
     )
     msg.content_subtype = "html"
     msg.send()
