@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load url from future %}
+
 {% block title %}
 Confirm Farm Delete - {{farm.name}}
 {% endblock title %}
@@ -11,6 +12,26 @@ Confirm Farm Delete - {{farm.name}}
 
 
 {% block content %}
+<style type="text/css">
+#footer-container {
+	position: absolute;
+	float: right;
+	bottom: 0;
+	right: 0;
+	height: 20px;
+	margin: 0px;
+	width: 100%;
+	
+}	
+
+#gleaners {
+	position: absolute;
+	float: right;
+	top: auto;
+	bottom: 30px;	
+}
+
+</style>
 <h5>This action is IRREVERSIBLE! Think carefully before you delete this farm!</h5>
 	<form method="post" action="">
 		{% csrf_token %}
