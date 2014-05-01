@@ -33,7 +33,7 @@ body{
    min-height: 100%; /*added by josh for sticky footer*/
    height: auto !important;
    height: 100%;
-   margin-bottom: -30px;
+   margin-bottom: 10px;
 }
 
 .push {
@@ -52,7 +52,7 @@ body{
    text-align: left;
    padding: 5px 25px;
    color: #444;
-   position: absolute;
+   position: fixed;
    z-index:-1;
    width: 100%;
    bottom: 0px;
@@ -131,7 +131,7 @@ h3 {
 
 #gleaners{
    float: right;
-   position: absolute;
+   position: fixed;
    top: auto; /*-249px*/
    z-index:-1;
    right: 0;
