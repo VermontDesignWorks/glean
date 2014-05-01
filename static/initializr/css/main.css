@@ -33,7 +33,7 @@ body{
    min-height: 100%; /*added by josh for sticky footer*/
    height: auto !important;
    height: 100%;
-   margin-bottom: 10px;
+   margin-bottom: 15px;
 }
 
 .push {
