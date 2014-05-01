@@ -8,7 +8,6 @@ body{
    font-family:'Kameron', serif;
    font-size:13px;
    padding: 0;
-   height: 100%; /*added by josh for sticky footer*/
 }
 .container{
    margin: 0;
@@ -30,16 +29,13 @@ body{
 #wrapper{
    width:1169px;
    margin:auto;
-   min-height: 100%; /*added by josh for sticky footer*/
-   height: auto !important;
-   height: 100%;
-   margin-bottom: 15px;
+   margin-bottom: 135px;
 }
-
+/*
 .push {
-	height: 30px; /*added by josh for sticky footer */s
+	height: 30px; added by josh for sticky footer
 }
-
+*/
 .heading-container{
    margin:0;
    padding:0;
@@ -431,7 +427,7 @@ a.day-name {
    min-height: 200px;
    padding: 20px;
    overflow: auto;
-   margin-bottom: 300px;
+   margin-bottom: 50px; /*changed from 300px hack*/
 }
 .glean-column {
    width: 330px;
