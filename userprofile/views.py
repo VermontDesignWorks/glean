@@ -19,14 +19,15 @@ from memberorgs.models import MemOrg
 from gleaning.customreg import ExtendedRegistrationForm
 
 from userprofile.models import (Profile,
-                                ProfileForm,
                                 UserForm,
                                 LoginForm,
                                 EmailForm,
-                                EditProfileForm,
                                 UniPromoteForm,
-                                PromoteForm,
-                                AdminProfileForm)
+                                PromoteForm)
+from userprofile.forms import (ProfileUpdateForm,
+                               ProfileForm,
+                               EditProfileForm,
+                               AdminProfileForm)
 
 
 @login_required
@@ -55,52 +56,18 @@ def userDetailEntry(request):
                       {'form': form, 'error': ''})
 
 
-@login_required
-def selfEdit(request):
-    if request.method == "POST":
-        instance = Profile.objects.get(user=request.user)
-        if request.user.has_perm('userprofile.auth'):
-            form = AdminProfileForm(request.POST, instance=instance)
-        else:
-            form = EditProfileForm(request.POST, instance=instance)
-        if form.is_valid():
-            new_save = form.save(commit=False)
-            #new_save.member_organization = instance.member_organization
-            form.save_m2m()
-            new_save.save()
-            return HttpResponseRedirect(reverse('home'))
-        else:
-            return render(
-                request,
-                'userprofile/userEdit.html',
-                {
-                    'form': form,
-                    'error': "form wasn't valid (try filling in more stuff)",
-                    'editmode': True
-                }
-            )
-    else:
-        if Profile.objects.filter(user=request.user).exists():
-            profile = Profile.objects.get(user=request.user)
-            if request.user.has_perm('userprofile.auth'):
-                form = AdminProfileForm(instance=profile)
-            else:
-                form = EditProfileForm(instance=profile)
-            return render(
-                request,
-                'userprofile/userEdit.html',
-                {'form': form, 'error': '', 'editmode': True}
-            )
-        else:
-            if request.user.has_perm('userprofile.auth'):
-                form = AdminProfileForm()
-            else:
-                form = EditProfileForm()
-            return render(
-                request,
-                'userprofile/userEdit.html',
-                {'form': form, 'error': '', 'editmode': True}
-            )
+class ProfileUpdateView(generic.UpdateView):
+    template_name = "userprofile/edit.html"
+    model = Profile
+    form_class = ProfileUpdateForm
+    success_url = reverse_lazy("home")
+
+    def get_object(self, *args, **kwargs):
+        return self.request.user.profile
+
+
+class AdminProfileUpdateView(generic.FormView):
+    form_class = AdminProfileForm
 
 
 @permission_required('userprofile.auth')
