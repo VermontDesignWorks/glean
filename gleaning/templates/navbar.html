@@ -37,10 +37,6 @@
                         <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">{% if user.is_anonymous %}User{% else %}{{user.username}}'s{% endif %} Options <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
                           {% if user.is_staff %}
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/admin">Admin Controls</a></li>
-                            {% if 'counties.uniauth' in perms %}
-                              <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'counties:index' %}">Counties</a></li>
-                            {% endif %}
                           {% endif %}
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'userprofile:selfedit' %}">Edit Profile</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'auth_password_change' %}">Change Password</a></li>
