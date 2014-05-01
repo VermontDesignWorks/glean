@@ -77,6 +77,7 @@ class deleteFarm(SingleObjectMixin, View):
 	model = Farm
 	success_url = reverse_lazy("Farm-List")
 
+	@permission_required('farms.auth')
 	def get(self, request, *args, **kwargs):
 		if not request.user.is_authenticated():
 			return HttpResponseForbidden()
@@ -86,6 +87,7 @@ class deleteFarm(SingleObjectMixin, View):
 			return HttpResponseRedirect(reverse('farms:index'))
 		return render(request, 'farms/delete_farm.html', {'farm':farm})
 
+	@permission_required('farms.auth')
 	def post(self, request, *args, **kwargs):
 		if not request.user.is_authenticated():
 			return HttpResponseForbidden()
