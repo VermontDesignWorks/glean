@@ -56,19 +56,27 @@ def userDetailEntry(request):
                       {'form': form, 'error': ''})
 
 
-class ProfileUpdateView(generic.FormView):
-    
-    def get(self, ):
-    
-    def form_valid(self, form):
-        
+# class ProfileUpdateView(generic.FormView):
+#
+#     def get(self, request, *args, **kwargs):
+#         if not request.user.is_authenticated():
+#             return HttpResponseForbidden()
+#         if request.user.has_perm("uniauth"):
+#             form_class = AdminProfileForm
+#         else:
+#             form_class = ProfileUpdateForm
+#         success_url = reverse_lazy("home")
+#
+#     def form_valid(self, form):
+#         return super(ProfileUpdateView, self).form_valid(form)
+
 
 # class ProfileUpdateView(generic.UpdateView):  #generic.UpdateView
 #     template_string = "userprofile/edit.html"
 #     form_class = ProfileUpdateForm
 #     model = Profile
 #     success_url = reverse_lazy("home")
-#     
+#
 #     def get_object(self, *args, **kwargs):
 #         return self.request.user.profile
 
