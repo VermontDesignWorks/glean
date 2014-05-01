@@ -104,9 +104,10 @@ class ProfileUpdateForm(forms.ModelForm):
         self.initial["ny_counties"] = [
             x.pk for x in profile.counties.filter(state="NY")
         ]
+        self.initial["email"] = profile.user.email
 
     first_name = forms.CharField(label="First Name", max_length=20)
-    email = forms.CharField(label="Email", max_length=20, required=False)
+    email = forms.EmailField(label="Email", max_length=20, required=False)
     last_name = forms.CharField(label="Last Name", max_length=20)
     address_one = forms.CharField(label="Address", max_length=200)
     address_two = forms.CharField(
@@ -186,6 +187,11 @@ class ProfileUpdateForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         saved = super(ProfileUpdateForm, self).save(*args, **kwargs)
+        try:
+            saved.user.email = self.data.get('email')
+            saved.user.save()
+        except:
+            pass
         if 'vt_counties' in self.data:
             for pk in self.data.getlist('vt_counties'):
                 county = County.objects.get(pk=pk)
