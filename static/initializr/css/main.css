@@ -8,6 +8,7 @@ body{
    font-family:'Kameron', serif;
    font-size:13px;
    padding: 0;
+   height: 100%; /*added by josh for sticky footer*/
 }
 .container{
    margin: 0;
@@ -29,6 +30,14 @@ body{
 #wrapper{
    width:1169px;
    margin:auto;
+   min-height: 100%; /*added by josh for sticky footer*/
+   height: auto !important;
+   height: 100%;
+   margin-bottom: -30px;
+}
+
+.push {
+	height: 30px; /*added by josh for sticky footer */s
 }
 
 .heading-container{
@@ -39,12 +48,15 @@ body{
 #footer-container{
    margin:73px 0 0 0;
    height:30px;
-   background-color:#6e9614;
-   text-align:left;
+   background-color: #6e9614;
+   text-align: left;
    padding: 5px 25px;
-   color:#444;
-   position:relative;
+   color: #444;
+   position: absolute;
    z-index:-1;
+   width: 100%;
+   bottom: 0px;
+   margin: 0px;
 }
 
 .header-title {
@@ -120,9 +132,11 @@ h3 {
 #gleaners{
    float: right;
    position: absolute;
-   top: -249px;
+   top: auto; /*-249px*/
    z-index:-1;
    right: 0;
+   bottom: 40px;
+   
 }
 
 /* ==========================================================================
