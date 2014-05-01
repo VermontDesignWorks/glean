@@ -58,7 +58,7 @@ def userDetailEntry(request):
 
 class ProfileUpdateView(generic.FormView):
     
-    form
+    def get(self, ):
     
     def form_valid(self, form):
         
