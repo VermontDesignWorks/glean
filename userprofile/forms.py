@@ -66,36 +66,26 @@ class ProfileUpdateForm(forms.ModelForm):
             ),
             Fieldset(
                 "",
-                HTML("<h3 class='lbl'>We want you to be safe and happy...</h3>"
-                     "<h4>Please read and consider these agreements"
-                     " before committing to be a gleaner.</h4>"
-                     "<h5>If you are under 18, please have"
-                     " a parent or guardian "
-                     "review this form too when"
-                     " you click the register button at "
-                     "the bottom of this page,"
-                     " you're indicating their acceptance "
-                     "of the terms on your behalf.</h5>"),
-                AppendedText('waiver', '<a href="#waiver-modal" role="button"'
-                             ' data-toggle="modal"><button class="glean-button'
-                             ' yellow-button no-margin">View Waiver'
-                             '</button></a>'),
-                AppendedText('agreement', '<a href="#agreement-modal" '
-                             'role="button" data-toggle="modal"><button'
-                             ' class="glean-button yellow-button no-margin">'
-                             'View Volunteer Agreement</button></a>'),
-                AppendedText('photo_release', '<a href="#photo-release" '
-                             'role="button" data-toggle="modal"><button'
-                             ' class="glean-button yellow-button no-margin">'
-                             'View Photo Release</button></a>'),
-                HTML("<h4>Keep me in the loop! Click to receive email "
-                     "updates &amp; newsletters from Salvation Farms."
-                     "</h4>"),
-                "opt_in"
+                HTML("<h3 class='lbl'>Change Releases</h3>"
+                     "<h4>If you wish to change your stance"
+                     "on recieving emails or if photos of you"
+                     "get used, this is the place</h4>"),
+                AppendedText('photo_release', '<h4>I accept the <strong>'
+                             'Photo Release</strong></h4>'),
+                AppendedText('opt_in', '<h4 style="text-align:left">Keep me'
+                             ' in the loop!</h4>'
+                             '<h5>(with periodic email updates &amp;'
+                             ' newsletters from Salvation Farms)</h5>'),
+
+                HTML("<br /><p>By having become a member you have accepted the"
+                     " <u><b>Waiver of Liability</b></u> and<br /><u><b>Waiver"
+                     " of Liability</b></u>. These are required for your cont"
+                     "inued participation in <br />the Vermont Gleaning Colle"
+                     "ctive efforts.</p>"),
             ),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "name='submit' value='Register'>")
+                 "name='submit' value='Save Changes'>")
         )
         profile = kwargs["instance"]
         self.initial["vt_counties"] = [
@@ -176,13 +166,8 @@ class ProfileUpdateForm(forms.ModelForm):
                             "group out to glean.<br />Please be brief.",
                             widget=forms.Textarea,
                             required=False)
-    waiver = forms.BooleanField(
-        label="Do you accept the Waiver of Liability?", required=True)
-    agreement = forms.BooleanField(
-        label="Do you accept the Volunteer Agreement?", required=True)
-    # seriously?
     photo_release = forms.BooleanField(
-        label="Do you accept the Photo Release?", required=False)
+        label="", required=False)
     opt_in = forms.BooleanField(label="", required=False)
 
     def save(self, *args, **kwargs):
