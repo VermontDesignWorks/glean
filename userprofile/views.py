@@ -56,14 +56,21 @@ def userDetailEntry(request):
                       {'form': form, 'error': ''})
 
 
-class ProfileUpdateView(generic.UpdateView):
-    template_name = "userprofile/edit.html"
-    model = Profile
-    form_class = ProfileUpdateForm
-    success_url = reverse_lazy("home")
+class ProfileUpdateView(generic.FormView):
+    
+    form
+    
+    def form_valid(self, form):
+        
 
-    def get_object(self, *args, **kwargs):
-        return self.request.user.profile
+# class ProfileUpdateView(generic.UpdateView):  #generic.UpdateView
+#     template_string = "userprofile/edit.html"
+#     form_class = ProfileUpdateForm
+#     model = Profile
+#     success_url = reverse_lazy("home")
+#     
+#     def get_object(self, *args, **kwargs):
+#         return self.request.user.profile
 
 
 class AdminProfileUpdateView(generic.FormView):
@@ -302,7 +309,7 @@ def userPromote(request, user_id):
     memc = Group.objects.get(name="Member Organization Glean Coordinator")
     sal = Group.objects.get(name="Salvation Farms Administrator")
     salc = Group.objects.get(name="Salvation Farms Coordinator")
-    #return HttpResponse(ed in user.groups.all())
+    # return HttpResponse(ed in user.groups.all())
     executive = ed in user.groups.all() or sal in user.groups.all()
 
     admin = executive or memc in user.groups.all() or salc in user.groups.all()
