@@ -916,3 +916,26 @@ input[type="checkbox"]:checked:after {
    font-size: 15px;
    font-weight: bold;
 }
+
+.form-errors {
+/*div tags*/
+	margin: 1em;
+	background: orange;
+	border-radius: 5px;
+}
+
+.form-errors > ul > li > ul {
+	display: inline;
+}
+
+.form-errors > ul > li > ul > li {
+	display: inline;
+}
+
+.form-errors > ul > li > ul > li:before {
+	
+
+}
+.form-errors > ul > li:before {
+	content: "Error: ";
+}
