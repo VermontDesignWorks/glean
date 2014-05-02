@@ -307,4 +307,4 @@ class AdminProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        exclude = ('member_organization',)
+        exclude = ('member_organization', 'ecfirst_name', 'preferred_method', 'ecrelationship', 'eclast_name', 'ecphone',)
