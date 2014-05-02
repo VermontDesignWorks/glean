@@ -228,7 +228,7 @@ class AdminProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AdminProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_id = "id-custom-registration-form"
+        self.helper.form_id = "id-custom-admin-registration-form"
         self.helper.form_method = "post"
         self.helper.layout = Layout(
             Fieldset(
@@ -240,7 +240,10 @@ class AdminProfileForm(forms.ModelForm):
                 Row("city"),
                 Row("state"),
                 Row("zipcode"),
-                Row("counties"),
+                HTML("<h3 class='lbl'>Counties</h3>"),
+                Div(InlineCheckboxes("vt_counties"),
+                    InlineCheckboxes("ny_counties"),
+                    css_class="form-checkboxes"),
                 Row("phone"),
                 Row("phone_type"),
             ),
@@ -248,6 +251,13 @@ class AdminProfileForm(forms.ModelForm):
                  "class='glean-button green-button' "
                  "name='submit' value='Save Changes'>")
         )
+        profile = kwargs["instance"]
+        self.initial["vt_counties"] = [
+            x.pk for x in profile.counties.filter(state="VT")
+        ]
+        self.initial["ny_counties"] = [
+            x.pk for x in profile.counties.filter(state="NY")
+        ]
 
     first_name = forms.CharField(label="First Name", max_length=20)
     last_name = forms.CharField(label="Last Name", max_length=20)
@@ -260,30 +270,45 @@ class AdminProfileForm(forms.ModelForm):
         choices=STATES,
         initial='VT')
     zipcode = forms.CharField(label="Zipcode", max_length=11, required=False)
+    vt_counties = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="VT").order_by("name"),
+        label="Counties in Vermont",
+        required=False,
+    )
+    ny_counties = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="NY").order_by("name"),
+        label="Counties in New York",
+        required=False
+    )
     phone = forms.CharField(label="Primary Phone #:", max_length=200)
     phone_type = forms.ChoiceField(
         label="Phone Type", choices=PHONE_TYPE, initial='1')
 
+    def save(self, *args, **kwargs):
+        saved = super(AdminProfileForm, self).save(*args, **kwargs)
+        saved.user.save()
+        try:
+            saved.user.save()
+        except:
+            pass
+        if 'vt_counties' in self.data:
+            for pk in self.data.getlist('vt_counties'):
+                county = County.objects.get(pk=pk)
+                saved.counties.add(county)
+                county.affix_to_memorgs(saved.user)
+        if 'ny_counties' in self.data:
+            for pk in self.data.getlist('ny_counties'):
+                county = County.objects.get(pk=pk)
+                saved.counties.add(county)
+                county.affix_to_memorgs(saved.user)
+        return saved
 #     def save(self, *args, **kwargs):
 #         saved = super(AdminProfileForm, self).save(*args, **kwargs)
-#         try:
-#             saved.user.email = self.data.get('email')
-#             saved.user.phone = self.data.get('phone')
-#             saved.user.save()
-#         except:
-#             pass
-#         if 'vt_counties' in self.data:
-#             for pk in self.data.getlist('vt_counties'):
-#                 county = County.objects.get(pk=pk)
-#                 saved.counties.add(county)
-#                 county.affix_to_memorgs(saved.user)
-#         if 'ny_counties' in self.data:
-#             for pk in self.data.getlist('ny_counties'):
-#                 county = County.objects.get(pk=pk)
-#                 saved.counties.add(county)
-#                 county.affix_to_memorgs(saved.user)
+#         saved.user.profile.save()
 #         return saved
 
     class Meta:
         model = Profile
-        # exclude = ('member_organization',)
+        exclude = ('member_organization',)
