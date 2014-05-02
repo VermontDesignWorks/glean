@@ -56,32 +56,6 @@ def userDetailEntry(request):
                       {'form': form, 'error': ''})
 
 
-# class ProfileUpdateView(generic.UpdateView):  # generic.UpdateView
-#     template_string = "userprofile/edit.html"
-#     form_class = ProfileUpdateForm
-#     model = Profile
-#     success_url = reverse_lazy("home")
-#
-#     def get_object(self, *args, **kwargs):
-#         return self.request.user.profile
-
-
-# class ProfileUpdateView(generic.UpdateView):  # generic.UpdateView
-#     template_string = "userprofile/edit.html"
-#     form_class = ProfileUpdateForm
-#     model = Profile
-#     success_url = reverse_lazy("home")
-#
-#     def get_object(self, *args, **kwargs):
-#         return self.request.user
-#
-#     def get_form_class(self):
-#         profile_user = self.get_object()
-#         if profile_user.has_perm('farms.uniauth'):
-#             return AdminProfileForm
-#         else:
-#             return ProfileUpdateForm
-
 class ProfileUpdateView(generic.UpdateView):  # generic.UpdateView
     template_name = "userprofile/edit.html"
     model = Profile
