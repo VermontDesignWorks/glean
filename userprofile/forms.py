@@ -289,10 +289,6 @@ class AdminProfileForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         saved = super(AdminProfileForm, self).save(*args, **kwargs)
         saved.user.save()
-        try:
-            saved.user.save()
-        except:
-            pass
         if 'vt_counties' in self.data:
             for pk in self.data.getlist('vt_counties'):
                 county = County.objects.get(pk=pk)
