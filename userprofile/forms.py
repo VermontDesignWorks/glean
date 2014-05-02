@@ -35,7 +35,7 @@ class ProfileUpdateForm(forms.ModelForm):
                 Row("city", "state"),
                 Row("zipcode", "age"),
                 Row("phone", "phone_type"),
-                Row("email",  "preferred_method")
+                Row("email", "preferred_method")
             ),
             Fieldset(
                 "",
@@ -204,21 +204,86 @@ class EditProfileForm(forms.ModelForm):
         exclude = ('member_organization',)
 
 
-class AdminProfileForm(EditProfileForm):
+# class AdminProfileForm(EditProfileForm):
+#
+#     def save(self, *args, **kwargs):
+#         super(AdminProfileForm, self).save()
+#
+#     class Meta:
+#         model = Profile
+#         fields = ('first_name',
+#                   'last_name',
+#                   'address_one',
+#                   'address_two',
+#                   'city',
+#                   'state',
+#                   'zipcode',
+#                   'counties',
+#                   'phone',
+#                   'phone_type',
+#                   )
 
-    def save(self, *args, **kwargs):
-        super(AdminProfileForm, self).save()
+
+class AdminProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AdminProfileForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = "id-custom-registration-form"
+        self.helper.form_method = "post"
+        self.helper.layout = Layout(
+            Fieldset(
+                "",
+                Row("first_name"),
+                Row("last_name"),
+                Row("address_one"),
+                Row("address_two"),
+                Row("city"),
+                Row("state"),
+                Row("zipcode"),
+                Row("counties"),
+                Row("phone"),
+                Row("phone_type"),
+            ),
+            HTML("<input type='submit' "
+                 "class='glean-button green-button' "
+                 "name='submit' value='Save Changes'>")
+        )
+
+    first_name = forms.CharField(label="First Name", max_length=20)
+    last_name = forms.CharField(label="Last Name", max_length=20)
+    address_one = forms.CharField(label="Address", max_length=200)
+    address_two = forms.CharField(
+        label="Address (line two)", max_length=200, required=False)
+    city = forms.CharField(label="City", max_length=200)
+    state = forms.ChoiceField(
+        label="State",
+        choices=STATES,
+        initial='VT')
+    zipcode = forms.CharField(label="Zipcode", max_length=11, required=False)
+    phone = forms.CharField(label="Primary Phone #:", max_length=200)
+    phone_type = forms.ChoiceField(
+        label="Phone Type", choices=PHONE_TYPE, initial='1')
+
+#     def save(self, *args, **kwargs):
+#         saved = super(AdminProfileForm, self).save(*args, **kwargs)
+#         try:
+#             saved.user.email = self.data.get('email')
+#             saved.user.phone = self.data.get('phone')
+#             saved.user.save()
+#         except:
+#             pass
+#         if 'vt_counties' in self.data:
+#             for pk in self.data.getlist('vt_counties'):
+#                 county = County.objects.get(pk=pk)
+#                 saved.counties.add(county)
+#                 county.affix_to_memorgs(saved.user)
+#         if 'ny_counties' in self.data:
+#             for pk in self.data.getlist('ny_counties'):
+#                 county = County.objects.get(pk=pk)
+#                 saved.counties.add(county)
+#                 county.affix_to_memorgs(saved.user)
+#         return saved
 
     class Meta:
         model = Profile
-        fields = ('first_name',
-                  'last_name',
-                  'address_one',
-                  'address_two',
-                  'city',
-                  'state',
-                  'zipcode',
-                  'counties',
-                  'phone',
-                  'phone_type',
-                  )
+        # exclude = ('member_organization',)
