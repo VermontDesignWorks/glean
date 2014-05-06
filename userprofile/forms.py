@@ -25,6 +25,7 @@ class ProfileUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProfileUpdateForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_show_errors = False
         self.helper.form_id = "id-custom-registration-form"
         self.helper.form_method = "post"
         self.helper.layout = Layout(
@@ -35,7 +36,7 @@ class ProfileUpdateForm(forms.ModelForm):
                 Row("city", "state"),
                 Row("zipcode", "age"),
                 Row("phone", "phone_type"),
-                Row("email",  "preferred_method")
+                Row("email", "preferred_method")
             ),
             Fieldset(
                 "",
@@ -204,21 +205,81 @@ class EditProfileForm(forms.ModelForm):
         exclude = ('member_organization',)
 
 
-class AdminProfileForm(EditProfileForm):
+class AdminProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AdminProfileForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_errors = False
+        self.helper.form_id = "id-custom-admin-registration-form"
+        self.helper.form_method = "post"
+        self.helper.layout = Layout(
+            Fieldset(
+                "",
+                Row("first_name", "last_name"),
+                Row("address_one", "address_two"),
+                Row("city", "state"),
+                Row("zipcode"),
+                HTML("<h3 class='lbl'>Counties</h3>"),
+                Div(InlineCheckboxes("vt_counties"),
+                    InlineCheckboxes("ny_counties"),
+                    css_class="form-checkboxes"),
+                Row("phone","phone_type"),
+            ),
+            HTML("<input type='submit' "
+                 "class='glean-button green-button' "
+                 "name='submit' value='Save Changes'>")
+        )
+        profile = kwargs["instance"]
+        self.initial["vt_counties"] = [
+            x.pk for x in profile.counties.filter(state="VT")
+        ]
+        self.initial["ny_counties"] = [
+            x.pk for x in profile.counties.filter(state="NY")
+        ]
+
+    first_name = forms.CharField(label="First Name", max_length=20)
+    last_name = forms.CharField(label="Last Name", max_length=20)
+    address_one = forms.CharField(label="Address", max_length=200)
+    address_two = forms.CharField(
+        label="Address (line two)", max_length=200, required=False)
+    city = forms.CharField(label="City", max_length=200)
+    state = forms.ChoiceField(
+        label="State",
+        choices=STATES,
+        initial='VT')
+    zipcode = forms.CharField(label="Zipcode", max_length=11, required=False)
+    vt_counties = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="VT").order_by("name"),
+        label="Counties in Vermont",
+        required=False,
+    )
+    ny_counties = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="NY").order_by("name"),
+        label="Counties in New York",
+        required=False
+    )
+    phone = forms.CharField(label="Primary Phone #:", max_length=200)
+    phone_type = forms.ChoiceField(
+        label="Phone Type", choices=PHONE_TYPE, initial='1')
 
     def save(self, *args, **kwargs):
-        super(AdminProfileForm, self).save()
+        saved = super(AdminProfileForm, self).save(*args, **kwargs)
+        saved.user.save()
+        if 'vt_counties' in self.data:
+            for pk in self.data.getlist('vt_counties'):
+                county = County.objects.get(pk=pk)
+                saved.counties.add(county)
+                county.affix_to_memorgs(saved.user)
+        if 'ny_counties' in self.data:
+            for pk in self.data.getlist('ny_counties'):
+                county = County.objects.get(pk=pk)
+                saved.counties.add(county)
+                county.affix_to_memorgs(saved.user)
+        return saved
 
     class Meta:
         model = Profile
-        fields = ('first_name',
-                  'last_name',
-                  'address_one',
-                  'address_two',
-                  'city',
-                  'state',
-                  'zipcode',
-                  'counties',
-                  'phone',
-                  'phone_type',
-                  )
+        exclude = ('member_organization', 'ecfirst_name', 'preferred_method',
+                   'ecrelationship', 'ecphone', 'eclast_name',)

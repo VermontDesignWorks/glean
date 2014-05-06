@@ -17,3 +17,5 @@ local.py
 staticfiles
 *.pydevproject
 .pydevproject
+*.sublime-workspace
+.sublime-workspace
