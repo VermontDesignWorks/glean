@@ -50,8 +50,6 @@ def newFarm(request):
                     {'form': form, 'error': 'Your Farm Form Was Not Valid'})
     else:
         form = FarmForm()
-        # if not request.user.has_perm('farms.uniauth'):
-        #   form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
         return render(request, 'farms/new.html', {'form': form})
 
 
@@ -67,15 +65,10 @@ def editFarm(request, farm_id):
             return HttpResponseRedirect(
                 reverse('farms:detailfarm', args=(farm_id,)))
         else:
-            # if not request.user.has_perm('farms.uniauth'):
-            #   form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
             return render(
                 request, 'farms/edit.html',
                 {'form': form, 'farm': farm,  'error': 'form needs some work'})
     form = FarmForm(instance=farm)
-    # if not request.user.has_perm('farms.uniauth'):
-    #   form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
-
     return render(request, 'farms/edit.html', {'form': form, 'farm': farm})
 
 
@@ -146,8 +139,6 @@ def newLocation(request, farm_id):
                 {'form': form, 'farm': farm, 'error': 'Form was incorrectly filled out'})
     else:
         form = LocationForm()
-        # if not request.user.has_perm('farms.uniauth'):
-    #       form.fields['counties'].queryset=request.user.profile.member_organization.counties.all()
         return render(
             request, 'farms/new_location.html',
             {'form': form, 'farm': farm})
