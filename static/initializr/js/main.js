@@ -78,20 +78,26 @@ $('#physical_is_mailing-button').popover({
 $(".datepicker").datepicker();
 
 /* fix for bottom */
-
 $(document).ready(function(){
-  $( window ).resize(function() {
-    var gleaners = $("#footer-container");
-    var thewrap = $("#wrapper");
-    var gleaner_offset = gleaners.offset();
-    var thewrap_offset = gleaners.offset();
-    var gleaner_top = gleaner_offset.top;
-    var thewrap_bottom = gleaner_offset.bottom;
-    if (gleaner_top == thewrap_bottom) {
+  $(document).resize(function() {
+    var mygleaners = "";
+    var thewrap = "";
+    var gleaner_offset = "";
+    var thewrap_offset = "";
+    var gleaner_top = "";
+    var thewrap_bottom = "";
+    var intop = "";
+    mygleaners = $("#footer-container");
+    thewrap = $("#wrapper");
+    gleaner_offset = gleaners.offset();
+    thewrap_offset = gleaners.offset();
+    gleaner_top = gleaner_offset.top;
+    thewrap_bottom = gleaner_offset.bottom;
+    intop = false;
+    if (gleaner_top >= thewrap_bottom) {
         $("#footer-container").css({"position": "absolute", "top": gleaner_offset.bottom+"px", "bottom": "auto"});
     } else if (gleaner_top < thewrap_bottom) {
-        $("#footer-container").css({"position": "absolute", "top": "auto", "bottom": "0px"});
+        $("#footer-container").css({"position": "fixed", "top": "auto", "bottom": "0px"});
     }
-
   });
 });
