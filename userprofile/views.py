@@ -65,6 +65,12 @@ class ProfileUpdateView(generic.UpdateView):
     def get_object(self, *args, **kwargs):
         return self.request.user.profile
 
+    def get_form_class(self):
+        if self.request.user.has_perm('userprofile:uniauth'):
+            return AdminProfileForm
+        else:
+            return ProfileUpdateForm
+
 
 class AdminProfileUpdateView(generic.FormView):
     form_class = AdminProfileForm
