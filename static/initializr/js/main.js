@@ -76,3 +76,22 @@ $('#physical_is_mailing-button').popover({
 });
 
 $(".datepicker").datepicker();
+
+/* fix for bottom */
+
+$(document).ready(function(){
+  $( window ).resize(function() {
+    var gleaners = $("#footer-container");
+    var thewrap = $("#wrapper");
+    var gleaner_offset = gleaners.offset();
+    var thewrap_offset = gleaners.offset();
+    var gleaner_top = gleaner_offset.top;
+    var thewrap_bottom = gleaner_offset.bottom;
+    if (gleaner_top == thewrap_bottom) {
+        $("#footer-container").css({"position": "absolute", "top": gleaner_offset.bottom+"px", "bottom": "auto"});
+    } else if (gleaner_top < thewrap_bottom) {
+        $("#footer-container").css({"position": "absolute", "top": "auto", "bottom": "0px"});
+    }
+
+  });
+});
