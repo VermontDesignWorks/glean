@@ -89,6 +89,10 @@ class DetailGlean(generic.DetailView):
     model = GleanEvent
     template_name = "gleanevent/detail.html"
 
+    @login_required
+    def dispatch(self, *args, **kwargs):
+        super(DetailGlean, self).dispatch(*args, **kwargs)
+
 
 class UpdateGlean(generic.UpdateView):
     model = GleanEvent
