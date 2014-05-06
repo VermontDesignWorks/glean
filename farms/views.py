@@ -189,7 +189,7 @@ def newContact(request, farm_id):
             new_contact.save()
             if request.POST['action'] == 'Save':
                 return HttpResponseRedirect(
-                    everse('farms:detailfarm', args=(farm_id,)))
+                    reverse('farms:detailfarm', args=(farm_id,)))
             else:
                 form = ContactForm()
                 notice = 'Contact %s %s has been saved' % (new_contact.first_name, new_contact.last_name)
