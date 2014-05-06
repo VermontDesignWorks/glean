@@ -82,7 +82,7 @@ def detailFarm(request, farm_id):
 # == Delete Farm View ==#
 
 
-class deleteFarm(SingleObjectMixin, View):
+class DeleteFarm(SingleObjectMixin, View):
     model = Farm
     success_url = reverse_lazy("Farm-List")
 
