@@ -25,6 +25,7 @@ class ProfileUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProfileUpdateForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_show_errors = False
         self.helper.form_id = "id-custom-registration-form"
         self.helper.form_method = "post"
         self.helper.layout = Layout(
@@ -204,30 +205,11 @@ class EditProfileForm(forms.ModelForm):
         exclude = ('member_organization',)
 
 
-# class AdminProfileForm(EditProfileForm):
-#
-#     def save(self, *args, **kwargs):
-#         super(AdminProfileForm, self).save()
-#
-#     class Meta:
-#         model = Profile
-#         fields = ('first_name',
-#                   'last_name',
-#                   'address_one',
-#                   'address_two',
-#                   'city',
-#                   'state',
-#                   'zipcode',
-#                   'counties',
-#                   'phone',
-#                   'phone_type',
-#                   )
-
-
 class AdminProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AdminProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_show_errors = False
         self.helper.form_id = "id-custom-admin-registration-form"
         self.helper.form_method = "post"
         self.helper.layout = Layout(
@@ -300,10 +282,6 @@ class AdminProfileForm(forms.ModelForm):
                 saved.counties.add(county)
                 county.affix_to_memorgs(saved.user)
         return saved
-#     def save(self, *args, **kwargs):
-#         saved = super(AdminProfileForm, self).save(*args, **kwargs)
-#         saved.user.profile.save()
-#         return saved
 
     class Meta:
         model = Profile
