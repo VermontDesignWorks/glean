@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import permission_required
 
 from farms.models import (Farm, FarmForm, FarmLocation,
                           LocationForm, Contact, ContactForm)
+from django.http import HttpResponseForbidden
 
 
 @permission_required('farms.auth')
