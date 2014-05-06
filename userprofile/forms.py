@@ -215,19 +215,15 @@ class AdminProfileForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 "",
-                Row("first_name"),
-                Row("last_name"),
-                Row("address_one"),
-                Row("address_two"),
-                Row("city"),
-                Row("state"),
+                Row("first_name", "last_name"),
+                Row("address_one", "address_two"),
+                Row("city", "state"),
                 Row("zipcode"),
                 HTML("<h3 class='lbl'>Counties</h3>"),
                 Div(InlineCheckboxes("vt_counties"),
                     InlineCheckboxes("ny_counties"),
                     css_class="form-checkboxes"),
-                Row("phone"),
-                Row("phone_type"),
+                Row("phone","phone_type"),
             ),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
