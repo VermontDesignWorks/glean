@@ -12,6 +12,7 @@ from django.forms.models import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.template import RequestContext, loader
+from django.utils.decorators import method_decorator
 
 from weasyprint import HTML
 
@@ -89,9 +90,9 @@ class DetailGlean(generic.DetailView):
     model = GleanEvent
     template_name = "gleanevent/detail.html"
 
-    @login_required
+    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        super(DetailGlean, self).dispatch(*args, **kwargs)
+        return super(DetailGlean, self).dispatch(*args, **kwargs)
 
 
 class UpdateGlean(generic.UpdateView):
