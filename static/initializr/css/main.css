@@ -29,8 +29,13 @@ body{
 #wrapper{
    width:1169px;
    margin:auto;
+   margin-bottom: 135px;
 }
-
+/*
+.push {
+	height: 30px; added by josh for sticky footer
+}
+*/
 .heading-container{
    margin:0;
    padding:0;
@@ -39,12 +44,15 @@ body{
 #footer-container{
    margin:73px 0 0 0;
    height:30px;
-   background-color:#6e9614;
-   text-align:left;
+   background-color: #6e9614;
+   text-align: left;
    padding: 5px 25px;
-   color:#444;
-   position:relative;
+   color: #444;
+   position: fixed;
    z-index:-1;
+   width: 100%;
+   bottom: 0px;
+   margin: 0px;
 }
 
 .header-title {
@@ -119,10 +127,12 @@ h3 {
 
 #gleaners{
    float: right;
-   position: absolute;
-   top: -249px;
+   position: fixed;
+   top: auto; /*-249px*/
    z-index:-1;
    right: 0;
+   bottom: 40px;
+   
 }
 
 /* ==========================================================================
@@ -417,7 +427,7 @@ a.day-name {
    min-height: 200px;
    padding: 20px;
    overflow: auto;
-   margin-bottom: 300px;
+   margin-bottom: 50px; /*changed from 300px hack*/
 }
 .glean-column {
    width: 330px;
@@ -712,7 +722,7 @@ td label {font-size:0.95em;font-weight:bold;}
    Index Pages
    ========================================================================== */
    
-.index-table{border:1px #e5e5e5 solid; min-height: 340px; padding:20px;background-color:#fbf8cc;}
+.index-table{border:1px #e5e5e5 solid; min-height: 340px; padding:20px;background-color:#fbf8cc;margin-bottom: 200px;}
 .index-table > .row-fluid + .row-fluid{padding-top:30px;}
 .index-header{margin-bottom:20px;}
 .index-title{text-align:center;}

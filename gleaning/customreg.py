@@ -291,5 +291,7 @@ class MyRegistrationView(RegistrationView):
                     "registration/sal_farm_notify.html",
                     {"object": profile}
                 )
+                import pdb
+                pdb.set_trace()
                 quick_mail(subject, text, memo.testing_email)
         return user
