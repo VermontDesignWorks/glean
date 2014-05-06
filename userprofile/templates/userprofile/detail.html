@@ -32,7 +32,7 @@
 
     <div class="yellow-box red-top">
         <div class="farm-third">
-            <h3>Address</h3>
+            <h3>Address:</h3>
             <ul class="no-list">
             <li>{{object.address_one}}</li>
             {% if object.address_two %}
@@ -44,39 +44,75 @@
         </div>
 
         <div class="farm-third">
-            <h3>Contact</h3>
+            <h3>Contact:</h3>
             <ul class="no-list">
             <li>{{object.phone}}</li>
             <li>{{object.user.email}}</li>
             <li>Preferred Method: {% if object.preferred_method == 1%}Phone{% else %}Email{% endif %}</li>
         </div>
-
         <div class="farm-third">
-        
-        <h3>Forms</h3>
-        <ul class="no-list">
-            <li>Waiver: {% if object.waiver %}Yes{% else %}No{% endif %}</li>
-            <li>Volunteer Agreement: {% if object.agreement %}Yes{% else %}No{% endif %}</li>
-            <li>Photo Release: {% if object.photo_release %}Yes{% else %}No{% endif %}</li>
-            <li>Ok To Send Newsletters: {% if object.opt_in %}Yes{% else %}No{% endif %}</li>
-        </ul>
+            <h2>Info</h2>
+            <ul style="list-style:none">
+                    <li>Age Range: {{object.get_age_display}}</li>
+            </ul>
         </div>
-
     </div>
 
     </div>
     <div class="yellow-box yellow-top slight-margin-top">
-        <h2>Counties</h2>
-        <ul style="list-style:none">
-            {% for county in object.counties.all %}
-                <li>{{county}}</li>
-            {% empty %}
-                <li>No Counties :(</li>
-            {% endfor %}
-        </ul>
+        <div class="farm-third">
+            <h2>Counties:</h2>
+            <ul style="list-style:none">
+                {% for county in object.counties.all %}
+                    <li>{{county}}</li>
+                {% empty %}
+                    <li>No Counties :(</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="farm-third">
+            <h2>Participation:</h2>
+            <ul style="list-style:none">
+                    <li>Gleaning:
+                        {% if object.task_gleaning %}
+                            <span class="yes-text">Yes</span>
+                        {% else %}
+                            <span class="no-text">No</span>
+                        {% endif %}
+                    </li>
+                    <li>Farm / Farmers Market Pickups:
+                        {% if object.task_farm_pickups %}
+                            <span class="yes-text">Yes</span>
+                        {% else %}
+                            <span class="no-text">No</span>
+                        {% endif %}
+                    </li>
+                    <li>Delivery:
+                        {% if object.task_delivery %}
+                            <span class="yes-text">Yes</span>
+                        {% else %}
+                            <span class="no-text">No</span>
+                        {% endif %}
+                    </li>
+                    <li>Administrative:
+                        {% if object.task_administrative %}
+                            <span class="yes-text">Yes</span>
+                        {% else %}
+                            <span class="no-text">No</span>
+                        {% endif %}
+                    </li>
+                    <li>Processing:
+                        {% if object.task_processing %}
+                            <span class="yes-text">Yes</span>
+                        {% else %}
+                            <span class="no-text">No</span>
+                        {% endif %}
+                    </li>
+            </ul>
+        </div>
     </div>
     <div class="yellow-box green-top slight-margin-top gleaners-space">
-        <div class="half pull-left">
+        <div class="farm-third">
             <h2>Forms</h2>
             <ul style="list-style:none">
                 <li>Photo releases:
@@ -95,13 +131,18 @@
                 </li>
             </ul>
         </div>
-        <div class="half pull-left">
-            <h2>Emergency Contact</h2>
+        <div class="farm-third">
+            <h2>Emergency Contact:</h2>
             <ul style="list-style:none">
                 <li>{{object.ecfirst_name}} {{object.eclast_name}}</li>
                 <li>{{object.ecrelationship}}</li>
                 <li>{{object.ecphone}}</li>
             </ul>
+
+        </div>
+        <div class="farm-third">
+            <h2>Additional Information:</h2>
+            <p>{{object.notes|linebreaks}}</p>
 
         </div>
     </div>

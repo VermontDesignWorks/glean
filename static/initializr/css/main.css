@@ -763,7 +763,7 @@ td label {font-size:0.95em;font-weight:bold;}
 #id_state {
    width:137px;
 }
-#id_zipcode {
+.glean-form-left > .row > #div_id_zipcode > div > #id_zipcode {
    width: 70px;
 }
 #div_id_zipcode{

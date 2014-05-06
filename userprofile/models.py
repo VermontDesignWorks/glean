@@ -115,33 +115,6 @@ class Profile(models.Model):
         )
 
 
-class ProfileForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-
-
-class EditProfileForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        exclude = ('member_organization',)
-
-
-class AdminProfileForm(EditProfileForm):
-    class Meta:
-        model = Profile
-        fields = ('first_name',
-                  'last_name',
-                  'address_one',
-                  'address_two',
-                  'city',
-                  'state',
-                  'zipcode',
-                  'counties',
-                  'phone',
-                  'phone_type',
-                  )
-
-
 class UserForm(forms.Form):
     username = forms.CharField(max_length=20)
     password = forms.CharField(

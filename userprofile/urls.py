@@ -7,7 +7,7 @@ from userprofile import views
 urlpatterns = patterns(
     '',
     url(r'^userDetailEntry/$', views.userDetailEntry, name='userdetailentry'),
-    url(r'^edit/$', views.selfEdit, name="selfedit"),
+    url(r'^edit/$', views.ProfileUpdateView.as_view(), name="selfedit"),
     url(r'^lists/$', views.userLists, name="userlists"),
     url(r'^download/$', views.download, name='download'),
     url(r'^new/$', views.newUser, name='newuser'),
