@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load url from future %}
 {% block title %}
 Edit {{memorg.name}}
@@ -8,13 +9,38 @@ Edit {{memorg.name}}
 <h3>Edit Member Organization</h3>
 {% endblock heading %}
 
+
+
 {% block content %}
-	<form method="post" action="">
+<div id="glean-index-header">
+    <h1 class="pull-left">{{object.user.username}}</h1>
+</div>
+
+<div class="glean-index-red red">
+    <h3>Your Details</h3>
+    <p>Change them if you need to. Just be sure to double check your spelling.</p>
+</div>
+<div class="form-errors">
+{{form.errors}}
+</div>
+<div style="width:600px; float:left">
+  {% crispy form %}
+</div>
+<style>
+.add-on {
+    background-color: transparent !important;
+    border: none !important;
+}
+.row {
+    margin-left: 0px !important;
+  }
+</style>
+	<!--<form method="post" action="">
 		{% csrf_token %}
 		{% include 'memberorgs/memorgform.html' %}
 		<span class="pull-left"><span class="text-error" style="font-size:1.3em">*</span>Denotes a Required Field</span>
 		<div class="form-actions pull-right">
 			<input type="submit" name="action" class="glean-button green-button" value="Save">
 		</div>
-	</form>
+	</form>-->
 {% endblock content %}

@@ -94,18 +94,18 @@ class EditMemOrg(generic.UpdateView):
     form_class = MemOrgForm
     success_url = reverse_lazy("detailmemorg")
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EditMemOrg, self).dispatch(*args, **kwargs)
+
     def get_object(self, *args, **kwargs):
-        return self.request.user.profile
+        return self.request.user.profile.member_organization
 
     def get_form_class(self):
         if self.request.user.has_perm('memberorgs:uniauth'):
             return AdminMemOrgForm
         else:
             return MemOrgForm
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(EditMemOrg, self).dispatch(*args, **kwargs)
 
 
 def detailMemOrg(request, memorg_id):
