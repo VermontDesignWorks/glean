@@ -56,10 +56,9 @@ def userDetailEntry(request):
                       {'form': form, 'error': ''})
 
 
-class ProfileUpdateView(generic.UpdateView):
+class ProfileUpdateView(generic.UpdateView):  # generic.UpdateView
     template_name = "userprofile/edit.html"
     model = Profile
-    form_class = ProfileUpdateForm
     success_url = reverse_lazy("home")
 
     def get_object(self, *args, **kwargs):
@@ -70,6 +69,10 @@ class ProfileUpdateView(generic.UpdateView):
             return AdminProfileForm
         else:
             return ProfileUpdateForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(DetailGlean, self).dispatch(*args, **kwargs)
 
 
 class AdminProfileUpdateView(generic.FormView):
@@ -101,6 +104,10 @@ class UserProfileDelete(generic.DeleteView):
     template_name = "userprofile/delete.html"
     success_url = reverse_lazy("userprofile:userlists")
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(DetailGlean, self).dispatch(*args, **kwargs)
+
 
 @permission_required('userprofile.auth')
 def userProfile(request, user_id):
@@ -117,6 +124,10 @@ def userProfile(request, user_id):
 class UserProfileDetailView(generic.DetailView):
     model = User
     template_name = "userprofile/detail.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(DetailGlean, self).dispatch(*args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy(
@@ -308,6 +319,7 @@ def userPromote(request, user_id):
     memc = Group.objects.get(name="Member Organization Glean Coordinator")
     sal = Group.objects.get(name="Salvation Farms Administrator")
     salc = Group.objects.get(name="Salvation Farms Coordinator")
+    # return HttpResponse(ed in user.groups.all())
     executive = ed in user.groups.all() or sal in user.groups.all()
 
     admin = executive or memc in user.groups.all() or salc in user.groups.all()
