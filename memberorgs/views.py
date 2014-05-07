@@ -13,6 +13,10 @@ from userprofile.models import Profile
 from memberorgs.models import MemOrg, MemOrgForm, NewAdminForm
 from announce.models import Template
 
+from django.views import generic
+
+from memberorgs.forms import *
+
 
 @permission_required('memberorgs.auth')
 def index(request):
@@ -58,8 +62,7 @@ def newMemOrg(request):
 @permission_required('memberorgs.auth')
 def editMemOrg(request, memorg_id):
     memorg = get_object_or_404(MemOrg, pk=memorg_id)
-    if memorg != request.user.profile.member_organization and not
-    request.user.has_perm('memberorgs.uniauth'):
+    if memorg != request.user.profile.member_organization and not request.user.has_perm('memberorgs.uniauth'):
         return HttpResponseRedirect(reverse('memorgs:detailmemorg',
                                     args=(memorg.id,)))
     if request.method == "POST":
@@ -82,7 +85,24 @@ def editMemOrg(request, memorg_id):
                   {'form': form, 'memorg': memorg, 'editmode': True})
 
 
-class EditMemOrg()
+class EditMemOrg(generic.UpdateView):
+    template_name = "userprofile/edit_memorg.html"
+    model = MemOrg
+    form_class = MemOrgForm
+    success_url = reverse_lazy("home")
+
+    def get_object(self, *args, **kwargs):
+        return self.request.user.profile
+
+    def get_form_class(self):
+        if self.request.user.has_perm('userprofile:uniauth'):
+            return AdminMemOrgForm
+        else:
+            return MemOrgForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(DetailGlean, self).dispatch(*args, **kwargs)
 
 
 def detailMemOrg(request, memorg_id):
@@ -124,8 +144,7 @@ def newMemOrgAndSuperUser(request):
 def newAdministrator(request, memorg_id):
     member_organization = get_object_or_404(MemOrg, pk=memorg_id)
     profile = request.user.profile
-    if not request.user.has_perm('memberorgs.uniauth')
-    and member_organization != profile.member_organization:
+    if not request.user.has_perm('memberorgs.uniauth') and member_organization != profile.member_organization:
         return HttpResponseRedirect(
             reverse('memorgs:detailmemorg', args=(memorg_id,)))
     if request.method == 'POST':
@@ -171,18 +190,15 @@ def newAdministrator(request, memorg_id):
                 form = NewAdminForm()
                 if not request.user.has_perm('userprofile.uniauth'):
                     form.fields['access_level'].choices = TRUNCATED_LEVELS
-                form.fields['member_organization'].queryset =
-                MemOrg.objects.filter(pk=memorg_id)
-                notice = 'Administrator account ' + new_user.username +
-                ' has been created'
+                form.fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg_id)
+                notice = 'Administrator account ' + new_user.username + ' has been created'
                 return render(request, 'memberorgs/newadmin.html',
                               {'form': form, 'notice': notice})
         else:
             return HttpResponse('form.is_not_valid :(')
 
     form = NewAdminForm()
-    form.fields['member_organization'].queryset =
-    MemOrg.objects.filter(pk=memorg_id)
+    form.fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg_id)
     if not request.user.has_perm('userprofile.uniauth'):
         form.fields['access_level'].choices = TRUNCATED_LEVELS
     return render(request, 'memberorgs/newadmin.html', {'form': form})
