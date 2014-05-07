@@ -6,6 +6,7 @@ from django import forms
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
 
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -72,7 +73,7 @@ class ProfileUpdateView(generic.UpdateView):  # generic.UpdateView
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(DetailGlean, self).dispatch(*args, **kwargs)
+        return super(ProfileUpdateView, self).dispatch(*args, **kwargs)
 
 
 class AdminProfileUpdateView(generic.FormView):
@@ -106,7 +107,7 @@ class UserProfileDelete(generic.DeleteView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(DetailGlean, self).dispatch(*args, **kwargs)
+        return super(UserProfileDelete, self).dispatch(*args, **kwargs)
 
 
 @permission_required('userprofile.auth')
@@ -127,7 +128,7 @@ class UserProfileDetailView(generic.DetailView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(DetailGlean, self).dispatch(*args, **kwargs)
+        return super(UserProfileDetailView, self).dispatch(*args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy(
