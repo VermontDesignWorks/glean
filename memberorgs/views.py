@@ -4,7 +4,10 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse, reverse_lazy
 
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
+
 from django.contrib.auth.models import User, Group
 
 from constants import TRUNCATED_LEVELS
@@ -86,7 +89,7 @@ def editMemOrg(request, memorg_id):
 
 
 class EditMemOrg(generic.UpdateView):
-    template_name = "userprofile/edit_memorg.html"
+    template_name = "memberorgs/edit_memorg.html"
     model = MemOrg
     form_class = MemOrgForm
     success_url = reverse_lazy("detailmemorg")
@@ -95,14 +98,14 @@ class EditMemOrg(generic.UpdateView):
         return self.request.user.profile
 
     def get_form_class(self):
-        if self.request.user.has_perm('userprofile:uniauth'):
+        if self.request.user.has_perm('memberorgs:uniauth'):
             return AdminMemOrgForm
         else:
             return MemOrgForm
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(DetailGlean, self).dispatch(*args, **kwargs)
+        return super(EditMemOrg, self).dispatch(*args, **kwargs)
 
 
 def detailMemOrg(request, memorg_id):
