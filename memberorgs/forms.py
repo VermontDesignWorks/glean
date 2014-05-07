@@ -22,7 +22,7 @@ from constants import STATES, COLORS, LINE_TYPE
 
 class AdminMemOrgForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(ProfileUpdateForm, self).__init__(*args, **kwargs)
+        super(AdminMemOrgForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_errors = False
         self.helper.form_id = "id-custom-memorgs-form"
