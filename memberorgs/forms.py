@@ -17,6 +17,7 @@ from crispy_forms.layout import (Layout,
 from counties.models import County
 from memberorgs.models import MemOrg
 from userprofile.models import Profile
+from constants import STATES, COLORS, LINE_TYPE
 
 
 class AdminMemOrgForm(forms.ModelForm):
@@ -68,56 +69,58 @@ class AdminMemOrgForm(forms.ModelForm):
         label="Counties in New York",
         required=False
     )
-    volunteers = forms.ManyToManyField(
-        User, editable=False, related_name="member_organizations")
+    volunteers = forms.ModelChoiceField(
+        widget=forms.Select(),
+        queryset=Profile.objects,
+        label="Volunteers",
+        required=False)
 
-    color = forms.CharField(
-        'Color', choices=COLORS, max_length=20, default='muted')
+    color = forms.ChoiceField(
+        label="Colors", choices=COLORS)
 
     address_one = forms.CharField(
-        'Physical Address (line one)', max_length=30, blank=True, null=True)
+        label='Physical Address (line one)', max_length=30)
     address_two = forms.CharField(
-        'Physical Address (line two)', max_length=30, blank=True, null=True)
-    city = forms.CharField('City', max_length=15, blank=True, null=True)
-    state = forms.CharField(
-        "State", choices=STATES, default="VT", max_length=2, blank=True)
+        label='Physical Address (line two)', max_length=30)
+    city = forms.CharField(label='City', max_length=15)
+    state = forms.ChoiceField(
+        label="State", choices=STATES)
     zipcode = forms.CharField(
-        "Zipcode", max_length=11, blank=True, null=True)
+        label="Zipcode", max_length=11)
     physical_is_mailing = forms.BooleanField(
-        'Physical Address is Mailing Address', default=True)
+        label='Physical Address is Mailing Address')
 
     mailing_address_one = forms.CharField(
-        'Mailing Address (line one)', max_length=200, blank=True)
+        label='Mailing Address (line one)', max_length=200)
     mailing_address_two = forms.CharField(
-        'Mailing Address (line two)', max_length=200, blank=True)
+        label='Mailing Address (line two)', max_length=200)
     mailing_city = forms.CharField(
-        'Mailing Address (City)', max_length=200, blank=True)
-    mailing_state = forms.CharField(
-        'Mailing Address (State)', choices=STATES, max_length=2, blank=True)
+        label='Mailing Address (City)', max_length=200)
+    mailing_state = forms.ChoiceField(label='State', choices=STATES)
     mailing_zip = forms.CharField(
-        'Mailing Address Zipcode', max_length=11, blank=True)
+        label='Mailing Address Zipcode', max_length=11)
 
     phone_1 = forms.CharField(
-        'Primary phone', max_length=200, blank=True)
-    phone_1_type = forms.CharField(
-        'Primary Phone Type', choices=LINE_TYPE, max_length=10, blank=True)
+        label='Primary phone', max_length=200)
+    phone_1_type = forms.ChoiceField(
+        label='Primary Phone Type', choices=LINE_TYPE)
     phone_2 = forms.CharField(
-        'Secondary phone', max_length=200, blank=True)
-    phone_2_type = forms.CharField(
-        'Secondary Phone Type', choices=LINE_TYPE, max_length=10, blank=True)
+        label='Secondary phone', max_length=200)
+    phone_2_type = forms.ChoiceField(
+        label='Secondary Phone Type', choices=LINE_TYPE)
 
     first_name = forms.CharField(
-        "Executive Director First Name", max_length=20, blank=True)
+        label="Executive Director First Name", max_length=20)
     last_name = forms.CharField(
-        "Executive Director Last Name", max_length=20, blank=True)
+        label="Executive Director Last Name", max_length=20)
     phone = forms.CharField(
-        "Director's Direct Phone Number", max_length=15, blank=True, null=True)
+        label="Director's Direct Phone Number", max_length=15)
 
     notify = forms.BooleanField(
-        'Notify on New Volunteer Signup?', default=False)
+        label='Notify on New Volunteer Signup?')
 
     testing = forms.BooleanField(
-        "Relay Announcement Emails to Testing Address", default=True)
+        label="Relay Announcement Emails to Testing Address")
 
     testing_email = forms.CharField(
-        "Primary Email Address", max_length="200", blank=True)
+        label="Primary Email Address", max_length="200")

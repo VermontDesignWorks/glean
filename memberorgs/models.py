@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 
 from django.contrib import admin
 from constants import STATES, LINE_TYPE, ACCESS_LEVELS, COLORS
+from django.contrib.auth.decorators import permission_required
 # Create your models here.
 
 

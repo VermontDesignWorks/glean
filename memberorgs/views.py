@@ -2,7 +2,7 @@
 # Create your views here.
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User, Group
@@ -89,7 +89,7 @@ class EditMemOrg(generic.UpdateView):
     template_name = "userprofile/edit_memorg.html"
     model = MemOrg
     form_class = MemOrgForm
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("detailmemorg")
 
     def get_object(self, *args, **kwargs):
         return self.request.user.profile
@@ -122,10 +122,11 @@ def newMemOrgAndSuperUser(request):
         if form.is_valid():
             new_save = form.save()
             new_save.save()
-            new_template = Template(template_name="Default Template",
-                                    member_organization=new_save,
-                                    body="<html><body><h3 style='text-align:center;color:green'>{{glean.title}}</h3><p>{{glean.description}}</p><p>{{custom}}</p><p>For more information, click on the {{info}} link!</p><p>To no longer receive emails about gleaning, click on the {{unsubscribe}} link.</p></body></html>",
-                                    default=True)
+            new_template = Template(
+                template_name="Default Template",
+                member_organization=new_save,
+                body="<html><body><h3 style='text-align:center;color:green'>{{glean.title}}</h3><p>{{glean.description}}</p><p>{{custom}}</p><p>For more information, click on the {{info}} link!</p><p>To no longer receive emails about gleaning, click on the {{unsubscribe}} link.</p></body></html>",
+                default=True)
             new_template.save()
             return HttpResponseRedirect(reverse('memorgs:detailmemorg',
                                         args=(new_save.id,)))
