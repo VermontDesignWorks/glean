@@ -62,7 +62,7 @@ class ProfileUpdateView(generic.UpdateView):
     form_class = ProfileUpdateForm
     success_url = reverse_lazy("home")
 
-    def get_object(self, *args, **kwargs):
+    def get_object(self):
         return self.request.user.profile
 
     def get_form_class(self):

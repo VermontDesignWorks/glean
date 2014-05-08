@@ -1,5 +1,7 @@
 # Create your views here.
 # Create your views here.
+import sys
+
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -98,8 +100,9 @@ class EditMemOrg(generic.UpdateView):
     def dispatch(self, *args, **kwargs):
         return super(EditMemOrg, self).dispatch(*args, **kwargs)
 
-    def get_object(self, *args, **kwargs):
-        return self.request.user.profile.member_organization
+    def get_object(self):
+        obj = MemOrg.objects.get(pk=self.request.resolver_match.kwargs["memorg_id"])
+        return obj
 
     def get_form_class(self):
         if self.request.user.has_perm('memberorgs:uniauth'):
@@ -107,13 +110,15 @@ class EditMemOrg(generic.UpdateView):
         else:
             return MemOrgForm
 
-    def get_success_url(self):
+    def get_success_url(self, *args, **kwargs):
         if self.request.user.has_perm('memberorgs:uniauth'):
-            return reverse_lazy('home')
+            return reverse_lazy(
+                'memorgs:detailmemorg',
+                args=[self.request.resolver_match.kwargs["memorg_id"]])
         else:
             return reverse_lazy(
                 'memorgs:detailmemorg',
-                args=[self.request.user.profile.member_organization.pk])
+                args=[self.request.resolver_match.kwargs["memorg_id"]])
 
 
 def detailMemOrg(request, memorg_id):
