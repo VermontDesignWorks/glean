@@ -243,3 +243,5 @@ STATICFILES_DIRS = (
     #"static/",
     os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static')),
     )
+
+#AUTH_PROFILE_MODULE = 'userprofile.Profile'
