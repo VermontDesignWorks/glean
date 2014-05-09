@@ -6,19 +6,19 @@ Edit {{memorg.name}}
 {% endblock title %}
 
 {% block heading %}
+<div class="form-wrapper-memorg">
 <h3>Edit Member Organization</h3>
+</div>
 {% endblock heading %}
 
 
 
 {% block content %}
-<div id="glean-index-header">
-    <h1 class="pull-left">{{object.user.username}}</h1>
-</div>
-
+<div class="form-wrapper-memorg">
 <div class="glean-index-red red">
-    <h3>Your Details</h3>
-    <p>Change them if you need to. Just be sure to double check your spelling.</p>
+	<div class="glean-index-red-child">
+	    <h4>It's Good to Make New Friends.</h4>
+	</div>
 </div>
 <div class="form-errors">
 {{form.errors}}
@@ -35,12 +35,5 @@ Edit {{memorg.name}}
     margin-left: 0px !important;
   }
 </style>
-	<!--<form method="post" action="">
-		{% csrf_token %}
-		{% include 'memberorgs/memorgform.html' %}
-		<span class="pull-left"><span class="text-error" style="font-size:1.3em">*</span>Denotes a Required Field</span>
-		<div class="form-actions pull-right">
-			<input type="submit" name="action" class="glean-button green-button" value="Save">
-		</div>
-	</form>-->
+</div>
 {% endblock content %}

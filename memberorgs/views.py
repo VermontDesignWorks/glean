@@ -99,7 +99,18 @@ class EditMemOrg(generic.UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(EditMemOrg, self).dispatch(*args, **kwargs)
+        print >> sys.stderr, self.request.user.profile.member_organization.pk
+        print >> sys.stderr, self.kwargs["pk"]
+        if self.kwargs["pk"].isdigit:
+            if int(self.request.user.profile.member_organization.pk) == int(self.kwargs["pk"]):
+                return super(EditMemOrg, self).dispatch(*args, **kwargs)
+            elif self.request.user.has_perm('farms.uniauth'):
+                return super(EditMemOrg, self).dispatch(*args, **kwargs)
+            else:
+                return self.http_method_not_allowed(self.request, *args, **kwargs)
+        else:
+            return self.http_method_not_allowed(self.request, *args, **kwargs)
+
 
     def get_form_class(self):
         if self.request.user.has_perm('memberorgs:uniauth'):
