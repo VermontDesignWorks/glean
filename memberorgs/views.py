@@ -102,10 +102,6 @@ class EditMemOrg(generic.UpdateView):
     def dispatch(self, *args, **kwargs):
         return super(EditMemOrg, self).dispatch(*args, **kwargs)
 
-    def get_object(self):
-        obj = MemOrg.objects.get(pk=self.request.resolver_match.kwargs["pk"])
-        return obj
-
     def get_form_class(self):
         if self.request.user.has_perm('memberorgs:uniauth'):
             return AdminMemOrgForm
