@@ -150,10 +150,10 @@ class AdminMemOrgForm(forms.ModelForm):
         label="Director's Direct Phone Number", max_length=15)
 
     notify = forms.BooleanField(
-        label='Notify on New Volunteer Signup?')
+        label='Notify on New Volunteer Signup?', required=False)
 
     testing = forms.BooleanField(
-        label="Relay Announcement Emails to Testing Address")
+        label="Relay Announcement Emails to Testing Address", required=False)
 
     testing_email = forms.CharField(
         label="Primary Email Address", max_length="200", required=False)
@@ -256,10 +256,10 @@ class MemOrgForm(forms.ModelForm):
         label="Director's Direct Phone Number", max_length=15)
 
     notify = forms.BooleanField(
-        label='Notify on New Volunteer Signup?')
+        label='Notify on New Volunteer Signup?', required=False)
 
     testing = forms.BooleanField(
-        label="Relay Announcement Emails to Testing Address")
+        label="Relay Announcement Emails to Testing Address", required=False)
 
     testing_email = forms.CharField(
         label="Primary Email Address", max_length="200", required=False)
