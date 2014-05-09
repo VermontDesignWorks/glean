@@ -95,8 +95,7 @@ class EditMemOrg(generic.UpdateView):
     model = MemOrg
     form_class = MemOrgForm
     success_url = reverse_lazy(
-        'memorgs:detailmemorg', args=[
-            self.request.resolver_match.kwargs["pk"]])
+        'memorgs:detailmemorg')
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -107,6 +106,12 @@ class EditMemOrg(generic.UpdateView):
             return AdminMemOrgForm
         else:
             return MemOrgForm
+
+    def get_success_url(self, *args, **kwargs):
+        return reverse_lazy(
+            'memorgs:detailmemorg',
+            args=[self.kwargs["pk"]])
+
 
 
 def detailMemOrg(request, memorg_id):
