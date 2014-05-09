@@ -94,14 +94,16 @@ class EditMemOrg(generic.UpdateView):
     template_name = "memberorgs/edit_memorg.html"
     model = MemOrg
     form_class = MemOrgForm
-    success_url = reverse_lazy('memorgs:detailmemorg')
+    success_url = reverse_lazy(
+        'memorgs:detailmemorg', args=[
+            self.request.resolver_match.kwargs["pk"]])
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(EditMemOrg, self).dispatch(*args, **kwargs)
 
     def get_object(self):
-        obj = MemOrg.objects.get(pk=self.request.resolver_match.kwargs["memorg_id"])
+        obj = MemOrg.objects.get(pk=self.request.resolver_match.kwargs["pk"])
         return obj
 
     def get_form_class(self):
@@ -109,16 +111,6 @@ class EditMemOrg(generic.UpdateView):
             return AdminMemOrgForm
         else:
             return MemOrgForm
-
-    def get_success_url(self, *args, **kwargs):
-        if self.request.user.has_perm('memberorgs:uniauth'):
-            return reverse_lazy(
-                'memorgs:detailmemorg',
-                args=[self.request.resolver_match.kwargs["memorg_id"]])
-        else:
-            return reverse_lazy(
-                'memorgs:detailmemorg',
-                args=[self.request.resolver_match.kwargs["memorg_id"]])
 
 
 def detailMemOrg(request, memorg_id):
