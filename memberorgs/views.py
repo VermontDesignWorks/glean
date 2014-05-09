@@ -107,10 +107,10 @@ class EditMemOrg(generic.UpdateView):
             elif self.request.user.has_perm('farms.uniauth'):
                 return super(EditMemOrg, self).dispatch(*args, **kwargs)
             else:
-                return self.http_method_not_allowed(self.request, *args, **kwargs)
+                return self.http_method_not_allowed(
+                    self.request, *args, **kwargs)
         else:
             return self.http_method_not_allowed(self.request, *args, **kwargs)
-
 
     def get_form_class(self):
         if self.request.user.has_perm('memberorgs:uniauth'):
@@ -122,7 +122,6 @@ class EditMemOrg(generic.UpdateView):
         return reverse_lazy(
             'memorgs:detailmemorg',
             args=[self.kwargs["pk"]])
-
 
 
 def detailMemOrg(request, memorg_id):
@@ -219,7 +218,8 @@ def newAdministrator(request, memorg_id):
             return HttpResponse('form.is_not_valid :(')
 
     form = NewAdminForm()
-    form.fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg_id)
+    form.fields['member_organization'].queryset = MemOrg.objects.filter(
+        pk=memorg_id)
     if not request.user.has_perm('userprofile.uniauth'):
         form.fields['access_level'].choices = TRUNCATED_LEVELS
     return render(request, 'memberorgs/newadmin.html', {'form': form})
