@@ -59,11 +59,7 @@ def userDetailEntry(request):
                       {'form': form, 'error': ''})
 
 
-<<<<<<< HEAD
 class ProfileUpdateView(SimpleLoginCheckForGenerics, generic.UpdateView):
-=======
-class ProfileUpdateView(generic.UpdateView):  # generic.UpdateView
->>>>>>> master
     template_name = "userprofile/edit.html"
     model = Profile
     success_url = reverse_lazy("home")
