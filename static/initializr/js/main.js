@@ -76,3 +76,8 @@ $('#physical_is_mailing-button').popover({
 });
 
 $(".datepicker").datepicker();
+
+/* fix for bottom */
+$(document).ready(function(){
+
+});
