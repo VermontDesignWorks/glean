@@ -176,6 +176,19 @@ def userEdit(request, user_id):
             {'person': person, 'profile': person, 'form': form})
 
 
+class UserEdit(generic.UpdateView):
+    model = Profile
+    success_url = reverse_lazy("home")
+    template_name = "userprofile/edit.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.has_perm("userprofil.uniauth"):
+            return super(UserEdit, self).dispatch(*args, **kwargs)
+        else:
+            return self.http_method_not_allowed(self.request, *args, **kwargs)
+
+
 def emailEdit(request):
     if request.method == 'POST':
         form = EmailForm(request.POST)
