@@ -20,6 +20,8 @@ from announce.models import Template
 
 from django.views import generic
 
+from generic.mixins import SimpleLoginCheckForGenerics
+
 from memberorgs.forms import *
 
 
@@ -64,6 +66,21 @@ def newMemOrg(request):
         return render(request, 'memberorgs/new_memorg.html', {'form': form})
 
 
+class NewMemOrg(SimpleLoginCheckForGenerics, generic.CreateView):
+    template_name = "memberorgs/new_memorg.html"
+    form_class = NewMemOrgForm
+    model = MemOrg
+    success_url = reverse_lazy("home")
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.has_perm('memberorgs.uniauth'):
+            return super(NewMemOrg, self).dispatch(*args, **kwargs)
+        else:
+            return self.http_method_not_allowed(
+                self.request, *args, **kwargs)
+
+
 @permission_required('memberorgs.auth')
 def editMemOrg(request, memorg_id):
     memorg = get_object_or_404(MemOrg, pk=memorg_id)
@@ -102,7 +119,7 @@ class EditMemOrg(generic.UpdateView):
         if self.kwargs["pk"].isdigit:
             if int(self.request.user.profile.member_organization.pk) == int(self.kwargs["pk"]):
                 return super(EditMemOrg, self).dispatch(*args, **kwargs)
-            elif self.request.user.has_perm('farms.uniauth'):
+            elif self.request.user.has_perm('memberorgs.uniauth'):
                 return super(EditMemOrg, self).dispatch(*args, **kwargs)
             else:
                 return self.http_method_not_allowed(
