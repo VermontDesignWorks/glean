@@ -6,6 +6,7 @@ from django import forms
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
 
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -58,10 +59,13 @@ def userDetailEntry(request):
                       {'form': form, 'error': ''})
 
 
+<<<<<<< HEAD
 class ProfileUpdateView(SimpleLoginCheckForGenerics, generic.UpdateView):
+=======
+class ProfileUpdateView(generic.UpdateView):  # generic.UpdateView
+>>>>>>> master
     template_name = "userprofile/edit.html"
     model = Profile
-    form_class = ProfileUpdateForm
     success_url = reverse_lazy("home")
 
     def get_object(self):
@@ -72,6 +76,10 @@ class ProfileUpdateView(SimpleLoginCheckForGenerics, generic.UpdateView):
             return AdminProfileForm
         else:
             return ProfileUpdateForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ProfileUpdateView, self).dispatch(*args, **kwargs)
 
 
 class AdminProfileUpdateView(generic.FormView):
@@ -103,6 +111,10 @@ class UserProfileDelete(SimpleLoginCheckForGenerics, generic.DeleteView):
     template_name = "userprofile/delete.html"
     success_url = reverse_lazy("userprofile:userlists")
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(UserProfileDelete, self).dispatch(*args, **kwargs)
+
 
 @permission_required('userprofile.auth')
 def userProfile(request, user_id):
@@ -119,6 +131,10 @@ def userProfile(request, user_id):
 class UserProfileDetailView(SimpleLoginCheckForGenerics, generic.DetailView):
     model = User
     template_name = "userprofile/detail.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(UserProfileDetailView, self).dispatch(*args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy(
@@ -310,6 +326,7 @@ def userPromote(request, user_id):
     memc = Group.objects.get(name="Member Organization Glean Coordinator")
     sal = Group.objects.get(name="Salvation Farms Administrator")
     salc = Group.objects.get(name="Salvation Farms Coordinator")
+    # return HttpResponse(ed in user.groups.all())
     executive = ed in user.groups.all() or sal in user.groups.all()
 
     admin = executive or memc in user.groups.all() or salc in user.groups.all()

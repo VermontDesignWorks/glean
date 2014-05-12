@@ -46,12 +46,13 @@ body{
    height:30px;
    background-color: #6e9614;
    text-align: left;
-   padding: 5px 25px;
+   padding: 5px 0px 5px 25px;
    color: #444;
-   position: fixed;
+   position: relative;
    z-index:-1;
-   width: 100%;
-   bottom: 0px;
+   /*width: 100%;*/
+   top: 279px; /*279px*/
+   bottom: auto;
    margin: 0px;
 }
 
@@ -127,11 +128,11 @@ h3 {
 
 #gleaners{
    float: right;
-   position: fixed;
-   top: auto; /*-249px*/
+   position: relative;
+   top: -294px; /*-249px*/
    z-index:-1;
    right: 0;
-   bottom: 40px;
+   bottom: auto; /*40px*/
    
 }
 

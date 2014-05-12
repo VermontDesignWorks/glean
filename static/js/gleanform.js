@@ -1,5 +1,5 @@
 
-$(document).ready(function(){
+$(document).ready(function(){   
 	var $datefield = $("#id_date");
 	$("#id_date").datepicker();
    var infos = {
