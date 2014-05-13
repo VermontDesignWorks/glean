@@ -24,6 +24,8 @@ from generic.mixins import SimpleLoginCheckForGenerics
 
 from memberorgs.forms import *
 
+from django.http import Http404
+
 
 @permission_required('memberorgs.auth')
 def index(request):
@@ -77,6 +79,7 @@ class NewMemOrg(SimpleLoginCheckForGenerics, generic.CreateView):
         if self.request.user.has_perm('memberorgs.uniauth'):
             return super(NewMemOrg, self).dispatch(*args, **kwargs)
         else:
+            raise Http404
             return self.http_method_not_allowed(
                 self.request, *args, **kwargs)
 
