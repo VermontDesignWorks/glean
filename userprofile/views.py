@@ -1,5 +1,6 @@
 # Create your views here.
 import csv
+from django.http import Http404
 
 from django import forms
 
@@ -186,6 +187,7 @@ class UserEdit(generic.UpdateView):
         if self.request.user.has_perm("userprofil.uniauth"):
             return super(UserEdit, self).dispatch(*args, **kwargs)
         else:
+            raise Http404
             return self.http_method_not_allowed(self.request, *args, **kwargs)
 
 
