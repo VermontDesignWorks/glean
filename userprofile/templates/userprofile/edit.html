@@ -13,11 +13,20 @@ Edit your User Information
     <h3>Your Details</h3>
     <p>Change them if you need to. Just be sure to double check your spelling.</p>
 </div>
+<div class="glean-index-red red">
+	{% if request.session.password_reset == "True" %}<h3>Password set successfully.</h3>{% endif %}
+	{% if request.session.password_reset == "Failed" %}<h3>Password reset failed.</h3>{% endif %}
+	{% if request.session.password_reset == "False" %}<h3>No Password Reset.</h3>{% endif %}
+	
+</div>
 <div class="form-errors">
 {{form.errors}}
 </div>
 <div style="width:600px; float:left">
   {% crispy form %}
+</div>
+<div>
+
 </div>
 <style>
 .add-on {

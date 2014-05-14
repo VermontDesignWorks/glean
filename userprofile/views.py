@@ -1,5 +1,6 @@
 # Create your views here.
 import csv
+import sys
 from django.http import Http404
 
 from django import forms
@@ -61,12 +62,28 @@ def userDetailEntry(request):
 class ProfileUpdateView(generic.UpdateView):  # generic.UpdateView
     template_name = "userprofile/edit.html"
     model = Profile
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("userprofile:selfedit")
 
     def get_object(self, *args, **kwargs):
         return self.request.user.profile
 
+    def form_valid(self, form):
+        """
+        If the form is valid, save the associated model.
+        """
+        myresponse = HttpResponse()
+        if form.cleaned_data["password1"] != "" and form.cleaned_data["password1"] == form.cleaned_data["password2"]:
+            self.request.user.set_password(form.cleaned_data["password1"])
+            self.request.session.password_reset = "True"
+        elif form.cleaned_data["password1"] != form.cleaned_data["password2"]:
+            self.request.session.password_reset = "Failed"
+        else:
+            self.request.session.password_reset = "False"
+        self.object = form.save()
+        return super(ProfileUpdateView, self).form_valid(form)
+
     def get_form_class(self):
+        print >> sys.stderr, self.__dict__
         if self.request.user.has_perm('userprofile:uniauth'):
             return AdminProfileForm
         else:

@@ -84,6 +84,10 @@ class ProfileUpdateForm(forms.ModelForm):
                      "inued participation in <br />the Vermont Gleaning Colle"
                      "ctive efforts.</p>"),
             ),
+            Fieldset(
+                "",
+                Row("password1", "password2")
+            ),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
                  "name='submit' value='Save Changes'>")
@@ -170,6 +174,8 @@ class ProfileUpdateForm(forms.ModelForm):
     photo_release = forms.BooleanField(
         label="", required=False)
     opt_in = forms.BooleanField(label="", required=False)
+    password1 = forms.CharField(label="Change Password", required=False)
+    password2 = forms.CharField(label="Confirm Password", required=False)
 
     def save(self, *args, **kwargs):
         saved = super(ProfileUpdateForm, self).save(*args, **kwargs)
