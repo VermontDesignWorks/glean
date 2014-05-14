@@ -34,6 +34,7 @@ from userprofile.forms import (ProfileUpdateForm,
 
 from django.contrib import messages
 
+
 @login_required
 def userDetailEntry(request):
     if request.method == "POST":
@@ -82,6 +83,7 @@ class ProfileUpdateView(generic.UpdateView):  # generic.UpdateView
                 return HttpResponseRedirect("/users/edit/")
 
     def get_form_class(self):
+        print >> sys.stderr, messages.INFO
         if self.request.user.has_perm('userprofile:uniauth'):
             return AdminProfileForm
         else:
