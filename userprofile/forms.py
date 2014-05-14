@@ -84,13 +84,17 @@ class ProfileUpdateForm(forms.ModelForm):
                      "inued participation in <br />the Vermont Gleaning Colle"
                      "ctive efforts.</p>"),
             ),
+            HTML("<input type='submit' "
+                 "class='glean-button green-button' "
+                 "name='submit' value='Save Changes'>"),
             Fieldset(
                 "",
                 Row("password1", "password2")
             ),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "name='submit' value='Save Changes'>")
+                 "name='submit' value='change password'>")
+
         )
         profile = kwargs["instance"]
         self.initial["vt_counties"] = [

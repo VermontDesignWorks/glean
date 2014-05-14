@@ -32,6 +32,7 @@ from userprofile.forms import (ProfileUpdateForm,
                                EditProfileForm,
                                AdminProfileForm)
 
+from django.contrib import messages
 
 @login_required
 def userDetailEntry(request):
@@ -67,23 +68,20 @@ class ProfileUpdateView(generic.UpdateView):  # generic.UpdateView
     def get_object(self, *args, **kwargs):
         return self.request.user.profile
 
-    def form_valid(self, form):
-        """
-        If the form is valid, save the associated model.
-        """
-        myresponse = HttpResponse()
-        if form.cleaned_data["password1"] != "" and form.cleaned_data["password1"] == form.cleaned_data["password2"]:
-            self.request.user.set_password(form.cleaned_data["password1"])
-            self.request.session.password_reset = "True"
-        elif form.cleaned_data["password1"] != form.cleaned_data["password2"]:
-            self.request.session.password_reset = "Failed"
-        else:
-            self.request.session.password_reset = "False"
-        self.object = form.save()
-        return super(ProfileUpdateView, self).form_valid(form)
+    def post(self, request, *args, **kwargs):
+        if self.request.POST.get("submit") == "Save Changes":
+            self.object = self.get_object()
+            return super(ProfileUpdateView, self).post(request, *args, **kwargs)
+        elif self.request.POST.get("submit") == "change password":
+            if self.request.POST.get("password1") == self.request.POST.get("password2"):
+                self.request.user.set_password(self.request.POST.get("password1"))
+                messages.add_message(self.request, messages.INFO, "Password Reset.")
+                return HttpResponseRedirect("/users/edit/")
+            elif self.request.POST.get("password1") != self.request.POST.get("password2"):
+                messages.add_message(self.request, messages.INFO, "Password Reset Failed.")
+                return HttpResponseRedirect("/users/edit/")
 
     def get_form_class(self):
-        print >> sys.stderr, self.__dict__
         if self.request.user.has_perm('userprofile:uniauth'):
             return AdminProfileForm
         else:

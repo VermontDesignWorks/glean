@@ -13,12 +13,15 @@ Edit your User Information
     <h3>Your Details</h3>
     <p>Change them if you need to. Just be sure to double check your spelling.</p>
 </div>
+{% if messages %}
 <div class="glean-index-red red">
-	{% if request.session.password_reset == "True" %}<h3>Password set successfully.</h3>{% endif %}
-	{% if request.session.password_reset == "Failed" %}<h3>Password reset failed.</h3>{% endif %}
-	{% if request.session.password_reset == "False" %}<h3>No Password Reset.</h3>{% endif %}
-	
+{% for message in messages %}
+	{% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+		<h3>{{message}}</h3>
+	{% endif %}
+{% endfor %}
 </div>
+{% endif %}
 <div class="form-errors">
 {{form.errors}}
 </div>

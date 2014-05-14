@@ -20,6 +20,9 @@ TEMPLATE_DIRS = [
     os.path.abspath(os.path.join(os.path.dirname(__file__), "", "templates"))
 ]
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.messages.context_processors.messages',)
+
 LOGIN_URL = "/accounts/login"
 LOGOUT_URL = "/"
 
