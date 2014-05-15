@@ -30,15 +30,11 @@ from userprofile.models import (Profile,
 from userprofile.forms import (ProfileUpdateForm,
                                ProfileForm,
                                EditProfileForm,
-<<<<<<< HEAD
-                               AdminProfileForm)
+                               AdminProfileForm,
+                               UserEditForm)
 
 from django.contrib import messages
 
-=======
-                               AdminProfileForm,
-                               UserEditForm)
->>>>>>> Administrator-user-edit-form
 
 @login_required
 def userDetailEntry(request):
@@ -80,7 +76,9 @@ class ProfileUpdateView(generic.UpdateView):  # generic.UpdateView
             return super(ProfileUpdateView, self).post(request, *args, **kwargs)
         elif self.request.POST.get("submit") == "change password":
             if self.request.POST.get("password1") == self.request.POST.get("password2"):
-                self.request.user.set_password(self.request.POST.get("password1"))
+                u = User.objects.get(pk=self.request.user.pk)
+                u.set_password(self.request.POST.get("password1"))
+                u.save()
                 messages.add_message(self.request, messages.INFO, "Password Reset.")
                 return HttpResponseRedirect("/users/edit/")
             elif self.request.POST.get("password1") != self.request.POST.get("password2"):
@@ -201,9 +199,12 @@ def userEdit(request, user_id):
 
 class UserEdit(generic.UpdateView):
     model = Profile
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("userprofile:useredit")
     template_name = "userprofile/edit.html"
     form_class = UserEditForm
+
+    def get_success_url(self):
+        return reverse_lazy("userprofile:useredit", args=self.kwargs["pk"])
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -212,6 +213,21 @@ class UserEdit(generic.UpdateView):
         else:
             raise Http404
             return self.http_method_not_allowed(self.request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if self.request.POST.get("submit") == "Save Changes":
+            self.object = self.get_object()
+            return super(UserEdit, self).post(request, *args, **kwargs)
+        elif self.request.POST.get("submit") == "change password":
+            if self.request.POST.get("password1") == self.request.POST.get("password2"):
+                u = User.objects.get(pk=self.kwargs["pk"])
+                u.set_password(self.request.POST.get("password1"))
+                u.save()
+                messages.add_message(self.request, messages.INFO, "Password Reset.")
+                return HttpResponseRedirect("/users/edit/")
+            elif self.request.POST.get("password1") != self.request.POST.get("password2"):
+                messages.add_message(self.request, messages.INFO, "Password Reset Failed.")
+                return HttpResponseRedirect("/users/edit/")
 
 
 def emailEdit(request):
