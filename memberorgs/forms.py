@@ -48,7 +48,8 @@ class AdminMemOrgForm(forms.ModelForm):
             ),
             Fieldset(
                 "",
-                HTML("<h3 class='lbl'>Counties member organization will manage</h3>"),
+                HTML("<h3 class='lbl'>Counties member"
+                     " organization will manage</h3>"),
                 Div(InlineCheckboxes("vt_counties"),
                     InlineCheckboxes("ny_counties"),
                     css_class="form-checkboxes")
@@ -72,6 +73,8 @@ class AdminMemOrgForm(forms.ModelForm):
                 "",
                 Row("notify"),
                 Row("testing"),
+                HTML("<h4>All test or notification emails will go to"
+                     " the address specificed below:"),
                 Row("testing_email")
             ),
             HTML("<input type='submit' "
@@ -93,7 +96,8 @@ class AdminMemOrgForm(forms.ModelForm):
     website = forms.CharField(label='Website', max_length=50, required=False)
     description = forms.CharField(
         label='Description',
-        widget=forms.Textarea(attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
+        widget=forms.Textarea(
+            attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
         required=False)
     vt_counties = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
@@ -110,16 +114,16 @@ class AdminMemOrgForm(forms.ModelForm):
     color = forms.ChoiceField(
         label="Colors", choices=COLORS, required=False)
     address_one = forms.CharField(
-        label='Address', max_length=30)
+        label='Address', max_length=30, required=False)
     address_two = forms.CharField(
         label='Address (line two)', max_length=30, required=False)
-    city = forms.CharField(label='City', max_length=15)
+    city = forms.CharField(label='City', max_length=15, required=False)
     state = forms.ChoiceField(
-        label="State", choices=STATES)
+        label="State", choices=STATES, required=False)
     zipcode = forms.CharField(
         label="Zipcode", max_length=11, required=False)
     physical_is_mailing = forms.BooleanField(
-        label='Physical Address is Mailing Address')
+        label='Physical Address is Mailing Address', required=False)
     mailing_address_one = forms.CharField(
         label='Address', max_length=200, required=False)
     mailing_address_two = forms.CharField(
@@ -132,20 +136,20 @@ class AdminMemOrgForm(forms.ModelForm):
         label='Mailing Address Zipcode', max_length=11, required=False)
 
     phone_1 = forms.CharField(
-        label='Primary phone #', max_length=200)
+        label='Primary phone #', max_length=200, required=False)
     phone_1_type = forms.ChoiceField(
-        label='Primary Phone Type', choices=LINE_TYPE)
+        label='Primary Phone Type', choices=LINE_TYPE, required=False)
     phone_2 = forms.CharField(
         label='Secondary phone #', max_length=200, required=False)
     phone_2_type = forms.ChoiceField(
         label='Secondary Phone Type', choices=LINE_TYPE, required=False)
 
     first_name = forms.CharField(
-        label="First Name", max_length=20)
+        label="First Name", max_length=20, required=False)
     last_name = forms.CharField(
-        label="Last Name", max_length=20)
+        label="Last Name", max_length=20, required=False)
     phone = forms.CharField(
-        label="Phone #", max_length=15)
+        label="Phone #", max_length=15, required=False)
 
     notify = forms.BooleanField(
         label='Notify on New Volunteer Signup?', required=False)
@@ -154,10 +158,24 @@ class AdminMemOrgForm(forms.ModelForm):
         label="Relay Announcement Emails to Testing Address", required=False)
 
     testing_email = forms.CharField(
-        label="Testing Email Address", max_length="200", required=False)
+        label="Member Organization Email Address",
+        max_length="200",
+        required=False)
 
     class Meta:
         model = MemOrg
+
+    def save(self, *args, **kwargs):
+        saved = super(AdminMemOrgForm, self).save(*args, **kwargs)
+        if 'vt_counties' in self.data:
+            for pk in self.data.getlist('vt_counties'):
+                county = County.objects.get(pk=pk)
+                saved.counties.add(county)
+        if 'ny_counties' in self.data:
+            for pk in self.data.getlist('ny_counties'):
+                county = County.objects.get(pk=pk)
+                saved.counties.add(county)
+        return saved
 
 
 class MemOrgForm(forms.ModelForm):
@@ -202,7 +220,8 @@ class MemOrgForm(forms.ModelForm):
         )
         memorg = kwargs["instance"]
         self.initial["volunteers"] = [
-            x.pk for x in memorg.volunteers.order_by("last_name").order_by("first_name")
+            x.pk for x in memorg.volunteers.order_by(
+                "last_name").order_by("first_name")
         ]
     name = forms.CharField(label='name', max_length=200)
     website = forms.CharField(label='Website', max_length=50, required=False)
@@ -220,16 +239,16 @@ class MemOrgForm(forms.ModelForm):
         label="Colors", choices=COLORS, required=False)
 
     address_one = forms.CharField(
-        label='Address', max_length=30)
+        label='Address', max_length=30, required=False)
     address_two = forms.CharField(
         label='Address (line two)', max_length=30, required=False)
-    city = forms.CharField(label='City', max_length=15)
+    city = forms.CharField(label='City', max_length=15, required=False)
     state = forms.ChoiceField(
-        label="State", choices=STATES)
+        label="State", choices=STATES, required=False)
     zipcode = forms.CharField(
         label="Zipcode", max_length=11, required=False)
     physical_is_mailing = forms.BooleanField(
-        label='Physical Address is Mailing Address')
+        label='Physical Address is Mailing Address', required=False)
 
     mailing_address_one = forms.CharField(
         label='Address', max_length=200, required=False)
@@ -243,20 +262,20 @@ class MemOrgForm(forms.ModelForm):
         label='Zipcode', max_length=11, required=False)
 
     phone_1 = forms.CharField(
-        label='Primary phone #', max_length=200)
+        label='Primary phone #', max_length=200, required=False)
     phone_1_type = forms.ChoiceField(
-        label='Primary Phone Type', choices=LINE_TYPE)
+        label='Primary Phone Type', choices=LINE_TYPE, required=False)
     phone_2 = forms.CharField(
         label='Secondary phone #', max_length=200, required=False)
     phone_2_type = forms.ChoiceField(
         label='Secondary Phone Type', choices=LINE_TYPE, required=False)
 
     first_name = forms.CharField(
-        label="First Name", max_length=20)
+        label="First Name", max_length=20, required=False)
     last_name = forms.CharField(
-        label="Last Name", max_length=20)
+        label="Last Name", max_length=20, required=False)
     phone = forms.CharField(
-        label="Phone #", max_length=15)
+        label="Phone #", max_length=15, required=False)
 
     notify = forms.BooleanField(
         label='Notify on New Volunteer Signup?', required=False)
@@ -269,7 +288,7 @@ class MemOrgForm(forms.ModelForm):
 
     class Meta:
         model = MemOrg
-        exclude = ("ny_counties", "vt_counties")
+        exclude = ("counties",)
 
 
 class NewMemOrgForm(forms.ModelForm):
@@ -289,7 +308,8 @@ class NewMemOrgForm(forms.ModelForm):
             ),
             Fieldset(
                 "",
-                HTML("<h3 class='lbl'>Counties member organization will manage</h3>"),
+                HTML("<h3 class='lbl'>Counties member "
+                     "organization will manage</h3>"),
                 Div(InlineCheckboxes("vt_counties"),
                     InlineCheckboxes("ny_counties"),
                     css_class="form-checkboxes")
@@ -324,7 +344,8 @@ class NewMemOrgForm(forms.ModelForm):
     website = forms.CharField(label='Website', max_length=50, required=False)
     description = forms.CharField(
         label='Description',
-        widget=forms.Textarea(attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
+        widget=forms.Textarea(
+            attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
         required=False)
     vt_counties = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
@@ -341,16 +362,16 @@ class NewMemOrgForm(forms.ModelForm):
     color = forms.ChoiceField(
         label="Colors", choices=COLORS, required=False)
     address_one = forms.CharField(
-        label='Address', max_length=30)
+        label='Address', max_length=30, required=False)
     address_two = forms.CharField(
         label='Address (line two)', max_length=30, required=False)
-    city = forms.CharField(label='City', max_length=15)
+    city = forms.CharField(label='City', max_length=15, required=False)
     state = forms.ChoiceField(
-        label="State", choices=STATES)
+        label="State", choices=STATES, required=False)
     zipcode = forms.CharField(
         label="Zipcode", max_length=11, required=False)
     physical_is_mailing = forms.BooleanField(
-        label='Physical Address is Mailing Address')
+        label='Physical Address is Mailing Address', required=False)
     mailing_address_one = forms.CharField(
         label='Address', max_length=200, required=False)
     mailing_address_two = forms.CharField(
@@ -363,20 +384,20 @@ class NewMemOrgForm(forms.ModelForm):
         label='Mailing Address Zipcode', max_length=11, required=False)
 
     phone_1 = forms.CharField(
-        label='Primary phone #', max_length=200)
+        label='Primary phone #', max_length=200, required=False)
     phone_1_type = forms.ChoiceField(
-        label='Primary Phone Type', choices=LINE_TYPE)
+        label='Primary Phone Type', choices=LINE_TYPE, required=False)
     phone_2 = forms.CharField(
         label='Secondary phone #', max_length=200, required=False)
     phone_2_type = forms.ChoiceField(
         label='Secondary Phone Type', choices=LINE_TYPE, required=False)
 
     first_name = forms.CharField(
-        label="First Name", max_length=20)
+        label="First Name", max_length=20, required=False)
     last_name = forms.CharField(
-        label="Last Name", max_length=20)
+        label="Last Name", max_length=20, required=False)
     phone = forms.CharField(
-        label="Phone #", max_length=15)
+        label="Phone #", max_length=15, required=False)
 
     notify = forms.BooleanField(
         label='Notify on New Volunteer Signup?', required=False)
@@ -389,3 +410,15 @@ class NewMemOrgForm(forms.ModelForm):
 
     class Meta:
         model = MemOrg
+
+    def save(self, *args, **kwargs):
+        saved = super(NewMemOrgForm, self).save(*args, **kwargs)
+        if 'vt_counties' in self.data:
+            for pk in self.data.getlist('vt_counties'):
+                county = County.objects.get(pk=pk)
+                saved.counties.add(county)
+        if 'ny_counties' in self.data:
+            for pk in self.data.getlist('ny_counties'):
+                county = County.objects.get(pk=pk)
+                saved.counties.add(county)
+        return saved
