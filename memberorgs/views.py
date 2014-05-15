@@ -71,7 +71,7 @@ class EditMemOrg(generic.UpdateView):
             return self.http_method_not_allowed(self.request, *args, **kwargs)
 
     def get_form_class(self):
-        if self.request.user.has_perm('memberorgs:uniauth'):
+        if self.request.user.has_perm('memberorgs.uniauth'):
             return AdminMemOrgForm
         else:
             return MemOrgForm
