@@ -29,15 +29,11 @@ from userprofile.models import (Profile,
 from userprofile.forms import (ProfileUpdateForm,
                                ProfileForm,
                                EditProfileForm,
-<<<<<<< HEAD
-                               AdminProfileForm)
+                               AdminProfileForm,
+                               UserEditForm)
 
 from generic.mixins import SimpleLoginCheckForGenerics
 
-=======
-                               AdminProfileForm,
-                               UserEditForm)
->>>>>>> master
 
 @login_required
 def userDetailEntry(request):
