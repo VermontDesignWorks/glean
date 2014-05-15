@@ -21,7 +21,7 @@ urlpatterns = patterns(
             'userprofile.auth'
         )(views.UserProfileDelete.as_view()),
         name="delete"),
-    url(r'^(?P<user_id>\d+)/edit/$', views.userEdit, name='useredit'),
+    url(r'^(?P<pk>\d+)/edit/$', views.UserEdit.as_view(), name='useredit'),
     url(r'^(?P<user_id>\d+)/promote/$', views.userPromote, name='userpromote'),
     url(r'^change/email/$', views.emailEdit, name='emailedit'),
     url(r'^(?P<user_id>\d+)/reaccept/$', views.reaccept, name='reaccept'),
