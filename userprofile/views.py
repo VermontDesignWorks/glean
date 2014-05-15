@@ -1,5 +1,6 @@
 # Create your views here.
 import csv
+from django.http import Http404
 
 from django import forms
 
@@ -28,10 +29,15 @@ from userprofile.models import (Profile,
 from userprofile.forms import (ProfileUpdateForm,
                                ProfileForm,
                                EditProfileForm,
+<<<<<<< HEAD
                                AdminProfileForm)
 
 from generic.mixins import SimpleLoginCheckForGenerics
 
+=======
+                               AdminProfileForm,
+                               UserEditForm)
+>>>>>>> master
 
 @login_required
 def userDetailEntry(request):
@@ -176,6 +182,21 @@ def userEdit(request, user_id):
             request,
             'userprofile/adminedit.html',
             {'person': person, 'profile': person, 'form': form})
+
+
+class UserEdit(generic.UpdateView):
+    model = Profile
+    success_url = reverse_lazy("home")
+    template_name = "userprofile/edit.html"
+    form_class = UserEditForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.has_perm("userprofil.uniauth"):
+            return super(UserEdit, self).dispatch(*args, **kwargs)
+        else:
+            raise Http404
+            return self.http_method_not_allowed(self.request, *args, **kwargs)
 
 
 def emailEdit(request):

@@ -1,14 +1,31 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}
 Edit Your User Information
 {% endblock %}
 
 {% block content %}
-	<h3>Edit Your User Information</h3>
-<form method="POST">
-	<span>{{form.errors}}&nbsp;</span>
-	{% csrf_token %}
-	{% include 'userprofile/profileform.html' %}
-	<input type="submit" value="Go!">
-</form>
+<div id="glean-index-header">
+    <h1 class="pull-left">{{object.user.username}}'s Details</h1>
+</div>
+
+<div class="glean-index-red red">
+    <h3>Your Details</h3>
+    <p>Change them if you need to. Just be sure to double check your spelling.</p>
+</div>
+<div class="form-errors">
+{{form.errors}}
+</div>
+<div style="width:600px; float:left">
+  {% crispy form %}
+</div>
+<style>
+.add-on {
+    background-color: transparent !important;
+    border: none !important;
+}
+.row {
+    margin-left: 0px !important;
+  }
+</style>
 {% endblock %}
