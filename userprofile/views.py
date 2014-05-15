@@ -30,10 +30,15 @@ from userprofile.models import (Profile,
 from userprofile.forms import (ProfileUpdateForm,
                                ProfileForm,
                                EditProfileForm,
+<<<<<<< HEAD
                                AdminProfileForm)
 
 from django.contrib import messages
 
+=======
+                               AdminProfileForm,
+                               UserEditForm)
+>>>>>>> Administrator-user-edit-form
 
 @login_required
 def userDetailEntry(request):
@@ -198,6 +203,7 @@ class UserEdit(generic.UpdateView):
     model = Profile
     success_url = reverse_lazy("home")
     template_name = "userprofile/edit.html"
+    form_class = UserEditForm
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
