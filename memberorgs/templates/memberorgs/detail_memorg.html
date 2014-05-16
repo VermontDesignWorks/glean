@@ -5,13 +5,11 @@
 {% endblock %}
 {% block body %}
 <div "detailwrapper">
-	<h1 style="float: left; display: inline;">{{object.name}}</h1>
-
-				<a href="{% url 'memorgs:editmemorg' object.id %}"><button class="glean-button green-button">Edit</button></a>
+	<h1 style="float:left;">{{object.name}}</h1>
+				<a {% if 'userprofile.uniauth' in user.get_group_permissions %} style="margin-left: 690px;" {% else %} style="margin-left: 946px;" {% endif %} href="{% url 'memorgs:editmemorg' object.id %}"><button class="glean-button green-button">Edit</button></a>
 				{% if 'userprofile.uniauth' in user.get_group_permissions %}
 				<a href="{% url 'memorgs:newadmin' object.id %}"><button class="glean-button yellow-button">New Administrator</button></a>
 				{% endif %}
-				</span>
 
 	<div id="MemOrgDetails" class="yellow-box red-top">
 		<span style="display: inline; float: left; margin: 20px;">
