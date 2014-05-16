@@ -180,8 +180,8 @@ class ProfileUpdateForm(forms.ModelForm):
     photo_release = forms.BooleanField(
         label="", required=False)
     opt_in = forms.BooleanField(label="", required=False)
-    password1 = forms.CharField(label="Change Password", required=False)
-    password2 = forms.CharField(label="Confirm Password", required=False)
+    password1 = forms.CharField(widget=forms.PasswordInput(), label="Change Password", required=False)
+    password2 = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password", required=False)
 
     def save(self, *args, **kwargs):
         saved = super(ProfileUpdateForm, self).save(*args, **kwargs)
@@ -285,8 +285,9 @@ class AdminProfileForm(forms.ModelForm):
     phone = forms.CharField(label="Primary Phone #:", max_length=200)
     phone_type = forms.ChoiceField(
         label="Phone Type", choices=PHONE_TYPE, initial='1')
-    password1 = forms.CharField(label="Change Password", required=False)
-    password2 = forms.CharField(label="Confirm Password", required=False)
+    password1 = forms.CharField(widget=forms.PasswordInput(), label="Change Password", required=False)
+    password2 = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password", required=False)
+
 
     def save(self, *args, **kwargs):
         saved = super(AdminProfileForm, self).save(*args, **kwargs)
@@ -468,8 +469,8 @@ class UserEditForm(forms.ModelForm):
     photo_release = forms.BooleanField(
         label="", required=False)
     opt_in = forms.BooleanField(label="", required=False)
-    password1 = forms.CharField(label="Change Password", required=False)
-    password2 = forms.CharField(label="Confirm Password", required=False)
+    password1 = forms.CharField(widget=forms.PasswordInput(), label="Change Password", required=False)
+    password2 = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password", required=False)
 
     def save(self, *args, **kwargs):
         saved = super(UserEditForm, self).save(*args, **kwargs)
