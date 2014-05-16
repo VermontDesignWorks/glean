@@ -33,11 +33,10 @@ from userprofile.forms import (ProfileUpdateForm,
                                AdminProfileForm,
                                UserEditForm)
 
-<<<<<<< HEAD
+
 from django.contrib import messages
-=======
+
 from generic.mixins import SimpleLoginCheckForGenerics
->>>>>>> master
 
 
 @login_required
