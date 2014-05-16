@@ -13,8 +13,6 @@ from userprofile.models import Profile
 from memberorgs.models import MemOrg, MemOrgForm, NewAdminForm
 from announce.models import Template
 
-from memberorgs.forms import DetailMemOrgForm
-
 from django.views import generic
 
 
@@ -84,7 +82,6 @@ def detailMemOrg(request, memorg_id):
 
 class DetailMemOrg(generic.DetailView):
     model = MemOrg
-    form_class = DetailMemOrgForm
     template_name = "memberorgs/detail_memorg.html"
 
 @permission_required('memberorgs.uniauth')
