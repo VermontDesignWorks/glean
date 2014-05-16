@@ -33,7 +33,11 @@ from userprofile.forms import (ProfileUpdateForm,
                                AdminProfileForm,
                                UserEditForm)
 
+<<<<<<< HEAD
 from django.contrib import messages
+=======
+from generic.mixins import SimpleLoginCheckForGenerics
+>>>>>>> master
 
 
 @login_required
@@ -62,12 +66,12 @@ def userDetailEntry(request):
                       {'form': form, 'error': ''})
 
 
-class ProfileUpdateView(generic.UpdateView):  # generic.UpdateView
+class ProfileUpdateView(SimpleLoginCheckForGenerics, generic.UpdateView):
     template_name = "userprofile/edit.html"
     model = Profile
     success_url = reverse_lazy("userprofile:selfedit")
 
-    def get_object(self, *args, **kwargs):
+    def get_object(self):
         return self.request.user.profile
 
     def post(self, request, *args, **kwargs):
@@ -121,7 +125,7 @@ def userLists(request):
         {'users': users})
 
 
-class UserProfileDelete(generic.DeleteView):
+class UserProfileDelete(SimpleLoginCheckForGenerics, generic.DeleteView):
     model = User
     template_name = "userprofile/delete.html"
     success_url = reverse_lazy("userprofile:userlists")
@@ -143,7 +147,7 @@ def userProfile(request, user_id):
     return render(request, 'userprofile/detail.html', {'person': person})
 
 
-class UserProfileDetailView(generic.DetailView):
+class UserProfileDetailView(SimpleLoginCheckForGenerics, generic.DetailView):
     model = User
     template_name = "userprofile/detail.html"
 
