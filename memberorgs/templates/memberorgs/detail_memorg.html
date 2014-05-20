@@ -6,12 +6,13 @@
 {% block body %}
 <div "detailwrapper">
 	<h1 style="float:left;">{{object.name}}</h1>
+	<span style="float: right">
 				<a {% if 'userprofile.uniauth' in user.get_group_permissions %} style="margin-right: 0px;" {% else %} style="margin-right: 0px;" {% endif %} href="{% url 'memorgs:editmemorg' object.id %}"><button class="glean-button green-button">Edit</button></a>
 				{% if 'userprofile.uniauth' in user.get_group_permissions %}
 				<a href="{% url 'memorgs:newadmin' object.id %}"><button class="glean-button yellow-button">New Administrator</button></a>
 				{% endif %}
-
-	<div id="MemOrgDetails" class="yellow-box red-top">
+</span>
+	<div id="MemOrgDetails" class="yellow-box red-top" style="width:100%;">
 		<span style="display: inline; float: left; margin: 20px;">
 			<h4>Physical Address</h4>
 			<address>
@@ -56,7 +57,7 @@
 		</span>
 	</div>
 	<div>
-    <div id="MemOrgCounties" class="yellow-box yellow-top" style="width: 45%; float: left; margin-top: 12px; height: 130px;">
+    <div id="MemOrgCounties" class="yellow-box yellow-top" style="width: 45%; float: left; margin-top: 12px; height: 150px;">
     <span style="margin: 20px; float: left;">
     <h4>Counties</h4>
     <div style="-webkit-column-count:2; -moz-column-count:2; column-count:2; column-gap:10px; -moz-column-gap:10px; -webkit-column-gap:10px;">
@@ -68,7 +69,7 @@
     </div>
     </span>
     </div>
-    <div id="MemOrgStaff" class="yellow-box green-top" style="width: 53%; float: right; height: 130px;">
+    <div id="MemOrgStaff" class="yellow-box green-top" style="width: 53%; float: right; height: 150px;">
     	<span style="margin: 20px; float: left;">	
     		<h4>Administrators</h4>
     		<span style="-webkit-column-count: 2; -moz-column-count:2; column-count:2; column-gap:10px; -moz-column-gap:10px; -webkit-column-gap:10px;">
