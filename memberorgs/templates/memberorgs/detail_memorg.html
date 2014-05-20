@@ -6,7 +6,7 @@
 {% block body %}
 <div "detailwrapper">
 	<h1 style="float:left;">{{object.name}}</h1>
-				<a {% if 'userprofile.uniauth' in user.get_group_permissions %} style="margin-left: 690px;" {% else %} style="margin-left: 946px;" {% endif %} href="{% url 'memorgs:editmemorg' object.id %}"><button class="glean-button green-button">Edit</button></a>
+				<a {% if 'userprofile.uniauth' in user.get_group_permissions %} style="margin-right: 0px;" {% else %} style="margin-right: 0px;" {% endif %} href="{% url 'memorgs:editmemorg' object.id %}"><button class="glean-button green-button">Edit</button></a>
 				{% if 'userprofile.uniauth' in user.get_group_permissions %}
 				<a href="{% url 'memorgs:newadmin' object.id %}"><button class="glean-button yellow-button">New Administrator</button></a>
 				{% endif %}
