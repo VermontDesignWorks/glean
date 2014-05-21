@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import permission_required
 from farms.models import (Farm, FarmForm, FarmLocation,
                           LocationForm, Contact, ContactForm)
 from django.http import HttpResponseForbidden
+from generic.mixins import SimpleLoginCheckForGenerics
 
 
 @permission_required('farms.auth')
@@ -82,7 +83,7 @@ def detailFarm(request, farm_id):
 # == Delete Farm View ==#
 
 
-class DeleteFarm(SingleObjectMixin, View):
+class DeleteFarm(SimpleLoginCheckForGenerics, SingleObjectMixin, View):
     model = Farm
     success_url = reverse_lazy("Farm-List")
 

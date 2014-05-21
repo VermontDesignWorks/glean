@@ -400,6 +400,17 @@ a.day-name {
    margin-bottom: 0;
    
 }
+.glean-index-red-child {
+   display: table;
+   height: 18px;
+   width: 100%;
+   padding-top: 20px;
+}
+.glean-index-red-child > h4 {
+   color: #ffc64a;
+   display: table-cell;
+   vertical-align: middle;
+}
 #glean-titles {
    width: 45%;
    clear: none;
@@ -928,6 +939,10 @@ input[type="checkbox"]:checked:after {
    font-weight: bold;
 }
 
+
+/* ============================================================================
+   Special Form editing
+   ============================================================================ */
 .form-errors {
 /*div tags*/
 	margin: 1em;
@@ -949,4 +964,13 @@ input[type="checkbox"]:checked:after {
 }
 .form-errors > ul > li:before {
 	content: "Error: ";
+}
+
+.form-wrapper-memorg {
+   margin-left: 5em;
+
+}
+.id_long_desc {
+    width: 300px !important;
+    height: 200px !important;
 }
