@@ -1,37 +1,25 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
 {% load url from future %}
 {% block title %}
 New Member Organization
 {% endblock title %}
 
 {% block heading %}
-<div class="form-wrapper-memorg">
 <h3>New Member Organization</h3>
-</div>
 {% endblock heading %}
 
 {% block content %}
-<div class="form-wrapper-memorg">
-<div class="glean-index-red red">
-	<div class="glean-index-red-child">
-	    <h4>It's Good to Make New Friends.</h4>
-	</div>
-</div>
-<div class="form-errors">
-{{form.errors}}
-</div>
-<div style="width:600px; float:left">
-  {% crispy form %}
-</div>
-<style>
-.add-on {
-    background-color: transparent !important;
-    border: none !important;
-}
-.row {
-    margin-left: 0px !important;
-  }
-</style>
-</div>
+	<form method="post" action="">
+		{{form.errors.as_ul}}
+		{% csrf_token %}
+		{% include 'memberorgs/custommemorg.html' %}
+		
+		<div class="form-actions">
+			<span class="pull-left"><span class="text-error" style="font-size:1.3em">*</span>Denotes a Required Field</span>
+			<div class="pull-right">
+			<input id="save-button" type="submit" name="action" class="glean-button green-button" value="Save">
+			<input id="save-and-button" type="submit" name="action" class="glean-button red-button" value="Save and Create First Administrator">
+			</div>
+		</div>
+	</form>
 {% endblock content %}

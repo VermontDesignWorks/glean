@@ -14,7 +14,7 @@ class MemOrg(models.Model):
     name = models.CharField(max_length=200)
     website = models.CharField('Website', max_length=50, blank=True, null=True)
     description = models.TextField('Description', blank=True, null=True)
-    counties = models.ManyToManyField(County, related_name="member_organizations", blank=True, null=True)
+    counties = models.ManyToManyField(County, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     volunteers = models.ManyToManyField(
         User, editable=False, related_name="member_organizations")
