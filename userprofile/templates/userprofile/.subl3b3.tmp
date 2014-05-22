@@ -23,7 +23,7 @@ Edit your User Information
 <div class="form-errors">
 {{form.errors}}
 </div>
-<div style="width:600px; float:left" class="2cols">
+<div style="width:600px; float:left" class="2col">
   {% crispy form %}
 </div>
 <div>
