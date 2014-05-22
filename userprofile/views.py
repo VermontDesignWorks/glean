@@ -211,7 +211,7 @@ class UserEdit(generic.UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        if self.request.user.has_perm("userprofil.uniauth"):
+        if self.request.user.has_perm("userprofile.uniauth"):
             return super(UserEdit, self).dispatch(*args, **kwargs)
         else:
             raise Http404
