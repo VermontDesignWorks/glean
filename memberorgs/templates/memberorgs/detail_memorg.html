@@ -16,7 +16,7 @@ h4.profileh4 {
 }
 
 </style>
-<div "detailwrapper" style="margin: 50px;">
+<div "detailwrapper" style="margin-left: 100px; margin-right: 100px; margin-top: 0px;">
 	<h1 style="float:left;">{{object.name}}</h1>
 	<span style="float: right">
 				<a {% if 'userprofile.uniauth' in user.get_group_permissions %} style="margin-right: 0px;" {% else %} style="margin-right: 0px;" {% endif %} href="{% url 'memorgs:editmemorg' object.id %}"><button class="glean-button green-button">Edit</button></a>
