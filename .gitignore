@@ -19,3 +19,4 @@ staticfiles
 .pydevproject
 *.sublime-workspace
 .sublime-workspace
+*.tmp
