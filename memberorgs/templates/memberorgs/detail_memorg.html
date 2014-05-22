@@ -1,77 +1,92 @@
 {% extends 'base.html' %}
 {% load url from future %}
 {% block title %}
-{{memorg.name}}
+{{object.name}}
 {% endblock %}
 {% block body %}
-<div class="row-fluid">
-	<div class="span9 text-center">
-		<h1>{{memorg.name}}</h1>
-			<a href="{% url 'memorgs:editmemorg' memorg.id %}" class="btn btn-warning">Edit Details</a>
-			{% if 'userprofile.uniauth' in user.get_group_permissions %}
-			<a href="{% url 'memorgs:newadmin' memorg.id %}" class="btn btn-primary">New Administrator</a>
+<div "detailwrapper">
+	<h1 style="float:left;">{{object.name}}</h1>
+	<span style="float: right">
+				<a {% if 'userprofile.uniauth' in user.get_group_permissions %} style="margin-right: 0px;" {% else %} style="margin-right: 0px;" {% endif %} href="{% url 'memorgs:editmemorg' object.id %}"><button class="glean-button green-button">Edit</button></a>
+				{% if 'userprofile.uniauth' in user.get_group_permissions %}
+				<a href="{% url 'memorgs:newadmin' object.id %}"><button class="glean-button yellow-button">New Administrator</button></a>
+				{% endif %}
+</span>
+	<div id="MemOrgDetails" class="yellow-box red-top" style="width:100%;">
+		<span style="display: inline; float: left; margin: 20px;">
+			<h4>Physical Address</h4>
+			<address>
+				{{object.address_one}}<br/>
+				{% if object.address_two != "" %}
+				{{object.address_two}}<br/>
+				{% endif %}
+				{{object.city}}<br/>
+				{{object.state}}<br/>
+				{{object.zipcode}}<br/>
+			</address>
+			<h4>Mailing Address</h4>
+			{% if object.physical_is_mailing == true %}
+			See Physical Address
+			{% else %}
+			{{object.mailing_address_one}}<br/>
+			{% if object.mailing_address_two != "" %}
+			{{object.mailing_address_two}}<br/>
 			{% endif %}
-	</div>
-	<div class="span3">
-		<p>{{memorg.description|linebreaks}}</p>
-	</div>
-</div>
-<div class="row-fluid">
-	<div class="span4">
-		
-		{% if staff %}
-		<li>Staff</li>
-		<ul>
-			{% for person in memorg.profile_set.all %}
-				<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}</a></li>
-			{% endfor %}
-		</ul>
-		{% else %}
-		<h5>Project Director</h5>
-		<ul>
-			{% for person in memorg.profile_set.all %}
-				{% if 'userprofile.promote' in person.user.get_group_permissions %}
-					<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}</a></li>	
-				{% endif %}
-			{% empty %}
-				<li>(none)</li>
-			{% endfor %}
-		</ul>
-		<h5>Gleaning Coordinator</h5>
-		<ul>
-			{% for person in memorg.profile_set.all %}
-				{% if not 'userprofile.promote' in person.user.get_group_permissions %}
-					{% if person.user.groups.all.count != 0 %}
-					<li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}</a></li>	
-					{% endif %}
-				{% endif %}
-			{% empty %}
-			<li>(none)</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-		
-		<h5>Volunteers:</h5>
-		<ul>
-			{% for volunteer in memorg.volunteers.all %}
-				{% if volunteer.groups.all.count == 0 %}
-					<li><a href="{% url 'userprofile:userprofile' volunteer.id %}">{{volunteer.profile.first_name}} {{volunteer.profile.last_name}}</a></li>
-				{% endif %}
-			{% endfor %}
-		</ul>
-	</div>
-	<div class="span4">
-	<h5>Recent Gleans:</h5>
-	<ul>
-		{% if memorg.glean_set.all %}
+			{{object.mailing_city}}<br/>
+			{{object.mailing_state}}<br/>
+			{{object.mailing_zip}}<br/>
+			{% endif %}
+			<h4>Description</h4>
+			{{object.description}}
+		</span>
+		<span style="display: inline; float: left; margin: 20px; margin-left: 400px;">
+			{{object.website}}
+			{{object.phone_1}}
+			{{object.phone_2}}
+		</span>
+		<span style="display: inline; float: right; margin: 20px;">
+			<h4>Recent Gleans</h4>
+				{% if memorg.glean_set.all %}
 
-	{% for glean in memorg.glean_set.all|slice:"10" %}
-	<li><a href="{% url 'gleanevent:detailglean' glean.id %}">{{glean.date}} - {{glean.title}}</a></li>
-	{% endfor %}
-	{% else %}
-	<li>No Gleans On Record</li>
-	</ul>
-	{% endif %}
+			{% for glean in memorg.glean_set.all|slice:"10" %}
+			<a href="{% url 'gleanevent:detailglean' glean.id %}">{{glean.date}} - {{glean.title}}</a>
+			{% endfor %}
+			{% else %}
+			No Gleans On Record
+			{% endif %}
+		</span>
+	</div>
 	<div>
+    <div id="MemOrgCounties" class="yellow-box yellow-top" style="width: 45%; float: left; margin-top: 12px; height: 150px;">
+    <span style="margin: 20px; float: left;">
+    <h4>Counties</h4>
+    <div style="-webkit-column-count:2; -moz-column-count:2; column-count:2; column-gap:10px; -moz-column-gap:10px; -webkit-column-gap:10px;">
+    {% if object.counties %}
+    	{% for county in object.counties.all %}
+    	      {{county}}<br/>
+    	 {% endfor %}
+    {% endif %}
+    </div>
+    </span>
+    </div>
+    <div id="MemOrgStaff" class="yellow-box green-top" style="width: 53%; float: right; height: 150px;">
+    	<span style="margin: 20px; float: left;">	
+    		<h4>Administrators</h4>
+    		<span style="-webkit-column-count: 2; -moz-column-count:2; column-count:2; column-gap:10px; -moz-column-gap:10px; -webkit-column-gap:10px;">
+    		{% for person in memorg.profile_set.all %}
+			{% if 'userprofile.promote' in person.user.get_group_permissions %}
+    		<a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}</a><br/>
+    		{% endif %}
+    		{% endfor %}
+    		</span>
+    	</span>
+    	<span style="margin: 20px; float: right;">
+    		<h4>Executive Director</h4>
+    		{{object.first_name}} {{object.last_name}}<br/>
+    		{{object.phone}}
+    	</span>
+    </div>
+    </div>
+
 </div>
 {% endblock body %}
