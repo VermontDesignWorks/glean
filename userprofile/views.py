@@ -125,8 +125,7 @@ def userLists(request):
         {'users': users})
 
 
-<<<<<<< HEAD
-class UserLists(generic.ListView):
+class UserLists(SimpleLoginCheckForGenerics, generic.ListView):
     template_name = "userprofile/userLists.html"
 
     def get_queryset(self):
@@ -141,10 +140,7 @@ class UserLists(generic.ListView):
         return userlist
 
 
-class UserProfileDelete(generic.DeleteView):
-=======
 class UserProfileDelete(SimpleLoginCheckForGenerics, generic.DeleteView):
->>>>>>> master
     model = User
     template_name = "userprofile/delete.html"
     success_url = reverse_lazy("userprofile:userlists")
