@@ -104,27 +104,19 @@ class AdminProfileUpdateView(generic.FormView):
     form_class = AdminProfileForm
 
 
-@permission_required('userprofile.auth')
-def userLists(request):
-    if request.user.has_perm('userprofile.uniauth'):
-        users = Profile.objects.all().order_by(
-            'member_organization',
-            'last_name')
-    else:
-        member_organization = request.user.profile.member_organization
-        user_objects = []
-        for county in request.user.profile.member_organization.counties.all():
-            for user in User.objects.all():
-                if county in user.counties.all():
-                    user_objects.append(user)
-        users = []
-        for user_object in user_objects:
-            users.append(user_object.profile)
+class UserLists(SimpleLoginCheckForGenerics, generic.ListView):
+    template_name = "userprofile/userLists.html"
 
-    return render(
-        request,
-        'userprofile/userLists.html',
-        {'users': users})
+    def get_queryset(self):
+        userlist = []
+        if self.request.user.has_perm('userprofile.uniauth'):
+            userlist = Profile.objects.all()
+        else:
+            for county in self.request.user.profile.member_organization.counties.all():
+                for profile in Profile.objects.all():
+                    if county in profile.counties.all():
+                        userlist.append(profile)
+        return userlist
 
 
 class UserProfileDelete(SimpleLoginCheckForGenerics, generic.DeleteView):
