@@ -5,7 +5,7 @@
 {% endblock %}
 {% block body %}
 <style>
-h4.profileh4 {
+.profileh4 {
 	margin: 0px;
 	padding: 0px;
 	margin-top: 10px;
@@ -15,6 +15,7 @@ h4.profileh4 {
 
 .closetext {
 	line-height: 90%;
+	font-size: 16px;
 }
 
 </style>
@@ -28,8 +29,8 @@ h4.profileh4 {
     </span>
 	<div id="MemOrgDetails" class="yellow-box red-top" style="width:100%; display: inline-block;">
 		<span style="display: inline; float: left; margin-left: 20px;">
-		    <h4 class="profileh4">Calendar Color</h4><p class="closetext">{{object.color}}</p>
-			<h4 class="profileh4">Physical Address</h4>
+		    <h3 class="profileh4">Calendar Color</h3><p class="closetext">{{object.color}}</p>
+			<h3 class="profileh4">Physical Address</h3>
 			<p class="closetext">
 			{{object.address_one}}<br/>
 			{% if object.address_two != "" %}
@@ -39,7 +40,7 @@ h4.profileh4 {
 			{{object.state}}<br/>
 			{{object.zipcode}}<br/>
 			</p>
-			<h4 class="profileh4">Mailing Address</h4>
+			<h3 class="profileh4">Mailing Address</h3>
 			<p class="closetext">
 			{% if object.physical_is_mailing == true %}
 			See Physical Address
@@ -53,16 +54,16 @@ h4.profileh4 {
 			{{object.mailing_zip}}<br/>
 			{% endif %}
 			</p>
-			<h4 class="profileh4">Description</h4>
+			<h3 class="profileh4">Description</h3>
 			<p class="closetext">{{object.description}}</p>
 		</span>
-		<span style="float: left; position: inline;  margin-left: 250px;">
-			<h4 class="profileh4">Website:{{object.website}}</h4>
-			<h4 class="profileh4">{{object.phone_1_type}}: {{object.phone_1}}</h4>
-			<h4 class="profileh4">{{object.phone_2_type}}: {{object.phone_2}}</h4>
+		<span style="float: left; position: inline;  margin-left: 150px;">
+			<h3 class="profileh4" style="display: inline;">Website:</h3><p class="closetext" style="display: inline;"> {{object.website}}</p><br/>
+			<h3 class="profileh4" style="display: inline;"> {{object.phone_1_type}}:</h3><p class="closetext" style="display: inline;"> {{object.phone_1}}</p><br/>
+			<h3 class="profileh4" style="display: inline;">{{object.phone_2_type}}:</h3><p class="closetext" style="display: inline;"> {{object.phone_2}}</p>
 		</span>
 		<span style="display: inline; float: right; margin-right: 150px;">
-			<h4 class="profileh4">Recent Gleans</h4>
+			<h3 class="profileh4">Recent Gleans</h3>
 			<p class="closetext">
 				{% if object.glean_set.all %}
 
@@ -78,7 +79,7 @@ h4.profileh4 {
 	<div>
     <div id="MemOrgCounties" class="yellow-box yellow-top" style="width: 45%; float: left; margin-top: 12px; min-height: 150px;">
     <span style="margin-left: 20px; float: left;">
-    <h4 class="profileh4">Counties</h4>
+    <h3 class="profileh4">Counties</h3>
     <div style="-webkit-column-count:2; -moz-column-count:2; column-count:2; column-gap:10px; -moz-column-gap:10px; -webkit-column-gap:10px;">
     <p class="closetext">
     {% if object.counties %}
@@ -92,7 +93,7 @@ h4.profileh4 {
     </div>
     <div id="MemOrgStaff" class="yellow-box green-top" style="width: 53%; float: right; min-height: 150px;">
     	<span style="margin-left: 20px; float: left;">	
-    		<h4 class="profileh4">Administrators</h4>
+    		<h3 class="profileh4">Administrators</h3>
     		<span style="-webkit-column-count: 2; -moz-column-count:2; column-count:2; column-gap:10px; -moz-column-gap:10px; -webkit-column-gap:10px;">
     		<p class="closetext">
     		{% for person in memorg.profile_set.all %}
@@ -104,7 +105,7 @@ h4.profileh4 {
     		</span>
     	</span>
     	<span style="margin-right: 80px; float: right;">
-    		<h4 class="profileh4">Executive Director</h4>
+    		<h3 class="profileh4">Executive Director</h3>
     		<p class="closetext">
     		{{object.first_name}} {{object.last_name}}<br/>
     		{{object.phone}}<br/>
