@@ -60,7 +60,8 @@ class EditMemOrg(generic.UpdateView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         if self.kwargs["pk"].isdigit:
-            if int(self.request.user.profile.member_organization.pk) == int(self.kwargs["pk"]):
+            if int(self.request.user.profile.member_organization.pk) == int(
+                    self.kwargs["pk"]):
                 return super(EditMemOrg, self).dispatch(*args, **kwargs)
             elif self.request.user.has_perm('memberorgs.uniauth'):
                 return super(EditMemOrg, self).dispatch(*args, **kwargs)
@@ -82,39 +83,9 @@ class EditMemOrg(generic.UpdateView):
             args=[self.kwargs["pk"]])
 
 
-def detailMemOrg(request, memorg_id):
-    memorg = get_object_or_404(MemOrg, pk=memorg_id)
-    staff = True
-    for each in memorg.profile_set.all():
-        if not each.user.has_perm('userprofile.promote'):
-            staff = False
-    return render(request, 'memberorgs/detail_memorg.html',
-                  {'memorg': memorg, 'staff': staff})
-
-
-@permission_required('memberorgs.uniauth')
-def newMemOrgAndSuperUser(request):
-    if request.method == "POST":
-        form = MemOrgForm(request.POST)
-        if form.is_valid():
-            new_save = form.save()
-            new_save.save()
-            new_template = Template(
-                template_name="Default Template",
-                member_organization=new_save,
-                body="<html><body><h3 style='text-align:center;color:green'>{{glean.title}}</h3><p>{{glean.description}}</p><p>{{custom}}</p><p>For more information, click on the {{info}} link!</p><p>To no longer receive emails about gleaning, click on the {{unsubscribe}} link.</p></body></html>",
-                default=True)
-            new_template.save()
-            return HttpResponseRedirect(reverse('memorgs:detailmemorg',
-                                        args=(new_save.id,)))
-        else:
-            return render(request, 'memberorgs/new_memorg.html',
-                          {'form': form,
-                           'error':
-                           'Your Member Organization Form Was Not Valid'})
-    else:
-        form = MemOrgForm()
-        return render(request, 'memberorgs/new_memorg.html', {'form': form})
+class DetailMemOrg(generic.DetailView):
+    model = MemOrg
+    template_name = "memberorgs/detail_memorg.html"
 
 
 @permission_required('memberorgs.auth')
@@ -122,7 +93,8 @@ def newMemOrgAndSuperUser(request):
 def newAdministrator(request, memorg_id):
     member_organization = get_object_or_404(MemOrg, pk=memorg_id)
     profile = request.user.profile
-    if not request.user.has_perm('memberorgs.uniauth') and member_organization != profile.member_organization:
+    if not request.user.has_perm('memberorgs.uniauth') and (
+            member_organization != profile.member_organization):
         return HttpResponseRedirect(
             reverse('memorgs:detailmemorg', args=(memorg_id,)))
     if request.method == 'POST':
@@ -168,8 +140,10 @@ def newAdministrator(request, memorg_id):
                 form = NewAdminForm()
                 if not request.user.has_perm('userprofile.uniauth'):
                     form.fields['access_level'].choices = TRUNCATED_LEVELS
-                form.fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg_id)
-                notice = 'Administrator account ' + new_user.username + ' has been created'
+                form.fields['member_organization'].queryset = (
+                    MemOrg.objects.filter(pk=memorg_id))
+                notice = 'Administrator account ' + new_user.username + ''
+                ' has been created'
                 return render(request, 'memberorgs/newadmin.html',
                               {'form': form, 'notice': notice})
         else:
