@@ -112,8 +112,11 @@ def userLists(request):
             'last_name')
     else:
         member_organization = request.user.profile.member_organization
-        user_objects = member_organization.volunteers.all().order_by(
-            '-last_name')
+        user_objects = []
+        for county in request.user.profile.member_organization.counties.all():
+            for user in User.objects.all():
+                if county in user.counties.all():
+                    user_objects.append(user)
         users = []
         for user_object in user_objects:
             users.append(user_object.profile)
@@ -138,9 +141,15 @@ class UserProfileDelete(SimpleLoginCheckForGenerics, generic.DeleteView):
 def userProfile(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     member_organization = request.user.profile.member_organization
+    users = []
+    for county in request.user.profile.member_organization.counties.all():
+        for user in User.objects.all():
+            if county in user.counties.all():
+                users.append(user)
+
     if request.user.has_perm('userprofile.uniauth'):
         pass
-    elif user not in member_organization.volunteers.all():
+    elif user not in users:
         return HttpResponseRedirect(reverse('home'))
     person = Profile.objects.get(user=user)
     return render(request, 'userprofile/detail.html', {'person': person})
@@ -284,7 +293,11 @@ def download(request):
     if request.user.has_perm('userprofile.uniauth'):
         profiles = User.objects.all()
     else:
-        profiles = request.user.profile.member_organization.volunteers.all()
+        profiles = []
+        for county in request.user.profile.member_organization.counties.all():
+            for user in User.objects.all():
+                if county in user.counties.all():
+                    profiles.append(user)
     for person in profiles:
             profile = person.profile
             writer.writerow([
@@ -360,8 +373,10 @@ def newUser(request):
     if request.user.has_perm('userprofile.uniauth'):
         users = User.objects.all().order_by('-date_joined')[:20]
     else:
-        users = request.user.profile.member_organization.volunteers.order_by(
-            '-date_joined')[:20]
+        for county in request.user.profile.member_organization.counties.all():
+            for user in User.objects.all():
+                if county in user.counties.all():
+                    users.append(user)
     return render(
         request,
         'userprofile/newuser.html',
@@ -396,8 +411,6 @@ def userPromote(request, user_id):
                 user.groups.clear()
                 profile.member_organization = form.cleaned_data[
                     'member_organization']
-                if user not in profile.member_organization.volunteers.all():
-                    profile.member_organization.volunteers.add(user)
                 profile.save()
                 if form.cleaned_data['promote']:
                     if form.cleaned_data['member_organization'] == rq_memorg:

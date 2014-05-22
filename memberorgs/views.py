@@ -113,7 +113,6 @@ def newAdministrator(request, memorg_id):
             new_profile.save()
             for county in member_organization.counties.all():
                 new_profile.counties.add(county)
-            member_organization.volunteers.add(new_user)
             if member_organization.name == 'Salvation Farms':
                 if form.cleaned_data['access_level'] == 'PD':
                     sal = Group.objects.get(
