@@ -1,5 +1,6 @@
 # Create your views here.
 import csv
+import sys
 from django.http import Http404
 
 from django import forms
@@ -31,6 +32,9 @@ from userprofile.forms import (ProfileUpdateForm,
                                EditProfileForm,
                                AdminProfileForm,
                                UserEditForm)
+
+
+from django.contrib import messages
 
 from generic.mixins import SimpleLoginCheckForGenerics
 
@@ -64,12 +68,28 @@ def userDetailEntry(request):
 class ProfileUpdateView(SimpleLoginCheckForGenerics, generic.UpdateView):
     template_name = "userprofile/edit.html"
     model = Profile
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("userprofile:selfedit")
 
     def get_object(self):
         return self.request.user.profile
 
+    def post(self, request, *args, **kwargs):
+        if self.request.POST.get("submit") == "Save Changes":
+            self.object = self.get_object()
+            return super(ProfileUpdateView, self).post(request, *args, **kwargs)
+        elif self.request.POST.get("submit") == "change password":
+            if self.request.POST.get("password1") == self.request.POST.get("password2"):
+                u = User.objects.get(pk=self.request.user.pk)
+                u.set_password(self.request.POST.get("password1"))
+                u.save()
+                messages.add_message(self.request, messages.INFO, "Password Reset.")
+                return HttpResponseRedirect("/users/edit/")
+            elif self.request.POST.get("password1") != self.request.POST.get("password2"):
+                messages.add_message(self.request, messages.INFO, "Password Reset Failed.")
+                return HttpResponseRedirect("/users/edit/")
+
     def get_form_class(self):
+        print >> sys.stderr, messages.INFO
         if self.request.user.has_perm('userprofile:uniauth'):
             return AdminProfileForm
         else:
@@ -182,17 +202,35 @@ def userEdit(request, user_id):
 
 class UserEdit(generic.UpdateView):
     model = Profile
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("userprofile:useredit")
     template_name = "userprofile/edit.html"
     form_class = UserEditForm
 
+    def get_success_url(self):
+        return reverse_lazy("userprofile:useredit", args=self.kwargs["pk"])
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        if self.request.user.has_perm("userprofil.uniauth"):
+        if self.request.user.has_perm("userprofile.uniauth"):
             return super(UserEdit, self).dispatch(*args, **kwargs)
         else:
             raise Http404
             return self.http_method_not_allowed(self.request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if self.request.POST.get("submit") == "Save Changes":
+            self.object = self.get_object()
+            return super(UserEdit, self).post(request, *args, **kwargs)
+        elif self.request.POST.get("submit") == "change password":
+            if self.request.POST.get("password1") == self.request.POST.get("password2"):
+                u = User.objects.get(pk=self.kwargs["pk"])
+                u.set_password(self.request.POST.get("password1"))
+                u.save()
+                messages.add_message(self.request, messages.INFO, "Password Reset.")
+                return HttpResponseRedirect("/users/edit/")
+            elif self.request.POST.get("password1") != self.request.POST.get("password2"):
+                messages.add_message(self.request, messages.INFO, "Password Reset Failed.")
+                return HttpResponseRedirect("/users/edit/")
 
 
 def emailEdit(request):

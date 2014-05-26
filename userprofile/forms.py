@@ -29,6 +29,16 @@ class ProfileUpdateForm(forms.ModelForm):
         self.helper.form_id = "id-custom-registration-form"
         self.helper.form_method = "post"
         self.helper.layout = Layout(
+            HTML("<div style='float: right'>"),
+            Fieldset(
+                "",
+                Row("password1"),
+                Row("password2")
+            ),
+            HTML("<input type='submit' "
+                 "class='glean-button green-button' "
+                 "name='submit' value='change password'>"),
+            HTML("</div>"),
             Fieldset(
                 "",
                 Row("first_name", "last_name"),
@@ -170,6 +180,8 @@ class ProfileUpdateForm(forms.ModelForm):
     photo_release = forms.BooleanField(
         label="", required=False)
     opt_in = forms.BooleanField(label="", required=False)
+    password1 = forms.CharField(widget=forms.PasswordInput(), label="Change Password", required=False)
+    password2 = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password", required=False)
 
     def save(self, *args, **kwargs):
         saved = super(ProfileUpdateForm, self).save(*args, **kwargs)
@@ -213,6 +225,16 @@ class AdminProfileForm(forms.ModelForm):
         self.helper.form_id = "id-custom-admin-registration-form"
         self.helper.form_method = "post"
         self.helper.layout = Layout(
+            HTML("<div style='float: right'>"),
+            Fieldset(
+                "",
+                Row("password1"),
+                Row("password2")
+            ),
+            HTML("<input type='submit' "
+                 "class='glean-button green-button' "
+                 "name='submit' value='change password'>"),
+            HTML("</div>"),
             Fieldset(
                 "",
                 Row("first_name", "last_name"),
@@ -263,6 +285,9 @@ class AdminProfileForm(forms.ModelForm):
     phone = forms.CharField(label="Primary Phone #:", max_length=200)
     phone_type = forms.ChoiceField(
         label="Phone Type", choices=PHONE_TYPE, initial='1')
+    password1 = forms.CharField(widget=forms.PasswordInput(), label="Change Password", required=False)
+    password2 = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password", required=False)
+
 
     def save(self, *args, **kwargs):
         saved = super(AdminProfileForm, self).save(*args, **kwargs)
@@ -293,6 +318,16 @@ class UserEditForm(forms.ModelForm):
         self.helper.form_id = "id-custom-admin-edit-form"
         self.helper.form_method = "post"
         self.helper.layout = Layout(
+            HTML("<div style='float: right'>"),
+            Fieldset(
+                "",
+                Row("password1"),
+                Row("password2")
+            ),
+            HTML("<input type='submit' "
+                 "class='glean-button green-button' "
+                 "name='submit' value='change password'>"),
+            HTML("</div>"),
             Fieldset(
                 "",
                 Row("first_name", "last_name"),
@@ -434,6 +469,8 @@ class UserEditForm(forms.ModelForm):
     photo_release = forms.BooleanField(
         label="", required=False)
     opt_in = forms.BooleanField(label="", required=False)
+    password1 = forms.CharField(widget=forms.PasswordInput(), label="Change Password", required=False)
+    password2 = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password", required=False)
 
     def save(self, *args, **kwargs):
         saved = super(UserEditForm, self).save(*args, **kwargs)

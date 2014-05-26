@@ -1,4 +1,3 @@
-import sys
 from django import forms
 from django.template.loader import render_to_string
 
@@ -280,32 +279,17 @@ class MyRegistrationView(RegistrationView):
         profile.save()
         for county in form.cleaned_data['vt_counties']:
             profile.counties.add(county)
-            #county.affix_to_memorgs(user, mail=True)
+            county.affix_to_memorgs(user, mail=True)
         for county in form.cleaned_data['ny_counties']:
             profile.counties.add(county)
-            #county.affix_to_memorgs(user, mail=True)
-        user_in_a_memorg = False
-        for county in profile.counties.all():
-            for memorg in MemOrg.objects.all():
-                if county in memorg.counties.all():
-                    user_in_a_memorg = True
-                    if memorg.notify:
-                        subject = "New User Notification"
-                        text = render_to_string(
-                            "registration/notify.html",
-                            {"object": profile})
-                        print >> sys.stderr, text
-                        print >> sys.stderr, memorg
-                        quick_mail(subject, text, memorg.testing_email)
-
-        if user_in_a_memorg is False:
-            memo = MemOrg.objects.get(pk=1)
+            county.affix_to_memorgs(user, mail=True)
+        memo = MemOrg.objects.get(pk=1)
+        if memo not in user.member_organizations.all():
             if memo.notify:
                 subject = "New User Notification"
                 text = render_to_string(
                     "registration/sal_farm_notify.html",
                     {"object": profile}
                 )
-                print >> sys.stderr, text
                 quick_mail(subject, text, memo.testing_email)
         return user
