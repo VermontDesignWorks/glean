@@ -1,4 +1,5 @@
 # Create your views here.
+import sys
 import csv
 import sys
 from django.http import Http404
@@ -102,6 +103,21 @@ class ProfileUpdateView(SimpleLoginCheckForGenerics, generic.UpdateView):
 
 class AdminProfileUpdateView(generic.FormView):
     form_class = AdminProfileForm
+
+
+class UserLists(SimpleLoginCheckForGenerics, generic.ListView):
+    template_name = "userprofile/userLists.html"
+
+    def get_queryset(self):
+        userlist = []
+        if self.request.user.has_perm('userprofile.uniauth'):
+            userlist = Profile.objects.all()
+        else:
+            for county in self.request.user.profile.member_organization.counties.all():
+                for profile in Profile.objects.all():
+                    if county in profile.counties.all():
+                        userlist.append(profile)
+        return userlist
 
 
 class UserLists(SimpleLoginCheckForGenerics, generic.ListView):
