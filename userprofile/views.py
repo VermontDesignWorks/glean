@@ -220,11 +220,11 @@ class UserEdit(SimpleLoginCheckForGenerics, generic.UpdateView):
                 u.save()
                 messages.add_message(
                     self.request, messages.INFO, "Password Reset.")
-                return super(UserEdit, self).post(request, *args, **kwargs)
+                return HttpResponseRedirect(reverse('userprofile:useredit', kwargs={'pk': self.kwargs["pk"]}))
             elif self.request.POST.get("password1") != self.request.POST.get("password2"):
                 messages.add_message(
                     self.request, messages.INFO, "Password Reset Failed.")
-                return super(UserEdit, self).post(request, *args, **kwargs)
+                return HttpResponseRedirect(reverse('userprofile:useredit', kwargs={'pk': self.kwargs["pk"]}))
 
     def get_object(self):
         u = User.objects.get(pk=self.kwargs["pk"])
