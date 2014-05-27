@@ -106,13 +106,17 @@ class UserLists(SimpleLoginCheckForGenerics, generic.ListView):
 
     def get_queryset(self):
         userlist = []
+        inuserlist = False
         if self.request.user.has_perm('userprofile.uniauth'):
             userlist = User.objects.all()
         else:
-            for county in self.request.user.profile.member_organization.counties.all():
-                for user in User.objects.all():
-                    if county in user.profile.counties.all():
-                        userlist.append(user)
+            for user in User.objects.all():
+                inuserlist = False
+                for county in self.request.user.profile.member_organization.counties.all():    
+                    if inuserlist is False:
+                        if county in user.profile.counties.all():
+                            userlist.append(user)
+                            inuserlist = True
         return userlist
 
 
@@ -164,40 +168,6 @@ class UserProfileDetailView(SimpleLoginCheckForGenerics, generic.DetailView):
         return obj.profile
 
 
-@permission_required('userprofile.auth')
-def userEdit(request, user_id):
-    user = get_object_or_404(User, pk=user_id)
-    target_memorg = user.profile.member_organization
-    memorg = request.user.profile.member_organization
-    if target_memorg != memorg and not request.user.has_perm(
-            'userprofile.uniauth'):
-        return HttpResponseRedirect(reverse('home'))
-    person = Profile.objects.get(user=user)
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, person)
-        if form.is_valid():
-            new_save = form.save(commit=False)
-            new_save.user = user
-            new_save.id = person.id
-            new_save.member_organization = person.member_organization
-            new_save.save()
-            form.save_m2m()
-            return HttpResponseRedirect(
-                reverse('userprofile:userprofile', args=(user_id,)))
-        else:
-            return render(
-                request,
-                'userprofile/adminedit.html',
-                {'person': person, 'profile': person, 'form': form})
-
-    else:
-        form = ProfileForm(instance=person)
-        return render(
-            request,
-            'userprofile/adminedit.html',
-            {'person': person, 'profile': person, 'form': form})
-
-
 class UserEdit(SimpleLoginCheckForGenerics, generic.UpdateView):
     model = User
     success_url = reverse_lazy("userprofile:useredit")
@@ -236,10 +206,24 @@ class UserEdit(SimpleLoginCheckForGenerics, generic.UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        if self.request.user.has_perm("userprofile.auth"):
+        editpk = self.kwargs["pk"]
+        objectpk = int(editpk)
+        if self.request.user.has_perm("userprofile.uniauth"):
             return super(UserEdit, self).dispatch(*args, **kwargs)
+        elif self.request.user.has_perm("userprofile.auth"):
+            userlist = []
+            for user in User.objects.all():
+                for county in self.request.user.profile.member_organization.counties.all():
+                    if county in user.profile.counties.all():
+                        if user.has_perm('userprofile.uniauth') is False:
+                            userlist.append(user)
+            currentuser = User.objects.get(pk=editpk)
+            if currentuser in userlist:
+                return super(UserEdit, self).dispatch(*args, **kwargs)
+            else:
+                raise Http404
         else:
-            raise http404
+            raise Http404
 
 
 def emailEdit(request):
@@ -294,11 +278,24 @@ def download(request):
         profiles = User.objects.all()
     else:
         profiles = []
-        for county in request.user.profile.member_organization.counties.all():
-            for user in User.objects.all():
-                if county in user.counties.all():
-                    profiles.append(user)
+        in_profiles = False
+        for user in User.objects.all():
+            in_profiles = False
+            for county in request.user.profile.member_organization.counties.all():
+                if in_profiles is False:
+                    if county in user.profile.counties.all():
+                        in_profiles = True
+                        profiles.append(user)
     for person in profiles:
+            in_memberorgs = False
+            memberorgs = []
+            for memorg in MemOrg.objects.all():
+                in_memberorgs = False
+                for county in person.profile.counties.all():
+                    if in_memberorgs is False:
+                        if county in memorg.counties.all():
+                            in_memberorgs = True
+                            memberorgs.append(memorg)
             profile = person.profile
             writer.writerow([
                 profile.user.username,
@@ -313,7 +310,7 @@ def download(request):
                 profile.age,
                 profile.phone,
                 profile.get_phone_type_display(),
-                person.member_organizations.all(),
+                memberorgs,
                 profile.get_preferred_method_display(),
                 profile.joined,
                 profile.ecfirst_name,
@@ -368,12 +365,13 @@ def newUser(request):
             form = ExtendedRegistrationForm()
     else:
         form = ExtendedRegistrationForm()
+    users = []    
     if request.user.has_perm('userprofile.uniauth'):
         users = User.objects.all().order_by('-date_joined')[:20]
     else:
         for county in request.user.profile.member_organization.counties.all():
             for user in User.objects.all():
-                if county in user.counties.all():
+                if county in user.profile.counties.all():
                     users.append(user)
     return render(
         request,
