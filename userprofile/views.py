@@ -1,7 +1,6 @@
 # Create your views here.
 import sys
 import csv
-import sys
 from django.http import Http404
 
 from django import forms
