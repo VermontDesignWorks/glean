@@ -139,8 +139,6 @@ def confirmLink(request, glean_id):
             profile = request.user.profile
             profile.rsvped += 1
             profile.save()
-            if request.user not in glean.member_organization.volunteers.all():
-                glean.member_organization.volunteers.add(request.user)
             if request.user in glean.not_rsvped.all():
                 glean.not_rsvped.remove(request.user)
             glean.save()

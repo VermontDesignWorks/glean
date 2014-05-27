@@ -194,12 +194,10 @@ class ProfileUpdateForm(forms.ModelForm):
             for pk in self.data.getlist('vt_counties'):
                 county = County.objects.get(pk=pk)
                 saved.counties.add(county)
-                county.affix_to_memorgs(saved.user)
         if 'ny_counties' in self.data:
             for pk in self.data.getlist('ny_counties'):
                 county = County.objects.get(pk=pk)
                 saved.counties.add(county)
-                county.affix_to_memorgs(saved.user)
         return saved
 
     class Meta:
@@ -296,12 +294,10 @@ class AdminProfileForm(forms.ModelForm):
             for pk in self.data.getlist('vt_counties'):
                 county = County.objects.get(pk=pk)
                 saved.counties.add(county)
-                county.affix_to_memorgs(saved.user)
         if 'ny_counties' in self.data:
             for pk in self.data.getlist('ny_counties'):
                 county = County.objects.get(pk=pk)
                 saved.counties.add(county)
-                county.affix_to_memorgs(saved.user)
         return saved
 
     class Meta:
@@ -483,12 +479,10 @@ class UserEditForm(forms.ModelForm):
             for pk in self.data.getlist('vt_counties'):
                 county = County.objects.get(pk=pk)
                 saved.counties.add(county)
-                county.affix_to_memorgs(saved.user)
         if 'ny_counties' in self.data:
             for pk in self.data.getlist('ny_counties'):
                 county = County.objects.get(pk=pk)
                 saved.counties.add(county)
-                county.affix_to_memorgs(saved.user)
         return saved
 
     class Meta:

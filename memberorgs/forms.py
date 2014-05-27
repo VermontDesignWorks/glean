@@ -88,10 +88,6 @@ class AdminMemOrgForm(forms.ModelForm):
         self.initial["ny_counties"] = [
             x.pk for x in memorg.counties.filter(state="NY")
         ]
-        self.initial["volunteers"] = [
-            x.pk for x in memorg.volunteers.order_by(
-                "last_name").order_by("first_name")
-        ]
     name = forms.CharField(label='name', max_length=200)
     website = forms.CharField(label='Website', max_length=50, required=False)
     description = forms.CharField(
@@ -219,20 +215,12 @@ class MemOrgForm(forms.ModelForm):
                  "name='submit' value='Save Changes'>")
         )
         memorg = kwargs["instance"]
-        self.initial["volunteers"] = [
-            x.pk for x in memorg.volunteers.order_by(
-                "last_name").order_by("first_name")
-        ]
     name = forms.CharField(label='name', max_length=200)
     website = forms.CharField(label='Website', max_length=50, required=False)
     description = forms.CharField(
         label='Description',
         widget=forms.Textarea(
             attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
-        required=False)
-    volunteers = UserMultipleModelChoiceField(
-        queryset=User.objects.order_by("last_name").order_by("first_name"),
-        label="Volunteers",
         required=False)
 
     color = forms.ChoiceField(

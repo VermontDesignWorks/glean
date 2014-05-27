@@ -33,18 +33,17 @@ Volunteer Index
 </div>
 
 <div id="glean-index" class="yellow-box yellow-top">
-	{% if users %}
-	
+    {% if object_list %}
 		<div class="glean-column">
 			<ul>
-			{% for person in users %}
+			{% for person in object_list %}
 			{% if forloop.counter|divisibleby:10 %}
 			</ul>
 		</div>
 		<div class="glean-column">
 			<ul>
 			{% endif %}
-			<li><a href="{% url 'userprofile:userprofile' person.user.pk %}">{{person.last_name}}, {{person.first_name}} - {{person.user.username}}</a>
+			<li><a href="{% url 'userprofile:userprofile' person.pk %}">{{person.profile.last_name}}, {{person.profile.first_name}} - {{person.username}}</a>
 			</li>
 			{% endfor %}
 			</ul>
