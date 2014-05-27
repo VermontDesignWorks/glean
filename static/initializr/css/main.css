@@ -250,6 +250,25 @@ h3 {
 #map-canvas {
    height:383px;
 }
+.full-width {
+   width:1130px;
+   clear:both;
+   padding:0 20px 20px 20px;
+}
+.forty-percent {
+   width:40%;
+   clear:none;
+   float:left;
+   min-height:200px;
+}
+.sixty-percent {
+   min-height:200px;
+   width:49.45%;
+   margin-left:3%;
+   padding:0 20px 20px 20px;
+   clear:none;
+   float:left;
+}
 
 /* ==========================================================================
    home.html
