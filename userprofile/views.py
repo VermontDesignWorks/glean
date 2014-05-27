@@ -206,27 +206,34 @@ class UserEdit(SimpleLoginCheckForGenerics, generic.UpdateView):
     form_class = UserEditForm
 
     def get_success_url(self):
-        return reverse_lazy("userprofile:useredit", args=self.kwargs["pk"])
+        editpk = self.kwargs["pk"]
+        objectpk = int(editpk)
+        return reverse_lazy("userprofile:useredit", kwargs={'pk': objectpk})
 
     def post(self, request, *args, **kwargs):
         if self.request.POST.get("submit") == "Save Changes":
             self.object = self.get_object()
             return super(UserEdit, self).post(request, *args, **kwargs)
         elif self.request.POST.get("submit") == "change password":
+            editpk = self.kwargs["pk"]
+            objectpk = int(editpk)
             if self.request.POST.get("password1") == self.request.POST.get("password2"):
-                u = User.objects.get(pk=self.kwargs["pk"])
+                u = User.objects.get(pk=objectpk)
                 u.set_password(self.request.POST.get("password1"))
                 u.save()
                 messages.add_message(
                     self.request, messages.INFO, "Password Reset.")
-                return HttpResponseRedirect(reverse('userprofile:useredit', args={'pk': self.kwargs["pk"]}))
+                return HttpResponseRedirect(reverse('userprofile:useredit', kwargs={'pk': objectpk}))
             elif self.request.POST.get("password1") != self.request.POST.get("password2"):
                 messages.add_message(
                     self.request, messages.INFO, "Password Reset Failed.")
-                return HttpResponseRedirect(reverse('userprofile:useredit', args={'pk': self.kwargs["pk"]}))
+                return HttpResponseRedirect(reverse('userprofile:useredit', kwargs={'pk': objectpk}))
 
     def get_object(self):
-        u = User.objects.get(pk=self.kwargs["pk"])
+        editpk = self.kwargs["pk"]
+        objectpk = int(editpk)
+        print >> sys.stderr, objectpk
+        u = User.objects.get(pk=objectpk)
         return u.profile
 
     @method_decorator(login_required)
