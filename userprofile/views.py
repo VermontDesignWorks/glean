@@ -220,15 +220,22 @@ class UserEdit(SimpleLoginCheckForGenerics, generic.UpdateView):
                 u.save()
                 messages.add_message(
                     self.request, messages.INFO, "Password Reset.")
-                return HttpResponseRedirect("/users/edit/")
+                return super(UserEdit, self).post(request, *args, **kwargs)
             elif self.request.POST.get("password1") != self.request.POST.get("password2"):
                 messages.add_message(
                     self.request, messages.INFO, "Password Reset Failed.")
-                return HttpResponseRedirect("/users/edit/")
+                return super(UserEdit, self).post(request, *args, **kwargs)
 
     def get_object(self):
         u = User.objects.get(pk=self.kwargs["pk"])
         return u.profile
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.has_perm("userprofile.auth"):
+            return super(UserEdit, self).dispatch(*args, **kwargs)
+        else:
+            raise http404
 
 
 def emailEdit(request):
