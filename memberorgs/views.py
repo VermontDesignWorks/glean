@@ -61,10 +61,12 @@ class EditMemOrg(generic.UpdateView):
     def dispatch(self, *args, **kwargs):
         if self.kwargs["pk"].isdigit:
             if self.request.user.has_perm('memberorgs.uniauth'):
-                return super(DetailMemOrg, self).dispatch(*args, **kwargs)
+                return super(EditMemOrg, self).dispatch(*args, **kwargs)
             elif self.request.user.has_perm('memberorgs.auth'):
-                if int(self.request.user.profile.member_organization.pk) == int(self.kwargs["pk"]):
-                    return super(DetailMemOrg, self).dispatch(*args, **kwargs)
+                if int(
+                    self.request.user.profile.member_organization.pk) == int(
+                        self.kwargs["pk"]):
+                    return super(EditMemOrg, self).dispatch(*args, **kwargs)
                 else:
                     raise Http404
             else:
@@ -94,7 +96,9 @@ class DetailMemOrg(generic.DetailView):
             if self.request.user.has_perm('memberorgs.uniauth'):
                 return super(DetailMemOrg, self).dispatch(*args, **kwargs)
             elif self.request.user.has_perm('memberorgs.auth'):
-                if int(self.request.user.profile.member_organization.pk) == int(self.kwargs["pk"]):
+                if int(
+                    self.request.user.profile.member_organization.pk) == int(
+                        self.kwargs["pk"]):
                     return super(DetailMemOrg, self).dispatch(*args, **kwargs)
                 else:
                     raise Http404
