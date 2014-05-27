@@ -219,11 +219,11 @@ class UserEdit(SimpleLoginCheckForGenerics, generic.UpdateView):
                 u.save()
                 messages.add_message(
                     self.request, messages.INFO, "Password Reset.")
-                return HttpResponseRedirect(reverse('userprofile:useredit', kwargs={'pk': self.kwargs["pk"]}))
+                return HttpResponseRedirect(reverse('userprofile:useredit', args={'pk': self.kwargs["pk"]}))
             elif self.request.POST.get("password1") != self.request.POST.get("password2"):
                 messages.add_message(
                     self.request, messages.INFO, "Password Reset Failed.")
-                return HttpResponseRedirect(reverse('userprofile:useredit', kwargs={'pk': self.kwargs["pk"]}))
+                return HttpResponseRedirect(reverse('userprofile:useredit', args={'pk': self.kwargs["pk"]}))
 
     def get_object(self):
         u = User.objects.get(pk=self.kwargs["pk"])
@@ -356,10 +356,8 @@ def newUser(request):
 
             for county in form.cleaned_data['vt_counties']:
                 profile.counties.add(county)
-                county.affix_to_memorgs(new_user)
             for county in form.cleaned_data['ny_counties']:
                 profile.counties.add(county)
-                county.affix_to_memorgs(new_user)
             notice = ('New Volunteer ' + profile.first_name +
                       ' ' + profile.last_name + ' has been created.')
             form = ExtendedRegistrationForm()
