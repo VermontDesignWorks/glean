@@ -1,5 +1,4 @@
 # Create your views here.
-import sys
 import csv
 from django.http import Http404
 
@@ -232,7 +231,6 @@ class UserEdit(SimpleLoginCheckForGenerics, generic.UpdateView):
     def get_object(self):
         editpk = self.kwargs["pk"]
         objectpk = int(editpk)
-        print >> sys.stderr, objectpk
         u = User.objects.get(pk=objectpk)
         return u.profile
 
