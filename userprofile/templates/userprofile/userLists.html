@@ -49,7 +49,7 @@ Volunteer Index
 		<div class="glean-column">
 			<ul>
 			{% endif %}
-			<li><a href="{% url 'userprofile:userprofile' person.user.pk %}">{{person.last_name}}, {{person.first_name}} - {{person.user.username}}</a>
+			<li><a href="{% url 'userprofile:userprofile' person.pk %}">{{person.profile.last_name}}, {{person.profile.first_name}} - {{person.username}}</a>
 			</li>
 			{% endfor %}
 			</ul>

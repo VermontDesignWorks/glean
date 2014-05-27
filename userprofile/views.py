@@ -77,28 +77,26 @@ class ProfileUpdateView(SimpleLoginCheckForGenerics, generic.UpdateView):
     def post(self, request, *args, **kwargs):
         if self.request.POST.get("submit") == "Save Changes":
             self.object = self.get_object()
-            return super(ProfileUpdateView, self).post(request, *args, **kwargs)
+            return super(ProfileUpdateView, self).post(
+                request, *args, **kwargs)
         elif self.request.POST.get("submit") == "change password":
             if self.request.POST.get("password1") == self.request.POST.get("password2"):
                 u = User.objects.get(pk=self.request.user.pk)
                 u.set_password(self.request.POST.get("password1"))
                 u.save()
-                messages.add_message(self.request, messages.INFO, "Password Reset.")
+                messages.add_message(
+                    self.request, messages.INFO, "Password Reset.")
                 return HttpResponseRedirect("/users/edit/")
             elif self.request.POST.get("password1") != self.request.POST.get("password2"):
-                messages.add_message(self.request, messages.INFO, "Password Reset Failed.")
+                messages.add_message(
+                    self.request, messages.INFO, "Password Reset Failed.")
                 return HttpResponseRedirect("/users/edit/")
 
     def get_form_class(self):
-        print >> sys.stderr, messages.INFO
         if self.request.user.has_perm('userprofile:uniauth'):
             return AdminProfileForm
         else:
             return ProfileUpdateForm
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ProfileUpdateView, self).dispatch(*args, **kwargs)
 
 
 class AdminProfileUpdateView(generic.FormView):
@@ -111,27 +109,12 @@ class UserLists(SimpleLoginCheckForGenerics, generic.ListView):
     def get_queryset(self):
         userlist = []
         if self.request.user.has_perm('userprofile.uniauth'):
-            userlist = Profile.objects.all()
+            userlist = User.objects.all()
         else:
             for county in self.request.user.profile.member_organization.counties.all():
-                for profile in Profile.objects.all():
-                    if county in profile.counties.all():
-                        userlist.append(profile)
-        return userlist
-
-
-class UserLists(SimpleLoginCheckForGenerics, generic.ListView):
-    template_name = "userprofile/userLists.html"
-
-    def get_queryset(self):
-        userlist = []
-        if self.request.user.has_perm('userprofile.uniauth'):
-            userlist = Profile.objects.all()
-        else:
-            for county in self.request.user.profile.member_organization.counties.all():
-                for profile in Profile.objects.all():
-                    if county in profile.counties.all():
-                        userlist.append(profile)
+                for user in User.objects.all():
+                    if county in user.profile.counties.all():
+                        userlist.append(user)
         return userlist
 
 
@@ -217,22 +200,14 @@ def userEdit(request, user_id):
             {'person': person, 'profile': person, 'form': form})
 
 
-class UserEdit(generic.UpdateView):
-    model = Profile
+class UserEdit(SimpleLoginCheckForGenerics, generic.UpdateView):
+    model = User
     success_url = reverse_lazy("userprofile:useredit")
     template_name = "userprofile/edit.html"
     form_class = UserEditForm
 
     def get_success_url(self):
         return reverse_lazy("userprofile:useredit", args=self.kwargs["pk"])
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        if self.request.user.has_perm("userprofile.uniauth"):
-            return super(UserEdit, self).dispatch(*args, **kwargs)
-        else:
-            raise Http404
-            return self.http_method_not_allowed(self.request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if self.request.POST.get("submit") == "Save Changes":
@@ -243,11 +218,17 @@ class UserEdit(generic.UpdateView):
                 u = User.objects.get(pk=self.kwargs["pk"])
                 u.set_password(self.request.POST.get("password1"))
                 u.save()
-                messages.add_message(self.request, messages.INFO, "Password Reset.")
+                messages.add_message(
+                    self.request, messages.INFO, "Password Reset.")
                 return HttpResponseRedirect("/users/edit/")
             elif self.request.POST.get("password1") != self.request.POST.get("password2"):
-                messages.add_message(self.request, messages.INFO, "Password Reset Failed.")
+                messages.add_message(
+                    self.request, messages.INFO, "Password Reset Failed.")
                 return HttpResponseRedirect("/users/edit/")
+
+    def get_object(self):
+        u = User.objects.get(pk=self.kwargs["pk"])
+        return u.profile
 
 
 def emailEdit(request):
