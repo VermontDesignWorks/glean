@@ -16,9 +16,6 @@ class MemOrg(models.Model):
     description = models.TextField('Description', blank=True, null=True)
     counties = models.ManyToManyField(County, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
-    volunteers = models.ManyToManyField(
-        User, editable=False, related_name="member_organizations")
-
     color = models.CharField(
         'Color', choices=COLORS, max_length=20, default='muted')
 

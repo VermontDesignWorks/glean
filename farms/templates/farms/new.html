@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load url from future %}
 {% block title %}
 New Farm!
@@ -10,46 +11,13 @@ New Farm!
 
 
 {% block body %}
+<div class="form-errors">
+{{form.errors}}
+</div>
+<div style="width: 1300px; height: 2800px; float: left;">
+  {% crispy form %}
+ </div>
 
-
-	<form method="post" action="">
-		{% csrf_token %}
-		{% include 'farms/customform.html' %}
-		<div class="form-actions yellow-box green-top">
-			<div id="form-buttons" class="pull-left">
-				<input id="save-button" type="submit" class="glean-button green-button" name="action" value="Save And View" />
-				<input id="save-and-button" type="submit" class="glean-button yellow-button" name="action" value="Save and Create Additional Field Location" />
-			</div>
-			<span class="pull-right"><span class="text-error">*</span><span>Denotes a Required Field</span></span>
-		</div>
-	</form>
-	<div style="margin-bottom:250px;">
-	&nbsp;
-	</div>
-{% endblock body %}
-{% block javascript %}
-<script>
-	$("#id_counties").change(function (){
-		if ($("#id_counties option:selected").length != 0) {
-			$("#save-button").prop("disabled", false);
-			$("#save-and-button").prop("disabled", false);
-			$(".form-actions").popover("destroy");
-
-		} else {
-			$("#save-button").prop("disabled", true);
-			$("#save-and-button").prop("disabled", true);
-			$(".form-actions").popover(
-				{
-					title: "Please Select at least one County",
-					trigger:"hover",
-					content: "<p style='width:100%; text-align:center'>:(</p>",
-					placement:"top",
-					html:"true"
-				}
-			);
-		}
-	}).change();
-</script>
 {% endblock %}
 {% block related %}
 <p>Creating this profile for a new farm adds it to the Farm Index. Farms must have a profile in the Interface for you to enter harvest and distribution data, so <b>make sure you fill out this form for any farm you glean with.</b></p>

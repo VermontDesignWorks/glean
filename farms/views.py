@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 # add view for certain type
-from django.views.generic import View
+from django.views.generic import View, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 # experimenting with edit mixins
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -16,6 +16,7 @@ from farms.models import (Farm, FarmForm, FarmLocation,
                           LocationForm, Contact, ContactForm)
 from django.http import HttpResponseForbidden
 from generic.mixins import SimpleLoginCheckForGenerics
+from farms.forms import *
 
 
 @permission_required('farms.auth')
@@ -52,6 +53,12 @@ def newFarm(request):
     else:
         form = FarmForm()
         return render(request, 'farms/new.html', {'form': form})
+
+
+class NewFarm(SimpleLoginCheckForGenerics, CreateView):
+    model = Farm
+    template_name = 'farms/new.html'
+    form_class = NewFarm
 
 
 @permission_required('farms.auth')
