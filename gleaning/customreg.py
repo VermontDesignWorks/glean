@@ -279,12 +279,22 @@ class MyRegistrationView(RegistrationView):
         profile.save()
         for county in form.cleaned_data['vt_counties']:
             profile.counties.add(county)
-            county.affix_to_memorgs(user, mail=True)
         for county in form.cleaned_data['ny_counties']:
             profile.counties.add(county)
-            county.affix_to_memorgs(user, mail=True)
-        memo = MemOrg.objects.get(pk=1)
-        if memo not in user.member_organizations.all():
+        user_in_memorg = False
+        for county in profile.counties.all():
+            for memorg in MemOrg.objects.all():
+                if county in memorg.counties.all():
+                    if memorg.notify:
+                        user_in_memorg = True
+                        subject = "New User Notification"
+                        text = render_to_string(
+                            "registration/notify.html",
+                            {"object": profile}
+                        )
+                        quick_mail(subject, text, memorg.testing_email)
+        if user_in_memorg is False:
+            memorg = MemOrg.objects.get(pk=1)
             if memo.notify:
                 subject = "New User Notification"
                 text = render_to_string(

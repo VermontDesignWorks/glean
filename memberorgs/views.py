@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse, reverse_lazy
-
+from django.http import Http404
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
@@ -60,16 +60,19 @@ class EditMemOrg(generic.UpdateView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         if self.kwargs["pk"].isdigit:
-            if int(self.request.user.profile.member_organization.pk) == int(
-                    self.kwargs["pk"]):
+            if self.request.user.has_perm('memberorgs.uniauth'):
                 return super(EditMemOrg, self).dispatch(*args, **kwargs)
-            elif self.request.user.has_perm('memberorgs.uniauth'):
-                return super(EditMemOrg, self).dispatch(*args, **kwargs)
+            elif self.request.user.has_perm('memberorgs.auth'):
+                if int(
+                    self.request.user.profile.member_organization.pk) == int(
+                        self.kwargs["pk"]):
+                    return super(EditMemOrg, self).dispatch(*args, **kwargs)
+                else:
+                    raise Http404
             else:
-                return self.http_method_not_allowed(
-                    self.request, *args, **kwargs)
+                raise Http404
         else:
-            return self.http_method_not_allowed(self.request, *args, **kwargs)
+            raise Http404
 
     def get_form_class(self):
         if self.request.user.has_perm('memberorgs.uniauth'):
@@ -86,6 +89,23 @@ class EditMemOrg(generic.UpdateView):
 class DetailMemOrg(generic.DetailView):
     model = MemOrg
     template_name = "memberorgs/detail_memorg.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if self.kwargs["pk"].isdigit:
+            if self.request.user.has_perm('memberorgs.uniauth'):
+                return super(DetailMemOrg, self).dispatch(*args, **kwargs)
+            elif self.request.user.has_perm('memberorgs.auth'):
+                if int(
+                    self.request.user.profile.member_organization.pk) == int(
+                        self.kwargs["pk"]):
+                    return super(DetailMemOrg, self).dispatch(*args, **kwargs)
+                else:
+                    raise Http404
+            else:
+                raise Http404
+        else:
+            raise Http404
 
 
 @permission_required('memberorgs.auth')
@@ -113,7 +133,6 @@ def newAdministrator(request, memorg_id):
             new_profile.save()
             for county in member_organization.counties.all():
                 new_profile.counties.add(county)
-            member_organization.volunteers.add(new_user)
             if member_organization.name == 'Salvation Farms':
                 if form.cleaned_data['access_level'] == 'PD':
                     sal = Group.objects.get(
