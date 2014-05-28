@@ -1,119 +1,126 @@
 {% extends 'base.html' %}
-{% load url from future %}
 {% block title %}
-{{object.name}}
-{% endblock %}
+Details of {{ object.name }}
+{% endblock title %}
+
+{% block heading %}
+{% endblock heading %}
+
 {% block body %}
-<style>
-.profileh4 {
-	margin: 0px;
-	padding: 0px;
-	margin-top: 10px;
-	text-decoration: bold;
-	font-weight: bold;
-	line-height: 90%;
-}
-
-.closetext {
-	line-height: 90%;
-	font-size: 16px;
-}
-
-</style>
-<div "detailwrapper" style="margin-left: 100px; margin-right: 100px; margin-top: 0px;">
-	<h1 style="float:left;">{{object.name}}</h1>
-	<span style="float: right">
-				<a {% if 'userprofile.uniauth' in user.get_group_permissions %} style="margin-right: 0px;" {% else %} style="margin-right: 0px;" {% endif %} href="{% url 'memorgs:editmemorg' object.id %}"><button class="glean-button green-button">Edit</button></a>
-				{% if 'userprofile.uniauth' in user.get_group_permissions %}
-				<a href="{% url 'memorgs:newadmin' object.id %}"><button class="glean-button yellow-button">New Administrator</button></a>
-				{% endif %}
-    </span>
-	<div id="MemOrgDetails" class="yellow-box red-top" style="width:100%; display: inline-block;">
-		<span style="display: inline; float: left; margin-left: 20px;">
-		    <h3 class="profileh4">Calendar Color</h3><p class="closetext">{{object.color}}</p>
-			<h3 class="profileh4">Physical Address</h3>
-			<p class="closetext">
-			{{object.address_one}}<br/>
-			{% if object.address_two != "" %}
-			{{object.address_two}}<br/>
-			{% endif %}
-			{{object.city}}<br/>
-			{{object.state}}<br/>
-			{{object.zipcode}}<br/>
-			</p>
-			<h3 class="profileh4">Mailing Address</h3>
-			<p class="closetext">
-			{% if object.physical_is_mailing == true %}
-			See Physical Address
-			{% else %}
-			{{object.mailing_address_one}}<br/>
-			{% if object.mailing_address_two != "" %}
-			{{object.mailing_address_two}}<br/>
-			{% endif %}
-			{{object.mailing_city}}<br/>
-			{{object.mailing_state}}<br/>
-			{{object.mailing_zip}}<br/>
-			{% endif %}
-			</p>
-			<h3 class="profileh4">Description</h3>
-			<p class="closetext">{{object.description}}</p>
-		</span>
-		<span style="float: left; position: inline;  margin-left: 150px;">
-			<h3 class="profileh4" style="display: inline;">Website:</h3><p class="closetext" style="display: inline;"> {{object.website}}</p><br/>
-			<h3 class="profileh4" style="display: inline;"> {{object.phone_1_type}}:</h3><p class="closetext" style="display: inline;"> {{object.phone_1}}</p><br/>
-			<h3 class="profileh4" style="display: inline;">{{object.phone_2_type}}:</h3><p class="closetext" style="display: inline;"> {{object.phone_2}}</p>
-		</span>
-		<span style="display: inline; float: right; margin-right: 150px;">
-			<h3 class="profileh4">Recent Gleans</h3>
-			<p class="closetext">
-				{% if object.glean_set.all %}
-
-			{% for glean in object.glean_set.all|slice:"10" %}
-			<a href="{% url 'gleanevent:detailglean' glean.id %}">{{glean.date}} - {{glean.title}}</a>
-			{% endfor %}
-			{% else %}
-			No Gleans On Record
-			{% endif %}
-			</p>
-		</span>
-	</div>
-	<div>
-    <div id="MemOrgCounties" class="yellow-box yellow-top" style="width: 45%; float: left; margin-top: 12px; min-height: 150px;">
-    <span style="margin-left: 20px; float: left;">
-    <h3 class="profileh4">Counties</h3>
-    <div style="-webkit-column-count:2; -moz-column-count:2; column-count:2; column-gap:10px; -moz-column-gap:10px; -webkit-column-gap:10px;">
-    <p class="closetext">
-    {% if object.counties %}
-    	{% for county in object.counties.all %}
-    	      {{county}}<br/>
-    	 {% endfor %}
-    {% endif %}
-    </p>
+<div class="body-container">
+    <div id="farm-header">
+        <div class="pull-left">
+            <h1>{{object.name}}</h1>
+        </div>
+        <div class="pull-right farm-buttons">
+            <a href="{% url 'memorgs:editmemorg' object.id %}">
+                <button class="glean-button yellow-button no-margin">
+                    Edit
+                </button>
+            </a>
+        </div>
     </div>
-    </span>
+
+    <div class="yellow-box red-top">
+
+        <div class="farm-third">
+            <h3>Address</h3>
+            <ul class="no-list">
+            <li>{{object.address_one}}</li>
+            {% if object.address_two %}
+                <li>{{object.address_two}}</li>
+            {% endif %}
+            <li>{{object.city}}</li>
+            <li>{{object.state}} {{object.zipcode}}</li>
+            </ul>
+            {% if not object.physical_is_mailing %}
+                <h3>Mailing Address</h3>
+                <ul class="no-list">
+                <li>{{object.mailing_address_one}}</li>
+                {% if object.mailing_address_two %}
+                    <li>{{object.address_two}}</li>
+                {% endif %}
+                <li>{{object.mailing_city}}</li>
+                <li>{{object.mailing_state}} {{object.mailing_zipcode}}</li>
+                </ul>
+            {% endif %}
+        </div>
+
+        <div class="farm-third">
+            <h3>Website</h3>
+            <ul class="no-list">
+                <li>{{object.website}}</li>
+            </ul>
+            <h3>Phone</h3>
+            <ul class="no-list">
+                <li>{{object.phone_1}}</li>
+            </ul>
+            <h3>Notification Email</h3>
+            <ul class="to-list">
+                <li>{{object.testing_email}}
+            </ul>
+            <h3>Testing Mode</h3>
+            <ul class="to-list">
+                <li>
+                    {% if object.testing %}
+                        <span class="yes-text">Yes</span>
+                    {% else %}
+                        <span class="no-text">No</span>
+                    {% endif %}
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="farm-third">
+        
+        <h3>Recent Gleans</h3>
+        <ul class="no-list">
+            {% for glean in object.gleanevent_set.all|slice:"5" %}
+            <li class=""><a href="{% url 'gleanevent:detailglean' glean.id %}">{{glean.title}}</a></li>
+            {% empty %}
+            <li>No Gleans At This Farm yet</li>
+            {% endfor %}
+        </ul>
+        </div>
+
+        <div class="full-width">
+            <h3>Description</h3>
+            <p>{{object.description|linebreaks}}</p>
+        </div>
+
     </div>
-    <div id="MemOrgStaff" class="yellow-box green-top" style="width: 53%; float: right; min-height: 150px;">
-    	<span style="margin-left: 20px; float: left;">	
-    		<h3 class="profileh4">Administrators</h3>
-    		<span style="-webkit-column-count: 2; -moz-column-count:2; column-count:2; column-gap:10px; -moz-column-gap:10px; -webkit-column-gap:10px;">
-    		<p class="closetext">
-    		{% for person in memorg.profile_set.all %}
-			{% if 'userprofile.auth' in person.user.get_group_permissions %}
-    		<a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}</a><br/>
-    		{% endif %}
-    		{% endfor %}
-    		</p>
-    		</span>
-    	</span>
-    	<span style="margin-right: 80px; float: right;">
-    		<h3 class="profileh4">Executive Director</h3>
-    		<p class="closetext">
-    		{{object.first_name}} {{object.last_name}}<br/>
-    		{{object.phone}}<br/>
-    		{{object.testing_email}}
-    		</p>
-    	</span>
+
+    <div class="yellow-box yellow-top directions-instructions forty-percent">
+        <h3>Counties</h3>
+        <ul class="no-list">
+            {% for county in object.counties.all %}
+            <li>{{county}}, {{county.state}}</li>
+            {% empty %}
+            <li>No Counties :(</li>
+            {% endfor %}
+        </ul>
     </div>
+
+    <div class="yellow-box green-top sixty-percent">
+        <div class="half pull-left">
+            <h3>Administrators</h3>
+            <ul class="no-list">
+                {% for person in memorg.profile_set.all %}
+                {% if 'userprofile.auth' in person.user.get_group_permissions %}
+                <li><a href="{% url 'userprofile:userprofile' person.user.id %}">{{person.first_name}} {{person.last_name}}</a></li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="half pull-left">
+            <h3>Executive Director</h3>
+            <ul>
+                <li>{{object.first_name}}</li>
+                <li>{{object.last_name}}</li>
+                <li>{{object.phone}}</li>
+            </ul>
+        </div>
     </div>
 
 </div>
