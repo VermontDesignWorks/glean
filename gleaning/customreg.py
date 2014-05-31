@@ -180,7 +180,6 @@ class ExtendedRegistrationForm(RegistrationForm):
         label="Do you accept the Waiver of Liability?", required=True)
     agreement = forms.BooleanField(
         label="Do you accept the Volunteer Agreement?", required=True)
-    # seriously?
     photo_release = forms.BooleanField(
         label="Do you accept the Photo Release?", required=False)
     opt_in = forms.BooleanField(label="", required=False)
@@ -239,41 +238,42 @@ class AdminExtendedRegistrationForm(RegistrationForm):
 
 class MyRegistrationView(RegistrationView):
     form_class = ExtendedRegistrationForm
-    #def get_form(self,request):
-    #       return ExtendedRegistrationForm
 
-    def register(self, *args, **kwargs):
+    def register(self, request, **cleaned_data):
         form = self.get_form(ExtendedRegistrationForm)
-        form.is_valid()
-        user = super(MyRegistrationView, self).register(*args, **kwargs)
+        form.is_valid()  # <- really
+        user = super(MyRegistrationView, self).register(
+            request,
+            **cleaned_data
+        )
 
         profile = Profile(
-            first_name=form.cleaned_data['first_name'],
-            last_name=form.cleaned_data['last_name'],
-            address_one=form.cleaned_data['address_one'],
-            address_two=form.cleaned_data['address_two'],
-            city=form.cleaned_data['city'],
-            state=form.cleaned_data['state'],
-            zipcode=form.cleaned_data['zipcode'],
-            age=form.cleaned_data['age'],
-            phone=form.cleaned_data['phone'],
-            phone_type=form.cleaned_data['phone_type'],
-            ecphone=form.cleaned_data['ecphone'],
-            preferred_method=form.cleaned_data['preferred_method'],
-            ecfirst_name=form.cleaned_data['ecfirst_name'],
-            eclast_name=form.cleaned_data['eclast_name'],
-            ecrelationship=form.cleaned_data['ecrelationship'],
+            first_name=cleaned_data['first_name'],
+            last_name=cleaned_data['last_name'],
+            address_one=cleaned_data['address_one'],
+            address_two=cleaned_data['address_two'],
+            city=cleaned_data['city'],
+            state=cleaned_data['state'],
+            zipcode=cleaned_data['zipcode'],
+            age=cleaned_data['age'],
+            phone=cleaned_data['phone'],
+            phone_type=cleaned_data['phone_type'],
+            ecphone=cleaned_data['ecphone'],
+            preferred_method=cleaned_data['preferred_method'],
+            ecfirst_name=cleaned_data['ecfirst_name'],
+            eclast_name=cleaned_data['eclast_name'],
+            ecrelationship=cleaned_data['ecrelationship'],
             user=user,
-            waiver=form.cleaned_data['waiver'],
-            agreement=form.cleaned_data['agreement'],
-            tasks_gleaning=form.cleaned_data['tasks_gleaning'],
-            tasks_farm_pickups=form.cleaned_data['tasks_farm_pickups'],
-            tasks_delivery=form.cleaned_data['tasks_delivery'],
-            tasks_admin=form.cleaned_data['tasks_admin'],
-            tasks_processing=form.cleaned_data['tasks_processing'],
-            notes=form.cleaned_data['notes'],
-            photo_release=form.cleaned_data['photo_release'],
-            opt_in=form.cleaned_data['opt_in']
+            waiver=cleaned_data['waiver'],
+            agreement=cleaned_data['agreement'],
+            tasks_gleaning=cleaned_data['tasks_gleaning'],
+            tasks_farm_pickups=cleaned_data['tasks_farm_pickups'],
+            tasks_delivery=cleaned_data['tasks_delivery'],
+            tasks_admin=cleaned_data['tasks_admin'],
+            tasks_processing=cleaned_data['tasks_processing'],
+            notes=cleaned_data['notes'],
+            photo_release=cleaned_data['photo_release'],
+            opt_in=cleaned_data['opt_in']
         )
 
         profile.save()
@@ -295,11 +295,11 @@ class MyRegistrationView(RegistrationView):
                         quick_mail(subject, text, memorg.testing_email)
         if user_in_memorg is False:
             memorg = MemOrg.objects.get(pk=1)
-            if memo.notify:
+            if memorg.notify:
                 subject = "New User Notification"
                 text = render_to_string(
                     "registration/sal_farm_notify.html",
                     {"object": profile}
                 )
-                quick_mail(subject, text, memo.testing_email)
+                quick_mail(subject, text, memorg.testing_email)
         return user
