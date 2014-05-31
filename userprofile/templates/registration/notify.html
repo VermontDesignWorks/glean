@@ -1,14 +1,62 @@
 <html>
     <head>
         <title>
-            New User
+            The Gleaners Interface - New User Notification
         </title>
     </head>
 <body>
 <h3>
-{{object.first_name}} {{object.last_name}} Registered to Glean in your Area!</h3>
+{{object.first_name}} {{object.last_name}} Registered to Glean!</h3>
 <p>
-{{object.first_name}} {{object.last_name}} ({{object.user.email}}) has filled out the registration form.</p>
+{{object.first_name}} {{object.last_name}} ({{object.user.email}} - {{object.user.username}}) has filled out the registration form.</p>
+<h4>Counties {{object.first_name}} wants to glean in:</h4>
+<ul>
+{% for county in object.counties.all %}
+    <li>{{county}}, {{county.state}}</li>
+{% empty %}
+    <li>No counties selected!</li>
+{% endfor %}
+
+<h4>How They'd Like to Participate:</h4>
+<ul style="list-style:none">
+        <li>Gleaning:
+            {% if object.tasks_gleaning %}
+                <span class="yes-text">Yes</span>
+            {% else %}
+                <span class="no-text">No</span>
+            {% endif %}
+        </li>
+        <li>Farm / Farmers Market Pickups:
+            {% if object.tasks_farm_pickups %}
+                <span class="yes-text">Yes</span>
+            {% else %}
+                <span class="no-text">No</span>
+            {% endif %}
+        </li>
+        <li>Delivery:
+            {% if object.tasks_delivery %}
+                <span class="yes-text">Yes</span>
+            {% else %}
+                <span class="no-text">No</span>
+            {% endif %}
+        </li>
+        <li>Administrative:
+            {% if object.tasks_admin %}
+                <span class="yes-text">Yes</span>
+            {% else %}
+                <span class="no-text">No</span>
+            {% endif %}
+        </li>
+        <li>Processing:
+            {% if object.tasks_processing %}
+                <span class="yes-text">Yes</span>
+            {% else %}
+                <span class="no-text">No</span>
+            {% endif %}
+        </li>
+</ul>
+</ul>
+<p>We look forward to seeing them in the field!</p>
 <p style='font-size:0.8em'>
 You are recieving this notification because you opted into notifications when new volunteers joined in counties your Member Organization gleans in. To stop recieving these notifications, sign into the Gleaners Interface and change your Member Organization preferences.</p>
 </body>

@@ -82,7 +82,7 @@ class MemOrg(models.Model):
             subject = "New User Notification"
             text = render_to_string(
                 "registration/notify.html",
-                {"object": user, "member_organization": self}
+                {"object": user.profile, "member_organization": self}
             )
             quick_mail(subject, text, self.testing_email)
             return 1
