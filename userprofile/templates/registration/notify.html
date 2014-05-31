@@ -8,7 +8,16 @@
 <h3>
 {{object.first_name}} {{object.last_name}} Registered to Glean!</h3>
 <p>
-{{object.first_name}} {{object.last_name}} ({{object.user.email}} - {{object.user.username}}) has filled out the registration form.</p>
+{{object.first_name}} {{object.last_name}} - {{object.user.username}}) has filled out the registration form.</p>
+<h3>
+    Additional Information:
+<ul>
+    <li>Email: {{object.user.email}}</li>
+    <li>Phone: {{object.phone}}</li>
+</ul>
+</h3>
+<h4>Additional Notes:</h4>
+<p>{{object.notes|linebreaks}}</p>
 <h4>Counties {{object.first_name}} wants to glean in:</h4>
 <ul>
 {% for county in object.counties.all %}
