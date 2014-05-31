@@ -91,7 +91,7 @@ class ProfileUpdateView(SimpleLoginCheckForGenerics, generic.UpdateView):
                 return HttpResponseRedirect("/users/edit/")
 
     def get_form_class(self):
-        if self.request.user.has_perm('userprofile:uniauth'):
+        if self.request.user.has_perm('userprofile.auth'):
             return AdminProfileForm
         else:
             return ProfileUpdateForm
