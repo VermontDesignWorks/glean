@@ -231,7 +231,6 @@ class AdminExtendedRegistrationForm(RegistrationForm):
 
     waiver = forms.BooleanField(label="Waiver of Liability?", required=True)
     agreement = forms.BooleanField(label="Volunteer Agreement", required=True)
-    # seriously?
     photo_release = forms.BooleanField(label="Photo Release?", required=False)
     opt_in = forms.BooleanField(label="Email Opt-In?", required=False)
 
@@ -240,8 +239,6 @@ class MyRegistrationView(RegistrationView):
     form_class = ExtendedRegistrationForm
 
     def register(self, request, **cleaned_data):
-        form = self.get_form(ExtendedRegistrationForm)
-        form.is_valid()  # <- really
         user = super(MyRegistrationView, self).register(
             request,
             **cleaned_data
