@@ -15,13 +15,6 @@
                     Delete
                 </button>
             </a>
-            {% if 'userprofile.promote' in perms %}
-            <a href="{% url "userprofile:userpromote" object.user.id %}">
-                <button class="glean-button green-button no-margin">
-                    Promote
-                </button>
-            </a>
-            {% endif %}
             <a href="{% url "userprofile:useredit" object.user.id %}">
                 <button class="glean-button yellow-button no-margin">
                     Edit
