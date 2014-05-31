@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django import forms
 
 from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, TASKS, STATES
@@ -132,6 +132,13 @@ class Profile(models.Model):
                     notified.append(memo)
                     memo.notify_admin(self.user)
         return notified
+
+    @property
+    def admin(self):
+        if hasattr(self.user, "groups"):
+            if self.user.groups.exists():
+                return True
+        return False
 
     class Meta:
         permissions = (

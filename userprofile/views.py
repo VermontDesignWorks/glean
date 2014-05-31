@@ -152,7 +152,6 @@ def userProfile(request, user_id):
 
 class UserProfileDetailView(SimpleLoginCheckForGenerics, generic.DetailView):
     model = User
-    template_name = "userprofile/detail.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -168,6 +167,11 @@ class UserProfileDetailView(SimpleLoginCheckForGenerics, generic.DetailView):
             self
         ).get_object(*args, **kwargs)
         return obj.profile
+
+    def get_template_names(self):
+        if self.object.admin:
+            return "userprofile/admin_detail.html"
+        return "userprofile/detail.html"
 
 
 class UserEdit(SimpleLoginCheckForGenerics, generic.UpdateView):
