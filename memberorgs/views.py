@@ -119,8 +119,6 @@ def newAdministrator(request, memorg_id):
             reverse('memorgs:detailmemorg', args=(memorg_id,)))
     if request.method == 'POST':
         form = NewAdminForm(request.POST)
-        import pdb
-        pdb.set_trace()
         existant_user = User.objects.filter(
             username=form.data["username"]
         ).exists()
@@ -171,7 +169,9 @@ def newAdministrator(request, memorg_id):
                 return render(request, 'memberorgs/newadmin.html',
                               {'form': form, 'notice': notice})
         else:
-            return HttpResponse('form.is_not_valid - probably the username is taken')
+            return HttpResponse(
+                'form.is_not_valid - probably the username is taken'
+            )
 
     form = NewAdminForm()
     form.fields['member_organization'].queryset = MemOrg.objects.filter(
