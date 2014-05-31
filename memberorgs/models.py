@@ -72,7 +72,7 @@ class MemOrg(models.Model):
         "Relay Announcement Emails to Testing Address", default=True)
 
     testing_email = models.CharField(
-        "Primary Email Address", max_length="200", blank=True)
+        "Primary Email Address", max_length="200", blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -82,9 +82,12 @@ class MemOrg(models.Model):
             subject = "New User Notification"
             text = render_to_string(
                 "registration/notify.html",
-                {"object": self, "member_organization": member_organization}
+                {"object": user, "member_organization": self}
             )
-            quick_mail(subject, text, member_organization.testing_email)
+            quick_mail(subject, text, self.testing_email)
+            return 1
+        else:
+            return 0
 
     class Meta:
         permissions = (

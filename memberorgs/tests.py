@@ -1,26 +1,49 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import unittest
 
 from memberorgs.models import MemOrg
+from userprofile.models import Profile
+
 
 class MemOrgModelTests(TestCase):
-	def setUp(self):
-		MemOrg.objects.create(name="member organization 1")
-		MemOrg.objects.create(name="123(*&$%*&^! '@'#.\]/][")
 
-	### because who hasn't written a crappy unicode method? ###
-	def makeSureYourUnicodeSettingsDontReturnAnError(self):
-		org1 = MemOrg.objects.filter(name="member organization 1")
-		org2 = MemOrg.objects.filter(name="123(*&$%*&^! '@'#.\]/][")
-		assert org1.__unicode__() == u"member organization 1"
-		assert org2.__unicode__() == u"123(*&$%*&^! '@'#.\]/]["
+    def setUp(self):
+        self.memo = MemOrg.objects.create(
+            name="member organization 1",
+            testing_email="memo@example.com",
+            notify=True
+        )
 
-	def otherMethod(self):
-		pass
+    def test_notify_admin_method_sends_mail(self):
+        user = User.objects.create(username="test", email="user@example.com")
+        profile = Profile.objects.create(user=user)
+        result = self.memo.notify_admin(user)
+        self.assertEqual(
+            result,
+            1,
+            "Member Org notification logic didn't affirm it sent mail."
+        )
+
+    def test_notify_admin_method_sends_no_mail_if_notify_is_off(self):
+        user = User.objects.create(username="test", email="user@example.com")
+        profile = Profile.objects.create(user=user)
+        self.memo.notify = False
+        self.memo.save()
+        result = self.memo.notify_admin(user)
+        self.assertEqual(
+            result,
+            0,
+            "Member Org notification logic didn't deny it sent mail"
+        )
+
+    def test_notify_admin_method_gracefully_fails_if_no_testing_email(self):
+        user = User.objects.create(username="test", email="user@example.com")
+        profile = Profile.objects.create(user=user)
+        self.memo.testing_email = None
+        self.memo.save()
+        result = self.memo.notify_admin(user)
+        self.assertEqual(
+            result,
+            0,
+            "Member Org notificiation logic didn't deny it sent mail")
