@@ -17,7 +17,13 @@ Details of {{ object.name }}
                 <button class="glean-button yellow-button no-margin">
                     Edit
                 </button>
+                {% if 'memorg.uniauth' in perms %}
+            <a href="{% url 'memorgs:newadmin' object.id %}">
+                <button class="glean-button red-button no-margin">
+                    New Administrator
+                </button>
             </a>
+                {% endif %}
         </div>
     </div>
 

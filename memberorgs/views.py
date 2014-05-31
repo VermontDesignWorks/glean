@@ -119,7 +119,10 @@ def newAdministrator(request, memorg_id):
             reverse('memorgs:detailmemorg', args=(memorg_id,)))
     if request.method == 'POST':
         form = NewAdminForm(request.POST)
-        if form.is_valid():
+        existant_user = User.objects.filter(
+            username=form.data["username"]
+        ).exists()
+        if not existant_user and form.is_valid():
             new_user = User.objects.create_user(
                 form.cleaned_data['username'], form.cleaned_data['email'],
                 form.cleaned_data['password'])
@@ -166,7 +169,9 @@ def newAdministrator(request, memorg_id):
                 return render(request, 'memberorgs/newadmin.html',
                               {'form': form, 'notice': notice})
         else:
-            return HttpResponse('form.is_not_valid :(')
+            return HttpResponse(
+                'form.is_not_valid - probably the username is taken'
+            )
 
     form = NewAdminForm()
     form.fields['member_organization'].queryset = MemOrg.objects.filter(

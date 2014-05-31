@@ -8,52 +8,57 @@ Replace this with more appropriate tests for your application.
 from django.test import TestCase
 
 from django.contrib.auth.models import User
+
+from counties.models import County
 from userprofile.models import Profile
-from gleanevent.models import GleanEvent, PostGlean
+from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 
 
-def create_volunteer_user_object():
-    return User.objects.create_user(
-        "TestUser",
-        "TestUser@example.com",
-        "password")
+class ProfileModelTests(TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        MemOrg.objects.create(name="Memo")
 
-def create_profile(user):
-    profile = Profile(
-        user=user,
-        first_name="John",
-        last_name="Doe",
-        waiver=True,
-        agreement=True,
-        photo_release=False)
-    profile.save()
-    return profile
+    @classmethod
+    def tearDownClass(cls):
+        MemOrg.objects.get(pk=1).delete()
 
+    def setUp(self):
+        self.user = User.objects.create(
+            username="volunteer",
+            email="volunteer@example.com",
+        )
+        self.county = County.objects.create(name="County")
+        self.profile = Profile.objects.create(user=self.user)
+        self.profile.counties.add(self.county)
+        self.memo = MemOrg.objects.get(pk=1)
 
-def create_post_glean(glean, **kwargs):
-    pg = PostGlean(glean=glean, **kwargs)
-    pg.save()
-    return pg
+    def test_notify_registration_method(self):
+        self.memo.counties.add(self.county)
+        notified = self.profile.notify_registration()
+        self.assertTrue(
+            self.memo in notified,
+            "Notification System isn't working (simplest example)"
+        )
 
+    def test_notify_lead_organization(self):
+        notified = self.profile.notify_registration()
+        self.assertTrue(
+            self.memo in notified,
+            "Notification Failsafe didn't fire"
+        )
 
-def create_memorg():
-    memorg = MemOrg(name="Test Member Organization")
-    memorg.save()
-    return memorg
+    def test_notify_lead_organization_anyway(self):
+        county_2 = County.objects.create(name="County2")
+        memo_2 = MemOrg.objects.create(name="Memo2")
+        memo_2.counties.add(county_2)
 
+        self.profile.counties.add(county_2)
+        notified = self.profile.notify_registration()
 
-def create_glean(**kwargs):
-    memorg = create_memorg()
-    if 'created_by' in kwargs:
-        glean = GleanEvent(
-            member_organization=memorg,
-            **kwargs)
-    else:
-        glean = GleanEvent(
-            created_by=create_volunteer_user_object(),
-            member_organization=memorg,
-            **kwargs)
-    glean.save()
-    return glean
+        self.assertTrue(
+            self.memo in notified,
+            "Lead Organization not notified alongside others"
+        )
