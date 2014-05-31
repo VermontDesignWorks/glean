@@ -9,7 +9,7 @@ from django.test import TestCase
 
 from django.contrib.auth.models import User
 from userprofile.models import Profile
-from gleanevent.models import GleanEvent, PostGlean
+from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 
 
@@ -30,12 +30,6 @@ def create_profile(user):
         photo_release=False)
     profile.save()
     return profile
-
-
-def create_post_glean(glean, **kwargs):
-    pg = PostGlean(glean=glean, **kwargs)
-    pg.save()
-    return pg
 
 
 def create_memorg():

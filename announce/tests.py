@@ -20,7 +20,8 @@ class AnnouncementTests(TestCase):
             user, profile = create_user_and_profile(preferred_method='2')
             profile.counties.add(county)
         glean = create_glean()
-        glean.counties.add(county)
+        glean.counties = county
+        glean.save()
         announce = create_announcement(
             glean=glean, member_organization=glean.member_organization)
         self.assertEqual(announce.email_recipients.count(), 0)
