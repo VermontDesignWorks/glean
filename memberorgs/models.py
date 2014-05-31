@@ -1,4 +1,5 @@
 from django.db import models
+from django.template.loader import render_to_string
 
 from counties.models import County
 
@@ -6,15 +7,21 @@ from django import forms
 from django.contrib.auth.models import User
 
 from django.contrib import admin
+
 from constants import STATES, LINE_TYPE, ACCESS_LEVELS, COLORS
-# Create your models here.
+from mail_system import quick_mail
 
 
 class MemOrg(models.Model):
     name = models.CharField(max_length=200)
     website = models.CharField('Website', max_length=50, blank=True, null=True)
     description = models.TextField('Description', blank=True, null=True)
-    counties = models.ManyToManyField(County, blank=True, null=True)
+    counties = models.ManyToManyField(
+        County,
+        blank=True,
+        null=True,
+        related_name="member_organizations"
+    )
     created = models.DateTimeField(auto_now_add=True)
     color = models.CharField(
         'Color', choices=COLORS, max_length=20, default='muted')
@@ -69,6 +76,15 @@ class MemOrg(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def notify_admin(self, user):
+        if self.notify and self.testing_email:
+            subject = "New User Notification"
+            text = render_to_string(
+                "registration/notify.html",
+                {"object": self, "member_organization": member_organization}
+            )
+            quick_mail(subject, text, member_organization.testing_email)
 
     class Meta:
         permissions = (

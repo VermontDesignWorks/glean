@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django import forms
-#from registration.forms import RegistrationForm
-#from registration.backends.default import DefaultBackend
 
 from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, TASKS, STATES
 
@@ -106,6 +104,20 @@ class Profile(models.Model):
 
     def __unicode__(self):
         return u'%s %s %s' % (self.first_name, self.last_name, self.user)
+
+    def notify_registration(self):
+        notified = []
+        for county in profile.counties.all():
+            if county.member_organizations.all():
+                for memo in county.member_organizations.all():
+                    if memo not in notified:
+                        notified.append(memo)
+                        memo.notify_admin(user)
+            else:
+                memo = MemOrg.objects.get(pk=1)
+                if memo not in notified and memo.notify:
+                    notified.append(memo)
+                    self.send_notification_email(memo)
 
     class Meta:
         permissions = (
