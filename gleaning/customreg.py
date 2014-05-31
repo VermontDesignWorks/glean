@@ -22,7 +22,6 @@ from memberorgs.models import MemOrg
 from userprofile.models import Profile
 
 from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, STATES, TASKS
-from mail_system import quick_mail
 
 
 class ExtendedRegistrationForm(RegistrationForm):
@@ -31,6 +30,7 @@ class ExtendedRegistrationForm(RegistrationForm):
         self.helper = FormHelper()
         self.helper.form_id = "id-custom-registration-form"
         self.helper.form_method = "post"
+        self.helper.form_show_errors = False
         self.helper.layout = Layout(
             Fieldset(
                 "",
@@ -244,7 +244,7 @@ class MyRegistrationView(RegistrationView):
             **cleaned_data
         )
 
-        profile = Profile(
+        profile = Profile.objects.create(
             first_name=cleaned_data['first_name'],
             last_name=cleaned_data['last_name'],
             address_one=cleaned_data['address_one'],
@@ -273,30 +273,11 @@ class MyRegistrationView(RegistrationView):
             opt_in=cleaned_data['opt_in']
         )
 
-        profile.save()
-        for county in form.cleaned_data['vt_counties']:
+        for county in cleaned_data['vt_counties']:
             profile.counties.add(county)
-        for county in form.cleaned_data['ny_counties']:
+        for county in cleaned_data['ny_counties']:
             profile.counties.add(county)
-        user_in_memorg = False
-        for county in profile.counties.all():
-            for memorg in MemOrg.objects.all():
-                if county in memorg.counties.all():
-                    if memorg.notify:
-                        user_in_memorg = True
-                        subject = "New User Notification"
-                        text = render_to_string(
-                            "registration/notify.html",
-                            {"object": profile}
-                        )
-                        quick_mail(subject, text, memorg.testing_email)
-        if user_in_memorg is False:
-            memorg = MemOrg.objects.get(pk=1)
-            if memorg.notify:
-                subject = "New User Notification"
-                text = render_to_string(
-                    "registration/sal_farm_notify.html",
-                    {"object": profile}
-                )
-                quick_mail(subject, text, memorg.testing_email)
+
+        user.notify_registration()
+
         return user
