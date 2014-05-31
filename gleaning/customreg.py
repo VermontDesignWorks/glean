@@ -30,7 +30,6 @@ class ExtendedRegistrationForm(RegistrationForm):
         self.helper = FormHelper()
         self.helper.form_id = "id-custom-registration-form"
         self.helper.form_method = "post"
-        self.helper.form_show_errors = False
         self.helper.layout = Layout(
             Fieldset(
                 "",
