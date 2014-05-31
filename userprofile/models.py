@@ -23,22 +23,28 @@ class Profile(models.Model):
         "Address (line one)", max_length=200, blank=True, null=True)
     address_two = models.CharField(
         "Address (line two)", max_length=200, blank=True, null=True)
-    city = models.CharField("City", max_length=200, blank=True)
+    city = models.CharField("City", max_length=200, blank=True, null=True)
     state = models.CharField(
-        "State", max_length=2, choices=STATES, default='VT')
+        "State", max_length=2, choices=STATES, default='VT', null=True)
     zipcode = models.CharField("Zipcode", max_length=11, blank=True, null=True)
     counties = models.ManyToManyField(
         County, blank=True, null=True, related_name='people')
     age = models.CharField("Age", max_length=200,
                            choices=AGE_RANGES,
-                           blank=True)
-    phone = models.CharField("Primary Phone", max_length=200, blank=True)
+                           blank=True,
+                           null=True)
+    phone = models.CharField(
+        "Primary Phone",
+        max_length=200,
+        blank=True,
+        null=True
+    )
     phone_type = models.CharField(
-        "Phone Type", choices=PHONE_TYPE, max_length=1, default='1')
+        "Phone Type", choices=PHONE_TYPE, max_length=1, default='1', null=True)
     mo_emails_only = models.BooleanField(
         default=False, editable=False)
     preferred_method = models.CharField(
-        choices=PREFERRED_CONTACT, max_length=1, default='1')
+        choices=PREFERRED_CONTACT, max_length=1, default='1', null=True)
     member_organization = models.ForeignKey(
         MemOrg, blank=True, null=True, editable=False)
 
@@ -46,14 +52,21 @@ class Profile(models.Model):
         auto_now_add=True, editable=False, null=True)
 
     ecfirst_name = models.CharField(
-        "Emergency Contact First Name", max_length=200)
+        "Emergency Contact First Name", max_length=200, null=True)
     eclast_name = models.CharField(
-        "Emergency Contact Last Name", max_length=200)
-    ecphone = models.CharField("Emergency Contact Phone", max_length=200)
-    ecrelationship = models.CharField("Relationship", max_length=200)
-
-    rsvped = models.IntegerField(editable=False, default=0)
-    attended = models.IntegerField(editable=False, default=0)
+        "Emergency Contact Last Name", max_length=200, null=True)
+    ecphone = models.CharField(
+        "Emergency Contact Phone",
+        max_length=200,
+        null=True
+    )
+    ecrelationship = models.CharField(
+        "Relationship",
+        max_length=200,
+        null=True
+    )
+    rsvped = models.IntegerField(editable=False, default=0, null=True)
+    attended = models.IntegerField(editable=False, default=0, null=True)
     hours = models.DecimalField(
         editable=False, null=True, max_digits=4, decimal_places=2, default=0)
 
@@ -67,7 +80,7 @@ class Profile(models.Model):
         )
     tasks_gleaning = models.BooleanField(
         "Field Gleaning",
-        default=True
+        default=False
     )
     tasks_farm_pickups = models.BooleanField(
         "Farmers Market/Farm Pick-ups",
@@ -107,17 +120,18 @@ class Profile(models.Model):
 
     def notify_registration(self):
         notified = []
-        for county in profile.counties.all():
+        for county in self.counties.all():
             if county.member_organizations.all():
                 for memo in county.member_organizations.all():
                     if memo not in notified:
                         notified.append(memo)
-                        memo.notify_admin(user)
+                        memo.notify_admin(self.user)
             else:
                 memo = MemOrg.objects.get(pk=1)
-                if memo not in notified and memo.notify:
+                if memo not in notified:
                     notified.append(memo)
-                    self.send_notification_email(memo)
+                    memo.notify_admin(self.user)
+        return notified
 
     class Meta:
         permissions = (
