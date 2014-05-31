@@ -278,6 +278,6 @@ class MyRegistrationView(RegistrationView):
         for county in cleaned_data['ny_counties']:
             profile.counties.add(county)
 
-        user.notify_registration()
+        profile.notify_registration()
 
         return user
