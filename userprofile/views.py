@@ -78,14 +78,16 @@ class ProfileUpdateView(SimpleLoginCheckForGenerics, generic.UpdateView):
             return super(ProfileUpdateView, self).post(
                 request, *args, **kwargs)
         elif self.request.POST.get("submit") == "change password":
-            if self.request.POST.get("password1") == self.request.POST.get("password2"):
+            p1 = self.request.POST.get("password1")
+            p2 = self.request.POST.get("password2")
+            if p1 == p2:
                 u = User.objects.get(pk=self.request.user.pk)
                 u.set_password(self.request.POST.get("password1"))
                 u.save()
                 messages.add_message(
                     self.request, messages.INFO, "Password Reset.")
                 return HttpResponseRedirect("/users/edit/")
-            elif self.request.POST.get("password1") != self.request.POST.get("password2"):
+            else:
                 messages.add_message(
                     self.request, messages.INFO, "Password Reset Failed.")
                 return HttpResponseRedirect("/users/edit/")
@@ -186,17 +188,23 @@ class UserEdit(SimpleLoginCheckForGenerics, generic.UpdateView):
         elif self.request.POST.get("submit") == "change password":
             editpk = self.kwargs["pk"]
             objectpk = int(editpk)
-            if self.request.POST.get("password1") == self.request.POST.get("password2"):
+            p1 = self.request.POST.get("password1")
+            p2 = self.request.POST.get("password2")
+            if p1 == p2:
                 u = User.objects.get(pk=objectpk)
-                u.set_password(self.request.POST.get("password1"))
+                u.set_password(p1)
                 u.save()
                 messages.add_message(
                     self.request, messages.INFO, "Password Reset.")
-                return HttpResponseRedirect(reverse('userprofile:useredit', kwargs={'pk': objectpk}))
-            elif self.request.POST.get("password1") != self.request.POST.get("password2"):
+                return HttpResponseRedirect(
+                    reverse('userprofile:useredit', kwargs={'pk': objectpk})
+                )
+            else:
                 messages.add_message(
                     self.request, messages.INFO, "Password Reset Failed.")
-                return HttpResponseRedirect(reverse('userprofile:useredit', kwargs={'pk': objectpk}))
+                return HttpResponseRedirect(
+                    reverse('userprofile:useredit', kwargs={'pk': objectpk})
+                )
 
     def get_object(self):
         editpk = self.kwargs["pk"]
@@ -208,12 +216,14 @@ class UserEdit(SimpleLoginCheckForGenerics, generic.UpdateView):
     def dispatch(self, *args, **kwargs):
         editpk = self.kwargs["pk"]
         objectpk = int(editpk)
-        if self.request.user.has_perm("userprofile.uniauth"):
+        self_user = self.request.user
+        memorg = self_user.profile.member_organization
+        if self_user.has_perm("userprofile.uniauth"):
             return super(UserEdit, self).dispatch(*args, **kwargs)
-        elif self.request.user.has_perm("userprofile.auth"):
+        elif self_user.has_perm("userprofile.auth"):
             userlist = []
             for user in User.objects.all():
-                for county in self.request.user.profile.member_organization.counties.all():
+                for county in memorg.counties.all():
                     if county in user.profile.counties.all():
                         if user.has_perm('userprofile.uniauth') is False:
                             userlist.append(user)
@@ -246,6 +256,7 @@ def emailEdit(request):
 
 @permission_required('userprofile.auth')
 def download(request):
+    memorg = request.user.member_organization
     response = HttpResponse(mimetype='text/csv')
     response['Content-Disposition'] = 'attachment; filename=user_profiles.csv'
 
@@ -281,7 +292,7 @@ def download(request):
         in_profiles = False
         for user in User.objects.all():
             in_profiles = False
-            for county in request.user.profile.member_organization.counties.all():
+            for county in memorg.counties.all():
                 if in_profiles is False:
                     if county in user.profile.counties.all():
                         in_profiles = True
@@ -365,7 +376,7 @@ def newUser(request):
             form = ExtendedRegistrationForm()
     else:
         form = ExtendedRegistrationForm()
-    users = []    
+    users = []
     if request.user.has_perm('userprofile.uniauth'):
         users = User.objects.all().order_by('-date_joined')[:20]
     else:
