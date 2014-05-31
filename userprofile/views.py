@@ -178,7 +178,11 @@ class UserEdit(SimpleLoginCheckForGenerics, generic.UpdateView):
     model = User
     success_url = reverse_lazy("userprofile:useredit")
     template_name = "userprofile/edit.html"
-    form_class = UserEditForm
+
+    def get_form_class(self):
+        if self.object.admin:
+            return AdminProfileForm
+        return UserEditForm
 
     def get_success_url(self):
         editpk = self.kwargs["pk"]

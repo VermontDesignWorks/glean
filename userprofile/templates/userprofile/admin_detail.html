@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{object.first_name}} {{object.last_name}}
+{% endblock title %}
+{% block body %}
+<div class="body-container">
+    <div id="farm-header">
+        <div class="pull-left">
+            <h1>{{object.first_name}} {{object.last_name}} - {{object.user.username}}</h1>
+        </div>
+        <div class="pull-right farm-buttons">
+            {% if 'promote in perms' %}
+            <a href="{% url "userprofile:delete" object.user.id %}">
+                <button class="glean-button red-button no-margin">
+                    Delete
+                </button>
+            </a>
+            <a href="{% url "userprofile:useredit" object.user.id %}">
+                <button class="glean-button yellow-button no-margin">
+                    Edit
+                </button>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="yellow-box red-top pull-left" style="height:182px; width:602px">
+        <div class="farm-third">
+            <h3>Contact Information:</h3>
+            <ul class="no-list">
+            <li>{{object.first_name}} {{object.last_name}}</li>
+            <li>{{object.phone}}</li>
+            <li>{{object.address_one}}</li>
+            {% if object.address_two %}
+                <li>{{object.address_two}}</li>
+            {% endif %}
+            <li>{{object.city}}</li>
+            <li>{{object.state}} {{object.zipcode}}</li>
+            </ul>
+        </div>
+    </div>
+
+    </div>
+    <div class="yellow-box yellow-top pull-left" style="margin-left:20px;height:182px;width:548px">
+        <div class="farm-third">
+            <h2>{{object.user.groups.get}}</h2>
+        </div>
+    </div>
+{% endblock body %}
