@@ -17,13 +17,15 @@ Details of {{ object.name }}
                 <button class="glean-button yellow-button no-margin">
                     Edit
                 </button>
-                {% if 'memorg.uniauth' in perms %}
+            </a>
+                {% if 'memberorgs.uniauth' in perms %}
             <a href="{% url 'memorgs:newadmin' object.id %}">
                 <button class="glean-button red-button no-margin">
                     New Administrator
                 </button>
             </a>
                 {% endif %}
+            
         </div>
     </div>
 
@@ -62,11 +64,11 @@ Details of {{ object.name }}
                 <li>{{object.phone_1}}</li>
             </ul>
             <h3>Notification Email</h3>
-            <ul class="to-list">
+            <ul class="no-list">
                 <li>{{object.testing_email}}
             </ul>
             <h3>Testing Mode</h3>
-            <ul class="to-list">
+            <ul class="no-list">
                 <li>
                     {% if object.testing %}
                         <span class="yes-text">Yes</span>
@@ -98,7 +100,10 @@ Details of {{ object.name }}
     </div>
 
     <div class="yellow-box yellow-top directions-instructions forty-percent">
-        <h3>Counties</h3>
+        <h3 style="margin-bottom:0">Counties</h3>
+        {% if 'memberorgs.uniauth' not in perms %}
+        <p style="margin-top:0px;line-height:11px"><small>If you'd like to add or remove counties to your member organization,<br>please contact Salvation Farms directly.</small></p>
+        {% endif %}
         <ul class="no-list">
             {% for county in object.counties.all %}
             <li>{{county}}, {{county.state}}</li>
@@ -121,9 +126,8 @@ Details of {{ object.name }}
         </div>
         <div class="half pull-left">
             <h3>Executive Director</h3>
-            <ul>
-                <li>{{object.first_name}}</li>
-                <li>{{object.last_name}}</li>
+            <ul class="no-list">
+                <li>{{object.first_name}} {{object.last_name}}</li>
                 <li>{{object.phone}}</li>
             </ul>
         </div>
