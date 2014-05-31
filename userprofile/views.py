@@ -105,19 +105,19 @@ class UserLists(SimpleLoginCheckForGenerics, generic.ListView):
     template_name = "userprofile/userLists.html"
 
     def get_queryset(self):
-        userlist = []
-        inuserlist = False
-        if self.request.user.has_perm('userprofile.uniauth'):
-            userlist = User.objects.all()
+        user = self.request.user
+        groups = Group.objects.all()
+        volunteers = User.objects.exclude(
+            groups__in=groups
+        ).order_by("profile__last_name")
+        if user.has_perm('userprofile.uniauth'):
+            return volunteers
         else:
-            for user in User.objects.all():
-                inuserlist = False
-                for county in self.request.user.profile.member_organization.counties.all():    
-                    if inuserlist is False:
-                        if county in user.profile.counties.all():
-                            userlist.append(user)
-                            inuserlist = True
-        return userlist
+            memorg = user.profile.member_organization
+            counties = memorg.counties.all()
+            return volunteers.filter(
+                profile__counties__in=counties
+            ).distinct().order_by("profile__last_name")
 
 
 class UserProfileDelete(SimpleLoginCheckForGenerics, generic.DeleteView):
