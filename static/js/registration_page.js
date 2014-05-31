@@ -9,6 +9,9 @@ $(document).ready(function(){
 		trigger: "focus",
 		title: "Please use something long! All characters are allowed"
 	});
-	console.log("working");
+	
+	var infos = {
+      "vt_counties": "Selecting a county is necessary to recieve email notifications " +
+      	"about gleans! "
+    };
 })
-

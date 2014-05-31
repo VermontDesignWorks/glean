@@ -56,7 +56,10 @@ class ExtendedRegistrationForm(RegistrationForm):
             ),
             Fieldset(
                 "",
-                HTML("<h3 class='lbl'>Counties You'd Like to Glean In</h3>"),
+                HTML("<h3 class='lbl' id='counties-box'>Counties"
+                     " You'd Like to Glean In*</h3>"),
+                HTML("<h4>If you don't select a county, you will "
+                     "not receive gleaning invitations."),
                 Div(InlineCheckboxes("vt_counties"),
                     InlineCheckboxes("ny_counties"),
                     css_class="form-checkboxes")
@@ -159,7 +162,7 @@ class ExtendedRegistrationForm(RegistrationForm):
         required=False
     )
     tasks_delivery = forms.BooleanField(
-        label="Devilery/Distribution",
+        label="Delivery/Distribution",
         required=False
     )
     tasks_admin = forms.BooleanField(
