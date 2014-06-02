@@ -1,6 +1,10 @@
-from django.db import models
-from django.contrib.auth.models import User, Group
+import random
+
 from django import forms
+from django.contrib.auth.models import User, Group
+from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
+from django.db import models
 
 from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, TASKS, STATES
 
@@ -140,11 +144,41 @@ class Profile(models.Model):
                 return True
         return False
 
+    @property
+    def _unsubscribe_key(self):
+        if not self.unsubscribe_key:
+            value = ''
+            for i in range(29):
+                value += random.choice('abcdefghijklmnopqrstuvwvyz')
+            self.unsubscribe_key = value
+            self.save()
+        return self.unsubscribe_key
+
+    @property
+    def unsubscribe_url(self):
+        site = Site.objects.get(pk=1)
+        key = self._unsubscribe_key
+        return "http://{0}{1}".format(
+            site.domain,
+            reverse('announce:unsubscribelink', args=(key,))
+        )
+
     class Meta:
         permissions = (
             ("auth", "Member Organization Level Permissions"),
             ("promote", "Ability to Promote Users"),
             ("uniauth", "Universal Permission Level"),
+        )
+
+    @property
+    def stock_unsubscribe_link(self):
+        """Crease a generic unsubscribe anchor tag, HTML ready"""
+        return """
+        <a href='{0}'>Click Here to Unsubscribe</a>
+        (If the link doesn't work, copy and paste the following address
+        into your browser: {0} )
+        """.format(
+            self.unsubscribe_url,
         )
 
 

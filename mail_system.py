@@ -26,7 +26,7 @@ def weave_template_and_body_and_glean(template, announcement, glean):
             '%A, %B %d') + ' ' + (
             'Morning' if glean.time_of_day == 'AM' else 'Afternoon'),
         '{{glean.description}}': glean.description,
-        #'{{info}}':glean_link,
+        '{{info}}': glean_link,
     }
     returnable = template.body
     for key, value in replace.iteritems():
@@ -98,6 +98,13 @@ def weave_unsubscribe(body, userprofile, announce):
                 finish = returnable.find(key)+len(key)
                 returnable = returnable[:start] + value
     return returnable
+
+
+def render_email(template, announcement, glean, profile):
+    site = Site.objects.get(pk=1)
+    glean_link = "<a href='" + site.domain + str(
+        reverse('gleanevent:detailglean', args=(glean.id,))
+    ) + "'>Glean Info</a>"
 
 
 #== Mailing Logic ==#
