@@ -64,10 +64,10 @@ def create_announcement(**kwargs):
     if 'glean' in kwargs and 'member_organization' in kwargs:
         announce = Announcement(**kwargs)
     elif 'glean' in kwargs:
-        memorg = create_memorg
+        memorg = create_memorg()
         announce = Announcement(member_organization=memorg, **kwargs)
     elif 'member_organization' in kwargs:
-        glean = create_glean
+        glean = create_glean()
         announce = Announcement(glean=glean, **kwargs)
     else:
         glean = create_glean()
