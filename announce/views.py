@@ -45,7 +45,8 @@ class editTemplateClass(generic.UpdateView):
     template_name = 'announce/edit_template.html'
 
     def get_success_url(self):
-        return reverse('announce:detailtemplate',
+        return reverse(
+            'announce:detailtemplate',
             kwargs={'template_id': self.object.pk})
 
 
@@ -150,8 +151,7 @@ def detailAnnounce(request, announce_id):
             request.user.profile.member_organization !=
             announcement.member_organization):
         return HttpResponseRedirect(reverse('announce:announcements'))
-    body = weave_template_and_body_and_glean(
-        announcement.template, announcement, announcement.glean)
+    body = render_mail(template, announcement, request.user.profile)
     glean = announcement.glean
     source = primary_source(announcement.glean)
     if request.method == 'POST' and announcement.sent is False:

@@ -84,7 +84,7 @@ def weave_unsubscribe(body, userprofile, announce):
         '{{glean.description}}': announce.glean.description,
         '{{info}}': glean_link,
         '{{date}}': date_entry,
-        '{{raw_glean_link}}': raw_glean_link,
+        '{{raw_glean_link}}': glean.url,
         '{{unsubscribe}}': unsub_link,
         '{{subject}}': subject,
     }
@@ -113,9 +113,10 @@ def render_email(template, announcement, profile):
             "glean": glean,
             'date': glean.date.strftime('%A, %B %d'),
             'info': glean_link,
-            '{{raw_glean_link}}': glean.url,
+            'raw_glean_link': glean.url,
             "unsubscribe_url": profile.unsubscribe_url,
             "unsubscribe": profile.stock_unsubscribe_link,
+            "email": profile.user.email
         }
     )
     body = str(template.render(context))
