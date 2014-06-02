@@ -48,7 +48,6 @@ def quick_mail(subject, text, recipient):
 
 
 def mail_from_source(announcement):
-        announcement.populate_recipients()
         mo = announcement.member_organization
         glean = announcement.glean
 

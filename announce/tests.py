@@ -20,10 +20,13 @@ class AnnouncementTests(TestCase):
     def test_populate_recipients_method(self):
         county = create_county()
         for i in range(20):
-            user, profile = create_user_and_profile()
+            user, profile = create_user_and_profile(tasks_gleaning=True)
             profile.counties.add(county)
         for i in range(3):
-            user, profile = create_user_and_profile(preferred_method='2')
+            user, profile = create_user_and_profile(
+                preferred_method='2',
+                tasks_gleaning=True
+            )
             profile.counties.add(county)
         glean = create_glean()
         glean.counties = county
@@ -76,11 +79,9 @@ class MailSystemTests(TestCase):
     def test_render_email(self):
         template = self.glean.member_organization.create_default_template()
         body = render_email(self.announcement, self.profile)
-        self.assertEqual(
-            type(body),
-            str,
-            "Body is not a string (or we made it to python 3!"
-            " Body is of type: {0}".format(type(body))
+        self.assertIsNotNone(
+            body,
+            "Body doesn't seem to exist?"
         )
 
     def test_mail_from_source_no_recipients(self):
@@ -93,6 +94,7 @@ class MailSystemTests(TestCase):
             counties=county
         )
         announce = create_announcement(glean=glean)
+        announce.populate_recipients()
         self.assertEqual(mail_from_source(announce), 0)
 
     def test_mail_from_source_testing_email(self):
@@ -109,6 +111,7 @@ class MailSystemTests(TestCase):
         memo.testing_email = "test@example.com"
         memo.testing = True
         memo.save()
+        announce.populate_recipients()
         self.assertEqual(mail_from_source(announce), 1)
 
     def test_mail_from_source_normal_function(self):
@@ -124,10 +127,11 @@ class MailSystemTests(TestCase):
         memo.testing = False
         memo.save()
 
-        user, profile = create_user_and_profile()
+        user, profile = create_user_and_profile(tasks_gleaning=True)
         profile.counties.add(county)
-        user, profile = create_user_and_profile()
+        user, profile = create_user_and_profile(tasks_gleaning=True)
         profile.counties.add(county)
-        user, profile = create_user_and_profile()
+        user, profile = create_user_and_profile(tasks_gleaning=True)
         profile.counties.add(county)
+        announce.populate_recipients()
         self.assertEqual(mail_from_source(announce), 3)

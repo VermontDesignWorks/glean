@@ -75,7 +75,7 @@ class Announcement(models.Model):
         self.email_recipients.clear()
         self.phone_recipients.clear()
         source = primary_source(self.glean)
-        for recipient in source.counties.people.all():
+        for recipient in source.counties.people.filter(tasks_gleaning=True):
             if recipient.accepts_email:
                 if recipient.preferred_method == '1':
                     self.email_recipients.add(recipient.user)
