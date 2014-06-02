@@ -20,7 +20,7 @@ from announce.forms import TemplateForm, AnnouncementForm, PartialTemplateForm
 from gleanevent.models import GleanEvent
 from userprofile.models import Profile
 
-from mail_system import *
+from mail_system import render_email, primary_source, mail_from_source
 
 
 #==================== Template System ====================#
@@ -347,14 +347,12 @@ def combinedAnnounce(request, announce_id):
         subject = announce.title
     else:
         subject = glean.title
-    body = weave_template_and_body_and_glean(
-        announce.template, announce, glean)
     templates = Template.objects.filter(
         member_organization=profile.member_organization)
     source = primary_source(announce.glean)
     recipients = []
     phone = []
-
+    body = render_email(announce, request.user.profile)
     for recipient in source.counties.people.all():
         if (recipient not in recipients and recipient.accepts_email and
                 recipient.preferred_method == '1'):
@@ -414,8 +412,6 @@ def sendAnnounce(request, announce_id):
         return HttpResponseRedirect(reverse('announce:announcements'))
     if request.method == 'POST' and announcement.sent is False:
         glean = announcement.glean
-        body = weave_template_and_body_and_glean(
-            announcement.template, announcement, glean)
         mail_from_source(announcement)
         announcement.sent = True
         announcement.sent_by = request.user
