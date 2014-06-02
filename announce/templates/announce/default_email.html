@@ -332,16 +332,9 @@
                                     <table border="0" cellpadding="10" cellspacing="0" width="100%">
                                         <tr>
                                             <td valign="top">
-                                                <div mc:edit="std_preheader_content"><span style="font-size:12px">Hello from [RAFFL] </span><br>
+                                                <div mc:edit="std_preheader_content"><span style="font-size:12px">Hello from {{glean.member_organization}} </span><br>
 <em>&amp; the Vermont Gleaning Collective</em></div>
                                             </td>
-                                            <!-- *|IFNOT:ARCHIVE_PAGE|* -->
-                                            <td valign="top" width="190">
-                                                <div mc:edit="std_preheader_links">
-                                                    Is this email not displaying correctly?<br><a href="*|ARCHIVE|*" target="_blank">View it in your browser</a>.
-                                                </div>
-                                            </td>
-                                            <!-- *|END:IF|* -->
                                         </tr>
                                     </table>
                                     <!-- // End Module: Standard Preheader \ -->
@@ -382,21 +375,21 @@
                                                             <div mc:edit="std_content00"><h4 class="null"><span style="font-size:24px"><span style="line-height:20.799999237060547px">{{glean.title}}</span></span></h4>
 &nbsp;
 
-<h4 class="null" style="color: rgb(51, 51, 51); font-family: Arial, Verdana, sans-serif; line-height: 20.799999237060547px;"><span style="font-size:18px"><span class="mc-toc-title">Join us for a glean on {{glean.date|date:"l, F jS"}}{% if glean.time_of_day == 'AM' %} in the morning{% elif glean.time_of_day =='PM' %}in the afternoon{% else %}{endif}.</span></span></h4>
+<h4 class="null" style="color: rgb(51, 51, 51); font-family: Arial, Verdana, sans-serif; line-height: 20.799999237060547px;"><span style="font-size:18px"><span class="mc-toc-title">Join us for a glean on {{glean.date|date:"l, F jS"}}{% if glean.time_of_day == 'AM' %} in the morning{% elif glean.time_of_day == 'PM' %}in the afternoon{% else %}{% endif %}.</span></span></h4>
 <span style="color:rgb(51, 51, 51); font-family:arial,verdana,sans-serif; font-size:13px; line-height:20.799999237060547px">{{custom}}</span><br>
 &nbsp;
 <table border="0" cellpadding="0" cellspacing="0" style="background-color:#505050; border:1px solid #353535; border-radius:5px;">
     <tbody>
         <tr>
-            <td style="color: rgb(255, 255, 255); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; letter-spacing: -0.5px; line-height: 150%; padding: 15px 30px; text-align: justify;" valign="middle"><a href="{{info}}" style="color:#FFFFFF; text-decoration:none;" target="_blank">Glean Details and RSVP</a></td>
+            <td style="color: rgb(255, 255, 255); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; letter-spacing: -0.5px; line-height: 150%; padding: 15px 30px; text-align: justify;" valign="middle"><a href="raw_glean_link" style="color:#FFFFFF; text-decoration:none;" target="_blank">Glean Details and RSVP</a></td>
         </tr>
     </tbody>
 </table>
 <br>
-If that button doesn&#39;t work, copy and paste this link into your web browser: {{info}}<br>
+If that button doesn&#39;t work, copy and paste this link into your web browser: {{raw_glean_link}}<br>
 <br>
 <strong>Hope to see you soon!</strong><br>
--{{memberorg}} and the Vermont Gleaning Collective</div>
+-{{glean.member_organization}} and the Vermont Gleaning Collective</div>
                                                         </td>
                                                     </tr>
                                                 </table>
