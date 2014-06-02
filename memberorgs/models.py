@@ -1,12 +1,10 @@
+from django import forms
+from django.contrib import admin
+from django.contrib.auth.models import User
 from django.db import models
 from django.template.loader import render_to_string
 
 from counties.models import County
-
-from django import forms
-from django.contrib.auth.models import User
-
-from django.contrib import admin
 
 from constants import STATES, LINE_TYPE, ACCESS_LEVELS, COLORS
 from mail_system import quick_mail
@@ -88,6 +86,26 @@ class MemOrg(models.Model):
             return 1
         else:
             return 0
+
+    def create_default_template(self):
+        """Creates initial, default template for Member Org"""
+        from announce.models import Template
+        query = Template.objects.filter(
+            member_organization=self,
+            default=True,
+            template_name__icontains="default"
+        )
+        if not query.exists():
+            f = file("announce/templates/announce/default_email.html")
+            body = f.read()
+            f.close()
+            return Template.objects.create(
+                template_name="Default Template for {0}".format(self.name),
+                member_organization=self,
+                body=body,
+                default=True
+            )
+        return None
 
     class Meta:
         permissions = (

@@ -47,3 +47,19 @@ class MemOrgModelTests(TestCase):
             result,
             0,
             "Member Org notificiation logic didn't deny it sent mail")
+
+    def test_create_default_template(self):
+        template = self.memo.create_default_template()
+        self.assertIsNotNone(
+            template,
+            "Default Template was not created via Memorg Model Method"
+        )
+        self.assertTrue(
+            template.body,
+            "Template seems to have rendered with an empty body"
+        )
+
+    def test_create_default_template_passes_if_default_exists(self):
+        template = self.memo.create_default_template()
+        second_default_template = self.memo.create_default_template()
+        self.assertIsNone(second_default_template)
