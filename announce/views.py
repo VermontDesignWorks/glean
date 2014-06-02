@@ -155,7 +155,7 @@ def detailAnnounce(request, announce_id):
     glean = announcement.glean
     source = primary_source(announcement.glean)
     if request.method == 'POST' and announcement.sent is False:
-        mail_from_source(body, announcement)
+        mail_from_source(announcement)
         announcement.sent = True
         announcement.sent_by = request.user
         announcement.save()
@@ -416,7 +416,7 @@ def sendAnnounce(request, announce_id):
         glean = announcement.glean
         body = weave_template_and_body_and_glean(
             announcement.template, announcement, glean)
-        mail_from_source(body, announcement)
+        mail_from_source(announcement)
         announcement.sent = True
         announcement.sent_by = request.user
         announcement.save()
