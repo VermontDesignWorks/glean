@@ -13,7 +13,7 @@ from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 
 from test_functions import *
-from mail_system import render_email
+from mail_system import render_email, mail_from_source
 
 
 class AnnouncementTests(TestCase):
@@ -82,3 +82,52 @@ class MailSystemTests(TestCase):
             "Body is not a string (or we made it to python 3!"
             " Body is of type: {0}".format(type(body))
         )
+
+    def test_mail_from_source_no_recipients(self):
+        county = create_county()
+        user, profile = create_user_and_profile()
+        profile.counties.add(county)
+        glean = create_glean(
+            created_by=user,
+            date=date.today() + timedelta(days=3),
+            counties=county
+        )
+        announce = create_announcement(glean=glean)
+        self.assertEqual(mail_from_source(announce), 0)
+
+    def test_mail_from_source_testing_email(self):
+        county = create_county()
+        user, profile = create_user_and_profile()
+        profile.counties.add(county)
+        glean = create_glean(
+            created_by=user,
+            date=date.today() + timedelta(days=3),
+            counties=county
+        )
+        announce = create_announcement(glean=glean)
+        memo = announce.member_organization
+        memo.testing_email = "test@example.com"
+        memo.testing = True
+        memo.save()
+        self.assertEqual(mail_from_source(announce), 1)
+
+    def test_mail_from_source_normal_function(self):
+        county = create_county()
+        user, profile = create_user_and_profile()
+        glean = create_glean(
+            created_by=user,
+            date=date.today() + timedelta(days=3),
+            counties=county
+        )
+        announce = create_announcement(glean=glean)
+        memo = announce.member_organization
+        memo.testing = False
+        memo.save()
+
+        user, profile = create_user_and_profile()
+        profile.counties.add(county)
+        user, profile = create_user_and_profile()
+        profile.counties.add(county)
+        user, profile = create_user_and_profile()
+        profile.counties.add(county)
+        self.assertEqual(mail_from_source(announce), 3)

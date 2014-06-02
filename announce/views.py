@@ -430,8 +430,7 @@ def sendAnnounce(request, announce_id):
 def HTMLemail(request, announce_id):
     announce = get_object_or_404(Announcement, pk=announce_id)
     glean = announce.glean
-    body = weave_template_and_body_and_glean(
-        announce.template, announce, glean)
+    body = render_email(announce, request.user.profile)
     if announce.title:
         subject = announce.title
     else:

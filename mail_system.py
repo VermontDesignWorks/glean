@@ -102,11 +102,11 @@ def weave_unsubscribe(body, userprofile, announce):
     return returnable
 
 
-def render_email(template, announcement, profile):
+def render_email(announcement, profile):
     site = Site.objects.get(pk=1)
     glean = announcement.glean
     glean_link = "<a href='{0}'>Glean Info</a>".format(glean.url)
-    template = T(template.body)
+    template = T(announcement.template.body)
     context = Context(
         {
             "custom": announcement.message,
@@ -135,7 +135,8 @@ def quick_mail(subject, text, recipient):
     msg.send()
 
 
-def mail_from_source(body, announcement):
+def mail_from_source(announcement):
+        announcement.populate_recipients()
         mo = announcement.member_organization
         glean = announcement.glean
 
@@ -147,41 +148,45 @@ def mail_from_source(body, announcement):
             subject = announcement.title
         else:
             subject = glean.title
+        count = 0
+
         if mo.testing:
             for recipient in announcement.email_recipients.all():
                 profile = recipient.profile
-                text = weave_unsubscribe(
-                    body,
-                    profile,
-                    announcement)
+                body = render_email(announcement, profile)
                 if recipient not in glean.invited_volunteers.all():
                     glean.invited_volunteers.add(recipient)
 
             if mo.testing_email:
+                profile = announcement.glean.created_by.profile
+                body = render_email(announcement, profile)
                 msg = EmailMessage(
                     subject,
-                    text,
+                    body,
                     from_address,
                     [mo.testing_email]
                 )
                 msg.content_subtype = "html"
                 msg.send()
+                count += 1
 
         else:
             for recipient in announcement.email_recipients.all():
                 profile = recipient.profile
-                text = weave_unsubscribe(body, profile, announcement)
+                body = render_email(announcement, profile)
                 msg = EmailMessage(
                     subject,
-                    text,
+                    body,
                     from_address,
                     [recipient.email]
                 )
                 msg.content_subtype = "html"
                 msg.send()
+                count += 1
                 if recipient not in glean.invited_volunteers.all():
                     glean.invited_volunteers.add(recipient)
             for recipient in announcement.phone_recipients.all():
                 if recipient not in glean.invited_volunteers.all():
                     glean.invited_volunteers.add(recipient)
         glean.save()
+        return count
