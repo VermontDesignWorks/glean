@@ -264,7 +264,7 @@ def emailEdit(request):
 
 @permission_required('userprofile.auth')
 def download(request):
-    memorg = request.user.member_organization
+    memorg = request.user.profile.member_organization
     response = HttpResponse(mimetype='text/csv')
     response['Content-Disposition'] = 'attachment; filename=user_profiles.csv'
 
@@ -283,7 +283,6 @@ def download(request):
         'Age Bracket',
         'Phone',
         'Phone Type',
-        'Member Org',
         'Contact Method',
         "Join Date",
         'EC First',
@@ -294,28 +293,11 @@ def download(request):
     ])
 
     if request.user.has_perm('userprofile.uniauth'):
-        profiles = User.objects.all()
+        groups = Group.objects.all()
+        profiles = Profile.objects.exclude(user__groups__in=groups)
     else:
-        profiles = []
-        in_profiles = False
-        for user in User.objects.all():
-            in_profiles = False
-            for county in memorg.counties.all():
-                if in_profiles is False:
-                    if county in user.profile.counties.all():
-                        in_profiles = True
-                        profiles.append(user)
-    for person in profiles:
-            in_memberorgs = False
-            memberorgs = []
-            for memorg in MemOrg.objects.all():
-                in_memberorgs = False
-                for county in person.profile.counties.all():
-                    if in_memberorgs is False:
-                        if county in memorg.counties.all():
-                            in_memberorgs = True
-                            memberorgs.append(memorg)
-            profile = person.profile
+        profiles = Profile.objects.filter(counties__in=memorg.counties.all())
+    for profile in profiles:
             writer.writerow([
                 profile.user.username,
                 profile.user.email,
@@ -329,7 +311,6 @@ def download(request):
                 profile.age,
                 profile.phone,
                 profile.get_phone_type_display(),
-                memberorgs,
                 profile.get_preferred_method_display(),
                 profile.joined,
                 profile.ecfirst_name,
