@@ -4,10 +4,16 @@ when you run "manage.py test".
 
 Replace this with more appropriate tests for your application.
 """
+from datetime import date, timedelta
 
+from django.contrib.sites.models import Site
 from django.test import TestCase
 
+from gleanevent.models import GleanEvent
+from memberorgs.models import MemOrg
+
 from test_functions import *
+from mail_system import render_email
 
 
 class AnnouncementTests(TestCase):
@@ -43,3 +49,32 @@ class AnnouncementTests(TestCase):
         self.assertEqual(announce.email_recipients.count(), 0)
         announce.uninvite_user(user_phone)
         self.assertEqual(announce.phone_recipients.count(), 0)
+
+
+class MailSystemTests(TestCase):
+    """Because this system needs some double checking"""
+
+    @classmethod
+    def setUpClass(cls):
+        site = Site.objects.create(domain="vermontgleaningcollective.org")
+
+    def setUp(self):
+        self.site = Site.objects.get(pk=1)
+        self.county = create_county()
+        self.glean = create_glean(
+            counties=self.county,
+            date=date.today() + timedelta(days=3))
+        self.announcement = create_announcement(glean=self.glean)
+        self.glean.member_organization = self.announcement.member_organization
+        self.glean.save()
+        self.user, self.profile = create_user_and_profile()
+
+    def test_render_email(self):
+        template = self.glean.member_organization.create_default_template()
+        body = render_email(template, self.announcement, self.profile)
+        self.assertEqual(
+            type(body),
+            str,
+            "Body is not a string (or we made it to python 3!"
+            " Body is of type: {0}".format(type(body))
+        )
