@@ -12,7 +12,7 @@ from functions import primary_source
 
 
 class Template(models.Model):
-    template_name = models.CharField(max_length=40)
+    template_name = models.CharField(max_length=200)
     member_organization = models.ForeignKey(MemOrg, editable=False)
     body = models.TextField()
     default = models.BooleanField(default=False)
