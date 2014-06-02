@@ -113,7 +113,7 @@ def render_email(template, announcement, profile):
             "glean": glean,
             'date': glean.date.strftime('%A, %B %d'),
             'info': glean_link,
-            '{{raw_glean_link}}': glean_url,
+            '{{raw_glean_link}}': glean.url,
             "unsubscribe_url": profile.unsubscribe_url,
             "unsubscribe": profile.stock_unsubscribe_link,
         }
