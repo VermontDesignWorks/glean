@@ -19,7 +19,7 @@ class ProfileModelTests(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        MemOrg.objects.create(name="Memo")
+        MemOrg.objects.create(name="Memo", pk=1)
 
     @classmethod
     def tearDownClass(cls):
@@ -52,7 +52,7 @@ class ProfileModelTests(TestCase):
 
     def test_notify_lead_organization_anyway(self):
         county_2 = County.objects.create(name="County2")
-        memo_2 = MemOrg.objects.create(name="Memo2")
+        memo_2 = MemOrg.objects.create(name="Memo2", pk=2)
         memo_2.counties.add(county_2)
 
         self.profile.counties.add(county_2)
