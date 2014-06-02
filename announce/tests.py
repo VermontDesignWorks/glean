@@ -50,6 +50,10 @@ class AnnouncementTests(TestCase):
         announce.uninvite_user(user_phone)
         self.assertEqual(announce.phone_recipients.count(), 0)
 
+    def test_announcement_default_template_on_create(self):
+        announce = create_announcement()
+        self.assertIsNotNone(announce.template)
+
 
 class MailSystemTests(TestCase):
     """Because this system needs some double checking"""
@@ -71,7 +75,7 @@ class MailSystemTests(TestCase):
 
     def test_render_email(self):
         template = self.glean.member_organization.create_default_template()
-        body = render_email(template, self.announcement, self.profile)
+        body = render_email(self.announcement, self.profile)
         self.assertEqual(
             type(body),
             str,

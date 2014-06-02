@@ -93,7 +93,6 @@ class MemOrg(models.Model):
         query = Template.objects.filter(
             member_organization=self,
             default=True,
-            template_name__icontains="default"
         )
         if not query.exists():
             f = file("announce/templates/announce/default_email.html")
@@ -106,6 +105,12 @@ class MemOrg(models.Model):
                 default=True
             )
         return None
+
+    @property
+    def default_template(self):
+        if self.templates.filter(default=True):
+            return self.templates.filter(default=True)[0]
+        return self.create_default_template()
 
     class Meta:
         permissions = (

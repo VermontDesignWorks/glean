@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import unittest
 
+from announce.models import Template
 from memberorgs.models import MemOrg
 from userprofile.models import Profile
 
@@ -63,3 +64,28 @@ class MemOrgModelTests(TestCase):
         template = self.memo.create_default_template()
         second_default_template = self.memo.create_default_template()
         self.assertIsNone(second_default_template)
+
+    def test_default_template_property_creates_new_templates(self):
+        Template.objects.filter(member_organization=self.memo).delete()
+        self.assertIsNotNone(self.memo.default_template)
+
+    def test_default_template_property_fetches_existing_templates(self):
+        template = Template.objects.create(
+            member_organization=self.memo,
+            default=True,
+            template_name="test template"
+        )
+        self.assertEqual(template, self.memo.default_template)
+
+    def test_default_template_property_fetches_only_one_template(self):
+        template1 = Template.objects.create(
+            member_organization=self.memo,
+            default=True,
+            template_name="test template"
+        )
+        template2 = Template.objects.create(
+            member_organization=self.memo,
+            default=True,
+            template_name="test template 2"
+        )
+        self.assertIn(self.memo.default_template, [template1, template2])
