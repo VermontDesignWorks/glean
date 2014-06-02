@@ -108,7 +108,7 @@ class ProfileUpdateForm(forms.ModelForm):
         self.initial["email"] = profile.user.email
 
     first_name = forms.CharField(label="First Name", max_length=20)
-    email = forms.EmailField(label="Email", max_length=20, required=False)
+    email = forms.EmailField(label="Email", max_length=200, required=False)
     last_name = forms.CharField(label="Last Name", max_length=20)
     address_one = forms.CharField(label="Address", max_length=200)
     address_two = forms.CharField(
@@ -402,7 +402,7 @@ class UserEditForm(forms.ModelForm):
         self.initial["email"] = profile.user.email
 
     first_name = forms.CharField(label="First Name", max_length=20)
-    email = forms.EmailField(label="Email", max_length=20, required=False)
+    email = forms.EmailField(label="Email", max_length=200, required=False)
     last_name = forms.CharField(label="Last Name", max_length=20)
     address_one = forms.CharField(label="Address", max_length=200)
     address_two = forms.CharField(
