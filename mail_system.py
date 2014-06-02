@@ -31,7 +31,7 @@ def render_email(announcement, profile):
             "email": profile.user.email
         }
     )
-    body = str(template.render(context))
+    body = template.render(context)
     return body
 
 
