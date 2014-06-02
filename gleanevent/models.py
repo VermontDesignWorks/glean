@@ -1,5 +1,7 @@
 import datetime
 
+from django.core.urlresolvers import reverse
+from django.contrib.sites.models import Site
 from django.db import models
 from django.forms import TextInput, Select
 from django.forms import ModelForm
@@ -79,6 +81,17 @@ class GleanEvent(models.Model):
         if self.postglean_set.count() != 0:
             return True
         return False
+
+    @property
+    def url(self):
+        site = Site.objects.get(pk=1)
+        return "http://{0}{1}".format(
+            site.domain,
+            reverse(
+                "gleanevent:detailglean",
+                args=(self.id,)
+            )
+        )
 
     @property
     def primary_location(self):

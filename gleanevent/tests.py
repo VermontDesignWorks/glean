@@ -161,3 +161,15 @@ class GleanEventTests(TestCase):
         glean = create_glean(
             created_by=user, instructions="Glean instructions")
         self.assertEqual(glean.render_instructions(), glean.instructions)
+
+
+class GleanEventModelTests(TestCase):
+    def setUp(self):
+        self.glean = create_glean()
+
+    def test_glean_url(self):
+        self.assertIn(
+            "http://",
+            self.glean.url,
+            "Glean URL doesn't contain HTTP:{0}".format(self.glean.url)
+        )

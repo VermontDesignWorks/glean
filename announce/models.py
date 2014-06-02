@@ -13,7 +13,11 @@ from functions import primary_source
 
 class Template(models.Model):
     template_name = models.CharField(max_length=200)
-    member_organization = models.ForeignKey(MemOrg, editable=False)
+    member_organization = models.ForeignKey(
+        MemOrg,
+        editable=False,
+        related_name="templates"
+    )
     body = models.TextField()
     default = models.BooleanField(default=False)
 
@@ -51,6 +55,11 @@ class Announcement(models.Model):
             ("auth", "Member Organization Level Permissions"),
             ("uniauth", "Universal Permission Level"),
         )
+
+    def save(self, *args, **kwargs):
+        if self.template is None:
+            self.template = self.member_organization.default_template
+        return super(Announcement, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.datetime.strftime(
