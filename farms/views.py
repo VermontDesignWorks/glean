@@ -1,5 +1,6 @@
 # Create your views here.
 import csv
+from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -8,6 +9,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import View, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 # experimenting with edit mixins
+from django.utils.decorators import method_decorator, classonlymethod
+from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
@@ -58,7 +61,46 @@ def newFarm(request):
 class NewFarm(SimpleLoginCheckForGenerics, CreateView):
     model = Farm
     template_name = 'farms/new.html'
-    form_class = NewFarm
+    form_class = NewFarmForm
+    success_url = reverse_lazy('farms:index')
+
+    def form_valid(self, form):
+        """
+        If the form is valid, save the associated model.
+        """
+        new_save = form.save()
+        new_save.member_organization.add(
+            self.request.user.profile.member_organization)
+        new_save.save()
+        self.object = None
+        return super(NewFarm, self).form_valid(form)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.has_perm('farms.auth'):
+            return super(NewFarm, self).dispatch(*args, **kwargs)
+        else:
+            raise Http404
+
+
+class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
+    model = Farm
+    template_name = 'farms/edit.html'
+    form_class = EditFarmForm
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "farms:editfarm", kwargs={"pk": int(self.kwargs["pk"])})
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        farm = Farm.objects.get(pk=int(self.kwargs["pk"]))
+        if self.request.user.has_perm('farms.uniauth'):
+            return super(EditFarm, self).dispatch(*args, **kwargs)
+        elif self.request.user.has_perm('farms.auth') and self.request.user.profile.member_organization in farm.member_organization.all():
+            return super(EditFarm, self).dispatch(*args, **kwargs)
+        else:
+            raise Http404
 
 
 @permission_required('farms.auth')
