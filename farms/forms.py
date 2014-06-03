@@ -1,3 +1,4 @@
+import sys
 from django import forms
 from django.forms import ModelForm
 from django.forms.fields import ChoiceField
@@ -17,6 +18,7 @@ from crispy_forms.layout import (Layout,
 from constants import STATES, COLORS, LINE_TYPE
 from farms.models import Farm
 from counties.models import County
+from generic.forms import Counties_For_Forms
 
 
 class FarmForm(ModelForm):
@@ -25,15 +27,35 @@ class FarmForm(ModelForm):
         exclude = ['farmers']
 
 
-class NewFarm(ModelForm):
+class NewFarm(Counties_For_Forms, ModelForm):
+    'A crispyform class for creating a new farm object'
+    
+    version = '0.1'
+
     def __init__(self, *args, **kwargs):
         super(NewFarm, self).__init__(*args, **kwargs)
+        self.m = ModelForm.__init__(self, *args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_errors = False
         self.helper.form_id = "id-New-Farm-Form"
         self.helper.form_method = "post"
         self.helper.layout = Layout(
-            HTML("<div style='float: right; display: inline; border-left: 10px solid #ffc64a;'>"),
+            HTML("<div>"),
+            HTML("<div style='display: inline; float: left;'>"),
+            Fieldset(
+                "",
+                Row("name"),
+                HTML("<h3>Physical Address</h3>"),
+                Row("address_one", "address_two"),
+                Row("city", "state"),
+                Row("zipcode"),
+                Row("directions"),
+                Row("instructions"),
+            ), Row("counties"),
+            HTML("</div>"),
+            HTML("</div>"),
+            HTML("<div style=''>"),
+            HTML("<div style='float: left; display: inline; border-left: 10px solid #ffc64a;'>"),
             HTML("<i style='color: red;'>Information in this column is visable only by administrators</i>"),
             Fieldset(
                 "",
@@ -48,29 +70,6 @@ class NewFarm(ModelForm):
                 Row("email"),
             ),
             HTML("</div>"),
-            HTML("<div>"),
-            HTML("<div style='float:left; display: inline;'>"),
-            Fieldset(
-                "",
-                Row("name"),
-                HTML("<h3>Physical Address</h3>"),
-                Row("address_one, address_two"),
-                Row("city", "state"),
-                Row("zipcode"),
-                Row("directions"),
-                Row("instructions"),
-            ),
-            Fieldset(
-                "",
-                HTML("<h3 class='lbl'>Counties Operating"
-                     " in</h3>"),
-                Div(InlineCheckboxes("vt_counties"),
-                    InlineCheckboxes("ny_counties"),
-                    css_class="form-checkboxes")
-            ),
-            HTML("</div>"),
-            HTML("</div>"),
-            HTML("<div style='display: inline-block;'>"),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
                  "name='submit' value='Add Farm'>"),
@@ -84,24 +83,24 @@ class NewFarm(ModelForm):
             attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
         required=False)
     address_one = forms.CharField(label='Address:', max_length=200)
-    address_two = forms.CharField(label='Address (line two):', max_length=200)
+    address_two = forms.CharField(label='Address (line two):', max_length=200, required=False)
     city = forms.CharField(label='City:', max_length=200)
     state = forms.ChoiceField(
         label="State", choices=STATES, required=False)
     zipcode = forms.CharField(label='Zip Code:', max_length=11)
     
-    physical_is_mailing = forms.BooleanField(label='Physical Address is Mailing Address')
-    mailing_address_one = forms.CharField(label='Address: ', max_length=200)
-    mailing_address_two = forms.CharField(label='Address (line two):', max_length=200)
-    mailing_city = forms.CharField(label='City:', max_length=200)
+    physical_is_mailing = forms.BooleanField(label='Physical Address is Mailing Address', required=False)
+    mailing_address_one = forms.CharField(label='Address: ', max_length=200, required=False)
+    mailing_address_two = forms.CharField(label='Address (line two):', max_length=200, required=False)
+    mailing_city = forms.CharField(label='City:', max_length=200, required=False)
     mailing_state = forms.ChoiceField(
         label="State", choices=STATES, required=False)
-    mailing_zip = forms.CharField(label='Zip Code:', max_length=11)
+    mailing_zip = forms.CharField(label='Zip Code:', max_length=11, required=False)
 
     phone_1 = forms.CharField(label='Primary phone #:', max_length=200)
     phone_1_type = forms.ChoiceField(
         label='Primary Phone Type', choices=LINE_TYPE, required=False)
-    phone_2 = forms.CharField(label='Secondary phone #:', max_length=200)
+    phone_2 = forms.CharField(label='Secondary phone #:', max_length=200, required=False)
     phone_2_type = forms.ChoiceField(
         label='Primary Phone Type', choices=LINE_TYPE, required=False)
     email = forms.CharField(label="Email:")
@@ -115,19 +114,8 @@ class NewFarm(ModelForm):
         widget=forms.Textarea(
             attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
         required=False)
-    vt_counties = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="VT").order_by("name"),
-        label="Counties in Vermont",
-        required=False,
-    )
-    ny_counties = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="NY").order_by("name"),
-        label="Counties in New York",
-        required=False
-    )
-
+    counties = forms.ModelChoiceField(label="County", queryset=County.objects.all())
+    
     class Meta:
         model = Farm
         exclude = ("farmers","member_organization")

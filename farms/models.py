@@ -60,10 +60,12 @@ class Farm(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class FarmForm(ModelForm):
     class Meta:
         model = Farm
         exclude = ['farmers']
+
 
 class FarmLocation(models.Model):
     farm = models.ForeignKey(Farm, blank=True, editable=False, null=True)
@@ -99,6 +101,7 @@ class FarmLocation(models.Model):
 class LocationForm(ModelForm):
     class Meta:
         model = FarmLocation
+
 
 class Contact(models.Model):
     farm = models.ForeignKey(Farm, blank=True, editable=False, null=True)
