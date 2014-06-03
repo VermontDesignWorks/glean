@@ -1,20 +1,25 @@
+from django import forms
+from django.contrib import admin
+from django.contrib.auth.models import User
 from django.db import models
+from django.template.loader import render_to_string
 
 from counties.models import County
 
-from django import forms
-from django.contrib.auth.models import User
-
-from django.contrib import admin
 from constants import STATES, LINE_TYPE, ACCESS_LEVELS, COLORS
-# Create your models here.
+from mail_system import quick_mail
 
 
 class MemOrg(models.Model):
     name = models.CharField(max_length=200)
     website = models.CharField('Website', max_length=50, blank=True, null=True)
     description = models.TextField('Description', blank=True, null=True)
-    counties = models.ManyToManyField(County, blank=True, null=True)
+    counties = models.ManyToManyField(
+        County,
+        blank=True,
+        null=True,
+        related_name="member_organizations"
+    )
     created = models.DateTimeField(auto_now_add=True)
     color = models.CharField(
         'Color', choices=COLORS, max_length=20, default='muted')
@@ -65,10 +70,47 @@ class MemOrg(models.Model):
         "Relay Announcement Emails to Testing Address", default=True)
 
     testing_email = models.CharField(
-        "Primary Email Address", max_length="200", blank=True)
+        "Primary Email Address", max_length="200", blank=True, null=True)
 
     def __unicode__(self):
         return self.name
+
+    def notify_admin(self, user):
+        if self.notify and self.testing_email:
+            subject = "New User Notification"
+            text = render_to_string(
+                "registration/notify.html",
+                {"object": user.profile, "member_organization": self}
+            )
+            quick_mail(subject, text, self.testing_email)
+            return 1
+        else:
+            return 0
+
+    def create_default_template(self):
+        """Creates initial, default template for Member Org"""
+        from announce.models import Template
+        query = Template.objects.filter(
+            member_organization=self,
+            default=True,
+        )
+        if not query.exists():
+            f = file("announce/templates/announce/default_email.html")
+            body = f.read()
+            f.close()
+            return Template.objects.create(
+                template_name="Default Template for {0}".format(self.name),
+                member_organization=self,
+                body=body,
+                default=True
+            )
+        return None
+
+    @property
+    def default_template(self):
+        if self.templates.filter(default=True):
+            return self.templates.filter(default=True)[0]
+        return self.create_default_template()
 
     class Meta:
         permissions = (

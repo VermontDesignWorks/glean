@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.db import models
 from django.forms import ModelForm
-from django.template.loader import render_to_string
 
 #from userprofile.models import Profile
 

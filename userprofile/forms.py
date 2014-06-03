@@ -108,7 +108,7 @@ class ProfileUpdateForm(forms.ModelForm):
         self.initial["email"] = profile.user.email
 
     first_name = forms.CharField(label="First Name", max_length=20)
-    email = forms.EmailField(label="Email", max_length=20, required=False)
+    email = forms.EmailField(label="Email", max_length=200, required=False)
     last_name = forms.CharField(label="Last Name", max_length=20)
     address_one = forms.CharField(label="Address", max_length=200)
     address_two = forms.CharField(
@@ -180,8 +180,16 @@ class ProfileUpdateForm(forms.ModelForm):
     photo_release = forms.BooleanField(
         label="", required=False)
     opt_in = forms.BooleanField(label="", required=False)
-    password1 = forms.CharField(widget=forms.PasswordInput(), label="Change Password", required=False)
-    password2 = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password", required=False)
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(),
+        label="Change Password",
+        required=False
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(),
+        label="Confirm Password",
+        required=False
+    )
 
     def save(self, *args, **kwargs):
         saved = super(ProfileUpdateForm, self).save(*args, **kwargs)
@@ -239,10 +247,6 @@ class AdminProfileForm(forms.ModelForm):
                 Row("address_one", "address_two"),
                 Row("city", "state"),
                 Row("zipcode"),
-                HTML("<h3 class='lbl'>Counties</h3>"),
-                Div(InlineCheckboxes("vt_counties"),
-                    InlineCheckboxes("ny_counties"),
-                    css_class="form-checkboxes"),
                 Row("phone", "phone_type"),
             ),
             HTML("<input type='submit' "
@@ -257,53 +261,58 @@ class AdminProfileForm(forms.ModelForm):
             x.pk for x in profile.counties.filter(state="NY")
         ]
 
-    first_name = forms.CharField(label="First Name", max_length=20)
-    last_name = forms.CharField(label="Last Name", max_length=20)
-    address_one = forms.CharField(label="Address", max_length=200)
+    first_name = forms.CharField(
+        label="First Name",
+        max_length=20,
+        required=False
+    )
+    last_name = forms.CharField(
+        label="Last Name",
+        max_length=20,
+        required=False
+    )
+    address_one = forms.CharField(
+        label="Address",
+        max_length=200,
+        required=False
+    )
     address_two = forms.CharField(
-        label="Address (line two)", max_length=200, required=False)
-    city = forms.CharField(label="City", max_length=200)
+        label="Address (line two)", max_length=200, required=False
+    )
+    city = forms.CharField(label="City", max_length=200, required=False)
     state = forms.ChoiceField(
         label="State",
         choices=STATES,
-        initial='VT')
+        initial='VT',
+        required=False)
     zipcode = forms.CharField(label="Zipcode", max_length=11, required=False)
-    vt_counties = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="VT").order_by("name"),
-        label="Counties in Vermont",
-        required=False,
-    )
-    ny_counties = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="NY").order_by("name"),
-        label="Counties in New York",
+
+    phone = forms.CharField(
+        label="Primary Phone #:",
+        max_length=200,
         required=False
     )
-    phone = forms.CharField(label="Primary Phone #:", max_length=200)
     phone_type = forms.ChoiceField(
-        label="Phone Type", choices=PHONE_TYPE, initial='1')
-    password1 = forms.CharField(widget=forms.PasswordInput(), label="Change Password", required=False)
-    password2 = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password", required=False)
-
-
-    def save(self, *args, **kwargs):
-        saved = super(AdminProfileForm, self).save(*args, **kwargs)
-        saved.user.save()
-        if 'vt_counties' in self.data:
-            for pk in self.data.getlist('vt_counties'):
-                county = County.objects.get(pk=pk)
-                saved.counties.add(county)
-        if 'ny_counties' in self.data:
-            for pk in self.data.getlist('ny_counties'):
-                county = County.objects.get(pk=pk)
-                saved.counties.add(county)
-        return saved
+        label="Phone Type",
+        choices=PHONE_TYPE,
+        initial='1',
+        required=False
+    )
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(),
+        label="Change Password",
+        required=False
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(),
+        label="Confirm Password",
+        required=False
+    )
 
     class Meta:
         model = Profile
         exclude = ('member_organization', 'ecfirst_name', 'preferred_method',
-                   'ecrelationship', 'ecphone', 'eclast_name',)
+                   'ecrelationship', 'ecphone', 'eclast_name', 'counties')
 
 
 class UserEditForm(forms.ModelForm):
@@ -393,7 +402,7 @@ class UserEditForm(forms.ModelForm):
         self.initial["email"] = profile.user.email
 
     first_name = forms.CharField(label="First Name", max_length=20)
-    email = forms.EmailField(label="Email", max_length=20, required=False)
+    email = forms.EmailField(label="Email", max_length=200, required=False)
     last_name = forms.CharField(label="Last Name", max_length=20)
     address_one = forms.CharField(label="Address", max_length=200)
     address_two = forms.CharField(
@@ -465,8 +474,16 @@ class UserEditForm(forms.ModelForm):
     photo_release = forms.BooleanField(
         label="", required=False)
     opt_in = forms.BooleanField(label="", required=False)
-    password1 = forms.CharField(widget=forms.PasswordInput(), label="Change Password", required=False)
-    password2 = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password", required=False)
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(),
+        label="Change Password",
+        required=False
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(),
+        label="Confirm Password",
+        required=False
+    )
 
     def save(self, *args, **kwargs):
         saved = super(UserEditForm, self).save(*args, **kwargs)

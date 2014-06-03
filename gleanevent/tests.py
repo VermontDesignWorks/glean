@@ -76,13 +76,11 @@ class GleanEventTests(TestCase):
     def test_render_directions(self):
         user = create_volunteer_user_object()
         glean = create_glean(created_by=user)
-        self.assertEqual(
-            glean.render_directions(), u'Follow the Map to the Right')
+        self.assertTrue(glean.render_directions())
 
         farm = create_farm()
         glean = create_glean(farm=farm, created_by=user)
-        self.assertEqual(
-            glean.render_directions(), u'Follow the Map to the Right')
+        self.assertTrue(glean.render_directions())
 
         farm = create_farm(directions="Farm Directions")
         glean = create_glean(farm=farm, created_by=user)
@@ -92,8 +90,7 @@ class GleanEventTests(TestCase):
         farm_location = create_farm_location(farm=farm)
         glean = create_glean(
             farm=farm, farm_location=farm_location, created_by=user)
-        self.assertEqual(
-            glean.render_directions(), u'Follow the Map to the Right')
+        self.assertTrue(glean.render_directions())
 
         farm_location = create_farm_location(
             farm=farm, directions="Farm Location Directions")
@@ -164,3 +161,15 @@ class GleanEventTests(TestCase):
         glean = create_glean(
             created_by=user, instructions="Glean instructions")
         self.assertEqual(glean.render_instructions(), glean.instructions)
+
+
+class GleanEventModelTests(TestCase):
+    def setUp(self):
+        self.glean = create_glean()
+
+    def test_glean_url(self):
+        self.assertIn(
+            "http://",
+            self.glean.url,
+            "Glean URL doesn't contain HTTP:{0}".format(self.glean.url)
+        )
