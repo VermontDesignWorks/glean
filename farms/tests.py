@@ -82,8 +82,7 @@ class FarmMenipulationTesting(TestCase):
             counties=self.county,
         )
         form.member_organization.add(self.user.profile.member_organization)
-        saved = view.form_valid(form)
+        saved = form.form_valid()
         self.assertEqual(True, saved)
         farm = Farm.objects.get(pk=1)
         self.assertEqual(farm.name, "New Farm")
-        self.assertValid
