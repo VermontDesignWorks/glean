@@ -19,7 +19,6 @@ from constants import STATES, COLORS, LINE_TYPE
 from farms.models import Farm
 from counties.models import County
 from memberorgs.models import MemOrg
-from generic.forms import Counties_For_Forms
 
 
 class FarmForm(ModelForm):
@@ -35,7 +34,6 @@ class NewFarmForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(NewFarmForm, self).__init__(*args, **kwargs)
-        self.m = ModelForm.__init__(self, *args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_errors = False
         self.helper.form_id = "id-New-Farm-Form"
@@ -114,7 +112,7 @@ class NewFarmForm(ModelForm):
 
     class Meta:
         model = Farm
-        exclude = ("farmers","member_organization")
+        exclude = ("farmers", "member_organization")
 
 
 class EditFarmForm(ModelForm):
@@ -124,7 +122,6 @@ class EditFarmForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EditFarmForm, self).__init__(*args, **kwargs)
-        self.m = ModelForm.__init__(self, *args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_errors = False
         self.helper.form_id = "id-New-Farm-Form"

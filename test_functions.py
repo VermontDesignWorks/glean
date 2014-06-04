@@ -1,10 +1,40 @@
 import random
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group, Permission
 from userprofile.models import Profile
 from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 from announce.models import Announcement
 from counties.models import County
+
+
+class test_groups(object):
+    'An object containing the five groups in the database and their permissions for testing'
+    def __init__(self):
+        self.volunteer = Group.objects.create(name="Volunteer")
+        self.Member_Organization_Executive_Director = Group.objects.create(name="Member Organization Executive Director")
+        self.Member_Organization_Glean_Coordinator = Group.objects.create(name="Member Organization Glean Coordinator")
+        self.Salvation_Farms_Administrator = Group.objects.create(name="Salvation Farms Administrator")
+        self.Salvation_Farms_Coordinator = Group.objects.create(name="Salvation Farms Coordinator")
+        auth = Permission.objects.filter(codename="auth").all()
+        for permission in auth:
+            self.Member_Organization_Glean_Coordinator.permissions.add(permission)
+            self.Member_Organization_Executive_Director.permissions.add(permission)
+            self.Salvation_Farms_Administrator.permissions.add(permission)
+            self.Salvation_Farms_Coordinator.permissions.add(permission)
+        promote = Permission.objects.filter(codename="promote").all()
+        for permission in promote:
+            self.Member_Organization_Executive_Director.permissions.add(permission)
+            self.Salvation_Farms_Administrator.permissions.add(permission)
+            self.Salvation_Farms_Coordinator.permissions.add(permission)
+        uniauth = Permission.objects.filter(codename="uniauth").all()
+        for permission in uniauth:
+            self.Salvation_Farms_Coordinator.permissions.add(permission)
+            self.Salvation_Farms_Administrator.permissions.add(permission)
+        self.volunteer.save()
+        self.Member_Organization_Glean_Coordinator.save()
+        self.Member_Organization_Executive_Director.save()
+        self.Salvation_Farms_Coordinator.save()
+        self.Salvation_Farms_Administrator.save()
 
 
 def create_volunteer_user_object():
@@ -28,19 +58,44 @@ def create_profile(user, **kwargs):
     return profile
 
 
+def create_salvation_farms_admin(salfarmgroup, memberorg):
+    user = User.objects.create_user("salfarmadmin", "salfarmadmin@gmail.com", "password")
+    user.is_staff = True
+    user.is_superuser = True
+    user.groups.add(salfarmgroup)
+    user.save()
+    profile = create_profile(user)
+    user.profile.member_organization = memberorg
+    user.profile.save()
+    return user
+
+
+def create_special_user(thegroup, memberorg):
+    user = User.objects.create_user("specialuser", "specialuser@gmail.com", "password")
+    user.groups.add(thegroup)
+    user.save
+    profile = create_profile(user)
+    user.profile.member_organization = memberorg
+    user.profile.save()
+    return user
+
+
 def create_user_and_profile(**kwargs):
     user = create_volunteer_user_object()
-    return user, create_profile(user, **kwargs)
+    create_profile(user, **kwargs)
+    user.save()
+    user.profile.save()
+    return user
 
 
-def create_county():
-    county = County(name="TestCounty")
+def create_county(**kwargs):
+    county = County.objects.create(name="TestCounty")
     county.save()
     return county
 
 
-def create_memorg():
-    memorg = MemOrg(name="Test Member Organization")
+def create_memorg(**kwargs):
+    memorg = MemOrg.objects.create(name="Test Member Organization", **kwargs)
     memorg.save()
     return memorg
 
