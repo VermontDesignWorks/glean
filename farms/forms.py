@@ -112,7 +112,7 @@ class NewFarmForm(ModelForm):
 
     class Meta:
         model = Farm
-        exclude = ("farmers", "member_organization")
+        exclude = ("farmers")
 
 
 class EditFarmForm(ModelForm):
