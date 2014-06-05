@@ -5,6 +5,7 @@ from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 from announce.models import Announcement
 from counties.models import County
+from farms.models import Farm
 
 
 class test_groups(object):
@@ -98,6 +99,13 @@ def create_memorg(**kwargs):
     memorg = MemOrg.objects.create(name="Test Member Organization", **kwargs)
     memorg.save()
     return memorg
+
+
+def create_farm(memberorg, **kwargs):
+    farm = Farm.objects.create(name="Test Farm", **kwargs)
+    farm.member_organization.add(memberorg)
+    farm.save()
+    return farm
 
 
 def create_glean(**kwargs):
