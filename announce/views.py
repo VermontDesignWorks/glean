@@ -2,21 +2,21 @@
 import time
 import datetime
 import random
-
+from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
 from django import forms
 from django.utils import timezone
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
-
+from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 
 from announce.models import Template, Announcement
-from announce.forms import TemplateForm, AnnouncementForm, PartialTemplateForm
+from announce.forms import TemplateForm, AnnouncementForm, PartialTemplateForm, NewTemplateForm
 from gleanevent.models import GleanEvent
 from userprofile.models import Profile
 
@@ -39,7 +39,7 @@ def Templates(request):
 #== Template Edit View ==#
 
 
-class editTemplateClass(generic.UpdateView):
+class EditTemplateClass(generic.UpdateView):
     model = Template
     form_class = PartialTemplateForm
     template_name = 'announce/edit_template.html'
@@ -117,6 +117,21 @@ def newTemplate(request):
     else:
         form = TemplateForm
         return render(request, 'announce/new_template.html', {'form': form})
+
+
+class NewTemplate(generic.CreateView):
+    model = Template
+    form_class = NewTemplateForm
+    template_name = 'announce/new_template.html'
+    success_url = reverse_lazy('announce:templates')
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.has_perm('announce.auth'):
+            return super(NewTemplate, self).dispatch(*args, **kwargs)
+        else:
+            raise Http404
+
 
 
 #== View for Individual Template ==#

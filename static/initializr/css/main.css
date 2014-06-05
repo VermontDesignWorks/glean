@@ -1016,3 +1016,16 @@ input[type="checkbox"]:checked:after {
     width: 300px !important;
     height: 200px !important;
 }
+.yellow-bottom {
+    border-bottom: 10px solid #ffc64a;
+}
+
+.form-comment-box {
+   float:right; 
+   width: 300px; 
+   position: relative; 
+   top: 80px; 
+   background: orange; 
+   padding: 10px; 
+   border-radius: 5px;
+}
