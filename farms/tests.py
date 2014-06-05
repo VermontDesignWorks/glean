@@ -115,7 +115,7 @@ class FarmMenipulationTesting(TestCase):
 
     def test_edit_farm_view(self):
         # Create an instance of a GET request.
-        request = self.factory.get('/farms/0/edit')
+        request = self.factory.get('/farms/1/edit')
 
         # Recall that middleware are not suported. You can simulate a
         # logged-in user by setting request.user manually.
@@ -130,9 +130,7 @@ class FarmMenipulationTesting(TestCase):
         form.data["instructions"] = "New Instructions"
         form.is_valid()
         form.errors
-        import pdb
-        pdb.set_trace()
         response = form.save()
         self.assertEqual(form.is_valid(), True)
-        thisfarm = Farm.objects.get(name="New Farm")
+        thisfarm = Farm.objects.get(pk=1)
         self.assertEqual(thisfarm.instructions, "New Instructions")
