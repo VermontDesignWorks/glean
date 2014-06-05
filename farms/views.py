@@ -33,31 +33,6 @@ def index(request):
     return render(request, 'farms/index.html', {'farms': farms_list})
 
 
-@permission_required('farms.auth')
-def newFarm(request):
-    if request.method == "POST":
-
-        form = FarmForm(request.POST)
-        if form.is_valid():
-            new_save = form.save()
-            new_save.member_organization.add(
-                request.user.profile.member_organization)
-            new_save.save()
-            if request.POST['action'] == "Save And View":
-                return HttpResponseRedirect(
-                    reverse('farms:detailfarm', args=(new_save.id,)))
-            else:
-                return HttpResponseRedirect(reverse(
-                    'farms:newlocation', args=(new_save.id,)))
-        else:
-                return render(
-                    request,  'farms/new.html',
-                    {'form': form, 'error': 'Your Farm Form Was Not Valid'})
-    else:
-        form = FarmForm()
-        return render(request, 'farms/new.html', {'form': form})
-
-
 class NewFarm(SimpleLoginCheckForGenerics, CreateView):
     model = Farm
     template_name = 'farms/new.html'
@@ -101,26 +76,7 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
             return super(EditFarm, self).dispatch(*args, **kwargs)
         else:
             raise Http404
-
-
-@permission_required('farms.auth')
-def editFarm(request, farm_id):
-    farm = get_object_or_404(Farm, pk=farm_id)
-    if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
-        return HttpResponseRedirect(reverse('farms:index'))
-    if request.method == "POST":
-        form = FarmForm(request.POST, instance=farm)
-        if form.is_valid():
-            new_save = form.save()
-            return HttpResponseRedirect(
-                reverse('farms:detailfarm', args=(farm_id,)))
-        else:
-            return render(
-                request, 'farms/edit.html',
-                {'form': form, 'farm': farm,  'error': 'form needs some work'})
-    form = FarmForm(instance=farm)
-    return render(request, 'farms/edit.html', {'form': form, 'farm': farm})
-
+            
 
 @permission_required('farms.auth')
 def detailFarm(request, farm_id):
