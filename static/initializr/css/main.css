@@ -1035,3 +1035,9 @@ input[type="checkbox"]:checked:after {
    border-left: 10px solid #ffc64a;
    padding: 10px;
 }
+
+.red-emphasized {
+   color: red;
+   text-decoration: underline;
+   font-style: italic;
+}

@@ -51,7 +51,7 @@ class NewFarmForm(ModelForm):
                     "counties",
                     css_class="crispy_column_left"),
                 Div(
-                    HTML("<i style='color: red;'>Information in this column is visible only by administrators</i>"),
+                    HTML("<p class='red-emphasized'>Information in this column is visible only by administrators</p>"),
                     "physical_is_mailing",
                     Row("mailing_address_one", "mailing_address_two"),
                     Row("mailing_city", "mailing_state"),
@@ -139,7 +139,7 @@ class EditFarmForm(ModelForm):
                     "counties",
                     css_class="crispy_column_left"),
                 Div(
-                    HTML("<i style='color: red;'>Information in this column is visible only by administrators</i>"),
+                    HTML("<p class='red-emphasized'>Information in this column is visible only by administrators</p>"),
                     "physical_is_mailing",
                     Row("mailing_address_one", "mailing_address_two"),
                     Row("mailing_city", "mailing_state"),
