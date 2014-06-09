@@ -131,3 +131,7 @@ class MailSystemTests(TestCase):
         user, profile = create_user_and_profile()
         profile.counties.add(county)
         self.assertEqual(mail_from_source(announce), 3)
+
+
+class NewTemplateTesting(TestCase):
+    def setUp

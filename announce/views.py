@@ -132,15 +132,24 @@ class NewTemplate(generic.CreateView):
         else:
             raise Http404
 
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        return super(NewTemplate, self).post(request, *args, **kwargs)
+
     def form_valid(self, form):
         """
         If the form is valid, save the associated model.
         """
-        new_save = form.save()
-        new_save.member_organization = self.request.user.profile.member_organization
-        new_save.save()
+        form = NewTemplateForm(self.request.POST)
+        newTemplate = form.save(commit=False)
+        morg = self.request.user.profile.member_organization
+        newTemplate.member_organization = morg
+        newTemplate.save()
+        # new_save = form.save()
+        # new_save.member_organization = self.request.user.profile.member_organization
+        # new_save.save()
         self.object = None
-        return super(NewFarm, self).form_valid(form)
+        return super(NewTemplate, self).form_valid(form)
 
 
 #== View for Individual Template ==#
