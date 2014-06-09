@@ -120,6 +120,7 @@ def newTemplate(request):
 
 
 class NewTemplate(generic.CreateView):
+    'The class based view for creating a new template'
     model = Template
     form_class = NewTemplateForm
     template_name = 'announce/new_template.html'

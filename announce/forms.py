@@ -20,6 +20,7 @@ from django.forms.models import modelformset_factory
 from announce.models import Template, Announcement
 from memberorgs.models import MemOrg
 
+
 class TemplateForm(ModelForm):
     class Meta:
         model = Template
@@ -37,6 +38,7 @@ class AnnouncementForm(ModelForm):
 
 
 class NewTemplateForm(ModelForm):
+    'The class based form for creating a new template'
     def __init__(self, *args, **kwargs):
         super(NewTemplateForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -49,7 +51,7 @@ class NewTemplateForm(ModelForm):
                 Row("template_name"),
                 Row("body"),
                 Row("default"),
-                Field('member_organization', type="hidden", value=MemOrg.objects.get(name="Salvation Farms").pk),
+                Field('member_organization', type="hidden"),
                 HTML("<input type='submit' "
                      "class='glean-button green-button' "
                      "name='submit' value='Save Changes'>")
