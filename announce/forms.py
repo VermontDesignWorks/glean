@@ -49,13 +49,17 @@ class NewTemplateForm(ModelForm):
                 Row("template_name"),
                 Row("body"),
                 Row("default"),
+                Field('member_organization', type="hidden", value=MemOrg.objects.get(name="Salvation Farms").pk),
                 HTML("<input type='submit' "
                      "class='glean-button green-button' "
                      "name='submit' value='Save Changes'>")
             )
         )
     template_name = forms.CharField(label='Name: ', max_length=200)
-    member_organization = forms.ModelChoiceField(label='Member Org', queryset=MemOrg.objects.all(), required=False)
+    member_organization = forms.ModelChoiceField(
+        label='Member Org',
+        queryset=MemOrg.objects.all(),
+        required=False)
     body = forms.CharField(
         label='Body: ',
         widget=forms.Textarea(

@@ -132,25 +132,15 @@ class NewTemplate(generic.CreateView):
         else:
             raise Http404
 
-    def get_form_kwargs(self):
+    def form_valid(self, form):
         """
-        Returns the keyword arguments for instantiating the form.
+        If the form is valid, save the associated model.
         """
-        kwargs = {
-            'initial': self.get_initial(),
-            'prefix': self.get_prefix(),
-        }
-        if self.request.method in ('POST', 'PUT'):
-            post = self.request.POST.copy()
-            post["member_organization"] = self.request.user.profile.member_organization.pk
-            kwargs.update({
-                'data': post,
-                'files': self.request.FILES,
-            })
-            import pdb
-            pdb.set_trace()
-        kwargs.update({'instance': self.object})
-        return kwargs
+        new_save = form.save()
+        new_save.member_organization = self.request.user.profile.member_organization
+        new_save.save()
+        self.object = None
+        return super(NewFarm, self).form_valid(form)
 
 
 #== View for Individual Template ==#
