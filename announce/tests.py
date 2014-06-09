@@ -11,9 +11,13 @@ from django.test import TestCase
 
 from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
+from announce.forms import *
+from announce.views import *
 
 from test_functions import *
 from mail_system import render_email, mail_from_source
+
+from django.test.client import RequestFactory
 
 
 class AnnouncementTests(TestCase):
@@ -133,5 +137,46 @@ class MailSystemTests(TestCase):
         self.assertEqual(mail_from_source(announce), 3)
 
 
-class NewTemplateTesting(TestCase):
-    def setUp
+class NewTemplateTest(TestCase):
+    def setUp(self):
+        # Every test needs access to the request factory.
+        self.factory = RequestFactory()
+        self.groups = test_groups()
+        self.county = create_county()
+        self.memorg = create_memorg()
+        self.memorg.counties.add(self.county)
+        # Salvation Farms Admin
+        # self.user = create_salvation_farms_admin(self.groups.Salvation_Farms_Administrator, self.memorg)
+        # Gleaning Coordinator
+        self.user = create_special_user(self.groups.Member_Organization_Glean_Coordinator, self.memorg)
+        # regular volunteer
+        # self.user = create_user_and_profile(member_organization=self.memorg)
+        self.data = {
+            "template_name": "New Template",
+            "member_organization": self.memorg.pk,
+            "body": "This is a test form",
+            "default": False
+            }
+
+    def test_new_template_view(self):
+        # Create an instance of a GET request.
+        request = self.factory.get('announce/templates/new/')
+
+        # Recall that middleware are not suported. You can simulate a
+        # logged-in user by setting request.user manually.
+        request.user = self.user
+
+        # Test my_view() as if it were deployed at /customer/details
+        response = NewTemplate.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_new_template_form(self):
+        form = NewFarmForm(self.data)
+        form.data["member_organization"] = self.user.profile.member_organization.pk
+        form.is_valid()
+        form.errors
+        view = NewFarm()
+        response = form.save()
+        self.assertEqual(form.is_valid(), True)
+        thisfarm = Farm.objects.get(name="New Template")
+        self.assertEqual(thisfarm.name, "New Template")
