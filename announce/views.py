@@ -132,6 +132,25 @@ class NewTemplate(generic.CreateView):
         else:
             raise Http404
 
+    def get_form_kwargs(self):
+        """
+        Returns the keyword arguments for instantiating the form.
+        """
+        kwargs = {
+            'initial': self.get_initial(),
+            'prefix': self.get_prefix(),
+        }
+        if self.request.method in ('POST', 'PUT'):
+            post = self.request.POST.copy()
+            post["member_organization"] = self.request.user.profile.member_organization.pk
+            kwargs.update({
+                'data': post,
+                'files': self.request.FILES,
+            })
+            import pdb
+            pdb.set_trace()
+        kwargs.update({'instance': self.object})
+        return kwargs
 
 
 #== View for Individual Template ==#

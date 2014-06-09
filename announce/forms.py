@@ -65,3 +65,4 @@ class NewTemplateForm(ModelForm):
     
     class Meta:
         model = Template
+        exclude = ("member_organization",)
