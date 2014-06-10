@@ -958,7 +958,7 @@ input[type="checkbox"]:checked:after {
    font-weight: bold;
 }
 
-<<<<<<< HEAD
+
 .2cols {
    /*-webkit-column-count:1;  Chrome, Safari, Opera 
    -moz-column-count:1; Firefox *
@@ -979,12 +979,10 @@ input[type="checkbox"]:checked:after {
 #id-custom-admin-edit-form {
    width: 800px;
 }
-=======
-
 /* ============================================================================
    Special Form editing
    ============================================================================ */
->>>>>>> master
+
 .form-errors {
 /*div tags*/
 	margin: 1em;
@@ -1016,6 +1014,7 @@ input[type="checkbox"]:checked:after {
     width: 300px !important;
     height: 200px !important;
 }
+<<<<<<< HEAD
 .yellow-bottom {
     border-bottom: 10px solid #ffc64a;
 }
@@ -1028,4 +1027,32 @@ input[type="checkbox"]:checked:after {
    background: orange; 
    padding: 10px; 
    border-radius: 5px;
+=======
+
+.crispy_column {
+    width: 480px;
+}
+.crispy_column_left {
+    float: left;
+    width: 480px;
+}
+.crispy_column_right {
+    float: right;
+    width: 480px;
+}
+.crispy_form_tag {
+    width: 1000px;
+    margin: 20px;
+}
+
+.yellow-left {
+   border-left: 10px solid #ffc64a;
+   padding: 10px;
+}
+
+.red-emphasized {
+   color: red;
+   text-decoration: underline;
+   font-style: italic;
+>>>>>>> master
 }
