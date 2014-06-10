@@ -20,11 +20,11 @@ class AnnouncementTests(TestCase):
     def test_populate_recipients_method(self):
         county = create_county()
         for i in range(20):
-            user, profile = create_user_and_profile()
-            profile.counties.add(county)
+            user = create_user_and_profile()
+            user.profile.counties.add(county)
         for i in range(3):
-            user, profile = create_user_and_profile(preferred_method='2')
-            profile.counties.add(county)
+            user = create_user_and_profile(preferred_method='2')
+            user.profile.counties.add(county)
         glean = create_glean()
         glean.counties = county
         glean.save()
@@ -38,8 +38,8 @@ class AnnouncementTests(TestCase):
 
     def test_uninvite_user_method(self):
         announce = create_announcement()
-        user_email, profile_email = create_user_and_profile()
-        user_phone, profile_phone = create_user_and_profile(
+        user_email = create_user_and_profile()
+        user_phone = create_user_and_profile(
             preferred_method='2')
         announce.email_recipients.add(user_email)
         announce.phone_recipients.add(user_phone)
@@ -71,11 +71,11 @@ class MailSystemTests(TestCase):
         self.announcement = create_announcement(glean=self.glean)
         self.glean.member_organization = self.announcement.member_organization
         self.glean.save()
-        self.user, self.profile = create_user_and_profile()
+        self.user = create_user_and_profile()
 
     def test_render_email(self):
         template = self.glean.member_organization.create_default_template()
-        body = render_email(self.announcement, self.profile)
+        body = render_email(self.announcement, self.user.profile)
         self.assertEqual(
             type(body),
             str,
@@ -85,8 +85,8 @@ class MailSystemTests(TestCase):
 
     def test_mail_from_source_no_recipients(self):
         county = create_county()
-        user, profile = create_user_and_profile()
-        profile.counties.add(county)
+        user = create_user_and_profile()
+        user.profile.counties.add(county)
         glean = create_glean(
             created_by=user,
             date=date.today() + timedelta(days=3),
@@ -97,8 +97,8 @@ class MailSystemTests(TestCase):
 
     def test_mail_from_source_testing_email(self):
         county = create_county()
-        user, profile = create_user_and_profile()
-        profile.counties.add(county)
+        user = create_user_and_profile()
+        user.profile.counties.add(county)
         glean = create_glean(
             created_by=user,
             date=date.today() + timedelta(days=3),
@@ -113,7 +113,7 @@ class MailSystemTests(TestCase):
 
     def test_mail_from_source_normal_function(self):
         county = create_county()
-        user, profile = create_user_and_profile()
+        user = create_user_and_profile()
         glean = create_glean(
             created_by=user,
             date=date.today() + timedelta(days=3),
@@ -124,10 +124,10 @@ class MailSystemTests(TestCase):
         memo.testing = False
         memo.save()
 
-        user, profile = create_user_and_profile()
-        profile.counties.add(county)
-        user, profile = create_user_and_profile()
-        profile.counties.add(county)
-        user, profile = create_user_and_profile()
-        profile.counties.add(county)
+        user = create_user_and_profile()
+        user.profile.counties.add(county)
+        user = create_user_and_profile()
+        user.profile.counties.add(county)
+        user = create_user_and_profile()
+        user.profile.counties.add(county)
         self.assertEqual(mail_from_source(announce), 3)
