@@ -76,9 +76,9 @@ class MailSystemTests(TestCase):
     def test_render_email(self):
         template = self.glean.member_organization.create_default_template()
         body = render_email(self.announcement, self.user.profile)
-        self.assertEqual(
-            type(body),
-            str,
+        self.assertNotEqual(
+            body,
+            "",
             "Body is not a string (or we made it to python 3!"
             " Body is of type: {0}".format(type(body))
         )
