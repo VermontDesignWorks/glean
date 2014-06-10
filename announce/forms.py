@@ -51,7 +51,6 @@ class NewTemplateForm(ModelForm):
                 Row("template_name"),
                 Row("body"),
                 Row("default"),
-                Field('member_organization', type="hidden"),
                 HTML("<input type='submit' "
                      "class='glean-button green-button' "
                      "name='submit' value='Save Changes'>")

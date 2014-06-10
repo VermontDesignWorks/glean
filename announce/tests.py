@@ -9,10 +9,11 @@ from datetime import date, timedelta
 from django.contrib.sites.models import Site
 from django.test import TestCase
 
+from announce.models import Template
 from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
-from announce.forms import *
-from announce.views import *
+from announce.forms import NewTemplateForm
+from announce.views import NewTemplate
 
 from test_functions import *
 from mail_system import render_email, mail_from_source
@@ -80,15 +81,9 @@ class MailSystemTests(TestCase):
     def test_render_email(self):
         template = self.glean.member_organization.create_default_template()
         body = render_email(self.announcement, self.user.profile)
-<<<<<<< HEAD
-        self.assertEqual(
-            type(body),
-            str,
-=======
         self.assertNotEqual(
             body,
             "",
->>>>>>> master
             "Body is not a string (or we made it to python 3!"
             " Body is of type: {0}".format(type(body))
         )

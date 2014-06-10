@@ -16,16 +16,19 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 
 from announce.models import Template, Announcement
-from announce.forms import TemplateForm, AnnouncementForm, PartialTemplateForm, NewTemplateForm
+from announce.forms import (TemplateForm,
+                            AnnouncementForm,
+                            PartialTemplateForm,
+                            NewTemplateForm)
 from gleanevent.models import GleanEvent
 from userprofile.models import Profile
 
 from mail_system import render_email, primary_source, mail_from_source
 
 
-#==================== Template System ====================#
+# ==================== Template System ====================#
 
-#== Template Index  View==#
+# == Template Index  View==#
 @permission_required('announce.auth')
 def Templates(request):
     if request.user.has_perm('announce.uniauth'):
@@ -36,7 +39,7 @@ def Templates(request):
     return render(request, 'announce/templates.html', {'templates': templates})
 
 
-#== Template Edit View ==#
+# == Template Edit View ==#
 
 
 class EditTemplateClass(generic.UpdateView):
@@ -94,31 +97,6 @@ def editTemplate(request, template_id):
         )
 
 
-#== Create New Template View ==#
-@permission_required('announce.auth')
-def newTemplate(request):
-    if request.method == 'POST':
-        form = TemplateForm(request.POST)
-        if form.is_valid():
-            newTemplate = form.save(commit=False)
-            if form.cleaned_data['body'].find('{{custom}}') != -1:
-                morg = request.user.profile.member_organization
-                newTemplate.member_organization = morg
-                newTemplate.save()
-                return HttpResponseRedirect(reverse('announce:templates'))
-            else:
-                form = TemplateForm(instance=newTemplate)
-                return render(
-                    request,
-                    'announce/new_template.html',
-                    {'form': form, 'error': 'Need a {{custom}} tag!'})
-        else:
-            return HttpResponse('form is not valid')
-    else:
-        form = TemplateForm
-        return render(request, 'announce/new_template.html', {'form': form})
-
-
 class NewTemplate(generic.CreateView):
     'The class based view for creating a new template'
     model = Template
@@ -133,10 +111,6 @@ class NewTemplate(generic.CreateView):
         else:
             raise Http404
 
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        return super(NewTemplate, self).post(request, *args, **kwargs)
-
     def form_valid(self, form):
         """
         If the form is valid, save the associated model.
@@ -146,14 +120,11 @@ class NewTemplate(generic.CreateView):
         morg = self.request.user.profile.member_organization
         newTemplate.member_organization = morg
         newTemplate.save()
-        # new_save = form.save()
-        # new_save.member_organization = self.request.user.profile.member_organization
-        # new_save.save()
         self.object = None
         return super(NewTemplate, self).form_valid(form)
 
 
-#== View for Individual Template ==#
+# == View for Individual Template ==#
 @permission_required('announce.auth')
 def detailTemplate(request, template_id):
     template = get_object_or_404(Template, pk=template_id)
@@ -161,7 +132,7 @@ def detailTemplate(request, template_id):
         request, 'announce/template_detail.html', {'template': template})
 
 
-#== Delete Template View ==#
+# == Delete Template View ==#
 @permission_required('announce.auth')
 def deleteTemplate(request, template_id):
     template = get_object_or_404(Template, pk=template_id)
@@ -174,10 +145,10 @@ def deleteTemplate(request, template_id):
         return HttpResponseRedirect(reverse('announce:templates'))
     return render(
         request, 'announce/delete_template.html', {'template': template})
-#==================== Announce System ====================#
+# ==================== Announce System ====================#
 
 
-#== View for individual Announcement ==#
+# == View for individual Announcement ==#
 @permission_required('announce.auth')
 def detailAnnounce(request, announce_id):
     announcement = get_object_or_404(Announcement, pk=announce_id)
@@ -205,7 +176,7 @@ def detailAnnounce(request, announce_id):
              'source': source})
 
 
-#== Delete Announcement View ==#
+# == Delete Announcement View ==#
 @permission_required('announce.auth')
 def deleteAnnounce(request, announce_id):
     announce = get_object_or_404(Announcement, pk=announce_id)
@@ -222,7 +193,7 @@ def deleteAnnounce(request, announce_id):
         request, 'announce/delete_announce.html', {'announce': announce})
 
 
-#== View for Printable Phone List ==#
+# == View for Printable Phone List ==#
 @permission_required('announce.auth')
 def phoneAnnounce(request, announce_id):
     announcement = get_object_or_404(Announcement, pk=announce_id)
@@ -239,7 +210,7 @@ def phoneAnnounce(request, announce_id):
                    'source': source})
 
 
-#== Index of All Announcements ==#
+# == Index of All Announcements ==#
 @permission_required('announce.auth')
 def Announcements(request):
     profile = get_object_or_404(Profile, user=request.user)
@@ -275,7 +246,7 @@ def Announcements(request):
         {'announcements': announcements, 'notice': ''})
 
 
-#== New Announcement View ==#
+# == New Announcement View ==#
 @permission_required('announce.auth')
 def announceGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
@@ -314,7 +285,7 @@ def announceGlean(request, glean_id):
         )
 
 
-#== Edit Announcement View ==#
+# == Edit Announcement View ==#
 @permission_required('announce.auth')
 def editAnnounce(request, announce_id):
     announce = get_object_or_404(Announcement, pk=announce_id)
@@ -358,8 +329,8 @@ def editAnnounce(request, announce_id):
              'source': source})
 
 
-#==================== Single Use Links ====================#
-#== Unsubscribe 'view' ==#
+# ==================== Single Use Links ====================#
+# == Unsubscribe 'view' ==#
 def unsubscribeLink(request, key):
     prof = get_object_or_404(Profile, unsubscribe_key=key)
     prof.accepts_email = False

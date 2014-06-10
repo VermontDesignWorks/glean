@@ -958,16 +958,6 @@ input[type="checkbox"]:checked:after {
    font-weight: bold;
 }
 
-
-.2cols {
-   /*-webkit-column-count:1;  Chrome, Safari, Opera 
-   -moz-column-count:1; Firefox *
-   column-count:1;
-   xcolumn-width:1200px;
-   -moz-column-width:1200px; Firefox 
-   -webkit-column-width:1200px;  Safari and Chrome */
-}
-
 #id-custom-registration-form {
    width: 800px;
 }
@@ -1014,7 +1004,7 @@ input[type="checkbox"]:checked:after {
     width: 300px !important;
     height: 200px !important;
 }
-<<<<<<< HEAD
+
 .yellow-bottom {
     border-bottom: 10px solid #ffc64a;
 }
@@ -1027,7 +1017,7 @@ input[type="checkbox"]:checked:after {
    background: orange; 
    padding: 10px; 
    border-radius: 5px;
-=======
+}
 
 .crispy_column {
     width: 480px;
@@ -1054,5 +1044,4 @@ input[type="checkbox"]:checked:after {
    color: red;
    text-decoration: underline;
    font-style: italic;
->>>>>>> master
 }
