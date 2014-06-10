@@ -312,7 +312,7 @@ def download(request):
                 profile.phone,
                 profile.get_phone_type_display(),
                 profile.get_preferred_method_display(),
-                profile.joined,
+                profile.user.date_joined.strftime("%m/%d/%Y"),
                 profile.ecfirst_name,
                 profile.eclast_name,
                 profile.ecphone,
