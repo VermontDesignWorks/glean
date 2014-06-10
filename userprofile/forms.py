@@ -20,8 +20,10 @@ from userprofile.models import Profile
 
 from constants import AGE_RANGES, PHONE_TYPE, PREFERRED_CONTACT, STATES, TASKS
 
+from generic.forms import Counties_For_Forms
 
-class ProfileUpdateForm(forms.ModelForm):
+
+class ProfileUpdateForm(Counties_For_Forms, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProfileUpdateForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -56,13 +58,7 @@ class ProfileUpdateForm(forms.ModelForm):
                 Row("ecphone",
                     "ecrelationship"),
             ),
-            Fieldset(
-                "",
-                HTML("<h3 class='lbl'>Counties You'd Like to Glean In</h3>"),
-                Div(InlineCheckboxes("vt_counties"),
-                    InlineCheckboxes("ny_counties"),
-                    css_class="form-checkboxes")
-            ),
+            self.county_fieldset,
             Fieldset(
                 "",
                 HTML("<h3 class='lbl'>How would you like"
@@ -99,12 +95,7 @@ class ProfileUpdateForm(forms.ModelForm):
                  "name='submit' value='Save Changes'>")
         )
         profile = kwargs["instance"]
-        self.initial["vt_counties"] = [
-            x.pk for x in profile.counties.filter(state="VT")
-        ]
-        self.initial["ny_counties"] = [
-            x.pk for x in profile.counties.filter(state="NY")
-        ]
+        self.county_initialize(profile)
         self.initial["email"] = profile.user.email
 
     first_name = forms.CharField(label="First Name", max_length=20)
@@ -119,18 +110,6 @@ class ProfileUpdateForm(forms.ModelForm):
         choices=STATES,
         initial='VT')
     zipcode = forms.CharField(label="Zipcode", max_length=11, required=False)
-    vt_counties = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="VT").order_by("name"),
-        label="Counties in Vermont",
-        required=False,
-    )
-    ny_counties = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="NY").order_by("name"),
-        label="Counties in New York",
-        required=False
-    )
     age = forms.ChoiceField(label="Age",
                             choices=AGE_RANGES)
     phone = forms.CharField(label="Primary Phone #:", max_length=200)
@@ -190,23 +169,6 @@ class ProfileUpdateForm(forms.ModelForm):
         label="Confirm Password",
         required=False
     )
-
-    def save(self, *args, **kwargs):
-        saved = super(ProfileUpdateForm, self).save(*args, **kwargs)
-        try:
-            saved.user.email = self.data.get('email')
-            saved.user.save()
-        except:
-            pass
-        if 'vt_counties' in self.data:
-            for pk in self.data.getlist('vt_counties'):
-                county = County.objects.get(pk=pk)
-                saved.counties.add(county)
-        if 'ny_counties' in self.data:
-            for pk in self.data.getlist('ny_counties'):
-                county = County.objects.get(pk=pk)
-                saved.counties.add(county)
-        return saved
 
     class Meta:
         model = Profile

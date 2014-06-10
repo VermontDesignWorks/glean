@@ -1,13 +1,16 @@
 # Create your views here.
 import csv
+from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 # add view for certain type
-from django.views.generic import View
+from django.views.generic import View, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 # experimenting with edit mixins
+from django.utils.decorators import method_decorator, classonlymethod
+from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
@@ -16,6 +19,7 @@ from farms.models import (Farm, FarmForm, FarmLocation,
                           LocationForm, Contact, ContactForm)
 from django.http import HttpResponseForbidden
 from generic.mixins import SimpleLoginCheckForGenerics
+from farms.forms import *
 
 
 @permission_required('farms.auth')
@@ -29,54 +33,60 @@ def index(request):
     return render(request, 'farms/index.html', {'farms': farms_list})
 
 
-@permission_required('farms.auth')
-def newFarm(request):
-    if request.method == "POST":
+class NewFarm(SimpleLoginCheckForGenerics, CreateView):
+    model = Farm
+    template_name = 'farms/new.html'
+    form_class = NewFarmForm
+    success_url = reverse_lazy('farms:index')
 
-        form = FarmForm(request.POST)
-        if form.is_valid():
-            new_save = form.save()
-            new_save.member_organization.add(
-                request.user.profile.member_organization)
-            new_save.save()
-            if request.POST['action'] == "Save And View":
-                return HttpResponseRedirect(
-                    reverse('farms:detailfarm', args=(new_save.id,)))
-            else:
-                return HttpResponseRedirect(reverse(
-                    'farms:newlocation', args=(new_save.id,)))
+    def form_valid(self, form):
+        """
+        If the form is valid, save the associated model.
+        """
+        new_save = form.save()
+        new_save.member_organization.add(
+            self.request.user.profile.member_organization)
+        new_save.save()
+        self.object = None
+        return super(NewFarm, self).form_valid(form)
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.has_perm('farms.auth'):
+            return super(NewFarm, self).dispatch(*args, **kwargs)
         else:
-                return render(
-                    request,  'farms/new.html',
-                    {'form': form, 'error': 'Your Farm Form Was Not Valid'})
-    else:
-        form = FarmForm()
-        return render(request, 'farms/new.html', {'form': form})
+            raise Http404
 
 
-@permission_required('farms.auth')
-def editFarm(request, farm_id):
-    farm = get_object_or_404(Farm, pk=farm_id)
-    if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
-        return HttpResponseRedirect(reverse('farms:index'))
-    if request.method == "POST":
-        form = FarmForm(request.POST, instance=farm)
-        if form.is_valid():
-            new_save = form.save()
-            return HttpResponseRedirect(
-                reverse('farms:detailfarm', args=(farm_id,)))
+class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
+    model = Farm
+    template_name = 'farms/edit.html'
+    form_class = EditFarmForm
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "farms:editfarm", kwargs={"pk": int(self.kwargs["pk"])})
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        farm = Farm.objects.get(pk=int(self.kwargs["pk"]))
+        usermemorg = self.request.user.profile.member_organization
+        forgs = farm.member_organization.all()
+        if self.request.user.has_perm('farms.uniauth'):
+            return super(EditFarm, self).dispatch(*args, **kwargs)
+        elif self.request.user.has_perm('farms.auth') and usermemorg in forgs:
+            return super(EditFarm, self).dispatch(*args, **kwargs)
         else:
-            return render(
-                request, 'farms/edit.html',
-                {'form': form, 'farm': farm,  'error': 'form needs some work'})
-    form = FarmForm(instance=farm)
-    return render(request, 'farms/edit.html', {'form': form, 'farm': farm})
-
+            raise Http404
+            
 
 @permission_required('farms.auth')
 def detailFarm(request, farm_id):
     farm = get_object_or_404(Farm, pk=farm_id)
-    if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+    usermemorg = request.user.profile.member_organization
+    funiauth = request.user.has_perm('farms.uniauth')
+    forgs = farm.member_organization.all()
+    if usermemorg not in forgs and not funiauth:
         return HttpResponseRedirect(reverse('farms:index'))
     return render(request, 'farms/detail.html', {'farm': farm})
 
