@@ -289,7 +289,8 @@ def download(request):
         'EC Last',
         'EC Phone',
         'EC Relationship',
-        'Accepts Email',
+        'Subscribed for Glean Announcements',
+        "Newsletter Opt In"
     ])
 
     if request.user.has_perm('userprofile.uniauth'):
@@ -318,6 +319,7 @@ def download(request):
                 profile.ecphone,
                 profile.ecrelationship,
                 profile.accepts_email,
+                profile.opt_in
                 ])
 
     return response
