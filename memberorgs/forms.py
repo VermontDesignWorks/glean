@@ -23,6 +23,8 @@ from constants import STATES, COLORS, LINE_TYPE
 
 from django.db.models import Q
 
+from generic.forms import Counties_For_Forms
+
 
 class UserMultipleModelChoiceField(forms.ModelMultipleChoiceField):
 
@@ -279,7 +281,7 @@ class MemOrgForm(forms.ModelForm):
         exclude = ("counties",)
 
 
-class NewMemOrgForm(forms.ModelForm):
+class NewMemOrgForm(Counties_For_Forms, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(NewMemOrgForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -294,14 +296,7 @@ class NewMemOrgForm(forms.ModelForm):
                 Row("phone_1", "phone_1_type"),
                 Row("phone_2", "phone_2_type"),
             ),
-            Fieldset(
-                "",
-                HTML("<h3 class='lbl'>Counties member "
-                     "organization will manage</h3>"),
-                Div(InlineCheckboxes("vt_counties"),
-                    InlineCheckboxes("ny_counties"),
-                    css_class="form-checkboxes")
-            ),
+            self.county_fieldset,
             Fieldset(
                 "",
                 HTML("<h3>Physical Address</h3>"),
@@ -335,18 +330,6 @@ class NewMemOrgForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
         required=False)
-    vt_counties = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="VT").order_by("name"),
-        label="Counties in Vermont",
-        required=False,
-    )
-    ny_counties = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="NY").order_by("name"),
-        label="Counties in New York",
-        required=False
-    )
     color = forms.ChoiceField(
         label="Colors", choices=COLORS, required=False)
     address_one = forms.CharField(
@@ -398,15 +381,3 @@ class NewMemOrgForm(forms.ModelForm):
 
     class Meta:
         model = MemOrg
-
-    def save(self, *args, **kwargs):
-        saved = super(NewMemOrgForm, self).save(*args, **kwargs)
-        if 'vt_counties' in self.data:
-            for pk in self.data.getlist('vt_counties'):
-                county = County.objects.get(pk=pk)
-                saved.counties.add(county)
-        if 'ny_counties' in self.data:
-            for pk in self.data.getlist('ny_counties'):
-                county = County.objects.get(pk=pk)
-                saved.counties.add(county)
-        return saved

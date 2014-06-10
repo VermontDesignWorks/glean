@@ -60,10 +60,12 @@ class Farm(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class FarmForm(ModelForm):
     class Meta:
         model = Farm
         exclude = ['farmers']
+
 
 class FarmLocation(models.Model):
     farm = models.ForeignKey(Farm, blank=True, editable=False, null=True)
@@ -100,6 +102,7 @@ class LocationForm(ModelForm):
     class Meta:
         model = FarmLocation
 
+
 class Contact(models.Model):
     farm = models.ForeignKey(Farm, blank=True, editable=False, null=True)
     first_name = models.CharField("First Name", max_length=20, blank=True)
@@ -110,6 +113,7 @@ class Contact(models.Model):
     phone_type = models.CharField("Phone Type", choices=PHONE_TYPE, max_length=2, blank=True)
     glean_contact = models.BooleanField("Should this person be contacted about gleans?", default=False)
     preferred = models.CharField("How Does this person Prefer to be Contacted?",choices=PREFERRED_CONTACT, max_length=1, blank=True, default='1')
+    
     class Meta:
         permissions = (
             ("auth", "Member Organization Level Permissions"),

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load url from future %}
 {% block title %}
 Edit {{Farm.name}}
@@ -10,14 +11,10 @@ Edit {{Farm.name}}
 
 
 {% block body %}
-	<form method="post" action="">
-		{% csrf_token %}
-		{% include 'farms/customform.html' %}
-		<div class="form-actions">
-			<div class="pull-right">
-				<input id="save-button" type="submit" class="btn btn-success" name="action" value="Save And View" />
-			</div>
-			<span class="pull-left"><span class="text-error">*</span><span>Denotes a Required Field</span></span>
-		</div>
-	</form>
+<div class="form-errors">
+	{{form.errors}}
+</div>
+<div class="crispy_form_tag">
+	{% crispy form %}
+</div>
 {% endblock body %}
