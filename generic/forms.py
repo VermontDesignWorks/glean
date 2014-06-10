@@ -44,7 +44,7 @@ class Counties_For_Forms(ModelForm):
             x.pk for x in object_toinit.counties.filter(state="VT")
         ]
         self.initial["ny_counties"] = [
-            x.pk for x in profile_toinit.counties.filter(state="NY")
+            x.pk for x in object_toinit.counties.filter(state="NY")
         ]
 
     # referred to with self.county_fieldset to be used when you require county fieldset
@@ -58,10 +58,6 @@ class Counties_For_Forms(ModelForm):
                 InlineCheckboxes("ny_counties"),
                 css_class="form-checkboxes")
         )
-
-    @county_fieldset.setter
-    def county_fieldset(self, fieldset):
-        return fieldset
 
     # override to save form to save counties and such
     def save(self, *args, **kwargs):

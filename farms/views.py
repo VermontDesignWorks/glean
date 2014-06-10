@@ -70,9 +70,11 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         farm = Farm.objects.get(pk=int(self.kwargs["pk"]))
+        usermemorg = self.request.user.profile.member_organization
+        forgs = farm.member_organization.all()
         if self.request.user.has_perm('farms.uniauth'):
             return super(EditFarm, self).dispatch(*args, **kwargs)
-        elif self.request.user.has_perm('farms.auth') and self.request.user.profile.member_organization in farm.member_organization.all():
+        elif self.request.user.has_perm('farms.auth') and usermemorg in forgs:
             return super(EditFarm, self).dispatch(*args, **kwargs)
         else:
             raise Http404
@@ -81,7 +83,10 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
 @permission_required('farms.auth')
 def detailFarm(request, farm_id):
     farm = get_object_or_404(Farm, pk=farm_id)
-    if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+    usermemorg = request.user.profile.member_organization
+    funiauth = request.user.has_perm('farms.uniauth')
+    forgs = farm.member_organization.all()
+    if usermemorg not in forgs and not funiauth:
         return HttpResponseRedirect(reverse('farms:index'))
     return render(request, 'farms/detail.html', {'farm': farm})
 

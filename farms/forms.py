@@ -21,12 +21,6 @@ from counties.models import County
 from memberorgs.models import MemOrg
 
 
-class FarmForm(ModelForm):
-    class Meta:
-        model = Farm
-        exclude = ['farmers']
-
-
 class NewFarmForm(ModelForm):
     'A crispyform class for creating a new farm object'
     

@@ -30,7 +30,7 @@ class SimpleTest(TestCase):
         self.assertEqual(1 + 1, 2)
 
 
-class FarmMenipulationTesting(TestCase):
+class FarmManipulationTesting(TestCase):
     def setUp(self):
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
