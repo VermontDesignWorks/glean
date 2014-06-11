@@ -191,22 +191,14 @@ class NewTemplateTest(TestCase):
         self.assertEqual(thistemplate.template_name, "New Template")
 
     def test_edit_template_view(self):
-        # Create an instance of a GET request.
-        self.factory = RequestFactory()
         form = NewTemplateForm(data=self.data)
         form.errors
         response = form.save(commit=False)
         response.member_organization = self.user.profile.member_organization
         response = response.save()
         pk = str(Template.objects.first().pk)
-        requeststring = 'announce/templates/'+pk+'/edit/'
         request = self.factory.get('announce/templates/'+pk+'/edit/')
-        # Recall that middleware are not suported. You can simulate a
-        # logged-in user by setting request.user manually.
         request.user = self.user
-        import pdb
-        pdb.set_trace()
-        # Test my_view() as if it were deployed at /customer/details
         response = EditTemplate.as_view()(request)
         self.assertEqual(response.status_code, 200)
 

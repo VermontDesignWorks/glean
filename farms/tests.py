@@ -114,14 +114,10 @@ class FarmManipulationTesting(TestCase):
         self.assertEqual(thisfarm.name, "New Farm")
 
     def test_edit_farm_view(self):
-        # Create an instance of a GET request.
         request = self.factory.get('/farms/1/edit')
-
-        # Recall that middleware are not suported. You can simulate a
-        # logged-in user by setting request.user manually.
         request.user = self.user
-
-        # Test my_view() as if it were deployed at /customer/details
+        import pdb
+        pdb.set_trace()
         response = NewFarm.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
