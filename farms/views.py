@@ -20,6 +20,7 @@ from farms.models import (Farm, FarmForm, FarmLocation,
 from django.http import HttpResponseForbidden
 from generic.mixins import SimpleLoginCheckForGenerics
 from farms.forms import *
+import re
 
 
 @permission_required('farms.auth')
@@ -69,7 +70,9 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        farm = Farm.objects.get(pk=int(self.kwargs["pk"]))
+        text = re.search('/farms/(.+?)/edit/', self.request.path)
+        pk = int(text.group(1))
+        farm = Farm.objects.get(pk=pk)
         usermemorg = self.request.user.profile.member_organization
         forgs = farm.member_organization.all()
         if self.request.user.has_perm('farms.uniauth'):

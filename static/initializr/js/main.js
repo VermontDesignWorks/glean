@@ -2,35 +2,35 @@
 /* ==========================================================================
                                   -----Forms-----
    ========================================================================== */
-$('#div_id_vt_counties :checkbox').each(function(){
+$('#div_id_vt_counties_single :checkbox').each(function(){
   $(this).click(function(){
     box=$(this).attr('id');
     if ($(this).prop('checked'))
     {
-      $('#div_id_vt_counties :checkbox').each(function(){
+      $('#div_id_vt_counties_single :checkbox').each(function(){
           if ($(this).attr('id') != box)
           {
             $(this).attr('checked',false);
           }
       });
-      $('#div_id_ny_counties :checkbox').each(function(){
+      $('#div_id_ny_counties_single :checkbox').each(function(){
           $(this).attr('checked',false);
       });
     }
   });
 });
-$('#div_id_ny_counties :checkbox').each(function(){
+$('#div_id_ny_counties_single :checkbox').each(function(){
   $(this).click(function(){
     box=$(this).attr('id');
     if ($(this).prop('checked'))
     {
-      $('#div_id_ny_counties :checkbox').each(function(){
+      $('#div_id_ny_counties_single :checkbox').each(function(){
           if ($(this).attr('id') != box)
           {
             $(this).attr('checked',false);
           }
       });
-      $('#div_id_vt_counties :checkbox').each(function(){
+      $('#div_id_vt_counties_single :checkbox').each(function(){
           $(this).attr('checked',false);
       });
     }

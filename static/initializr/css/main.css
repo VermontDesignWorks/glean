@@ -1020,14 +1020,14 @@ input[type="checkbox"]:checked:after {
 }
 .crispy_column_left {
     float: left;
-    width: 480px;
+    width: 550px;
 }
 .crispy_column_right {
     float: right;
     width: 480px;
 }
 .crispy_form_tag {
-    width: 1000px;
+    width: 1200px;
     margin: 20px;
 }
 

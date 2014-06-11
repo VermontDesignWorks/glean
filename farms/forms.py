@@ -68,7 +68,7 @@ class NewFarmForm(ModelForm):
     description = forms.CharField(
         label='Description',
         widget=forms.Textarea(
-            attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
+            attrs={'cols': '100', 'rows': '10', 'style': 'width: 460px'}),
         required=False)
     address_one = forms.CharField(label='Address:', max_length=200)
     address_two = forms.CharField(label='Address (line two):', max_length=200, required=False)
@@ -95,12 +95,12 @@ class NewFarmForm(ModelForm):
     directions = forms.CharField(
         label='Directions:',
         widget=forms.Textarea(
-            attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
+            attrs={'cols': '100', 'rows': '10', 'style': 'width: 460px'}),
         required=False)
     instructions = forms.CharField(
         label='Instructions:',
         widget=forms.Textarea(
-            attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
+            attrs={'cols': '100', 'rows': '10', 'style': 'width: 460px'}),
         required=False)
     counties = forms.ModelChoiceField(label="County", queryset=County.objects.all())
     member_organization = forms.ModelMultipleChoiceField(label="member_organization", queryset=MemOrg.objects.all(), required=False)
@@ -133,9 +133,9 @@ class EditFarmForm(ModelForm):
                     "instructions",
                     HTML("<h3 class='lbl'>Counties Operating"
                          " in</h3>"),
-                    Div(InlineCheckboxes("vt_counties"),
-                        InlineCheckboxes("ny_counties"),
-                css_class="form-checkboxes"),
+                    Div(InlineCheckboxes("vt_counties_single"),
+                        InlineCheckboxes("ny_counties_single"),
+                css_class="form-checkboxes",style="width: 460px;"),
                     css_class="crispy_column_left"),
                 Div(
                     HTML("<p class='red-emphasized'>Information in this column is visible only by administrators</p>"),
@@ -155,15 +155,15 @@ class EditFarmForm(ModelForm):
                  "name='submit' value='Save Changes'>"),
             HTML("</div>")
         )
-        farm = kwargs["instance"]
-        self.initial["vt_counties"] = [farm.counties]
-        self.initial["ny_counties"] = [farm.counties]
+        farm = self.instance
+        self.initial["vt_counties_single"] = [farm.counties]
+        self.initial["ny_counties_single"] = [farm.counties]
 
     name = forms.CharField(max_length=200)
     description = forms.CharField(
         label='Description',
         widget=forms.Textarea(
-            attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
+            attrs={'cols': '100', 'rows': '10', 'style': 'width: 460px'}),
         required=False)
     address_one = forms.CharField(label='Address:', max_length=200)
     address_two = forms.CharField(label='Address (line two):', max_length=200, required=False)
@@ -190,20 +190,20 @@ class EditFarmForm(ModelForm):
     directions = forms.CharField(
         label='Directions:',
         widget=forms.Textarea(
-            attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
+            attrs={'cols': '100', 'rows': '10', 'style': 'width: 460px;'}),
         required=False)
     instructions = forms.CharField(
         label='Instructions:',
         widget=forms.Textarea(
-            attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
+            attrs={'cols': '100', 'rows': '10', 'style': 'width: 460px;'}),
         required=False)
-    ny_counties = forms.ModelMultipleChoiceField(
+    ny_counties_single = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
         queryset=County.objects.filter(state="NY").order_by("name"),
         label="Counties in New York",
         required=False
     )
-    vt_counties = forms.ModelMultipleChoiceField(
+    vt_counties_single = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
         queryset=County.objects.filter(state="VT").order_by("name"),
         label="Counties in Vermont",
@@ -214,12 +214,12 @@ class EditFarmForm(ModelForm):
         # override to save form to save counties and such
     def save(self, *args, **kwargs):
         saved = super(EditFarmForm, self).save(*args, **kwargs)
-        if 'vt_counties' in self.data:
-            for pk in self.data.getlist('vt_counties'):
+        if 'vt_counties_single' in self.data:
+            for pk in self.data.getlist('vt_counties_single'):
                 county = County.objects.get(pk=pk)
                 saved.counties=county
-        if 'ny_counties' in self.data:
-            for pk in self.data.getlist('ny_counties'):
+        if 'ny_counties_single' in self.data:
+            for pk in self.data.getlist('ny_counties_single'):
                 county = County.objects.get(pk=pk)
                 saved.county=county
         saved.save()        

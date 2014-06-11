@@ -68,6 +68,7 @@ class FarmManipulationTesting(TestCase):
             "instructions": "Dude These are the instructions.",
             "counties": self.county.pk
             }
+        self.kwargs = {'instance': self.farm, 'prefix': None, 'initial': {}}
 
     def test_new_farm_view(self):
         # Create an instance of a GET request.
@@ -126,7 +127,7 @@ class FarmManipulationTesting(TestCase):
         response = NewFarm.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
-    def test_edit_farm_form(self):
+    def test_edit_farm_form(self, *args, **kwargs):
         form = EditFarmForm(data=self.data)
         form.data["instructions"] = "New Instructions"
         form.is_valid()
