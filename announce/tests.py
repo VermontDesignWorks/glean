@@ -12,13 +12,22 @@ from django.test import TestCase
 from announce.models import Template
 from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
-from announce.forms import NewTemplateForm
-from announce.views import NewTemplate
+from announce.forms import NewTemplateForm, EditTemplateForm
+from announce.views import NewTemplate, EditTemplate
 
 from test_functions import *
 from mail_system import render_email, mail_from_source
 
 from django.test.client import RequestFactory
+from django import forms
+from django.db import models
+from django.test import TestCase
+from django.utils import unittest
+from django.http import HttpRequest
+from userprofile.models import Profile
+from farms.models import Farm
+from django.contrib.auth.models import User, Group
+from constants import STATES, COLORS, LINE_TYPE
 
 
 class AnnouncementTests(TestCase):
@@ -172,12 +181,44 @@ class NewTemplateTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_new_template_form(self):
-        form = NewTemplateForm(self.data)
+        form = NewTemplateForm(data=self.data)
         form.errors
-        view = NewTemplate()
         response = form.save(commit=False)
         response.member_organization = self.user.profile.member_organization
         response = response.save()
         self.assertEqual(form.is_valid(), True)
         thistemplate = Template.objects.get(template_name="New Template")
         self.assertEqual(thistemplate.template_name, "New Template")
+
+    def test_edit_template_view(self):
+        # Create an instance of a GET request.
+        self.factory = RequestFactory()
+        form = NewTemplateForm(data=self.data)
+        form.errors
+        response = form.save(commit=False)
+        response.member_organization = self.user.profile.member_organization
+        response = response.save()
+        pk = str(Template.objects.first().pk)
+        requeststring = 'announce/templates/'+pk+'/edit/'
+        request = self.factory.get('announce/templates/'+pk+'/edit/')
+        # Recall that middleware are not suported. You can simulate a
+        # logged-in user by setting request.user manually.
+        request.user = self.user
+        import pdb
+        pdb.set_trace()
+        # Test my_view() as if it were deployed at /customer/details
+        response = EditTemplate.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_edit_template_form(self):
+        form = EditTemplateForm(data=self.data)
+        form.data["template_name"] = "Old Instructions"
+        form.is_valid()
+        form.errors
+        response = form.save(commit=False)
+        memorg = MemOrg.objects.get(pk=self.data["member_organization"])
+        response.member_organization = memorg
+        response = response.save()
+        self.assertEqual(form.is_valid(), True)
+        thistemplate = Template.objects.get(template_name="Old Instructions")
+        self.assertEqual(thistemplate.template_name, "Old Instructions")

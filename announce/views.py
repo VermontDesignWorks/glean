@@ -19,7 +19,8 @@ from announce.models import Template, Announcement
 from announce.forms import (TemplateForm,
                             AnnouncementForm,
                             PartialTemplateForm,
-                            NewTemplateForm)
+                            NewTemplateForm,
+                            EditTemplateForm)
 from gleanevent.models import GleanEvent
 from userprofile.models import Profile
 
@@ -39,62 +40,30 @@ def Templates(request):
     return render(request, 'announce/templates.html', {'templates': templates})
 
 
-# == Template Edit View ==#
+class EditTemplate(generic.UpdateView):
+    'The class based view for editing a new template'
 
+    version = '0.1'
 
-class EditTemplateClass(generic.UpdateView):
     model = Template
-    form_class = PartialTemplateForm
+    form_class = EditTemplateForm
     template_name = 'announce/edit_template.html'
 
     def get_success_url(self):
-        return reverse(
-            'announce:detailtemplate',
-            kwargs={'template_id': self.object.pk})
+        return reverse_lazy(
+            "announce:edittemplate", kwargs={"pk": int(self.kwargs["pk"])})
 
-
-@permission_required('announce.auth')
-def editTemplate(request, template_id):
-    template = get_object_or_404(Template, pk=template_id)
-    if (not request.user.has_perm('announce.uniauth') and
-            request.user.profile.member_organization !=
-            template.member_organization):
-        return HttpResponseRedirect(reverse('announce:templates'))
-    if request.method == 'POST':
-        form = PartialTemplateForm(request.POST)
-        if form.is_valid():
-            if form.cleaned_data['body'].find('{{custom}}') != -1:
-                template.body = form.cleaned_data['body']
-                template.default = form.cleaned_data['default']
-                template.save()
-                return HttpResponseRedirect(
-                    reverse('announce:detailtemplate', args=(template.id,)))
-            else:
-                form = PartialTemplateForm(instance=newTemplate)
-                return render(
-                    request,
-                    'announce/edit_template.html',
-                    {
-                        'form': form,
-                        'template': template,
-                        'error': 'Need a {{custom}} tag!',
-                        'editmode': True
-                    }
-                )
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        template = Template.objects.get(pk=int(self.kwargs["pk"]))
+        usermemorg = self.request.user.profile.member_organization
+        torg = template.member_organization
+        if self.request.user.has_perm('farms.uniauth'):
+            return super(EditTemplate, self).dispatch(*args, **kwargs)
+        elif self.request.user.has_perm('farms.auth') and usermemorg == torg:
+            return super(EditTemplate, self).dispatch(*args, **kwargs)
         else:
-            return render(request, 'announce/edit_template.html',
-                          {'form': form,
-                           'template':
-                           template,
-                           'error': 'Form was not valid',
-                           'editmode': True})
-    else:
-        form = PartialTemplateForm(instance=template)
-        return render(
-            request,
-            'announce/edit_template.html',
-            {'form': form, 'template': template}
-        )
+            raise Http404
 
 
 class NewTemplate(generic.CreateView):
@@ -116,10 +85,10 @@ class NewTemplate(generic.CreateView):
         If the form is valid, save the associated model.
         """
         form = NewTemplateForm(self.request.POST)
-        newTemplate = form.save(commit=False)
+        newtemplate = form.save(commit=False)
         morg = self.request.user.profile.member_organization
-        newTemplate.member_organization = morg
-        newTemplate.save()
+        newtemplate.member_organization = morg
+        newtemplate.save()
         self.object = None
         return super(NewTemplate, self).form_valid(form)
 

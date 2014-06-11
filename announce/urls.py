@@ -48,7 +48,7 @@ urlpatterns = patterns(
         views.deleteTemplate,
         name='deletetemplate'),
     url(r'^templates/(?P<pk>\d+)/edit/$',
-        views.EditTemplateClass.as_view(),
+        views.EditTemplate.as_view(),
         name='edittemplate'),
 
     #=================# RSVP & Sub Urls #=================#
