@@ -4,6 +4,7 @@ from django.forms import ModelForm
 from django.forms.fields import ChoiceField
 from crispy_forms.bootstrap import (FieldWithButtons,
                                     InlineCheckboxes,
+                                    InlineRadios,
                                     StrictButton,
                                     AppendedText)
 from crispy_forms.helper import FormHelper
@@ -130,7 +131,11 @@ class EditFarmForm(ModelForm):
                     Row("zipcode"),
                     "directions",
                     "instructions",
-                    "counties",
+                    HTML("<h3 class='lbl'>Counties Operating"
+                         " in</h3>"),
+                    Div(InlineCheckboxes("vt_counties"),
+                        InlineCheckboxes("ny_counties"),
+                css_class="form-checkboxes"),
                     css_class="crispy_column_left"),
                 Div(
                     HTML("<p class='red-emphasized'>Information in this column is visible only by administrators</p>"),
@@ -150,6 +155,9 @@ class EditFarmForm(ModelForm):
                  "name='submit' value='Save Changes'>"),
             HTML("</div>")
         )
+        farm = kwargs["instance"]
+        self.initial["vt_counties"] = [farm.counties]
+        self.initial["ny_counties"] = [farm.counties]
 
     name = forms.CharField(max_length=200)
     description = forms.CharField(
@@ -189,8 +197,33 @@ class EditFarmForm(ModelForm):
         widget=forms.Textarea(
             attrs={'cols': '100', 'rows': '10', 'style': 'width: 450px'}),
         required=False)
-    counties = forms.ModelChoiceField(label="County", queryset=County.objects.all())
+    ny_counties = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="NY").order_by("name"),
+        label="Counties in New York",
+        required=False
+    )
+    vt_counties = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="VT").order_by("name"),
+        label="Counties in Vermont",
+        required=False
+    )
     member_organization = forms.ModelMultipleChoiceField(label="member_organization", queryset=MemOrg.objects.all(), required=False)
+
+        # override to save form to save counties and such
+    def save(self, *args, **kwargs):
+        saved = super(EditFarmForm, self).save(*args, **kwargs)
+        if 'vt_counties' in self.data:
+            for pk in self.data.getlist('vt_counties'):
+                county = County.objects.get(pk=pk)
+                saved.counties=county
+        if 'ny_counties' in self.data:
+            for pk in self.data.getlist('ny_counties'):
+                county = County.objects.get(pk=pk)
+                saved.county=county
+        saved.save()        
+        return saved
 
     class Meta:
         model = Farm
