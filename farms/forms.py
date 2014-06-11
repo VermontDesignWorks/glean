@@ -24,7 +24,7 @@ from memberorgs.models import MemOrg
 
 class NewFarmForm(ModelForm):
     'A crispyform class for creating a new farm object'
-    
+
     version = '0.1'
 
     def __init__(self, *args, **kwargs):
@@ -43,7 +43,11 @@ class NewFarmForm(ModelForm):
                     Row("zipcode"),
                     "directions",
                     "instructions",
-                    "counties",
+                    HTML("<h3 class='lbl'>Counties Operating"
+                         " in</h3>"),
+                    Div(InlineCheckboxes("vt_counties_single"),
+                        InlineCheckboxes("ny_counties_single"),
+                        css_class="form-checkboxes", style="width: 460px;"),
                     css_class="crispy_column_left"),
                 Div(
                     HTML("<p class='red-emphasized'>Information in this column is visible only by administrators</p>"),
@@ -60,7 +64,9 @@ class NewFarmForm(ModelForm):
             HTML("</div>"),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "name='submit' value='Add Farm'>"),
+                 "name='submit' value='Add Farm'> <input type='submit'"
+                 "class='glean-button red-button' "
+                 "name='submit' value='Add Farm and Add Contact'>"),
             HTML("</div>")
         )
 
@@ -76,7 +82,7 @@ class NewFarmForm(ModelForm):
     state = forms.ChoiceField(
         label="State", choices=STATES, required=False)
     zipcode = forms.CharField(label='Zip Code:', max_length=11)
-    
+
     physical_is_mailing = forms.BooleanField(label='Physical Address is Mailing Address', required=False)
     mailing_address_one = forms.CharField(label='Address: ', max_length=200, required=False)
     mailing_address_two = forms.CharField(label='Address (line two):', max_length=200, required=False)
@@ -102,8 +108,32 @@ class NewFarmForm(ModelForm):
         widget=forms.Textarea(
             attrs={'cols': '100', 'rows': '10', 'style': 'width: 460px'}),
         required=False)
-    counties = forms.ModelChoiceField(label="County", queryset=County.objects.all())
+    ny_counties_single = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="NY").order_by("name"),
+        label="Counties in New York",
+        required=False
+    )
+    vt_counties_single = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="VT").order_by("name"),
+        label="Counties in Vermont",
+        required=False
+    )
     member_organization = forms.ModelMultipleChoiceField(label="member_organization", queryset=MemOrg.objects.all(), required=False)
+
+    def save(self, *args, **kwargs):
+        saved = super(NewFarmForm, self).save(*args, **kwargs)
+        if 'vt_counties_single' in self.data:
+            for pk in self.data.getlist('vt_counties_single'):
+                county = County.objects.get(pk=pk)
+                saved.counties=county
+        if 'ny_counties_single' in self.data:
+            for pk in self.data.getlist('ny_counties_single'):
+                county = County.objects.get(pk=pk)
+                saved.county=county
+        saved.save()
+        return saved
 
     class Meta:
         model = Farm
@@ -112,7 +142,7 @@ class NewFarmForm(ModelForm):
 
 class EditFarmForm(ModelForm):
     'A crispyform class for editing a farm object'
-    
+
     version = '0.1'
 
     def __init__(self, *args, **kwargs):
@@ -135,7 +165,7 @@ class EditFarmForm(ModelForm):
                          " in</h3>"),
                     Div(InlineCheckboxes("vt_counties_single"),
                         InlineCheckboxes("ny_counties_single"),
-                css_class="form-checkboxes",style="width: 460px;"),
+                        css_class="form-checkboxes", style="width: 460px;"),
                     css_class="crispy_column_left"),
                 Div(
                     HTML("<p class='red-emphasized'>Information in this column is visible only by administrators</p>"),
@@ -152,7 +182,9 @@ class EditFarmForm(ModelForm):
             HTML("</div>"),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "name='submit' value='Save Changes'>"),
+                 "name='submit' value='Save Changes'> <input type='submit'"
+                 "class='glean-button red-button' "
+                 "name='submit' value='Edit Farm and Add Contact'>"),
             HTML("</div>")
         )
         farm = self.instance
@@ -171,7 +203,6 @@ class EditFarmForm(ModelForm):
     state = forms.ChoiceField(
         label="State", choices=STATES, required=False)
     zipcode = forms.CharField(label='Zip Code:', max_length=11)
-    
     physical_is_mailing = forms.BooleanField(label='Physical Address is Mailing Address', required=False)
     mailing_address_one = forms.CharField(label='Address: ', max_length=200, required=False)
     mailing_address_two = forms.CharField(label='Address (line two):', max_length=200, required=False)
@@ -211,18 +242,18 @@ class EditFarmForm(ModelForm):
     )
     member_organization = forms.ModelMultipleChoiceField(label="member_organization", queryset=MemOrg.objects.all(), required=False)
 
-        # override to save form to save counties and such
+    # override to save form to save counties and such
     def save(self, *args, **kwargs):
         saved = super(EditFarmForm, self).save(*args, **kwargs)
         if 'vt_counties_single' in self.data:
             for pk in self.data.getlist('vt_counties_single'):
                 county = County.objects.get(pk=pk)
-                saved.counties=county
+                saved.counties = county
         if 'ny_counties_single' in self.data:
             for pk in self.data.getlist('ny_counties_single'):
                 county = County.objects.get(pk=pk)
-                saved.county=county
-        saved.save()        
+                saved.county = county
+        saved.save()
         return saved
 
     class Meta:

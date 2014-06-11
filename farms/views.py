@@ -66,7 +66,7 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy(
-            "farms:editfarm", kwargs={"pk": int(self.kwargs["pk"])})
+            "farms:editfarm", kwargs={"pk": int(self.object.pk)})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
