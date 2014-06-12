@@ -48,7 +48,12 @@ class NewFarm(SimpleLoginCheckForGenerics, CreateView):
         new_save.member_organization.add(
             self.request.user.profile.member_organization)
         new_save.save()
-        self.object = None
+        self.object = new_save
+        submission = self.request.POST.get("submit")
+        if submission == 'Add Farm and Add Contact':
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'farms:newcontact', kwargs={"farm_id": self.object.pk}))
         return super(NewFarm, self).form_valid(form)
 
     @method_decorator(login_required)
@@ -81,7 +86,16 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
             return super(EditFarm, self).dispatch(*args, **kwargs)
         else:
             raise Http404
-            
+
+    def form_valid(self, form):
+        self.object = form.save()
+        submission = self.request.POST.get("submit")
+        if submission == 'Save Farm and Add Contact':
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'farms:newcontact', kwargs={"farm_id": self.object.pk}))
+        return super(EditFarm, self).form_valid(form)
+
 
 @permission_required('farms.auth')
 def detailFarm(request, farm_id):

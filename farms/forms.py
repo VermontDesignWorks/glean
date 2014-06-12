@@ -184,7 +184,7 @@ class EditFarmForm(ModelForm):
                  "class='glean-button green-button' "
                  "name='submit' value='Save Changes'> <input type='submit'"
                  "class='glean-button red-button' "
-                 "name='submit' value='Edit Farm and Add Contact'>"),
+                 "name='submit' value='Save Farm and Add Contact'>"),
             HTML("</div>")
         )
         farm = self.instance
