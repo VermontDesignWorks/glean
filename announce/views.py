@@ -25,6 +25,7 @@ from gleanevent.models import GleanEvent
 from userprofile.models import Profile
 
 from mail_system import render_email, primary_source, mail_from_source
+import se
 
 
 # ==================== Template System ====================#
