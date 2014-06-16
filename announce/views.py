@@ -92,7 +92,7 @@ class NewTemplate(generic.CreateView):
         morg = self.request.user.profile.member_organization
         newtemplate.member_organization = morg
         newtemplate.save()
-        self.object = None
+        self.object = newtemplate
         return super(NewTemplate, self).form_valid(form)
 
 
