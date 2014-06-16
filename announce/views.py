@@ -54,7 +54,9 @@ class EditTemplate(generic.UpdateView):
             "announce:edittemplate", kwargs={"pk": int(self.kwargs["pk"])})
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
+        import pdb
+        pdb.set_trace()
         template = Template.objects.get(pk=int(self.kwargs["pk"]))
         usermemorg = self.request.user.profile.member_organization
         torg = template.member_organization
