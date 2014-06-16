@@ -167,6 +167,7 @@ class NewTemplateTest(TestCase):
             "body": "This is a test form",
             "default": False
             }
+        self.template = create_template(self.memorg)
 
     def test_new_template_view(self):
         # Create an instance of a GET request.
@@ -191,11 +192,6 @@ class NewTemplateTest(TestCase):
         self.assertEqual(thistemplate.template_name, "New Template")
 
     def test_edit_template_view(self):
-        form = NewTemplateForm(data=self.data)
-        form.errors
-        response = form.save(commit=False)
-        response.member_organization = self.user.profile.member_organization
-        response = response.save()
         pk = str(Template.objects.first().pk)
         request = self.factory.get('announce/templates/'+pk+'/edit/')
         request.user = self.user

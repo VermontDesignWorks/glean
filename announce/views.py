@@ -55,7 +55,7 @@ class EditTemplate(generic.UpdateView):
             "announce:edittemplate", kwargs={"pk": int(self.object.pk)})
 
     @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, *args, **kwargs):
         text = re.search('/templates/(.+?)/edit/', self.request.path)
         pk = int(text.group(1))
         template = Template.objects.get(pk=pk)
@@ -71,6 +71,9 @@ class EditTemplate(generic.UpdateView):
 
 class NewTemplate(generic.CreateView):
     'The class based view for creating a new template'
+
+    version = '0.1'
+    
     model = Template
     form_class = NewTemplateForm
     template_name = 'announce/new_template.html'
