@@ -25,7 +25,7 @@ from gleanevent.models import GleanEvent
 from userprofile.models import Profile
 
 from mail_system import render_email, primary_source, mail_from_source
-import se
+import re
 
 
 # ==================== Template System ====================#
@@ -56,9 +56,9 @@ class EditTemplate(generic.UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        import pdb
-        pdb.set_trace()
-        template = Template.objects.get(pk=int(self.kwargs["pk"]))
+        text = re.search('/templates/(.+?)/edit/', self.request.path)
+        pk = int(text.group(1))
+        template = Template.objects.get(pk=pk)
         usermemorg = self.request.user.profile.member_organization
         torg = template.member_organization
         if self.request.user.has_perm('farms.uniauth'):
