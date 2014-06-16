@@ -52,7 +52,7 @@ class EditTemplate(generic.UpdateView):
 
     def get_success_url(self):
         return reverse_lazy(
-            "announce:edittemplate", kwargs={"pk": int(self.kwargs["pk"])})
+            "announce:edittemplate", kwargs={"pk": int(self.object.pk)})
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
