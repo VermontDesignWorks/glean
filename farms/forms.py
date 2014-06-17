@@ -100,14 +100,17 @@ class NewFarmForm(ModelForm):
     mailing_zip = forms.CharField(
         label='Zip Code:', max_length=11, required=False)
 
-    phone_1 = forms.CharField(label='Primary phone #:', max_length=200)
+    phone_1 = forms.CharField(
+        label='Primary phone #:',
+        max_length=200,
+        required=False)
     phone_1_type = forms.ChoiceField(
         label='Primary Phone Type', choices=LINE_TYPE, required=False)
     phone_2 = forms.CharField(
         label='Secondary phone #:', max_length=200, required=False)
     phone_2_type = forms.ChoiceField(
         label='Primary Phone Type', choices=LINE_TYPE, required=False)
-    email = forms.CharField(label="Email:")
+    email = forms.CharField(label="Email:", required=False)
     directions = forms.CharField(
         label='Directions:',
         widget=forms.Textarea(
@@ -235,7 +238,10 @@ class EditFarmForm(ModelForm):
         max_length=11,
         required=False)
 
-    phone_1 = forms.CharField(label='Primary phone #:', max_length=200)
+    phone_1 = forms.CharField(
+        label='Primary phone #:',
+        max_length=200,
+        required=False)
     phone_1_type = forms.ChoiceField(
         label='Primary Phone Type', choices=LINE_TYPE, required=False)
     phone_2 = forms.CharField(
@@ -244,7 +250,7 @@ class EditFarmForm(ModelForm):
         required=False)
     phone_2_type = forms.ChoiceField(
         label='Primary Phone Type', choices=LINE_TYPE, required=False)
-    email = forms.CharField(label="Email:")
+    email = forms.CharField(label="Email:", required=False)
     directions = forms.CharField(
         label='Directions:',
         widget=forms.Textarea(
