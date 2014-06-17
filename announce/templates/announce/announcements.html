@@ -42,11 +42,11 @@ Sent Announcement
 		</form>
 	</div>
 </div>
-	{% if announcements %}
+	{% if object_list %}
 	<div class="row-fluid">
 		<div class="span6">
 			<ul>
-			{% for announce in announcements %}
+			{% for announce in object_list %}
 			<li>
 					<a href="{% url 'announce:combinedannounce' announce.id %}">{{ announce.datetime }} - {{announce.title}}</a>{% if 'announce.uniauth' in perms %} -{{announce.member_organization}}{% endif %}
 				</li>
