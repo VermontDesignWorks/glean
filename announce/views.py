@@ -9,14 +9,13 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django import forms
 from django.utils import timezone
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
-
 from django.contrib.auth.models import User
 
 from announce.models import Template, Announcement
 from announce.forms import TemplateForm, AnnouncementForm, PartialTemplateForm
+from generic.mixins import DateFilterMixin, SimpleLoginCheckForGenerics
 from gleanevent.models import GleanEvent
 from userprofile.models import Profile
 
@@ -206,39 +205,18 @@ def phoneAnnounce(request, announce_id):
 
 
 #== Index of All Announcements ==#
-@permission_required('announce.auth')
-def Announcements(request):
-    profile = get_object_or_404(Profile, user=request.user)
-    date_from = request.GET.get('date_from', '')
-    date_until = request.GET.get('date_until', '')
-    if date_from:
-        date_from = date_from[6:] + '-' + date_from[:2] + '-' + date_from[3:5]
-    else:
-        date_from = '2013-01-01'
-    if date_until:
-        date_until = (date_until[6:] + '-' + date_until[:2] +
-                      '-' + date_until[3:5])
-    else:
-        date_until = '3013-01-01'
-    if request.user.has_perm('gleanevent.uniauth'):
-        announcements = Announcement.objects.all()
-    else:
-        announcements = Announcement.objects.filter(
-            member_organization=profile.member_organization)
-    try:
-        announcements = Announcement.objects.filter(
-            datetime__gte=date_from, datetime__lte=date_until).order_by(
-            '-datetime')
-    except:
-        notice = 'Use the Date Picker you Muppets!'
-        return render(
-            request,
-            'announce/announcements.html',
-            {'announcements': announcements, 'notice': notice})
-    return render(
-        request,
-        'announce/announcements.html',
-        {'announcements': announcements, 'notice': ''})
+class AnnouncementListView(SimpleLoginCheckForGenerics,
+                           DateFilterMixin, generic.ListView):
+    model = Announcement
+    template_name = "announce/announcements.html"
+
+    def get_queryset(self):
+        queryset = super(AnnouncementListView, self).get_queryset()
+        user = self.request.user
+        if not user.has_perm('gleanevent.uniauth'):
+            memo = user.profile.member_organization
+            return queryset.filter(member_organization=memo)
+        return queryset.filter(sent=True)
 
 
 #== New Announcement View ==#

@@ -7,8 +7,11 @@ Replace this with more appropriate tests for your application.
 from datetime import date, timedelta
 
 from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.test.client import RequestFactory
 
+from announce.views import AnnouncementListView
 from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 
@@ -137,3 +140,20 @@ class MailSystemTests(TestCase):
         user = create_user_and_profile(tasks_gleaning=True)
         user.profile.counties.add(county)
         self.assertEqual(mail_from_source(announce), 3)
+
+
+class AnnouncementViewTests(TestCase):
+
+    def setUp(self):
+        self.factory = RequestFactory()
+        test_groups()
+
+    def test_announcement_list_view(self):
+        request = self.factory.get(reverse("announce:announcements"))
+        request.user = create_user_and_profile()
+        request.user.profile.member_organization = create_memorg()
+
+        view = AnnouncementListView.as_view()
+        response = view(request)
+
+        self.assertEqual(response.status_code, 200)
