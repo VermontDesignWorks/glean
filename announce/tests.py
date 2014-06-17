@@ -20,10 +20,16 @@ class AnnouncementTests(TestCase):
     def test_populate_recipients_method(self):
         county = create_county()
         for i in range(20):
-            user = create_user_and_profile()
+            user = create_user_and_profile(
+                tasks_gleaning=True
+            )
+
             user.profile.counties.add(county)
         for i in range(3):
-            user = create_user_and_profile(preferred_method='2')
+            user = create_user_and_profile(
+                preferred_method='2',
+                tasks_gleaning=True
+            )
             user.profile.counties.add(county)
         glean = create_glean()
         glean.counties = county
@@ -124,10 +130,10 @@ class MailSystemTests(TestCase):
         memo.testing = False
         memo.save()
 
-        user = create_user_and_profile()
+        user = create_user_and_profile(tasks_gleaning=True)
         user.profile.counties.add(county)
-        user = create_user_and_profile()
+        user = create_user_and_profile(tasks_gleaning=True)
         user.profile.counties.add(county)
-        user = create_user_and_profile()
+        user = create_user_and_profile(tasks_gleaning=True)
         user.profile.counties.add(county)
         self.assertEqual(mail_from_source(announce), 3)
