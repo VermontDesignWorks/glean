@@ -20,6 +20,7 @@ from farms.models import (Farm, FarmForm, FarmLocation,
 from django.http import HttpResponseForbidden
 from generic.mixins import SimpleLoginCheckForGenerics
 from farms.forms import *
+import re
 
 
 @permission_required('farms.auth')
@@ -47,7 +48,12 @@ class NewFarm(SimpleLoginCheckForGenerics, CreateView):
         new_save.member_organization.add(
             self.request.user.profile.member_organization)
         new_save.save()
-        self.object = None
+        self.object = new_save
+        submission = self.request.POST.get("submit")
+        if submission == 'Add Farm and Add Contact':
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'farms:newcontact', kwargs={"farm_id": self.object.pk}))
         return super(NewFarm, self).form_valid(form)
 
     @method_decorator(login_required)
@@ -65,11 +71,13 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy(
-            "farms:editfarm", kwargs={"pk": int(self.kwargs["pk"])})
+            "farms:editfarm", kwargs={"pk": int(self.object.pk)})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        farm = Farm.objects.get(pk=int(self.kwargs["pk"]))
+        text = re.search('/farms/(.+?)/edit/', self.request.path)
+        pk = int(text.group(1))
+        farm = Farm.objects.get(pk=pk)
         usermemorg = self.request.user.profile.member_organization
         forgs = farm.member_organization.all()
         if self.request.user.has_perm('farms.uniauth'):
@@ -78,7 +86,16 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
             return super(EditFarm, self).dispatch(*args, **kwargs)
         else:
             raise Http404
-            
+
+    def form_valid(self, form):
+        self.object = form.save()
+        submission = self.request.POST.get("submit")
+        if submission == 'Save Farm and Add Contact':
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'farms:newcontact', kwargs={"farm_id": self.object.pk}))
+        return super(EditFarm, self).form_valid(form)
+
 
 @permission_required('farms.auth')
 def detailFarm(request, farm_id):

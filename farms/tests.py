@@ -38,6 +38,7 @@ class FarmManipulationTesting(TestCase):
         self.county = create_county()
         self.memorg = create_memorg()
         self.memorg.counties.add(self.county)
+        self.farm = create_farm(self.memorg)
         # Salvation Farms Admin
         # self.user = create_salvation_farms_admin(self.groups.Salvation_Farms_Administrator, self.memorg)
         # Gleaning Coordinator
@@ -67,6 +68,7 @@ class FarmManipulationTesting(TestCase):
             "instructions": "Dude These are the instructions.",
             "counties": self.county.pk
             }
+        self.kwargs = {'instance': self.farm, 'prefix': None, 'initial': {}}
 
     def test_new_farm_view(self):
         # Create an instance of a GET request.
@@ -115,8 +117,8 @@ class FarmManipulationTesting(TestCase):
 
     def test_edit_farm_view(self):
         # Create an instance of a GET request.
-        request = self.factory.get('/farms/1/edit')
-
+        pk = str(Farm.objects.first().pk)
+        request = self.factory.get('/farms/'+pk+'/edit/')
         # Recall that middleware are not suported. You can simulate a
         # logged-in user by setting request.user manually.
         request.user = self.user
@@ -125,12 +127,12 @@ class FarmManipulationTesting(TestCase):
         response = NewFarm.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
-    def test_edit_farm_form(self):
+    def test_edit_farm_form(self, *args, **kwargs):
         form = EditFarmForm(data=self.data)
         form.data["instructions"] = "New Instructions"
         form.is_valid()
         form.errors
         response = form.save()
         self.assertEqual(form.is_valid(), True)
-        thisfarm = Farm.objects.get(pk=1)
+        thisfarm = Farm.objects.get(name="New Farm")
         self.assertEqual(thisfarm.instructions, "New Instructions")

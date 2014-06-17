@@ -70,6 +70,7 @@ class Counties_For_Forms(ModelForm):
             for pk in self.data.getlist('ny_counties'):
                 county = County.objects.get(pk=pk)
                 saved.counties.add(county)
+        saved.save()
         return saved
 
     class Meta:
