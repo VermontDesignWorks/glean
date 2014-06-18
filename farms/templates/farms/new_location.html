@@ -1,26 +1,25 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load url from future %}
 {% block title %}
-New Location for {{farm.name}}!
+New Location
 {% endblock title %}
 
-
 {% block heading %}
-<h3>New Location for {{farm.name}}</h3>
+<h3>Add Location</h3>
 {% endblock heading %}
 
 
 {% block body %}
-	<form method="post" action="">
-		{{error}}
-		{% csrf_token %}
-		{% include 'farms/customlocation.html' %}
-		<div class="form-actions">
-			<span class="pull-left"><span class="text-error">*</span>Denotes A Required Field</span>
-			<div class="pull-right">
-				<input type="submit" class="btn btn-success" name='action' value="Save">
-				<input type="submit" class="btn btn-danger" name='action' value="Save and Create Another">
-			</div>
-		</div>
-	</form>
+<div class="glean-index-red red" style="width: 1030px;">
+	<div class="glean-index-red-child">
+	    <h4>More Locations, More Food!!</h4>
+	</div>
+</div>
+<div class="form-errors">
+	{{form.errors}}
+</div>
+<div class="crispy_form_tag">
+	{% crispy form %}
+</div>
 {% endblock body %}

@@ -14,7 +14,7 @@ urlpatterns = patterns(
     url(r'^(?P<pk>\d+)/delete/$',
         views.DeleteFarm.as_view(), name='deletefarm'),
     url(r'^(?P<farm_id>\d+)/location/new/$',
-        views.newLocation, name='newlocation'),
+        views.NewLocation.as_view(), name='newlocation'),
     url(r'^(?P<farm_id>\d+)/location/edit/(?P<pk>\d+)/$',
         views.EditLocation.as_view(), name='editlocation'),
     url(r'^(?P<farm_id>\d+)/contact/new/$',
