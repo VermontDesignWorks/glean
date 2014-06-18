@@ -17,9 +17,10 @@ from crispy_forms.layout import (Layout,
                                  Div,
                                  HTML)
 from constants import STATES, COLORS, LINE_TYPE
-from farms.models import Farm
+from farms.models import Farm, FarmLocation
 from counties.models import County
 from memberorgs.models import MemOrg
+from generic.forms import FarmLocBase
 
 
 class NewFarmForm(ModelForm):
@@ -295,3 +296,49 @@ class EditFarmForm(ModelForm):
     class Meta:
         model = Farm
         exclude = ("farmers", "member_organization")
+
+
+class EditLocationForm(FarmLocBase, ModelForm):
+    'A crispyform class for editing a location object'
+
+    version = '0.1'
+
+    def __init__(self, *args, **kwargs):
+        super(EditLocationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_errors = False
+        self.helper.form_id = "id-Edit-Location-Form"
+        self.helper.form_method = "post"
+        self.helper.layout = Layout(
+            Fieldset(
+                "",
+                Div(
+                    Row("name"),
+                    Row("address_one", "address_two"),
+                    Row("city", "state"),
+                    Row("zipcode"),
+                    "directions",
+                    "instructions",
+                    self.county_fieldset,
+                    css_class="crispy_column_left"),
+                Div(
+                    HTML("<p class='red-emphasized'>Information in this"
+                         " column is visible only by administrators</p>"),
+                    "physical_is_mailing",
+                    Row("mailing_address_one", "mailing_address_two"),
+                    Row("mailing_city", "mailing_state"),
+                    "mailing_zip",
+                    "description",
+                    css_class="crispy_column_left yellow-left")),
+            HTML("</div>"),
+            HTML("<input type='submit' "
+                 "class='glean-button green-button' "
+                 "name='submit' value='Save Changes'><input type='submit' "
+                 "class='glean-button red-button' "
+                 "name='submit' value='Save and Create Another'>"),
+            HTML("</div>"))
+        location = self.instance
+        self.county_initialize(location)
+
+    class Meta:
+        model = FarmLocation

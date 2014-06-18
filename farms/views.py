@@ -195,6 +195,36 @@ def editLocation(request, farm_id, location_id):
             {'form': form, 'farm': farm, 'editmode': True})
 
 
+class EditLocation(UpdateView):
+    model = FarmLocation
+    template_name = 'farms/edit_location.html'
+    form_class = EditLocationForm
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "farms:editlocation",
+            kwargs={"pk": int(self.object.pk), "farm_id": int(self.farmid)})
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        import pdb
+        pdb.set_trace()
+        text = re.search('/location/edit/(.+?)/', self.request.path)
+        pk = int(text.group(1))
+        farmtext = re.search('/farms/(.+?)/location/', self.request.path)
+        farmid = int(farmtext.group(1))
+        self.farmid = farmid
+        farm = Farm.objects.get(pk=farmid)
+        usermemorg = self.request.user.profile.member_organization
+        forgs = farm.member_organization.all()
+        if self.request.user.has_perm('farms.uniauth'):
+            return super(EditLocation, self).dispatch(*args, **kwargs)
+        elif self.request.user.has_perm('farms.auth') and usermemorg in forgs:
+            return super(EditLocation, self).dispatch(*args, **kwargs)
+        else:
+            raise Http404
+
+
 @permission_required('farms.auth')
 def newContact(request, farm_id):
     farm = get_object_or_404(Farm, pk=farm_id)
