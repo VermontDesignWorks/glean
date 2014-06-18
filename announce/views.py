@@ -55,16 +55,16 @@ class EditTemplate(generic.UpdateView):
             "announce:edittemplate", kwargs={"pk": int(self.object.pk)})
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         text = re.search('/templates/(.+?)/edit/', self.request.path)
         pk = int(text.group(1))
         template = Template.objects.get(pk=pk)
         usermemorg = self.request.user.profile.member_organization
         torg = template.member_organization
         if self.request.user.has_perm('farms.uniauth'):
-            return super(EditTemplate, self).dispatch(*args, **kwargs)
+            return super(EditTemplate, self).dispatch(request, *args, **kwargs)
         elif self.request.user.has_perm('farms.auth') and usermemorg == torg:
-            return super(EditTemplate, self).dispatch(*args, **kwargs)
+            return super(EditTemplate, self).dispatch(request, *args, **kwargs)
         else:
             raise Http404
 
@@ -73,7 +73,7 @@ class NewTemplate(generic.CreateView):
     'The class based view for creating a new template'
 
     version = '0.1'
-    
+
     model = Template
     form_class = NewTemplateForm
     template_name = 'announce/new_template.html'

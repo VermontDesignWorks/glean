@@ -195,7 +195,7 @@ class NewTemplateTest(TestCase):
         pk = str(Template.objects.first().pk)
         request = self.factory.get('announce/templates/'+pk+'/edit/')
         request.user = self.user
-        response = EditTemplate.as_view()(request)
+        response = EditTemplate.as_view()(request, pk=int(pk))
         self.assertEqual(response.status_code, 200)
 
     def test_edit_template_form(self):
