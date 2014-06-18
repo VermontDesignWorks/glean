@@ -5,7 +5,7 @@ from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 from announce.models import Announcement
 from counties.models import County
-from farms.models import Farm
+from farms.models import Farm, FarmLocation
 
 
 class test_groups(object):
@@ -139,3 +139,10 @@ def create_announcement(**kwargs):
             glean=glean, member_organization=memorg, **kwargs)
     announce.save()
     return announce
+
+
+def create_location(farm, **kwargs):
+    location = FarmLocation.objects.create(name="Test Location", **kwargs)
+    location.farm = farm
+    location.save()
+    return location
