@@ -11,11 +11,9 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import RequestFactory
 
-<<<<<<< HEAD
+
 from announce.models import Template
-=======
 from announce.views import AnnouncementListView
->>>>>>> master
 from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 from announce.forms import NewTemplateForm, EditTemplateForm
@@ -159,7 +157,6 @@ class MailSystemTests(TestCase):
         self.assertEqual(mail_from_source(announce), 3)
 
 
-<<<<<<< HEAD
 class NewTemplateTest(TestCase):
     def setUp(self):
         # Every test needs access to the request factory.
@@ -223,7 +220,8 @@ class NewTemplateTest(TestCase):
         self.assertEqual(form.is_valid(), True)
         thistemplate = Template.objects.get(template_name="Old Instructions")
         self.assertEqual(thistemplate.template_name, "Old Instructions")
-=======
+
+
 class AnnouncementViewTests(TestCase):
 
     def setUp(self):
@@ -239,4 +237,3 @@ class AnnouncementViewTests(TestCase):
         response = view(request)
 
         self.assertEqual(response.status_code, 200)
->>>>>>> master
