@@ -19,7 +19,8 @@ from farms.models import Farm
 from distro.models import Distro, WorkEvent
 from distro.forms import (WorkEventFormHelper,
                           WorkEventFormSet,
-                          EditWorkEventFormSet)
+                          EditWorkEventFormSet,
+                          DistroEntryForm)
 from generic.views import DateFilterMixin
 from recipientsite.models import RecipientSite
 
@@ -129,6 +130,33 @@ def entry(request):
                 'debug': debug,
             }
         )
+
+
+class Entry(generic.createView):
+    template_name = 'distro/entry.html'
+    model = Distro
+    form_class = DistroEntryForm
+    success_url = reverse_lazy("distro:index")
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        form = context
+        if form.is_valid() and form.delivery not "":
+                self.object = form.save()
+                formset.instance = self.object
+                formset.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_context_data(self, **kwargs):
+        context = super(Entry, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context = DistroEntryFormSet(self.request.POST)
+        else:
+            context = DistroEntryFormSet()
+        return context
 
 
 @permission_required('distro.auth')
