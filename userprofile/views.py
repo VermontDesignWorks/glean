@@ -289,7 +289,7 @@ def download(request):
         'EC Last',
         'EC Phone',
         'EC Relationship',
-        'Subscribed for Glean Announcements',
+        'Recieves Glean Announcements',
         "Newsletter Opt In"
     ])
 
@@ -318,7 +318,7 @@ def download(request):
                 profile.eclast_name,
                 profile.ecphone,
                 profile.ecrelationship,
-                profile.accepts_email,
+                profile.accepts_gleans,
                 profile.opt_in
                 ])
 

@@ -181,6 +181,12 @@ class Profile(models.Model):
             self.unsubscribe_url,
         )
 
+    @property
+    def accepts_gleans(self):
+        if self.tasks_gleaning and self.accepts_email:
+            return True
+        return False
+
 
 class UserForm(forms.Form):
     username = forms.CharField(max_length=20)
