@@ -9,9 +9,9 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
 from django import forms
 from django.utils import timezone
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
+<<<<<<< HEAD
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 
@@ -21,6 +21,13 @@ from announce.forms import (TemplateForm,
                             PartialTemplateForm,
                             NewTemplateForm,
                             EditTemplateForm)
+=======
+from django.contrib.auth.models import User
+
+from announce.models import Template, Announcement
+from announce.forms import TemplateForm, AnnouncementForm, PartialTemplateForm
+from generic.mixins import DateFilterMixin, SimpleLoginCheckForGenerics
+>>>>>>> master
 from gleanevent.models import GleanEvent
 from userprofile.models import Profile
 
@@ -185,6 +192,7 @@ def phoneAnnounce(request, announce_id):
                    'source': source})
 
 
+<<<<<<< HEAD
 # == Index of All Announcements ==#
 @permission_required('announce.auth')
 def Announcements(request):
@@ -219,6 +227,21 @@ def Announcements(request):
         request,
         'announce/announcements.html',
         {'announcements': announcements, 'notice': ''})
+=======
+#== Index of All Announcements ==#
+class AnnouncementListView(SimpleLoginCheckForGenerics,
+                           DateFilterMixin, generic.ListView):
+    model = Announcement
+    template_name = "announce/announcements.html"
+
+    def get_queryset(self):
+        queryset = super(AnnouncementListView, self).get_queryset()
+        user = self.request.user
+        if not user.has_perm('gleanevent.uniauth'):
+            memo = user.profile.member_organization
+            return queryset.filter(member_organization=memo)
+        return queryset.filter(sent=True)
+>>>>>>> master
 
 
 # == New Announcement View ==#

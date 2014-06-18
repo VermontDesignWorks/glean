@@ -99,3 +99,20 @@ class ProfileModelTests(TestCase):
             unsub,
             "Stock Unsub contains no anchor tag: {0}".format(unsub)
         )
+
+    def test_accepts_glean(self):
+        self.profile.tasks_gleaning = True
+        self.profile.accepts_email = True
+        self.profile.save()
+        self.assertTrue(self.profile.accepts_gleans)
+        self.profile.accepts_email = False
+        self.profile.save()
+        self.assertFalse(self.profile.accepts_gleans)
+        self.profile.tasks_gleaning = False
+        self.profile.accepts_email = True
+        self.profile.save()
+        self.assertFalse(self.profile.accepts_gleans)
+        self.profile.tasks_gleaning = False
+        self.profile.accepts_email = False
+        self.profile.save()
+        self.assertFalse(self.profile.accepts_gleans)

@@ -7,9 +7,15 @@ Replace this with more appropriate tests for your application.
 from datetime import date, timedelta
 
 from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.test.client import RequestFactory
 
+<<<<<<< HEAD
 from announce.models import Template
+=======
+from announce.views import AnnouncementListView
+>>>>>>> master
 from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 from announce.forms import NewTemplateForm, EditTemplateForm
@@ -34,10 +40,16 @@ class AnnouncementTests(TestCase):
     def test_populate_recipients_method(self):
         county = create_county()
         for i in range(20):
-            user = create_user_and_profile()
+            user = create_user_and_profile(
+                tasks_gleaning=True
+            )
+
             user.profile.counties.add(county)
         for i in range(3):
-            user = create_user_and_profile(preferred_method='2')
+            user = create_user_and_profile(
+                preferred_method='2',
+                tasks_gleaning=True
+            )
             user.profile.counties.add(county)
         glean = create_glean()
         glean.counties = county
@@ -138,15 +150,16 @@ class MailSystemTests(TestCase):
         memo.testing = False
         memo.save()
 
-        user = create_user_and_profile()
+        user = create_user_and_profile(tasks_gleaning=True)
         user.profile.counties.add(county)
-        user = create_user_and_profile()
+        user = create_user_and_profile(tasks_gleaning=True)
         user.profile.counties.add(county)
-        user = create_user_and_profile()
+        user = create_user_and_profile(tasks_gleaning=True)
         user.profile.counties.add(county)
         self.assertEqual(mail_from_source(announce), 3)
 
 
+<<<<<<< HEAD
 class NewTemplateTest(TestCase):
     def setUp(self):
         # Every test needs access to the request factory.
@@ -210,3 +223,20 @@ class NewTemplateTest(TestCase):
         self.assertEqual(form.is_valid(), True)
         thistemplate = Template.objects.get(template_name="Old Instructions")
         self.assertEqual(thistemplate.template_name, "Old Instructions")
+=======
+class AnnouncementViewTests(TestCase):
+
+    def setUp(self):
+        self.factory = RequestFactory()
+        test_groups()
+
+    def test_announcement_list_view(self):
+        request = self.factory.get(reverse("announce:announcements"))
+        request.user = create_user_and_profile()
+        request.user.profile.member_organization = create_memorg()
+
+        view = AnnouncementListView.as_view()
+        response = view(request)
+
+        self.assertEqual(response.status_code, 200)
+>>>>>>> master

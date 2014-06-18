@@ -5,7 +5,7 @@ from announce import views
 urlpatterns = patterns(
     '',
     #==================# Announce Urls #==================#
-    url(r'^$', views.Announcements, name='announcements'),
+    url(r'^$', views.AnnouncementListView.as_view(), name='announcements'),
     url(r'^(?P<glean_id>\d+)/new/$',
         views.announceGlean,
         name='announceglean'),
