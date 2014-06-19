@@ -5,12 +5,8 @@ from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 from announce.models import Announcement
 from counties.models import County
-<<<<<<< HEAD
 from farms.models import Farm, FarmLocation
-=======
-from farms.models import Farm
 from announce.models import Template
->>>>>>> master
 
 
 class test_groups(object):

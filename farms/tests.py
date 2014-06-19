@@ -135,8 +135,7 @@ class FarmManipulationTesting(TestCase):
         self.assertEqual(form.is_valid(), True)
         thisfarm = Farm.objects.get(name="New Farm")
         self.assertEqual(thisfarm.instructions, "New Instructions")
-<<<<<<< HEAD
-    
+
     def test_new_location_view(self):
         # Create an instance of a GET request.
         farmid = str(Farm.objects.first().pk)
@@ -217,5 +216,4 @@ class FarmManipulationTesting(TestCase):
         self.assertEqual(form.is_valid(), True)
         thislocation = FarmLocation.objects.get(name="New Location")
         self.assertEqual(thislocation.instructions, "New Instructions")
-=======
->>>>>>> master
+
