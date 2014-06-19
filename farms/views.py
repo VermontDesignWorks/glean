@@ -186,7 +186,7 @@ class EditLocation(SimpleLoginCheckForGenerics, UpdateView):
     def get_success_url(self):
         return reverse_lazy(
             "farms:detailfarm",
-            kwargs={"pk": int(self.object.pk), "farm_id": int(self.farmid)})
+            kwargs={"farm_id": int(self.farmid)})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
