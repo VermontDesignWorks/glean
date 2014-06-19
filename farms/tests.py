@@ -122,8 +122,6 @@ class FarmManipulationTesting(TestCase):
         # Recall that middleware are not suported. You can simulate a
         # logged-in user by setting request.user manually.
         request.user = self.user
-        import pdb
-        pdb.set_trace()
         response = NewFarm.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
