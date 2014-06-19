@@ -7,13 +7,13 @@ import django.forms
 from django.forms.widgets import TextInput
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
 from django import forms
 
 from django.contrib.auth.decorators import permission_required
 
-from django.forms.models import modelformset_factory
+from django.forms.models import modelformset_factory, formset_factory
 
 from farms.models import Farm
 from distro.models import Distro, WorkEvent
@@ -132,18 +132,19 @@ def entry(request):
         )
 
 
-class Entry(generic.createView):
-    template_name = 'distro/entry.html'
+class Entry(generic.CreateView):
+    template_name = 'distribution/entry.html'
     model = Distro
-    form_class = DistroEntryForm
     success_url = reverse_lazy("distro:index")
+    form_class = DistroEntryForm
 
     def form_valid(self, form):
         context = self.get_context_data()
         form = context
-        if form.is_valid() and form.delivery not "":
+        if form.is_valid() and form.delivery is not "":
+                form.DistroEntryFormSet = self.DistroEntryFormset
                 self.object = form.save()
-                formset.instance = self.object
+                formset = self.object
                 formset.save()
         return HttpResponseRedirect(self.get_success_url())
 
@@ -151,11 +152,12 @@ class Entry(generic.createView):
         return self.render_to_response(self.get_context_data(form=form))
 
     def get_context_data(self, **kwargs):
+        self.DistroEntryFormSet = formset_factory(DistroEntryForm, extra=10)
         context = super(Entry, self).get_context_data(**kwargs)
         if self.request.POST:
-            context = DistroEntryFormSet(self.request.POST)
+            context = self.DistroEntryFormSet(self.request.POST)
         else:
-            context = DistroEntryFormSet()
+            context = self.DistroEntryFormSet()
         return context
 
 
