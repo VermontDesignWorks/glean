@@ -27,6 +27,7 @@ from userprofile.models import Profile
 
 from mail_system import render_email, primary_source, mail_from_source
 import re
+from generic.mixins import SimpleLoginCheckForGenerics
 
 
 # ==================== Template System ====================#
@@ -42,7 +43,7 @@ def Templates(request):
     return render(request, 'announce/templates.html', {'templates': templates})
 
 
-class EditTemplate(generic.UpdateView):
+class EditTemplate(SimpleLoginCheckForGenerics, generic.UpdateView):
     'The class based view for editing a new template'
 
     version = '0.1'
@@ -70,7 +71,7 @@ class EditTemplate(generic.UpdateView):
             raise Http404
 
 
-class NewTemplate(generic.CreateView):
+class NewTemplate(SimpleLoginCheckForGenerics, generic.CreateView):
     'The class based view for creating a new template'
 
     version = '0.1'
