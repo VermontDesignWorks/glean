@@ -56,7 +56,6 @@ class EditTemplate(SimpleLoginCheckForGenerics, generic.UpdateView):
         return reverse_lazy(
             "announce:edittemplate", kwargs={"pk": int(self.object.pk)})
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         text = re.search('/templates/(.+?)/edit/', self.request.path)
         pk = int(text.group(1))
@@ -81,7 +80,6 @@ class NewTemplate(SimpleLoginCheckForGenerics, generic.CreateView):
     template_name = 'announce/new_template.html'
     success_url = reverse_lazy('announce:templates')
 
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         if self.request.user.has_perm('announce.auth'):
             return super(NewTemplate, self).dispatch(*args, **kwargs)
