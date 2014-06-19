@@ -39,6 +39,7 @@ class FarmManipulationTesting(TestCase):
         self.memorg = create_memorg()
         self.memorg.counties.add(self.county)
         self.farm = create_farm(self.memorg)
+        self.location = create_location(self.farm)
         # Salvation Farms Admin
         # self.user = create_salvation_farms_admin(self.groups.Salvation_Farms_Administrator, self.memorg)
         # Gleaning Coordinator
@@ -134,3 +135,85 @@ class FarmManipulationTesting(TestCase):
         self.assertEqual(form.is_valid(), True)
         thisfarm = Farm.objects.get(name="New Farm")
         self.assertEqual(thisfarm.instructions, "New Instructions")
+
+    def test_new_location_view(self):
+        # Create an instance of a GET request.
+        farmid = str(Farm.objects.first().pk)
+        request = self.factory.get('/farms/'+farmid+'/location/new/')
+
+        # Recall that middleware are not suported. You can simulate a
+        # logged-in user by setting request.user manually.
+        request.user = self.user
+
+        # Test my_view() as if it were deployed at /customer/details
+        response = NewFarm.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_new_location_form_view(self):
+        form = NewLocationForm(data={
+            "name": "New Location",
+            "description": "A new farm",
+            "address_one": "594 cochran rd",
+            "address_two": "",
+            "city": "Morrisville",
+            "state": "VT",
+            "zipcode": "05661",
+            "physical_is_mailing": True,
+            "mailing_address_one": "",
+            "mailing_address_two": "",
+            "mailing_city": "",
+            "mailing_state": "VT",
+            "mailing_zip": "",
+            "directions": "Dude these are the directions.",
+            "instructions": "Dude These are the instructions.",
+            })
+        form.is_valid()
+        form.errors
+        form.farm = Farm.objects.first()
+        form.save()
+        self.assertEqual(form.is_valid(), True)
+        thislocation = FarmLocation.objects.get(name="New Location")
+        self.assertEqual(thislocation.name, "New Location")
+
+    def test_edit_Location_view(self):
+        # Create an instance of a GET request.
+        farmid = str(Farm.objects.first().pk)
+        for x in FarmLocation.objects.all():
+            if x.farm == Farm.objects.get(pk=farmid):
+                locationpk = str(x.pk)
+        request = self.factory.get('/farms/'+farmid+'/location/edit/'+locationpk+'/')
+        # Recall that middleware are not suported. You can simulate a
+        # logged-in user by setting request.user manually.
+        request.user = self.user
+
+        # Test my_view() as if it were deployed at /customer/details
+        response = NewFarm.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_edit_Location_form(self, *args, **kwargs):
+        form = EditLocationForm(data={
+            "name": "New Location",
+            "description": "A new farm",
+            "address_one": "594 cochran rd",
+            "address_two": "",
+            "city": "Morrisville",
+            "state": "VT",
+            "zipcode": "05661",
+            "physical_is_mailing": True,
+            "mailing_address_one": "",
+            "mailing_address_two": "",
+            "mailing_city": "",
+            "mailing_state": "VT",
+            "mailing_zip": "",
+            "directions": "Dude these are the directions.",
+            "instructions": "Dude These are the instructions.",
+            })
+        form.farm = Farm.objects.first()
+        form.data["instructions"] = "New Instructions"
+        form.is_valid()
+        form.errors
+        response = form.save()
+        self.assertEqual(form.is_valid(), True)
+        thislocation = FarmLocation.objects.get(name="New Location")
+        self.assertEqual(thislocation.instructions, "New Instructions")
+

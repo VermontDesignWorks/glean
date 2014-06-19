@@ -56,7 +56,6 @@ class NewFarm(SimpleLoginCheckForGenerics, CreateView):
                     'farms:newcontact', kwargs={"farm_id": self.object.pk}))
         return super(NewFarm, self).form_valid(form)
 
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         if self.request.user.has_perm('farms.auth'):
             return super(NewFarm, self).dispatch(*args, **kwargs)
@@ -73,7 +72,6 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
         return reverse_lazy(
             "farms:editfarm", kwargs={"pk": int(self.object.pk)})
 
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         text = re.search('/farms/(.+?)/edit/', self.request.path)
         pk = int(text.group(1))
@@ -142,57 +140,73 @@ class DeleteFarm(SimpleLoginCheckForGenerics, SingleObjectMixin, View):
         return HttpResponseRedirect(reverse('farms:index'))
 
 
-@permission_required('farms.auth')
-def newLocation(request, farm_id):
-    farm = get_object_or_404(Farm, pk=farm_id)
-    if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
-        return HttpResponseRedirect(reverse('farms:index'))
-    if request.method == 'POST':
-        form = LocationForm(request.POST)
-        if form.is_valid():
-            if not FarmLocation.objects.filter(name=form.cleaned_data['name'], farm=farm).exists():
-                new_save = form.save(commit=False)
-                new_save .farm = farm
-                new_save.save()
-                return HttpResponseRedirect(
-                    reverse('farms:detailfarm', args=(farm_id,)))
-            else:
-                return render(
-                    request, 'farms/new_location.html',
-                    {'form': form, 'farm': farm, 'error': 'That Location Name is Taken'})
+class NewLocation(SimpleLoginCheckForGenerics, CreateView):
+    model = FarmLocation
+    template_name = 'farms/new_location.html'
+    form_class = NewLocationForm
 
-        else:
-            return render(
-                request, 'farms/new_location.html',
-                {'form': form, 'farm': farm, 'error': 'Form was incorrectly filled out'})
-    else:
-        form = LocationForm()
-        return render(
-            request, 'farms/new_location.html',
-            {'form': form, 'farm': farm})
-
-
-@permission_required('farms.auth')
-def editLocation(request, farm_id, location_id):
-    farm = get_object_or_404(Farm, pk=farm_id)
-    if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
-        return HttpResponseRedirect(reverse('farms:index'))
-    location = get_object_or_404(FarmLocation, pk=location_id)
-    if request.method == 'POST':
-        form = LocationForm(request.POST, instance=location)
-        if form.is_valid():
-            new_save = form.save()
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.farm = Farm.objects.get(pk=self.farmid)
+        self.object.save()
+        submission = self.request.POST.get("submit")
+        if submission == 'Add Location and Create Another':
             return HttpResponseRedirect(
-                reverse('farms:detailfarm', args=(farm_id,)))
+                reverse_lazy(
+                    'farms:newlocation', kwargs={"farm_id": self.object.pk}))
+        return super(NewLocation, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "farms:detailfarm", kwargs={"farm_id": int(self.farmid)})
+
+    def dispatch(self, *args, **kwargs):
+        farmtext = re.search('/farms/(.+?)/location/', self.request.path)
+        farmid = int(farmtext.group(1))
+        self.farmid = farmid
+        farm = Farm.objects.get(pk=farmid)
+        usermemorg = self.request.user.profile.member_organization
+        forgs = farm.member_organization.all()
+        if self.request.user.has_perm('farms.uniauth'):
+            return super(NewLocation, self).dispatch(*args, **kwargs)
+        elif self.request.user.has_perm('farms.auth') and usermemorg in forgs:
+            return super(NewLocation, self).dispatch(*args, **kwargs)
         else:
-            return render(
-                request, 'farms/edit_location.html',
-                {'form': form, 'farm': farm, 'error': 'Form Had an Error'})
-    else:
-        form = LocationForm(instance=location)
-        return render(
-            request, 'farms/edit_location.html',
-            {'form': form, 'farm': farm, 'editmode': True})
+            raise Http404
+
+
+class EditLocation(SimpleLoginCheckForGenerics, UpdateView):
+    model = FarmLocation
+    template_name = 'farms/edit_location.html'
+    form_class = EditLocationForm
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "farms:detailfarm",
+            kwargs={"farm_id": int(self.farmid)})
+
+    def dispatch(self, *args, **kwargs):
+        farmtext = re.search('/farms/(.+?)/location/', self.request.path)
+        farmid = int(farmtext.group(1))
+        self.farmid = farmid
+        farm = Farm.objects.get(pk=farmid)
+        usermemorg = self.request.user.profile.member_organization
+        forgs = farm.member_organization.all()
+        if self.request.user.has_perm('farms.uniauth'):
+            return super(EditLocation, self).dispatch(*args, **kwargs)
+        elif self.request.user.has_perm('farms.auth') and usermemorg in forgs:
+            return super(EditLocation, self).dispatch(*args, **kwargs)
+        else:
+            raise Http404
+
+    def form_valid(self, form):
+        self.object = form.save()
+        submission = self.request.POST.get("submit")
+        if submission == 'Save and Create Another':
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'farms:newlocation', kwargs={"farm_id": self.object.pk}))
+        return super(EditLocation, self).form_valid(form)
 
 
 @permission_required('farms.auth')

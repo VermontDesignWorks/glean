@@ -16,12 +16,18 @@ from crispy_forms.layout import (Layout,
                                  Div,
                                  HTML)
 
+from constants import STATES, COLORS, LINE_TYPE
+from farms.models import Farm
+from counties.models import County
+from memberorgs.models import MemOrg
+from farms.models import FarmLocation
+
 
 class Counties_For_Forms(ModelForm):
     'A class for easily including counties in a crispyform'
 
     version = '0.1'
-    
+
     # properties of the class inherited into crispyform
     ny_counties = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
@@ -35,7 +41,7 @@ class Counties_For_Forms(ModelForm):
         label="Counties in Vermont",
         required=False,
     )
-    
+
     # initialize the class form with previous county information  (only use on edit forms not create forms)
     # object_toinit = kwargs['instance'] pass this in
     def county_initialize(self, object_toinit):

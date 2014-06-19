@@ -5,7 +5,7 @@ from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
 from announce.models import Announcement
 from counties.models import County
-from farms.models import Farm
+from farms.models import Farm, FarmLocation
 from announce.models import Template
 
 
@@ -142,7 +142,15 @@ def create_announcement(**kwargs):
     return announce
 
 
+<<<<<<< HEAD
+def create_location(farm, **kwargs):
+    location = FarmLocation.objects.create(name="Test Location", **kwargs)
+    location.farm = farm
+    location.save()
+    return location
+=======
 def create_template(memorg, **kwargs):
     template = Template.objects.create(template_name="Test Template", member_organization=memorg, **kwargs)
     template.save()
     return template
+>>>>>>> master
