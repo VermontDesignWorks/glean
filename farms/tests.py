@@ -123,8 +123,6 @@ class FarmManipulationTesting(TestCase):
         # Recall that middleware are not suported. You can simulate a
         # logged-in user by setting request.user manually.
         request.user = self.user
-
-        # Test my_view() as if it were deployed at /customer/details
         response = NewFarm.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
@@ -137,6 +135,7 @@ class FarmManipulationTesting(TestCase):
         self.assertEqual(form.is_valid(), True)
         thisfarm = Farm.objects.get(name="New Farm")
         self.assertEqual(thisfarm.instructions, "New Instructions")
+<<<<<<< HEAD
     
     def test_new_location_view(self):
         # Create an instance of a GET request.
@@ -218,3 +217,5 @@ class FarmManipulationTesting(TestCase):
         self.assertEqual(form.is_valid(), True)
         thislocation = FarmLocation.objects.get(name="New Location")
         self.assertEqual(thislocation.instructions, "New Instructions")
+=======
+>>>>>>> master

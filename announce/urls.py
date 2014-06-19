@@ -40,7 +40,7 @@ urlpatterns = patterns(
 
     #==================# Template Urls #==================#
     url(r'^templates/$', views.Templates, name='templates'),
-    url(r'^templates/new/$', views.newTemplate, name='newtemplate'),
+    url(r'^templates/new/$', views.NewTemplate.as_view(), name='newtemplate'),
     url(r'^templates/(?P<template_id>\d+)/$',
         views.detailTemplate,
         name='detailtemplate'),
@@ -48,7 +48,7 @@ urlpatterns = patterns(
         views.deleteTemplate,
         name='deletetemplate'),
     url(r'^templates/(?P<pk>\d+)/edit/$',
-        views.editTemplateClass.as_view(),
+        views.EditTemplate.as_view(),
         name='edittemplate'),
 
     #=================# RSVP & Sub Urls #=================#
