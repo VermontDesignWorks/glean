@@ -6,6 +6,7 @@ from memberorgs.models import MemOrg
 from announce.models import Announcement
 from counties.models import County
 from farms.models import Farm
+from announce.models import Template
 
 
 class test_groups(object):
@@ -139,3 +140,9 @@ def create_announcement(**kwargs):
             glean=glean, member_organization=memorg, **kwargs)
     announce.save()
     return announce
+
+
+def create_template(memorg, **kwargs):
+    template = Template.objects.create(template_name="Test Template", member_organization=memorg, **kwargs)
+    template.save()
+    return template

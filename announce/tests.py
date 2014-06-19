@@ -11,12 +11,27 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import RequestFactory
 
+
+from announce.models import Template
 from announce.views import AnnouncementListView
 from gleanevent.models import GleanEvent
 from memberorgs.models import MemOrg
+from announce.forms import NewTemplateForm, EditTemplateForm
+from announce.views import NewTemplate, EditTemplate
 
 from test_functions import *
 from mail_system import render_email, mail_from_source
+
+from django.test.client import RequestFactory
+from django import forms
+from django.db import models
+from django.test import TestCase
+from django.utils import unittest
+from django.http import HttpRequest
+from userprofile.models import Profile
+from farms.models import Farm
+from django.contrib.auth.models import User, Group
+from constants import STATES, COLORS, LINE_TYPE
 
 
 class AnnouncementTests(TestCase):
@@ -140,6 +155,71 @@ class MailSystemTests(TestCase):
         user = create_user_and_profile(tasks_gleaning=True)
         user.profile.counties.add(county)
         self.assertEqual(mail_from_source(announce), 3)
+
+
+class NewTemplateTest(TestCase):
+    def setUp(self):
+        # Every test needs access to the request factory.
+        self.factory = RequestFactory()
+        self.groups = test_groups()
+        self.county = create_county()
+        self.memorg = create_memorg()
+        self.memorg.counties.add(self.county)
+        # Salvation Farms Admin
+        # self.user = create_salvation_farms_admin(self.groups.Salvation_Farms_Administrator, self.memorg)
+        # Gleaning Coordinator
+        self.user = create_special_user(self.groups.Member_Organization_Glean_Coordinator, self.memorg)
+        # regular volunteer
+        # self.user = create_user_and_profile(member_organization=self.memorg)
+        self.data = {
+            "template_name": "New Template",
+            "member_organization": self.memorg.pk,
+            "body": "This is a test form",
+            "default": False
+            }
+        self.template = create_template(self.memorg)
+
+    def test_new_template_view(self):
+        # Create an instance of a GET request.
+        request = self.factory.get('announce/templates/new/')
+
+        # Recall that middleware are not suported. You can simulate a
+        # logged-in user by setting request.user manually.
+        request.user = self.user
+
+        # Test my_view() as if it were deployed at /customer/details
+        response = NewTemplate.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_new_template_form(self):
+        form = NewTemplateForm(data=self.data)
+        form.errors
+        response = form.save(commit=False)
+        response.member_organization = self.user.profile.member_organization
+        response = response.save()
+        self.assertEqual(form.is_valid(), True)
+        thistemplate = Template.objects.get(template_name="New Template")
+        self.assertEqual(thistemplate.template_name, "New Template")
+
+    def test_edit_template_view(self):
+        pk = str(Template.objects.first().pk)
+        request = self.factory.get('announce/templates/'+pk+'/edit/')
+        request.user = self.user
+        response = EditTemplate.as_view()(request, pk=int(pk))
+        self.assertEqual(response.status_code, 200)
+
+    def test_edit_template_form(self):
+        form = EditTemplateForm(data=self.data)
+        form.data["template_name"] = "Old Instructions"
+        form.is_valid()
+        form.errors
+        response = form.save(commit=False)
+        memorg = MemOrg.objects.get(pk=self.data["member_organization"])
+        response.member_organization = memorg
+        response = response.save()
+        self.assertEqual(form.is_valid(), True)
+        thistemplate = Template.objects.get(template_name="Old Instructions")
+        self.assertEqual(thistemplate.template_name, "Old Instructions")
 
 
 class AnnouncementViewTests(TestCase):

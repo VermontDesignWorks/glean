@@ -1,29 +1,38 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load url from future %}
 {% block title %}
+	Edit Template
 {% endblock title %}
-Edit Template {{template.template_name}}
-{% block heading %}
-<h3>Edit Template "{{template.template_name}}"</h3>
-{% endblock heading %}
 {% block content %}
-	<form method="post" action="">
-		{% csrf_token %}
-		{% include 'announce/templateform.html' %}
-		<div class="form-actions">
-			<input type="submit" value="Save Changes" class="btn btn-info">
-		</div>
-	</form>
-{% endblock content %}
 
-{% block related %}
+
+	
+		<h1>Edit Template: {{object.template_name}}</h1>
+		<div class='glean-index-red red'>
+		<h3>Write your custom email template!</h3>
+		<p>It will automatically be saved to your organization for you to use in correspondence with your gleaners.</p>
+		</div>
+<div class="form-errors">
+{{form.errors}}
+</div>
+<div style="width: 1000px;">
+<div class='yellow-bottom' style="float: left; width: 650px;">
+  {% crispy form %}
+</div class="">
+<div style="float:right; width: 300px; position: relative; top: 80px; background: orange; padding: 10px; border-radius: 5px;">
 	<h4>To edit in content where you'd like, use the following keywords in mail-friendly HTML:</h4>
 	<ul>
-		<li>{% templatetag openvariable %}subject{% templatetag closevariable %} - for your template head's title (the HTML element)</li>
-		<li>{% templatetag openvariable %}custom{% templatetag closevariable %} - for your custom message</li>
+		<li>{% templatetag openvariable %}subject{% templatetag closevariable %} - This is for your template head's Title (the HTML element)</li>
+		<li>{% templatetag openvariable %}custom{% templatetag closevariable %} - This is your Custom Message</li>
 		<li>{% templatetag openvariable %}glean.title{% templatetag closevariable %} - for the glean's title</li>
 		<li>{% templatetag openvariable %}glean.description{% templatetag closevariable %} - for the glean's title</li>
 		<li>{% templatetag openvariable %}info{% templatetag closevariable %} - for the Glean's Detail Page Link</li>
 		<li>{% templatetag openvariable %}unsubscribe{% templatetag closevariable %} - for the Unsubscribe Link</li>
+		<li>{% templatetag openvariable %}glean.url{% templatetag closevariable %} - a raw link to the glean</li>
+		<li>{% templatetag openvariable %}email{% templatetag closevariable %} - the user's email address</li>
+		<li>{% templatetag openvariable %}date{% templatetag closevariable %} - the date of the glean</li>
 	</ul>
-{% endblock related %}
+</div>
+</div>
+{% endblock content %}
