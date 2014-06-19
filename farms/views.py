@@ -142,11 +142,10 @@ class DeleteFarm(SimpleLoginCheckForGenerics, SingleObjectMixin, View):
         return HttpResponseRedirect(reverse('farms:index'))
 
 
-class NewLocation(CreateView):
+class NewLocation(SimpleLoginCheckForGenerics, CreateView):
     model = FarmLocation
     template_name = 'farms/new_location.html'
     form_class = NewLocationForm
-    success_url = reverse_lazy('farms:index')
 
     def form_valid(self, form):
         self.object = form.save()
@@ -179,14 +178,14 @@ class NewLocation(CreateView):
             raise Http404
 
 
-class EditLocation(UpdateView):
+class EditLocation(SimpleLoginCheckForGenerics, UpdateView):
     model = FarmLocation
     template_name = 'farms/edit_location.html'
     form_class = EditLocationForm
 
     def get_success_url(self):
         return reverse_lazy(
-            "farms:editlocation",
+            "farms:detailfarm",
             kwargs={"pk": int(self.object.pk), "farm_id": int(self.farmid)})
 
     @method_decorator(login_required)
