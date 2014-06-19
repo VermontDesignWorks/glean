@@ -56,7 +56,6 @@ class NewFarm(SimpleLoginCheckForGenerics, CreateView):
                     'farms:newcontact', kwargs={"farm_id": self.object.pk}))
         return super(NewFarm, self).form_valid(form)
 
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         if self.request.user.has_perm('farms.auth'):
             return super(NewFarm, self).dispatch(*args, **kwargs)
@@ -73,7 +72,6 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
         return reverse_lazy(
             "farms:editfarm", kwargs={"pk": int(self.object.pk)})
 
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         text = re.search('/farms/(.+?)/edit/', self.request.path)
         pk = int(text.group(1))
@@ -162,7 +160,6 @@ class NewLocation(SimpleLoginCheckForGenerics, CreateView):
         return reverse_lazy(
             "farms:detailfarm", kwargs={"farm_id": int(self.farmid)})
 
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         farmtext = re.search('/farms/(.+?)/location/', self.request.path)
         farmid = int(farmtext.group(1))
@@ -188,7 +185,6 @@ class EditLocation(SimpleLoginCheckForGenerics, UpdateView):
             "farms:detailfarm",
             kwargs={"farm_id": int(self.farmid)})
 
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         farmtext = re.search('/farms/(.+?)/location/', self.request.path)
         farmid = int(farmtext.group(1))
