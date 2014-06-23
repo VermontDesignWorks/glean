@@ -1,26 +1,25 @@
 # Create your views here.
-import time
-import datetime
 import csv
-
-import django.forms
-from django.forms.widgets import TextInput
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse, reverse_lazy
-from django.views import generic
-from django import forms
+import datetime
+import time
 
 from django.contrib.auth.decorators import permission_required
-
+from django.core.urlresolvers import reverse, reverse_lazy
+from django import forms
 from django.forms.models import modelformset_factory, formset_factory
+from django.forms.widgets import TextInput
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.views import generic
 
-from farms.models import Farm
-from distro.models import Distro, WorkEvent
+from extra_views import ModelFormSetView
+
 from distro.forms import (WorkEventFormHelper,
                           WorkEventFormSet,
                           EditWorkEventFormSet,
                           DistroEntryForm)
+from distro.models import Distro, WorkEvent
+from farms.models import Farm
 from generic.views import DateFilterMixin
 from recipientsite.models import RecipientSite
 
@@ -132,33 +131,12 @@ def entry(request):
         )
 
 
-class Entry(generic.CreateView):
+class Entry(ModelFormSetView):
+
     template_name = 'distribution/entry.html'
     model = Distro
     success_url = reverse_lazy("distro:index")
     form_class = DistroEntryForm
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        form = context
-        if form.is_valid() and form.delivery is not "":
-                form.DistroEntryFormSet = self.DistroEntryFormset
-                self.object = form.save()
-                formset = self.object
-                formset.save()
-        return HttpResponseRedirect(self.get_success_url())
-
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form))
-
-    def get_context_data(self, **kwargs):
-        self.DistroEntryFormSet = formset_factory(DistroEntryForm, extra=10)
-        context = super(Entry, self).get_context_data(**kwargs)
-        if self.request.POST:
-            context = self.DistroEntryFormSet(self.request.POST)
-        else:
-            context = self.DistroEntryFormSet()
-        return context
 
 
 @permission_required('distro.auth')
