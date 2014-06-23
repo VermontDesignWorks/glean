@@ -17,7 +17,8 @@ from crispy_forms.layout import (Layout,
                                  HTML)
 
 from distro.models import WorkEvent, Distro
-from django.forms.models import modelformset_factory, inlineformset_factory, formset_factory
+from django.forms.models import (modelformset_factory, inlineformset_factory,
+                                 formset_factory)
 import time
 
 from django.db import models
@@ -63,7 +64,7 @@ class DistroEntryForm(ModelForm):
                     "containers")
             )
         )
-    
+
     delivery = 'd'
     pickup = 'd'
     d_or_p = (
@@ -80,19 +81,29 @@ class DistroEntryForm(ModelForm):
         (farm_pickup, 'Pickup'),
         (drop_off, "Drop off")
     )
-    member_organization = forms.ChoiceField(choices=MemOrg.objects.all(), label="Member Organization")
-    date_d = forms.DateField(label="Date of Distribution", widget=extras.SelectDateWidget(years=range(1950, datetime.date.today().year+50)), required=False)
+    member_organization = forms.ChoiceField(choices=MemOrg.objects.all(),
+                                            label="Member Organization")
+    date_d = forms.DateField(
+        label="Date of Distribution",
+        widget=extras.SelectDateWidget(
+            years=range(1950, datetime.date.today().year+50)),
+        required=False)
     del_or_pick = forms.ChoiceField(
         choices=d_or_p,
         label="Distribution Method"
     )
-    recipient = forms.ChoiceField(choices=RecipientSite.objects.all(), label="Recipient Site")
+    recipient = forms.ChoiceField(choices=RecipientSite.objects.all(),
+                                  label="Recipient Site")
     field_or_farm = forms.ChoiceField(
         choices=g_or_p,
         label="Collection Method"
     )
-    date = forms.DateField(label="Harvest Date", widget=extras.SelectDateWidget(years=range(1950, datetime.date.today().year+50)), required=False)
-    farm = forms.ChoiceField(choices=Farm.objects.all(),label="Farm")
+    date = forms.DateField(
+        label="Harvest Date",
+        widget=extras.SelectDateWidget(
+            years=range(1950, datetime.date.today().year+50)),
+        required=False)
+    farm = forms.ChoiceField(choices=Farm.objects.all(), label="Farm")
     crops = forms.CharField(max_length=50, label="Crop/Item")
     pounds = forms.CharField(max_length=5, label="pounds")
     other = forms.CharField(max_length=50, label="Count")
