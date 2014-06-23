@@ -81,8 +81,7 @@ class DistroEntryForm(ModelForm):
         (farm_pickup, 'Pickup'),
         (drop_off, "Drop off")
     )
-    member_organization = forms.ChoiceField(choices=MemOrg.objects.all(),
-                                            label="Member Organization")
+
     date_d = forms.DateField(
         label="Date of Distribution",
         widget=extras.SelectDateWidget(
@@ -92,8 +91,9 @@ class DistroEntryForm(ModelForm):
         choices=d_or_p,
         label="Distribution Method"
     )
-    recipient = forms.ChoiceField(choices=RecipientSite.objects.all(),
-                                  label="Recipient Site")
+    recipient = forms.ModelChoiceField(
+        queryset=RecipientSite.objects.all(),
+        label="Recipient Site")
     field_or_farm = forms.ChoiceField(
         choices=g_or_p,
         label="Collection Method"
@@ -103,7 +103,9 @@ class DistroEntryForm(ModelForm):
         widget=extras.SelectDateWidget(
             years=range(1950, datetime.date.today().year+50)),
         required=False)
-    farm = forms.ChoiceField(choices=Farm.objects.all(), label="Farm")
+    farm = forms.ModelChoiceField(
+        queryset=Farm.objects.all(),
+        label="Farm")
     crops = forms.CharField(max_length=50, label="Crop/Item")
     pounds = forms.CharField(max_length=5, label="pounds")
     other = forms.CharField(max_length=50, label="Count")
