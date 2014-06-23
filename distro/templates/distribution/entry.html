@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% load url from future %}
 {% block title %}
 Entry
 {% endblock title %}
@@ -17,9 +16,9 @@ Entry
 	</div>
 </div>
 <div class="form-errors">
-	{{form.errors}}
+	{{formset.errors}}
 </div>
 <div class="crispy_form_tag">
-	{% crispy form.DistroEntryFormSet%}
+	{% crispy formset %}
 </div>
 {% endblock body %}
