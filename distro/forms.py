@@ -41,27 +41,24 @@ class DistroEntryForm(ModelForm):
         super(DistroEntryForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_errors = False
-        self.helper.form_id = "id-custom-registration-form"
+        self.helper.form_id = "id-harvest-entry-form"
         self.helper.form_method = "post"
         self.helper.layout = Layout(
             "",
             Fieldset(
-                Row("deliver",
-                    "pickup",
-                    "field_glean",
-                    "farm_pickup",
-                    "farmers_market",
-                    "drop_off",
-                    "member_organization",
-                    "del_or_pick",
-                    "recipient",
-                    "field_or_farm",
-                    "date",
-                    "farm",
-                    "crops",
-                    "pounds",
-                    "other",
-                    "containers")
+                "",
+                Div(Row(Field("date_d"),
+                        "del_or_pick",
+                        "recipient",
+                        "field_or_farm",
+                        Field("date"),
+                        "farm",
+                        "crops",
+                        "pounds",
+                        "other",
+                        "containers"
+                        ),
+                    )
             )
         )
 
@@ -82,34 +79,41 @@ class DistroEntryForm(ModelForm):
         (drop_off, "Drop off")
     )
 
-    date_d = forms.DateField(
-        label="Date of Distribution",
-        widget=extras.SelectDateWidget(
-            years=range(1950, datetime.date.today().year+50)),
-        required=False)
+    # date_d = forms.DateField(
+    #    label="",
+    #    widget=extras.SelectDateWidget(
+    #        years=range(2006, datetime.date.today().year+5)),
+    #    required=False)
+    date_d = forms.DateField(required=False, label="")
     del_or_pick = forms.ChoiceField(
         choices=d_or_p,
-        label="Distribution Method"
+        label="",
+        required=False
     )
     recipient = forms.ModelChoiceField(
         queryset=RecipientSite.objects.all(),
-        label="Recipient Site")
+        label="",
+        required=False)
     field_or_farm = forms.ChoiceField(
         choices=g_or_p,
-        label="Collection Method"
+        label="",
+        required=False
     )
-    date = forms.DateField(
-        label="Harvest Date",
-        widget=extras.SelectDateWidget(
-            years=range(1950, datetime.date.today().year+50)),
-        required=False)
+    # date = forms.DateField(
+    #    label="",
+    #    widget=extras.SelectDateWidget(
+    #        years=range(1950, datetime.date.today().year+50)),
+    #    required=False)
+    date = forms.DateField(required=False, label="")
     farm = forms.ModelChoiceField(
         queryset=Farm.objects.all(),
-        label="Farm")
-    crops = forms.CharField(max_length=50, label="Crop/Item")
-    pounds = forms.CharField(max_length=5, label="pounds")
-    other = forms.CharField(max_length=50, label="Count")
-    containers = forms.CharField(max_length=20, label="containers")
+        label="",
+        required=False)
+    crops = forms.CharField(max_length=50, label="", required=False)
+    pounds = forms.CharField(max_length=5, label="", required=False)
+    other = forms.CharField(max_length=50, label="", required=False)
+    containers = forms.CharField(
+        max_length=20, label="", required=False)
 
     class Meta:
         model = Distro

@@ -1041,3 +1041,28 @@ input[type="checkbox"]:checked:after {
    text-decoration: underline;
    font-style: italic;
 }
+
+.formset-row {
+   display: inline-block;
+}
+
+.formset-row select {
+   font-size: 10px;
+   line-height: 10px;
+   width: 100px;
+}
+
+.formset-row input {
+   font-size: 10px;
+   line-height: 10px;
+   width: 100px;
+}
+
+.formset-label div {
+   font-size: 10px;
+   line-height: 10px;
+   width: 106px;
+   font-weight: bold;
+   display: inline-block;
+   text-align: center;
+}

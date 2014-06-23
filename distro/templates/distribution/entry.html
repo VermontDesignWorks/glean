@@ -18,7 +18,11 @@ Entry
 <div class="form-errors">
 	{{formset.errors}}
 </div>
-<div class="crispy_form_tag">
+<div class="formset-label">
+<div>Date of<br> Distribution</div><div>Distribution<br> Method</div><div>Recipient Site</div><div>Collection<br> Method</div><div>Harvest Date</div><div>Farm</div><div>Crop/Item</div><div>Pounds</div><div>Count</div><div>Containers</div>
+</div>
+<div>
 	{% crispy formset %}
 </div>
+<input type='submit' class='glean-button green-button' form="form-id-0" name='submit' value='Save Changes'>
 {% endblock body %}

@@ -12,7 +12,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
 
-from extra_views import ModelFormSetView
+from extra_views import ModelFormSetView, FormSetView
 
 from distro.forms import (WorkEventFormHelper,
                           WorkEventFormSet,
@@ -116,7 +116,7 @@ def entry(request):
             for fo in form.forms:
                 fo.fields['farm'].queryset = Farm.objects.filter(
                     member_organization=member_organization)
-                #fo.fields['recipient'] = TextInput
+                # fo.fields['recipient'] = TextInput
         debug = dir(form)
         return render(
             request,
@@ -131,12 +131,47 @@ def entry(request):
         )
 
 
-class Entry(ModelFormSetView):
+class Entry(FormSetView):
 
     template_name = 'distribution/entry.html'
-    model = Distro
     success_url = reverse_lazy("distro:index")
     form_class = DistroEntryForm
+    extra = 10
+    model = Distro
+
+    def post(self, request, *args, **kwargs):
+        post = self.request._post.copy()
+        after_post = post
+        count = 0
+        for m in post:
+            count = count+1
+        form_count = count / 10
+        for x in range(0, form_count):
+            forms_count = int(after_post['form-TOTAL_FORMS'])
+            form = str(x)
+            if after_post['form-'+form+'-date_d'] == "":
+                del after_post['form-'+form+'-date_d']
+                del after_post['form-'+form+'-del_or_pick']
+                del after_post['form-'+form+'-recipient']
+                del after_post['form-'+form+'-field_or_farm']
+                del after_post['form-'+form+'-date']
+                del after_post['form-'+form+'-farm']
+                del after_post['form-'+form+'-crops']
+                del after_post['form-'+form+'-pounds']
+                del after_post['form-'+form+'-other']
+                del after_post['form-'+form+'-containers']
+                forms_count = forms_count - 1
+        after_post['form-TOTAL_FORMS'] = str(forms_count)
+        self.request._post = after_post
+        request._post = after_post
+        self.POST = after_post
+        import pdb
+        pdb.set_trace()
+        return super(Entry, self).post(request, *args, **kwargs)
+
+        def formset_valid(self, formset):
+            self.objects_list = formset.save()
+        return super(Entry, self).post(formset, *args, **kwargs)
 
 
 @permission_required('distro.auth')
