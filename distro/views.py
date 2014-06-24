@@ -131,22 +131,29 @@ def entry(request):
         )
 
 
-class Entry(FormSetView):
+class Entry(ModelFormSetView):
 
     template_name = 'distribution/entry.html'
     success_url = reverse_lazy("distro:index")
     form_class = DistroEntryForm
     extra = 10
     model = Distro
+    queryset = Distro.objects.none()
 
+    # def formset_valid(self, formset):
+    #         self.object_list = formset.save(commit=False)
+    #         for x in range(0, self.form_high_index):
+    #             self.object_list[x].member_organization = self.request.user.profile.member_organization
+    #         import pdb
+    #         pdb.set_trace()
+    #         self.object_list.save()
+    #         return HttpResponseRedirect(self.get_success_url())
+    
     def post(self, request, *args, **kwargs):
         post = self.request._post.copy()
         after_post = post
-        count = 0
-        for m in post:
-            count = count+1
-        form_count = count / 10
-        for x in range(0, form_count):
+        self.form_high_index = int(after_post['form-TOTAL_FORMS']) - 1
+        for x in range(0, self.form_high_index):
             forms_count = int(after_post['form-TOTAL_FORMS'])
             form = str(x)
             if after_post['form-'+form+'-date_d'] == "":
@@ -161,17 +168,19 @@ class Entry(FormSetView):
                 del after_post['form-'+form+'-other']
                 del after_post['form-'+form+'-containers']
                 forms_count = forms_count - 1
+            else:
+                after_post['form-'+form+'-member_organization_id'] = self.request.user.profile.member_organization.pk
+                after_post['form-'+form+'-member_organization'] = self.request.user.profile.member_organization.pk
+        after_post['member_organization'] = self.request.user.profile.member_organization
         after_post['form-TOTAL_FORMS'] = str(forms_count)
         self.request._post = after_post
         request._post = after_post
         self.POST = after_post
-        import pdb
-        pdb.set_trace()
-        return super(Entry, self).post(request, *args, **kwargs)
-
-        def formset_valid(self, formset):
-            self.objects_list = formset.save()
-        return super(Entry, self).post(formset, *args, **kwargs)
+        formset = self.construct_formset()
+        if formset.is_valid():
+            return self.formset_valid(formset)
+        else:
+            return self.formset_invalid(formset)
 
 
 @permission_required('distro.auth')

@@ -29,7 +29,7 @@ class Distro(models.Model):
         (drop_off, "Drop off")
     )
     member_organization = models.ForeignKey(
-        MemOrg, verbose_name="Member Organization", editable=False)
+        MemOrg, verbose_name="Member Organization", null=True, blank=True)
     date_d = models.DateField("Date of Distribution")
     del_or_pick = models.CharField(
         max_length=2,

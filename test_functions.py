@@ -6,6 +6,7 @@ from memberorgs.models import MemOrg
 from announce.models import Announcement
 from counties.models import County
 from farms.models import Farm, FarmLocation
+from recipientsite.models import RecipientSite
 
 
 class test_groups(object):
@@ -146,3 +147,9 @@ def create_location(farm, **kwargs):
     location.farm = farm
     location.save()
     return location
+
+
+def create_recipient_site(memberorg, **kwargs):
+    site = RecipientSite.objects.create(name="Test Site", member_organization=memberorg, **kwargs)
+    site.save()
+    return site

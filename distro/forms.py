@@ -84,6 +84,9 @@ class DistroEntryForm(ModelForm):
     #    widget=extras.SelectDateWidget(
     #        years=range(2006, datetime.date.today().year+5)),
     #    required=False)
+    member_organization = forms.ModelChoiceField(
+        queryset=MemOrg.objects.all(),
+        label="", widget=forms.HiddenInput(), required=False)
     date_d = forms.DateField(required=False, label="")
     del_or_pick = forms.ChoiceField(
         choices=d_or_p,
