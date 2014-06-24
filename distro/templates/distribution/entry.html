@@ -1,16 +1,21 @@
 {% extends 'base.html' %}
+{% load url from future %}
 {% load crispy_forms_tags %}
 {% block title %}
 Entry
 {% endblock title %}
 
 {% block heading %}
-<h3>Data Entry</h3>
+<div style="width: 1075px; height: 50px;">
+	<h1 style="float: left; display: inline;">Harvest and Distribution Data Entry</h1>
+	<form>
+	<button style="float: right;" type="submit" formmethod="get" formaction="{% url 'site:newsite' %}" class="glean-button green-button">New Recipient Site</button>
+	</form>
+</div>
 {% endblock heading %}
 
 
 {% block body %}
-<h1 style="float: left; display: inline;">Harvest & Distribution Data Entry</h1>
 <div class="glean-index-red red" style="width: 1030px;">
 	<div class="glean-index-red-child">
 	    <h3>Who's Reaping the Benefits</h3>
@@ -19,22 +24,25 @@ Entry
 	    <em>Note: Please enter dates in YYYY-MM-DD format</em>
 	</div>
 </div>
-<div class="form-errors">
-    {% if formset.errors is not [] %}
-		{{formset.errors}}
-	{% endif %}
-</div>
-<div class="formset-label">
+<div class="formset-label" style="margin-top: 15px;">
 	<div>Date of<br> Distribution</div><div>Distribution<br> Method</div><div>Recipient Site</div><div>Collection<br> Method</div><div>Harvest Date</div><div>Farm</div><div>Crop/Item</div><div>Pounds</div><div>Count</div><div>Containers</div>
 	</div>
 <div>
 	{% crispy formset %}
 </div>
 <input type='submit' class='glean-button green-button' form="form-id-0" name='submit' value='Save Changes'>
-<div class="glean-index-yellow yellow" style="width: 1030px;">
-	<div class="glean-index-yellow-child">
+<div class="glean-index-yellow yellow" style="width: 1050px; padding: 10px;">
+	<div class="glean-index-yellow-child" style="width: 1010px; padding: 20px;">
 		<h3>All Your Efforts, Easy to See</h3>
-		<p>This tool allows you to view and/or download a spreadsheet detailing all harvest and distribution data logged by your organization.  Select a range of dates (or leave blank to select all dates) and press the 'View/Edit' to view a spreadsheet.  Or press 'Download' to save a document that can be opened with Excel.</p>
+		<p>This tool allows you to view and/or download a spreadsheet detailing all harvest and distribution data logged by your organization.  Press the 'Edit' to view a spreadsheet or press 'Download' to save a document that can be opened with Excel.</p>
 	</div>
+</div>
+<div style="width:1075px;">
+    <form style="float: right;">
+    	<label target="date_from" style="display: inline;">From:</label><input id="date_from" type="text" class="datepicker" name="date_from"></input> 
+    	<label target="date_until" style="display: inline;">Until:</label><input type="text" id="date_until" class="datepicker" name="date_until"></input>
+    	<button type="submit" formmethod="get" formaction="{% url 'distro:edit' %}" class="glean-button green-button">Edit Data</button>
+		<button type="submit" formmethod="get" formaction="{% url 'distro:download' %}" class="glean-button red-button">Download</button>
+    </form>
 </div>
 {% endblock body %}

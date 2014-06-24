@@ -188,22 +188,6 @@ def edit(request):
     date_from = request.GET.get('date_from', '')
     date_until = request.GET.get('date_until', '')
     mo = request.user.profile.member_organization
-    if date_from:
-        date_from = "{0}-{1}-{2}".format(
-            date_from[6:],
-            date_from[:2],
-            date_from[3:5],
-        )
-    else:
-        date_from = '2013-01-01'
-    if date_until:
-        date_until = "{0}-{1}-{2}".format(
-            date_until[6:],
-            date_until[:2],
-            date_until[3:5],
-        )
-    else:
-        date_until = '3013-01-01'
     DistroFormSet = modelformset_factory(Distro, extra=0, can_delete=True)
     if request.method == 'POST':
         formset = DistroFormSet(request.POST)
