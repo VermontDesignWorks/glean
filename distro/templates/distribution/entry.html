@@ -43,4 +43,70 @@ Entry
 		<button type="submit" formmethod="get" formaction="{% url 'distro:download' %}" class="glean-button red-button">Download</button>
     </form>
 </div>
+<script>
+	var source = [
+		'Apples',
+		'Arugula',
+		'Beans',
+		'Beet Greens/Chard',
+		'Beets',
+		'Blueberries',
+		'Bread',
+		'Broccoli',
+		'Brussel Sprouts',
+		'Cabbage',
+		'Carrots',
+		'Cauliflower',
+		'Celeriac',
+		'Celery',
+		'Chard',
+		'Chinese Cabbage',
+		'Collards',
+		'Cooking Greens',
+		'Corn',
+		'CSA Share',
+		'Cucumbers',
+		'Eggs',
+		'Eggplant',
+		'Fennel',
+		'Flowers',
+		'Garlic/Garlic Scapes',
+		'Head Lettuce',
+		'Herbs',
+		'Kale',
+		'Kohlrabi',
+		'Leeks',
+		'Lettuce Mix',
+		'Melons',
+		'Mesclun',
+		'Mixed Roots',
+		'Mixed Veggies',
+		'Mushrooms',
+		'Onions',
+		'Pac Choy',
+		'Parsnips',
+		'Peas',
+		'Peppers',
+		'Plants/Starts',
+		'Potatoes',
+		'Pumpkins',
+		'Radishes',
+		'Raspberries',
+		'Rutabaga',
+		'Scallions',
+		'Seeds',
+		'Spinach',
+		'Summer Sq./Zucchini',
+		'Tomatillos',
+		'Tomatoes',
+		'Turnips',
+		'Watermelon',
+		'Winter Squash',
+		];
+		{% for i in '0123456789'|make_list %}
+		    $(function() {
+				$('#id_form-{{i}}-crops').typeahead({'source':source});
+		    });
+		{% endfor %}
+</script>
 {% endblock body %}
