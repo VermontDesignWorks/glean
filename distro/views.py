@@ -158,7 +158,6 @@ class Entry(ModelFormSetView):
         deleted_forms = 0
         form_counter = 0
         form_index = 0
-        print sys.stderr, after_post
         while form_counter <= self.form_high_index:
             form = str(form_index)
             if after_post['form-'+form+'-date_d'] == "":
@@ -192,9 +191,8 @@ class Entry(ModelFormSetView):
                 after_post['form-'+form+'-member_organization_id'] = self.request.user.profile.member_organization.pk
                 after_post['form-'+form+'-member_organization'] = self.request.user.profile.member_organization.pk
                 form_index = form_index + 1
-                form_counter = form_counter + 1
+            form_counter = form_counter + 1
         deleted_forms_index = deleted_forms - 1
-        loop_executed = False
         if deleted_forms > 0:
             for x in range(0, deleted_forms_index):
                 form_index = self.form_high_index - x
@@ -214,9 +212,6 @@ class Entry(ModelFormSetView):
                     del after_post['form-'+form+'-member_organization_id']
                 if hasattr(after_post, 'form-'+form+'-member_organization'):
                     del after_post['form-'+form+'-member_organization']
-                loop_executed = True
-        import pdb
-        pdb.set_trace()
         after_post['form-TOTAL_FORMS'] = str(forms_count)
         self.request._post = after_post
         request._post = after_post
