@@ -140,15 +140,6 @@ class Entry(ModelFormSetView):
     extra = 10
     model = Distro
     queryset = Distro.objects.none()
-
-    # def formset_valid(self, formset):
-    #         self.object_list = formset.save(commit=False)
-    #         for x in range(0, self.form_high_index):
-    #             self.object_list[x].member_organization = self.request.user.profile.member_organization
-    #         import pdb
-    #         pdb.set_trace()
-    #         self.object_list.save()
-    #         return HttpResponseRedirect(self.get_success_url())
     
     def post(self, request, *args, **kwargs):
         post = self.request._post.copy()

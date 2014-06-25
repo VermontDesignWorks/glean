@@ -78,12 +78,6 @@ class DistroEntryForm(ModelForm):
         (farm_pickup, 'Pickup'),
         (drop_off, "Drop off")
     )
-
-    # date_d = forms.DateField(
-    #    label="",
-    #    widget=extras.SelectDateWidget(
-    #        years=range(2006, datetime.date.today().year+5)),
-    #    required=False)
     member_organization = forms.ModelChoiceField(
         queryset=MemOrg.objects.all(),
         label="", widget=forms.HiddenInput(), required=False)
@@ -102,11 +96,6 @@ class DistroEntryForm(ModelForm):
         label="",
         required=False
     )
-    # date = forms.DateField(
-    #    label="",
-    #    widget=extras.SelectDateWidget(
-    #        years=range(1950, datetime.date.today().year+50)),
-    #    required=False)
     date = forms.DateField(required=False, label="")
     farm = forms.ModelChoiceField(
         queryset=Farm.objects.all(),
