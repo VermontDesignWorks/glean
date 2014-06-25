@@ -2,6 +2,7 @@
 import csv
 import datetime
 import time
+import sys
 
 from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -153,10 +154,52 @@ class Entry(ModelFormSetView):
         post = self.request._post.copy()
         after_post = post
         self.form_high_index = int(after_post['form-TOTAL_FORMS']) - 1
-        for x in range(0, self.form_high_index):
-            forms_count = int(after_post['form-TOTAL_FORMS'])
-            form = str(x)
+        forms_count = self.form_high_index + 1
+        deleted_forms = 0
+        form_counter = 0
+        form_index = 0
+        print sys.stderr, after_post
+        while form_counter <= self.form_high_index:
+            form = str(form_index)
             if after_post['form-'+form+'-date_d'] == "":
+                for y in range(form_index, self.form_high_index):
+                    next_form = str(y+1)
+                    if next_form == str(self.form_high_index+1):
+                        break
+                    form = str(y)
+                    after_post['form-'+form+'-id'] = after_post['form-'+next_form+'-id']
+                    after_post['form-'+form+'-date_d'] = after_post['form-'+next_form+'-date_d']
+                    after_post['form-'+form+'-del_or_pick'] = after_post['form-'+next_form+'-del_or_pick']
+                    after_post['form-'+form+'-recipient'] = after_post['form-'+next_form+'-recipient']
+                    after_post['form-'+form+'-field_or_farm'] = after_post['form-'+next_form+'-field_or_farm']
+                    after_post['form-'+form+'-date'] = after_post['form-'+next_form+'-date']
+                    after_post['form-'+form+'-farm'] = after_post['form-'+next_form+'-farm']
+                    after_post['form-'+form+'-crops'] = after_post['form-'+next_form+'-crops']
+                    after_post['form-'+form+'-pounds'] = after_post['form-'+next_form+'-pounds']
+                    after_post['form-'+form+'-other'] = after_post['form-'+next_form+'-other']
+                    after_post['form-'+form+'-containers'] = after_post['form-'+next_form+'-containers']
+                    if hasattr(after_post, 'form-'+next_form+'-member_organization_id'):
+                        after_post['form-'+form+'-member_organization_id'] = after_post['form-'+next_form+'-member_organization_id']
+                    elif hasattr(after_post, 'form-'+form+'-member_organization_id'):
+                        del after_post['form-'+form+'-member_organization_id']
+                    if hasattr(after_post, 'form-'+next_form+'-member_organization'):
+                        after_post['form-'+form+'-member_organization'] = after_post['form-'+next_form+'-member_organization']
+                    elif hasattr(after_post, 'form-'+form+'-member_organization'):  
+                        del after_post['form-'+form+'-member_organization']
+                forms_count = forms_count - 1
+                deleted_forms = deleted_forms + 1
+            else:
+                after_post['form-'+form+'-member_organization_id'] = self.request.user.profile.member_organization.pk
+                after_post['form-'+form+'-member_organization'] = self.request.user.profile.member_organization.pk
+                form_index = form_index + 1
+                form_counter = form_counter + 1
+        deleted_forms_index = deleted_forms - 1
+        loop_executed = False
+        if deleted_forms > 0:
+            for x in range(0, deleted_forms_index):
+                form_index = self.form_high_index - x
+                form = str(form_index)
+                del after_post['form-'+form+'-id']
                 del after_post['form-'+form+'-date_d']
                 del after_post['form-'+form+'-del_or_pick']
                 del after_post['form-'+form+'-recipient']
@@ -167,14 +210,18 @@ class Entry(ModelFormSetView):
                 del after_post['form-'+form+'-pounds']
                 del after_post['form-'+form+'-other']
                 del after_post['form-'+form+'-containers']
-                forms_count = forms_count - 1
-            else:
-                after_post['form-'+form+'-member_organization_id'] = self.request.user.profile.member_organization.pk
-                after_post['form-'+form+'-member_organization'] = self.request.user.profile.member_organization.pk
-        after_post['member_organization'] = self.request.user.profile.member_organization
+                if hasattr(after_post, 'form-'+form+'-member_organization_id'):
+                    del after_post['form-'+form+'-member_organization_id']
+                if hasattr(after_post, 'form-'+form+'-member_organization'):
+                    del after_post['form-'+form+'-member_organization']
+                loop_executed = True
+        import pdb
+        pdb.set_trace()
         after_post['form-TOTAL_FORMS'] = str(forms_count)
         self.request._post = after_post
         request._post = after_post
+        request.POST = after_post
+        self.request.POST = after_post
         self.POST = after_post
         formset = self.construct_formset()
         if formset.is_valid():
@@ -202,6 +249,15 @@ def edit(request):
                 'distribution/edit.html',
                 {'form': form})
     else:
+        try:
+            date_from = time.strptime(date_from, '%Y-%m-%d')
+        except:
+            date_from = datetime.date(2000, 01, 01)
+        try:
+            date_until = time.strptime(date_from, '%Y-%m-%d')
+        except:
+            date_until = datetime.date.today()
+
         queryset = Distro.objects.filter(
             date__gte=date_from,
             date__lte=date_until

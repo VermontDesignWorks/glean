@@ -32,14 +32,14 @@ Entry
 <div class="glean-index-yellow yellow" style="width: 1050px; padding: 10px;">
 	<div class="glean-index-yellow-child" style="width: 1010px; padding: 20px;">
 		<h3>All Your Efforts, Easy to See</h3>
-		<p>This tool allows you to view and/or download a spreadsheet detailing all harvest and distribution data logged by your organization.  Press the 'Edit' to view a spreadsheet or press 'Download' to save a document that can be opened with Excel.</p>
+		<p>This tool allows you to view and/or download a spreadsheet detailing all harvest and distribution data logged by your organization.  Press the 'View/Edit' to view a spreadsheet or press 'Download' to save a document that can be opened with Excel.  Leave the fields blank to just view your data.</p>
 	</div>
 </div>
 <div style="width:1075px;">
-    <form style="float: right;">
+    <form style="float: right;" id="view-edit-tool">
     	<label target="date_from" style="display: inline;">From:</label><input id="date_from" type="text" class="datepicker" name="date_from"></input> 
     	<label target="date_until" style="display: inline;">Until:</label><input type="text" id="date_until" class="datepicker" name="date_until"></input>
-    	<button type="submit" formmethod="get" formaction="{% url 'distro:edit' %}" class="glean-button green-button">Edit Data</button>
+    	<button type="submit" formmethod="get" formaction="{% url 'distro:edit' %}" class="glean-button green-button">View/Edit Data</button>
 		<button type="submit" formmethod="get" formaction="{% url 'distro:download' %}" class="glean-button red-button">Download</button>
     </form>
 </div>
