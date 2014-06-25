@@ -248,11 +248,12 @@ def edit(request):
                 request,
                 'distribution/edit.html',
                 {'form': form})
+    else:
         date_from_test = date_from
-        date_until_test = date_test
+        date_until_test = date_until
         dateparts_from = date_from.split('-')
         dateparts_until = date_until.split('-')
-    else:
+        dateparts_today = ["a","a","a"]
         try:
             date_from_test = datetime.date(int(dateparts_from[0]), int(dateparts_from[1]), int(dateparts_from[2]))
         except:
@@ -261,10 +262,10 @@ def edit(request):
         try:
             date_until_test = datetime.date(int(dateparts_until[0]), int(dateparts_until[1]), int(dateparts_until[2]))
         except:
-            dateparts_until[0] = str(datetime.date.today().year)
-            dateparts_until[1] = str(datetime.date.today().month)
-            dateparts_until[2] = str(datetime.ate.today().day)
-            date_until = dateparts_until[0]+'-'+dateparts_until[1]+'-'+dateparts_until[2]
+            dateparts_today[0] = str(datetime.date.today().year)
+            dateparts_today[1] = str(datetime.date.today().month)
+            dateparts_today[2] = str(datetime.date.today().day)
+            date_until = dateparts_today[0]+'-'+dateparts_today[1]+'-'+dateparts_today[2]
 
         queryset = Distro.objects.filter(
             date__gte=date_from,
