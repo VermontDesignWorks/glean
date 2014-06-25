@@ -52,6 +52,18 @@ class DistroEntryTesting(TestCase):
         # regular volunteer
         # self.user = create_user_and_profile(member_organization=self.memorg)
 
+    def test_Edit_view(self):
+        # Create an instance of a GET request.
+        request = self.factory.get('/distribution/edit/')
+
+        # Recall that middleware are not suported. You can simulate a
+        # logged-in user by setting request.user manually.
+        request.user = self.user
+
+        # Test my_view() as if it were deployed at /customer/details
+        response = NewFarm.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_Entry_view(self):
         # Create an instance of a GET request.
         request = self.factory.get('/distribution/entry/')
@@ -64,7 +76,7 @@ class DistroEntryTesting(TestCase):
         response = NewFarm.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
-    def test_new_farm_form(self):
+    def test_distro_entry_form(self):
         form = DistroEntryForm(data={"date_d": "2014-06-24",
                                      "del_or_pick": 'd',
                                      "recipient": RecipientSite.objects.first().pk,
