@@ -1066,3 +1066,13 @@ input[type="checkbox"]:checked:after {
    display: inline-block;
    text-align: center;
 }
+
+.control-group .checkboxinput {
+   width: 20px;
+   vertical-align: middle;
+   top: 15px;
+}
+
+.control-group .checkbox {
+   vertical-align: middle;
+}

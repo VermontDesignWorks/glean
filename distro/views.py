@@ -18,11 +18,13 @@ from extra_views import ModelFormSetView, FormSetView
 from distro.forms import (WorkEventFormHelper,
                           WorkEventFormSet,
                           EditWorkEventFormSet,
-                          DistroEntryForm)
+                          DistroEntryForm,
+                          )
 from distro.models import Distro, WorkEvent
 from farms.models import Farm
 from generic.views import DateFilterMixin
 from recipientsite.models import RecipientSite
+from generic.mixins import SimpleLoginCheckForGenerics
 
 
 @permission_required('distro.auth')
@@ -132,7 +134,7 @@ def entry(request):
         )
 
 
-class Entry(ModelFormSetView):
+class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
 
     template_name = 'distribution/entry.html'
     success_url = reverse_lazy("distro:index")
@@ -265,6 +267,51 @@ def edit(request):
             )
         form = DistroFormSet(queryset=queryset.order_by('-date_d'))
         return render(request, 'distribution/edit.html', {'formset': form})
+
+
+class Edit(ModelFormSetView):
+
+    template_name = 'distribution/edit.html'
+    success_url = reverse_lazy("distro:index")
+    form_class = DistroEntryForm
+    model = Distro
+    can_delete = True
+    can_order = False
+    extra = 0
+    
+    def get_queryset(self):
+        date_from = self.request.GET.get('date_from', '')
+        date_until = self.request.GET.get('date_until', '')
+        mo = self.request.user.profile.member_organization
+        date_from_test = date_from
+        date_until_test = date_until
+        dateparts_from = date_from.split('-')
+        dateparts_until = date_until.split('-')
+        dateparts_today = ["a","a","a"]
+        try:
+            date_from_test = datetime.date(int(dateparts_from[0]), int(dateparts_from[1]), int(dateparts_from[2]))
+        except:
+            date_from = '2000-01-01'
+
+        try:
+            date_until_test = datetime.date(int(dateparts_until[0]), int(dateparts_until[1]), int(dateparts_until[2]))
+        except:
+            dateparts_today[0] = str(datetime.date.today().year)
+            dateparts_today[1] = str(datetime.date.today().month)
+            dateparts_today[2] = str(datetime.date.today().day)
+            date_until = dateparts_today[0]+'-'+dateparts_today[1]+'-'+dateparts_today[2]
+
+        queryset = Distro.objects.filter(
+            date__gte=date_from,
+            date__lte=date_until
+        )
+        if not self.request.user.has_perm('distro.uniauth'):
+            queryset = queryset.filter(
+                date__gte=date_from,
+                date__lte=date_until,
+                member_organization=mo
+            )
+        return queryset
 
 
 @permission_required('distro.auth')

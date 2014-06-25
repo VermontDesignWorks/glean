@@ -2,16 +2,35 @@
 /* ==========================================================================
                                   -----Forms-----
    ========================================================================== */
+$('.control-group .checkbox').each(function(){
+    htmlString = $(this).html();
+    htmlString = htmlString.replace('Delete', '');
+    $(this).html(htmlString);
+});
+form_delete = false
 $('.control-group').each(function(){
-  id=$(this).attr('id');
-  if (id.substring(0,12) == 'div_id_form-')
+  if ($(this).attr('id').substring(14,21) == 'DELETE')
   {
-    $(this).addClass('formset-row');
-    if (id.substring(14,25) == 'containers')
-    {
-      $(this).after('</br>');
-    }
+    form_delete = true
   }
+});
+$('.control-group').each(function(){
+    if ($(this).attr('id').substring(0,12) == 'div_id_form-')
+    {
+      $(this).addClass('formset-row');
+      if (!form_delete)
+      {
+        if ($(this).attr('id').substring(14,25) == 'containers')
+        {
+          $(this).after('</br>');
+        }
+      } else {
+        if ($(this).attr('id').substring(14,21)=='DELETE')
+        {
+          $(this).after('</br>');
+        }
+      }
+    }
 });
 
 formcount = 0
