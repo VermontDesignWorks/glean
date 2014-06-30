@@ -958,16 +958,6 @@ input[type="checkbox"]:checked:after {
    font-weight: bold;
 }
 
-
-.2cols {
-   /*-webkit-column-count:1;  Chrome, Safari, Opera 
-   -moz-column-count:1; Firefox *
-   column-count:1;
-   xcolumn-width:1200px;
-   -moz-column-width:1200px; Firefox 
-   -webkit-column-width:1200px;  Safari and Chrome */
-}
-
 #id-custom-registration-form {
    width: 800px;
 }
@@ -1013,6 +1003,20 @@ input[type="checkbox"]:checked:after {
 .id_long_desc {
     width: 300px !important;
     height: 200px !important;
+}
+
+.yellow-bottom {
+    border-bottom: 10px solid #ffc64a;
+}
+
+.form-comment-box {
+   float:right; 
+   width: 300px; 
+   position: relative; 
+   top: 80px; 
+   background: orange; 
+   padding: 10px; 
+   border-radius: 5px;
 }
 
 .crispy_column {

@@ -56,7 +56,6 @@ class NewFarm(SimpleLoginCheckForGenerics, CreateView):
                     'farms:newcontact', kwargs={"farm_id": self.object.pk}))
         return super(NewFarm, self).form_valid(form)
 
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         if self.request.user.has_perm('farms.auth'):
             return super(NewFarm, self).dispatch(*args, **kwargs)
@@ -73,7 +72,6 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
         return reverse_lazy(
             "farms:editfarm", kwargs={"pk": int(self.object.pk)})
 
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         text = re.search('/farms/(.+?)/edit/', self.request.path)
         pk = int(text.group(1))
@@ -142,11 +140,10 @@ class DeleteFarm(SimpleLoginCheckForGenerics, SingleObjectMixin, View):
         return HttpResponseRedirect(reverse('farms:index'))
 
 
-class NewLocation(CreateView):
+class NewLocation(SimpleLoginCheckForGenerics, CreateView):
     model = FarmLocation
     template_name = 'farms/new_location.html'
     form_class = NewLocationForm
-    success_url = reverse_lazy('farms:index')
 
     def form_valid(self, form):
         self.object = form.save()
@@ -163,7 +160,6 @@ class NewLocation(CreateView):
         return reverse_lazy(
             "farms:detailfarm", kwargs={"farm_id": int(self.farmid)})
 
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         farmtext = re.search('/farms/(.+?)/location/', self.request.path)
         farmid = int(farmtext.group(1))
@@ -179,17 +175,16 @@ class NewLocation(CreateView):
             raise Http404
 
 
-class EditLocation(UpdateView):
+class EditLocation(SimpleLoginCheckForGenerics, UpdateView):
     model = FarmLocation
     template_name = 'farms/edit_location.html'
     form_class = EditLocationForm
 
     def get_success_url(self):
         return reverse_lazy(
-            "farms:editlocation",
-            kwargs={"pk": int(self.object.pk), "farm_id": int(self.farmid)})
+            "farms:detailfarm",
+            kwargs={"farm_id": int(self.farmid)})
 
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         farmtext = re.search('/farms/(.+?)/location/', self.request.path)
         farmid = int(farmtext.group(1))

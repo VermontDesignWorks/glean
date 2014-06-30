@@ -16,6 +16,7 @@ from crispy_forms.layout import (Layout,
                                  Div,
                                  HTML)
 
+<<<<<<< HEAD
 from distro.models import WorkEvent, Distro
 from django.forms.models import (modelformset_factory, inlineformset_factory,
                                  formset_factory)
@@ -30,12 +31,18 @@ from farms.models import Farm
 from recipientsite.models import RecipientSite
 from django.forms.widgets import TextInput
 from django.forms import extras
+=======
+from distro.models import WorkEvent
+from django.forms.models import modelformset_factory
+
+>>>>>>> master
 
 WorkEventFormSet = modelformset_factory(WorkEvent, extra=10)
 
 EditWorkEventFormSet = modelformset_factory(WorkEvent, extra=0)
 
 
+<<<<<<< HEAD
 class DistroEntryForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(DistroEntryForm, self).__init__(*args, **kwargs)
@@ -111,6 +118,8 @@ class DistroEntryForm(ModelForm):
         model = Distro
 
 
+=======
+>>>>>>> master
 class WorkEventFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super(WorkEventFormHelper, self).__init__(*args, **kwargs)
