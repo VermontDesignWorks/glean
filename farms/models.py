@@ -89,7 +89,7 @@ class FarmLocation(models.Model):
     mailing_zip = models.CharField('Mailing Address Zipcode', max_length=11, blank=True)
 
     def __unicode__(self):
-        return self.farm.name + ' - ' + self.naem
+        return self.farm.name + ' - ' + self.name
 
     class Meta:
         permissions = (
