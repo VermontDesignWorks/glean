@@ -1045,3 +1045,8 @@ input[type="checkbox"]:checked:after {
    text-decoration: underline;
    font-style: italic;
 }
+
+.farm-form-icons {
+   position: relative;
+   right: 75px;
+}
