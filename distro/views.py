@@ -269,7 +269,7 @@ def edit(request):
         return render(request, 'distribution/edit.html', {'formset': form})
 
 
-class Edit(ModelFormSetView):
+class Edit(SimpleLoginCheckForGenerics, ModelFormSetView):
 
     template_name = 'distribution/edit.html'
     success_url = reverse_lazy("distro:index")
