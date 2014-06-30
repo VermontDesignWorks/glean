@@ -39,6 +39,7 @@ EditWorkEventFormSet = modelformset_factory(WorkEvent, extra=0)
 
 
 class DistroEntryForm(ModelForm):
+
     def __init__(self, *args, **kwargs):
         super(DistroEntryForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()

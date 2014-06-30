@@ -26,6 +26,7 @@ from distro.models import Distro
 from distro.forms import DistroEntryForm
 import datetime
 
+
 class SimpleTest(TestCase):
     def test_basic_addition(self):
         """

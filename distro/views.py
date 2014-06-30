@@ -25,6 +25,7 @@ from farms.models import Farm
 from generic.views import DateFilterMixin
 from recipientsite.models import RecipientSite
 from generic.mixins import SimpleLoginCheckForGenerics
+from recipientsite.models import RecipientSite
 
 
 @permission_required('distro.auth')
@@ -79,7 +80,21 @@ class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
     extra = 10
     model = Distro
     queryset = Distro.objects.none()
-    
+
+    # def get_extra_form_kwargs(self):
+    #     """
+    #     Returns extra keyword arguments to pass to each form in the formset
+    #     """
+    #     return {"self_request": self}
+
+    def construct_formset(self):
+        formset = super(Entry, self).construct_formset()
+        memorg = self.request.user.profile.member_organization
+        for i in range(0, 9):
+            formset[i].fields['recipient'].queryset = RecipientSite.objects.filter(member_organization=memorg)
+            formset[i].fields['farm'].queryset = Farm.objects.filter(member_organization=memorg)
+        return formset
+
     def post(self, request, *args, **kwargs):
         post = self.request._post.copy()
         after_post = post
@@ -164,7 +179,27 @@ class Edit(SimpleLoginCheckForGenerics, ModelFormSetView):
     can_delete = True
     can_order = False
     extra = 0
-    
+
+    def construct_formset(self):
+        formset = super(Edit, self).construct_formset()
+        memorg = self.request.user.profile.member_organization
+        for i in range(0, 9):
+            formset[i].fields['recipient'].queryset = RecipientSite.objects.filter(member_organization=memorg)
+            formset[i].fields['farm'].queryset = Farm.objects.filter(member_organization=memorg)
+        return formset
+
+    # def get_extra_form_kwargs(self):
+    #     """
+    #     Returns extra keyword arguments to pass to each form in the formset
+    #     """
+    #     return {
+    #         "recipient": forms.ModelChoiceField(
+    #             queryset=RecipientSite.objects.filter(member_organization=self.request.user.profile.member_organization),
+    #             label="",
+    #             required=False
+    #             )
+    #         }
+
     def get_queryset(self):
         date_from = self.request.GET.get('date_from', '')
         date_until = self.request.GET.get('date_until', '')
