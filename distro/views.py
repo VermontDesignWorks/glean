@@ -71,69 +71,6 @@ def index(request):
     )
 
 
-@permission_required('distro.auth')
-def entry(request):
-    DistroFormSet = modelformset_factory(Distro, extra=int(10))
-    member_organization = request.user.profile.member_organization
-    sites = RecipientSite.objects.filter(
-        member_organization=member_organization)
-    if request.method == 'POST':
-        formset = DistroFormSet(request.POST)
-        if formset.is_valid():
-            instances = formset.save(commit=False)
-        #   pass
-        #else:
-    #       return HttpResponse(formset.errors)
-            count = 0
-            for instance in instances:
-
-                instance.member_organization = member_organization
-                instance.save()
-                count += 1
-            form = DistroFormSet(queryset=Distro.objects.none())
-            return render(
-                request,
-                "distribution/entry.html",
-                {
-                    "formset": form,
-                    "range": range(50),
-                    "message": str(count) + " Items Saved To the Database",
-                    "sites": sites,
-                }
-            )
-        else:
-            return render(
-                request,
-                "distribution/entry.html",
-                {
-                    "formset": formset,
-                    "range": range(50),
-                    "sites": sites,
-                    "error": "Form Error. Empty rows must be completely blank."
-                }
-            )
-
-    else:
-        form = DistroFormSet(queryset=Distro.objects.none())
-        if not request.user.has_perm('distro.uniauth'):
-            for fo in form.forms:
-                fo.fields['farm'].queryset = Farm.objects.filter(
-                    member_organization=member_organization)
-                # fo.fields['recipient'] = TextInput
-        debug = dir(form)
-        return render(
-            request,
-
-            'distribution/entry.html',
-            {
-                'formset': form,
-                'range': range(50),
-                'sites': sites,
-                'debug': debug,
-            }
-        )
-
-
 class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
 
     template_name = 'distribution/entry.html'
@@ -216,57 +153,6 @@ class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
             return self.formset_valid(formset)
         else:
             return self.formset_invalid(formset)
-
-
-@permission_required('distro.auth')
-def edit(request):
-    date_from = request.GET.get('date_from', '')
-    date_until = request.GET.get('date_until', '')
-    mo = request.user.profile.member_organization
-    DistroFormSet = modelformset_factory(Distro, extra=0, can_delete=True)
-    if request.method == 'POST':
-        formset = DistroFormSet(request.POST)
-        if formset.is_valid():
-            instances = formset.save()
-            queryset = Distro.objects.all()
-            if not request.user.has_perm('distro.uniauth'):
-                queryset = queryset.filter(member_organization=mo)
-            form = DistroFormSet(queryset=queryset)
-            return render(
-                request,
-                'distribution/edit.html',
-                {'form': form})
-    else:
-        date_from_test = date_from
-        date_until_test = date_until
-        dateparts_from = date_from.split('-')
-        dateparts_until = date_until.split('-')
-        dateparts_today = ["a","a","a"]
-        try:
-            date_from_test = datetime.date(int(dateparts_from[0]), int(dateparts_from[1]), int(dateparts_from[2]))
-        except:
-            date_from = '2000-01-01'
-
-        try:
-            date_until_test = datetime.date(int(dateparts_until[0]), int(dateparts_until[1]), int(dateparts_until[2]))
-        except:
-            dateparts_today[0] = str(datetime.date.today().year)
-            dateparts_today[1] = str(datetime.date.today().month)
-            dateparts_today[2] = str(datetime.date.today().day)
-            date_until = dateparts_today[0]+'-'+dateparts_today[1]+'-'+dateparts_today[2]
-
-        queryset = Distro.objects.filter(
-            date__gte=date_from,
-            date__lte=date_until
-        )
-        if not request.user.has_perm('distro.uniauth'):
-            queryset = queryset.filter(
-                date__gte=date_from,
-                date__lte=date_until,
-                member_organization=mo
-            )
-        form = DistroFormSet(queryset=queryset.order_by('-date_d'))
-        return render(request, 'distribution/edit.html', {'formset': form})
 
 
 class Edit(SimpleLoginCheckForGenerics, ModelFormSetView):
