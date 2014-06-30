@@ -17,15 +17,11 @@ from extra_views import ModelFormSetView, FormSetView
 
 from distro.forms import (WorkEventFormHelper,
                           WorkEventFormSet,
-<<<<<<< HEAD
                           EditWorkEventFormSet,
                           DistroEntryForm,
                           )
 from distro.models import Distro, WorkEvent
 from farms.models import Farm
-=======
-                          EditWorkEventFormSet)
->>>>>>> master
 from generic.views import DateFilterMixin
 from recipientsite.models import RecipientSite
 from generic.mixins import SimpleLoginCheckForGenerics
@@ -138,7 +134,6 @@ def entry(request):
         )
 
 
-<<<<<<< HEAD
 class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
 
     template_name = 'distribution/entry.html'
@@ -223,8 +218,6 @@ class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
             return self.formset_invalid(formset)
 
 
-=======
->>>>>>> master
 @permission_required('distro.auth')
 def edit(request):
     date_from = request.GET.get('date_from', '')
