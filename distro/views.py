@@ -81,12 +81,6 @@ class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
     model = Distro
     queryset = Distro.objects.none()
 
-    # def get_extra_form_kwargs(self):
-    #     """
-    #     Returns extra keyword arguments to pass to each form in the formset
-    #     """
-    #     return {"self_request": self}
-
     def construct_formset(self):
         formset = super(Entry, self).construct_formset()
         memorg = self.request.user.profile.member_organization
@@ -96,10 +90,9 @@ class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
         return formset
 
     def post(self, request, *args, **kwargs):
-        post = self.request._post.copy()
-        after_post = post
+        after_post = self.request._post.copy()
         self.form_high_index = int(after_post['form-TOTAL_FORMS']) - 1
-        forms_count = self.form_high_index + 1
+        forms_count = int(after_post['form-TOTAL_FORMS'])
         deleted_forms = 0
         form_counter = 0
         form_index = 0
@@ -188,18 +181,6 @@ class Edit(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelFormSetView
             formset[i].fields['recipient'].queryset = RecipientSite.objects.filter(member_organization=memorg)
             formset[i].fields['farm'].queryset = Farm.objects.filter(member_organization=memorg)
         return formset
-
-    # def get_extra_form_kwargs(self):
-    #     """
-    #     Returns extra keyword arguments to pass to each form in the formset
-    #     """
-    #     return {
-    #         "recipient": forms.ModelChoiceField(
-    #             queryset=RecipientSite.objects.filter(member_organization=self.request.user.profile.member_organization),
-    #             label="",
-    #             required=False
-    #             )
-    #         }
 
 
 @permission_required('distro.auth')
