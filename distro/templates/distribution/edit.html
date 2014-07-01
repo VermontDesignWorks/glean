@@ -10,37 +10,37 @@
 {% endblock heading %}
 {% block body %}
 	<div class="glean-index-red red" style="width: 1030px; padding: 10px;">
-	<p>Enter the dates you'd like to examine below, and then edit the data below.</p>
-		<p><em><small>Hint: You can press enter on any field to save all your work up to that point instead of scrolling all the way to the bottom!</small></em></p>
-		<p><em><small>Hint: To delete items, check the last column, marked "Delete", then save!</small></em></p>
-	</div>
-	<div class="glean-index-yellow yellow" style="width: 300px; padding: 15px; margin: 30px;">
-		<form method="get" style="">
-			<table>
-				<tr>
-					<td>
-						<label for="date_from">From</label>
-					</td>
-					<td>
-						<input id="date_from" maxlength=200 name="date_from" type="text" value="{{date_from}}" class="datepicker"></input>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="date_until">Until</label>
-					</td>
-					<td>
-						<input id="date_until" maxlength=200 name="date_until"  type="text" value="{{date_until}}" class="datepicker"></input>
-					</td>
-				</tr>
-				<tr><td>&nbsp;</td>
-					<td>
-						<input type="submit" value="Render Dates">
-					</td>
-				</tr>
-			</table>
-		</form>
+		<p>Enter the dates you'd like to examine below, and then edit the data below.</p>
+			<p><em><small>Hint: You can press enter on any field to save all your work up to that point instead of scrolling all the way to the bottom!</small></em></p>
+			<p><em><small>Hint: To delete items, check the last column, marked "Delete", then save!</small></em></p>
+		<div style="width: 300px;">
+			<form method="get" style="">
+				<table>
+					<tr>
+						<td>
+							<label for="date_from">From</label>
+						</td>
+						<td>
+							<input id="date_from" maxlength=200 name="date_from" type="text" value="{{date_from}}" class="datepicker"></input>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="date_until">Until</label>
+						</td>
+						<td>
+							<input id="date_until" maxlength=200 name="date_until"  type="text" value="{{date_until}}" class="datepicker"></input>
+						</td>
+					</tr>
+					<tr><td>&nbsp;</td>
+						<td>
+							<input type="submit" value="Render Dates">
+						</td>
+					</tr>
+				</table>
+			</form>
 
+		</div>
 	</div>
 <div class="formset-label" style="margin-top: 15px;">
 	<div>Date of<br> Distribution</div><div>Distribution<br> Method</div><div>Recipient Site</div><div>Collection<br> Method</div><div>Harvest Date</div><div>Farm</div><div>Crop/Item</div><div>Pounds</div><div>Count</div><div>Containers</div><div>Delete</div>

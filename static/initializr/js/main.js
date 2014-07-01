@@ -155,7 +155,7 @@ $('#physical_is_mailing-button').popover({
    'content':"This information is optional and for reference use only."
 });
 
-$(".datepicker").datepicker({"format": "yyyy-mm-dd"});
+$(".datepicker").datepicker({"format": "mm/dd/yyyy"});
 
 /* fix for bottom */
 $(document).ready(function(){
