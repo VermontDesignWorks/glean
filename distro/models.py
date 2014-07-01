@@ -37,7 +37,8 @@ class Distro(models.Model):
         default='d',
         verbose_name="Distribution Method"
     )
-    recipient = models.ForeignKey(RecipientSite, verbose_name="Recipient Site")
+    recipient = models.ForeignKey(
+        RecipientSite, verbose_name="Recipient Site", null=True, blank=True)
     field_or_farm = models.CharField(
         max_length=1,
         choices=g_or_p,

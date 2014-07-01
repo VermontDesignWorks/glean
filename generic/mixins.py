@@ -39,7 +39,7 @@ class DateFilterMixin(object):
 
 class DynamicDateFilterMixin(object):
     'Dynamic Date Filter Mixin to return queryset by date for generic views'
-    
+
     version = '0.2'
     # self.queryset must be set as base queryset to filter from
     # self.model must be set to test uniauth priviledges
@@ -48,7 +48,7 @@ class DynamicDateFilterMixin(object):
         date_from = self.request.GET.get('date_from', '')
         date_until = self.request.GET.get('date_until', '')
         mo = self.request.user.profile.member_organization
-        
+
         try:
             date_from = datetime.datetime.strptime(date_from, '%Y-%m-%d')
 
@@ -79,5 +79,5 @@ class DynamicDateFilterMixin(object):
                 date__lte=date_until,
                 member_organization=mo
             )
-            
+
         return queryset
