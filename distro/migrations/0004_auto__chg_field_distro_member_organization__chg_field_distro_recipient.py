@@ -12,10 +12,16 @@ class Migration(SchemaMigration):
         # Changing field 'Distro.member_organization'
         db.alter_column(u'distro_distro', 'member_organization_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['memberorgs.MemOrg'], null=True))
 
+        # Changing field 'Distro.recipient'
+        db.alter_column(u'distro_distro', 'recipient_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['recipientsite.RecipientSite'], null=True))
+
     def backwards(self, orm):
 
         # Changing field 'Distro.member_organization'
-        db.alter_column(u'distro_distro', 'member_organization_id', self.gf('django.db.models.fields.related.ForeignKey')(default=datetime.datetime(2014, 6, 24, 0, 0), to=orm['memberorgs.MemOrg']))
+        db.alter_column(u'distro_distro', 'member_organization_id', self.gf('django.db.models.fields.related.ForeignKey')(default=0, to=orm['memberorgs.MemOrg']))
+
+        # Changing field 'Distro.recipient'
+        db.alter_column(u'distro_distro', 'recipient_id', self.gf('django.db.models.fields.related.ForeignKey')(default=0, to=orm['recipientsite.RecipientSite']))
 
     models = {
         u'auth.group': {
@@ -75,7 +81,7 @@ class Migration(SchemaMigration):
             'member_organization': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['memberorgs.MemOrg']", 'null': 'True', 'blank': 'True'}),
             'other': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
             'pounds': ('django.db.models.fields.CharField', [], {'max_length': '5', 'null': 'True', 'blank': 'True'}),
-            'recipient': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['recipientsite.RecipientSite']"})
+            'recipient': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['recipientsite.RecipientSite']", 'null': 'True', 'blank': 'True'})
         },
         u'distro.workevent': {
             'Meta': {'object_name': 'WorkEvent'},
