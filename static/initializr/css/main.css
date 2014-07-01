@@ -1050,3 +1050,9 @@ input[type="checkbox"]:checked:after {
    position: relative;
    right: 75px;
 }
+
+.h4-label {
+   margin: 0px;
+   padding: 0px;
+   line-height: 15px;
+}
