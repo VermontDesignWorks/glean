@@ -77,7 +77,6 @@ class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
 
     template_name = 'distribution/entry.html'
     success_url = reverse_lazy("distro:index")
-    # form_class = DistroEntryForm
     extra = 10
     model = Distro
     queryset = Distro.objects.none()
@@ -102,7 +101,6 @@ class Edit(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelFormSetView
 
     template_name = 'distribution/edit.html'
     success_url = reverse_lazy("distro:index")
-    #form_class = DistroEntryForm
     model = Distro
     can_delete = True
     can_order = False
