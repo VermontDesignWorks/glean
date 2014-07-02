@@ -120,6 +120,7 @@ class NewFarmForm(FarmLocBase, ModelForm):
                     Row("zipcode"),
                     "directions",
                     "instructions",
+                    HTML('<h4 class="h4-label" style="position: relative; top: 20px;"><label for="id_county">County of operations:</label></h4>'),
                     self.county_fieldset,
                     css_class="crispy_column_left"),
                 Div(
@@ -186,6 +187,7 @@ class EditFarmForm(FarmLocBase, ModelForm):
                     Row("zipcode"),
                     "directions",
                     "instructions",
+                    HTML('<h4 class="h4-label" style="position: relative; top: 20px;"><label for="id_county">County of operations:</label></h4>'),
                     self.county_fieldset,
                     css_class="crispy_column_left"),
                 Div(
