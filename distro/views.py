@@ -18,7 +18,6 @@ from extra_views import ModelFormSetView, FormSetView
 from distro.forms import (WorkEventFormHelper,
                           WorkEventFormSet,
                           EditWorkEventFormSet,
-                          DistroEntryForm,
                           )
 from distro.models import Distro, WorkEvent
 from memberorgs.models import MemOrg
@@ -85,15 +84,15 @@ class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
         formset = super(Entry, self).construct_formset()
         memorg = self.request.user.profile.member_organization
         permission = 'distro.uniauth'
-        if not self.request.user.has_perm(permission):
-            for i in range(0, len(formset)):
-                for f in formset[i].fields:
-                    formset[i].fields[f].label = ""
+        for i in range(0, len(formset)):
+            for f in formset[i].fields:
+                formset[i].fields[f].label = ""
+            if not self.request.user.has_perm(permission):
                 formset[i].fields['recipient'].queryset = RecipientSite.objects.filter(member_organization=memorg)
                 formset[i].fields['farm'].queryset = Farm.objects.filter(member_organization=memorg)
                 formset[i].fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg.pk)
-                formset[i].fields['member_organization'].widget = forms.HiddenInput()
                 formset[i].fields['member_organization'].initial = MemOrg.objects.get(pk=memorg.pk)
+                formset[i].fields['member_organization'].widget = forms.HiddenInput()
         return formset
 
 
@@ -111,15 +110,15 @@ class Edit(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelFormSetView
         formset = super(Edit, self).construct_formset()
         memorg = self.request.user.profile.member_organization
         permission = 'distro.uniauth'
-        if not self.request.user.has_perm(permission):
-            for i in range(0, len(formset)):
-                for f in formset[i].fields:
-                    formset[i].fields[f].label = ""
+        for i in range(0, len(formset)):
+            for f in formset[i].fields:
+                formset[i].fields[f].label = ""
+            if not self.request.user.has_perm(permission):
                 formset[i].fields['recipient'].queryset = RecipientSite.objects.filter(member_organization=memorg)
                 formset[i].fields['farm'].queryset = Farm.objects.filter(member_organization=memorg)
                 formset[i].fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg.pk)
-                formset[i].fields['member_organization'].widget = forms.HiddenInput()
                 formset[i].fields['member_organization'].initial = MemOrg.objects.get(pk=memorg.pk)
+                formset[i].fields['member_organization'].widget = forms.HiddenInput()
         return formset
 
 
