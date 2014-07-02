@@ -16,7 +16,7 @@
 		<form method="post" class="no-margin" action="?next={{ next|default:"/" }}">
 		{% csrf_token %}
 			<div class="form-third">
-					<h4 for="id_username">Username:</h4>
+					<h4 for="id_username">Username: <small style="color:black">(usernames are case sensitive)</small></h4>
 					{{ form.username }}
 					<p class="error">
 					{% if form.username.errors %}

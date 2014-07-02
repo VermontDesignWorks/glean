@@ -13,7 +13,7 @@ Welcome to the Gleaning Interface!
         <p>By registering as a gleaner with the Vermont Gleaning Collective here, you will receive invitations to participate in gleans at your area farms plus view gleans occurring around the state.</p>
 
         <p>We happily welcome you to our community of gleaners and look forward to making Vermont a more food independent state with you.</p>
-        <h4>Login:</h4>
+        <h4>Login: <small style="color:black">(usernames are case sensitive)</small></h4>
         <form method="POST" class="form" action="{% url 'auth_login' %}?next=/">
                         {% csrf_token %}
             <input type="text" name="username" placeholder="Your Username..."><br />
