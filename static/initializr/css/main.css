@@ -1046,7 +1046,6 @@ input[type="checkbox"]:checked:after {
    font-style: italic;
 }
 
-<<<<<<< HEAD
 .formset-row {
    display: inline-block;
 }
@@ -1081,7 +1080,7 @@ input[type="checkbox"]:checked:after {
 .control-group .checkbox {
    vertical-align: middle;
 }
-=======
+
 .farm-form-icons {
    position: relative;
    right: 75px;
@@ -1092,4 +1091,3 @@ input[type="checkbox"]:checked:after {
    padding: 0px;
    line-height: 15px;
 }
->>>>>>> master
