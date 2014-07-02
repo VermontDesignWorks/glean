@@ -105,6 +105,7 @@ class Edit(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelFormSetView
     can_order = False
     extra = 0
     queryset = Distro.objects.all()
+    uniauth_string = "distro.uniauth"
 
     def construct_formset(self):
         formset = super(Edit, self).construct_formset()

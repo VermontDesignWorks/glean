@@ -4,6 +4,7 @@ import string
 
 from django.utils.decorators import method_decorator, classonlymethod
 from django.contrib.auth.decorators import login_required
+import re
 
 
 class SimpleLoginCheckForGenerics(object):
@@ -42,7 +43,7 @@ class DynamicDateFilterMixin(object):
 
     version = '0.2'
     # self.queryset must be set as base queryset to filter from
-    # self.model must be set to test uniauth priviledges
+    # self.uniauth_string must be set to appropriate string to test uniauth rights
 
     def get_queryset(self):
         date_from = self.request.GET.get('date_from', '')
@@ -71,8 +72,8 @@ class DynamicDateFilterMixin(object):
             date__gte=date_from,
             date__lte=date_until
         )
-
-        permission = string.lower(self.model.__name__)+'.uniauth'
+        
+        permission = self.uniauth_string
         if not self.request.user.has_perm(permission):
             queryset = queryset.filter(
                 date__gte=date_from,

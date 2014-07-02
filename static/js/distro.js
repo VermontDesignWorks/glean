@@ -18,8 +18,17 @@ $(document).ready(function(){
 	      $(this).addClass('formset-row');
 	      if (!form_delete)
 	      {
-	      }
-	    }
+	        if ($(this).attr('id').substring(14,25) == 'containers')
+	        {
+	          $(this).after('</br>');
+	        }
+	      } else {
+	        if ($(this).attr('id').substring(14,21)=='DELETE')
+	        {
+	          $(this).after('</br>');
+	        }
+		  }
+		}
 	});
     if ($("select[id='id_form-0-member_organization']").get(0))
     {
