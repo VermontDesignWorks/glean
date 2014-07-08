@@ -123,5 +123,9 @@ class County_For_Forms(ModelForm):
             for pk in self.data.getlist('ny_counties_single'):
                 county = County.objects.get(pk=pk)
                 saved.counties = county
-        saved.save()
-        return saved
+        try:
+            if kwargs['commit'] is False:
+                return saved
+        except:
+            saved.save(args, kwargs)
+            return saved
