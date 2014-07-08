@@ -20,9 +20,10 @@ from constants import STATES, COLORS, LINE_TYPE
 from farms.models import Farm, FarmLocation
 from counties.models import County
 from memberorgs.models import MemOrg
+from generic.forms import County_For_Forms
 
 
-class FarmLocBase(ModelForm):
+class FarmLocBase(County_For_Forms, ModelForm):
 
     name = forms.CharField(max_length=200)
     description = forms.CharField(
@@ -62,41 +63,6 @@ class FarmLocBase(ModelForm):
         widget=forms.Textarea(
             attrs={'cols': '100', 'rows': '10', 'style': 'width: 460px'}),
         required=False)
-    ny_counties_single = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="NY").order_by("name"),
-        label="Counties in New York",
-        required=False
-    )
-    vt_counties_single = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="VT").order_by("name"),
-        label="Counties in Vermont",
-        required=False
-    )
-    county_fieldset = Fieldset(HTML("<h3 class='lbl'>County of Operation"
-                               " <small>(select One)</small></h3>"),
-                               Div(InlineCheckboxes("vt_counties_single"),
-                               InlineCheckboxes("ny_counties_single"),
-                               css_class="form-checkboxes",
-                               style="width: 460px;"))
-
-    def county_initialize(self, object_toinit):
-        self.initial["vt_counties_single"] = [object_toinit.counties]
-        self.initial["ny_counties_single"] = [object_toinit.counties]
-
-    def save(self, *args, **kwargs):
-        saved = super(FarmLocBase, self).save(*args, **kwargs)
-        if 'vt_counties_single' in self.data:
-            for pk in self.data.getlist('vt_counties_single'):
-                county = County.objects.get(pk=pk)
-                saved.counties = county
-        if 'ny_counties_single' in self.data:
-            for pk in self.data.getlist('ny_counties_single'):
-                county = County.objects.get(pk=pk)
-                saved.counties = county
-        saved.save()
-        return saved
 
 
 class NewFarmForm(FarmLocBase, ModelForm):

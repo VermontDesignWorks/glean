@@ -24,7 +24,7 @@ from farms.models import FarmLocation
 
 
 class Counties_For_Forms(ModelForm):
-    'A class for easily including counties in a crispyform'
+    'A class for Multiple county select accross the site'
 
     version = '0.1'
 
@@ -81,3 +81,47 @@ class Counties_For_Forms(ModelForm):
 
     class Meta:
         model = County
+
+
+class County_For_Forms(ModelForm):
+    'For Single County Select form section accross the site'
+
+    version = '0.1'
+
+    ny_counties_single = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="NY").order_by("name"),
+        label="Counties in New York",
+        required=False
+    )
+
+    vt_counties_single = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(),
+        queryset=County.objects.filter(state="VT").order_by("name"),
+        label="Counties in Vermont",
+        required=False
+    )
+
+    county_fieldset = Fieldset(HTML("<h3 class='lbl'>County of Operation"
+                               " <small>(select One)</small></h3>"),
+                               Div(InlineCheckboxes("vt_counties_single"),
+                               InlineCheckboxes("ny_counties_single"),
+                               css_class="form-checkboxes",
+                               style="width: 460px;"))
+
+    def county_initialize(self, object_toinit):
+        self.initial["vt_counties_single"] = [object_toinit.counties]
+        self.initial["ny_counties_single"] = [object_toinit.counties]
+
+    def save(self, *args, **kwargs):
+        saved = super(County_For_Forms, self).save(*args, **kwargs)
+        if 'vt_counties_single' in self.data:
+            for pk in self.data.getlist('vt_counties_single'):
+                county = County.objects.get(pk=pk)
+                saved.counties = county
+        if 'ny_counties_single' in self.data:
+            for pk in self.data.getlist('ny_counties_single'):
+                county = County.objects.get(pk=pk)
+                saved.counties = county
+        saved.save()
+        return saved

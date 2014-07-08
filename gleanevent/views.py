@@ -84,6 +84,12 @@ class NewGlean(generic.CreateView):
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
+    def get_context_data(self, **kwargs):
+        context = {}
+        context.update(kwargs)
+        context['form'].fields['created_by'].initial = self.request.user
+        return super(NewGlean, self).get_context_data(**context)
+
 
 class DetailGlean(generic.DetailView):
     model = GleanEvent

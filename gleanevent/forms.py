@@ -16,9 +16,11 @@ from crispy_forms.layout import (Layout,
 from counties.models import County
 from gleanevent.models import GleanEvent
 from constants import STATES, TIME_OF_DAY
+from generic.forms import County_For_Forms
+from django.contrib.auth.models import User, Group
 
 
-class GleanForm(forms.ModelForm):
+class GleanForm(County_For_Forms, forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(GleanForm, self).__init__(*args, **kwargs)
@@ -35,15 +37,8 @@ class GleanForm(forms.ModelForm):
                     Row("farm", "farm_location"),
                     Row("address_one", "address_two"),
                     Row("city", "state", "zipcode"),
-                    Fieldset(
-                        "",
-                        HTML("<label for='id_counties' class='" +
-                             "control-label' style='width:466px;" +
-                             "'>Counties</label>"),
-                        Div(InlineCheckboxes("vt_counties_single"),
-                            InlineCheckboxes("ny_counties_single"),
-                            css_class="glean-form-checkboxes")
-                    ),
+                    "created_by",
+                    self.county_fieldset,
                     css_class="glean-form-left pull-left"
                 ),
                 Div(
@@ -55,52 +50,29 @@ class GleanForm(forms.ModelForm):
                 css_class="glean-form-container"
             ),
             HTML("<input type='submit' "
-                 "class='glean-button green-button' "
+                 "class='glean-button green-button pull-left' "
                  "style='clear:both;' name='submit' value=\"Ok, It's Ready\">")
         )
         if self.instance:
             glean = self.instance
-            self.initial["vt_counties_single"] = [
-                glean.counties
-            ]
-            self.initial["ny_counties_single"] = [
-                glean.counties
-            ]
+            self.county_initialize(glean)
 
     time_of_day = forms.ChoiceField(label="&nbsp;",
                                     choices=TIME_OF_DAY,
                                     required=False)
 
-    vt_counties_single = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="VT").order_by("name"),
-        label="Counties in Vermont",
-        required=False
-    )
-    ny_counties_single = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple(),
-        queryset=County.objects.filter(state="NY").order_by("name"),
-        label="Counties in New York",
-        required=False
-    )
-
-    def save(self, *args, **kwargs):
-        saved = super(GleanForm, self).save(*args, **kwargs)
-        if 'vt_counties_single' in self.data:
-            for pk in self.data.getlist('vt_counties_single'):
-                county = County.objects.get(pk=pk)
-                saved.counties = county
-        if 'ny_counties_single' in self.data:
-            for pk in self.data.getlist('ny_counties_single'):
-                county = County.objects.get(pk=pk)
-                saved.counties = county
-        saved.save()
-        return saved
+    created_by = forms.ModelChoiceField(
+        queryset=User.objects.all(),
+        required=False,
+        widget=forms.HiddenInput()
+        )
 
     class Meta:
         model = GleanEvent
         exclude = [
             'invited_volunteers',
             'attending_volunteers',
-            'officiated_by'
+            'officiated_by',
+            'created_by_id',
+            'created_by'
         ]
