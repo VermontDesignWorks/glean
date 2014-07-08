@@ -66,7 +66,10 @@ class DynamicDateFilterMixin(object):
             try:
                 date_until = datetime.datetime.strptime(date_until, '%m/%d/%Y')
             except:
-                date_until = date.today
+                date_until = datetime.datetime.now()
+                date_until = date_until + datetime.timedelta(days=3650)
+                date_until = datetime.date(
+                    date_until.year, date_until.month, date_until.day)
 
         queryset = self.queryset.filter(
             date__gte=date_from,
