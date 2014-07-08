@@ -7,7 +7,7 @@ $(document).ready(function(){
 	});
 	form_delete = false;
 	$('.control-group').each(function(){
-	  if ($(this).attr('id').substring(14,21) == 'DELETE')
+	  if ($(this).attr('id').substring($(this).attr('id').length - 6) == 'DELETE')
 	  {
 	    form_delete = true;
 	    $(this).addClass('delete-format');
@@ -19,12 +19,12 @@ $(document).ready(function(){
 	      $(this).addClass('formset-row');
 	      if (!form_delete)
 	      {
-	        if ($(this).attr('id').substring(14,25) == 'containers')
+	        if ($(this).attr('id').substring($(this).attr('id').length - 10) == 'containers')
 	        {
 	          $(this).after('</br>');
 	        }
 	      } else {
-	        if ($(this).attr('id').substring(14,21)=='DELETE')
+	        if ($(this).attr('id').substring($(this).attr('id').length - 6)=='DELETE')
 	        {
 	          $(this).after('</br>');
 	        }

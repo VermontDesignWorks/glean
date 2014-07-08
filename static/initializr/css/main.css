@@ -1094,4 +1094,6 @@ input[type="checkbox"]:checked:after {
 
 .delete-format {
    height: 5px;
+   margin: 0px;
+   margin-bottom: 10px;
 }
