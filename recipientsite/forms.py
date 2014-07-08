@@ -59,10 +59,7 @@ class NewRecipientSiteForm(ModelForm):
             HTML("</div>"),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "name='submit' value='Add Recipient Site'> <input "
-                 "type='submit'"
-                 "class='glean-button red-button' "
-                 "name='submit' value='Add Farm and Add Contact'>"),
+                 "name='submit' value='Add Recipient Site'>"),
             HTML("</div>")
         )
 

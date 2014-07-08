@@ -27,6 +27,16 @@ class NewSite(CreateView):
     form_class = NewRecipientSiteForm
     success_url = reverse_lazy('site:index')
 
+    def form_valid(self, form):
+        """
+        If the form is valid, save the associated model.
+        """
+        new_save = form.save(commit=False)
+        new_save.member_organization.add(
+            self.request.user.profile.member_organization)
+        new_save.save()
+        return super(NewSite, self).form_valid(form)
+
 
 @permission_required('recipientsite.auth')
 def newSite(request):

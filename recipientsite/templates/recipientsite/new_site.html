@@ -6,14 +6,14 @@ New Recipient Site!
 {% endblock title %}
 
 {% block heading %}
-<h3>New Recipient Site</h3>
+<h1>New Recipient Site</h1>
 {% endblock heading %}
 
 
 {% block body %}
 <div class="glean-index-red red" style="width: 950px;">
+ <h3>Add information about your recipient sites here.</h3>
 	<div class="glean-index-red-child">
-	    <h4>Add information about your recipient sites here.</h4>
 		<p>Adding in recipient sites is necessary for entering in distribution data (since the form for entering data links to names that are already entered into the Interface), so make sure you create a profile for each recipient site you work with.</p>
 	</div>
 </div>
@@ -23,6 +23,5 @@ New Recipient Site!
 <div class="crispy_form_tag">
   {% crispy form %}
 </div>
-<script src="/static/js/farm_form.js"></script>
 {% endblock %}
 
