@@ -81,9 +81,14 @@ class NewGlean(generic.CreateView):
         self.object = form.save(commit=False)
         self.object.member_organization = user.profile.member_organization
         self.object.created_by = user
-        self.object.counties = form.get_county()
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        context.update(kwargs)
+        context['form'].fields['created_by'].initial = self.request.user
+        return super(NewGlean, self).get_context_data(**context)
 
 
 class DetailGlean(generic.DetailView):
@@ -100,15 +105,6 @@ class UpdateGlean(generic.UpdateView):
     form_class = GleanForm
     template_name = "gleanevent/edit.html"
     success_url = reverse_lazy("home")
-
-    def form_valid(self, form):
-        user = self.request.user
-        self.object = form.save(commit=False)
-        self.object.member_organization = user.profile.member_organization
-        self.object.created_by = user
-        self.object.counties = form.get_county()
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
 
 
 @permission_required('gleanevent.auth')
