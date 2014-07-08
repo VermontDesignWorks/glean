@@ -40,8 +40,8 @@ class GleanForm(forms.ModelForm):
                         HTML("<label for='id_counties' class='" +
                              "control-label' style='width:466px;" +
                              "'>Counties</label>"),
-                        Div(InlineCheckboxes("vt_counties"),
-                            InlineCheckboxes("ny_counties"),
+                        Div(InlineCheckboxes("vt_counties_single"),
+                            InlineCheckboxes("ny_counties_single"),
                             css_class="glean-form-checkboxes")
                     ),
                     css_class="glean-form-left pull-left"
@@ -63,24 +63,31 @@ class GleanForm(forms.ModelForm):
                                     choices=TIME_OF_DAY,
                                     required=False)
 
-    vt_counties = forms.ModelMultipleChoiceField(
+    vt_counties_single = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
         queryset=County.objects.filter(state="VT").order_by("name"),
         label="Counties in Vermont",
         required=False
     )
-    ny_counties = forms.ModelMultipleChoiceField(
+    ny_counties_single = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(),
         queryset=County.objects.filter(state="NY").order_by("name"),
         label="Counties in New York",
         required=False
     )
 
-    def get_county(self):
-        if self.cleaned_data["vt_counties"].exists():
-            return self.cleaned_data["vt_counties"][0]
-        if self.cleaned_data["ny_counties"].exists():
-            return self.cleaned_data["ny_counties"][0]
+    def save(self, *args, **kwargs):
+        saved = super(GleanForm, self).save(*args, **kwargs)
+        if 'vt_counties_single' in self.data:
+            for pk in self.data.getlist('vt_counties_single'):
+                county = County.objects.get(pk=pk)
+                saved.counties = county
+        if 'ny_counties_single' in self.data:
+            for pk in self.data.getlist('ny_counties_single'):
+                county = County.objects.get(pk=pk)
+                saved.counties = county
+        saved.save()
+        return saved
 
     class Meta:
         model = GleanEvent
