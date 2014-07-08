@@ -42,7 +42,8 @@ class Counties_For_Forms(ModelForm):
         required=False,
     )
 
-    # initialize the class form with previous county information  (only use on edit forms not create forms)
+    # initialize the class form with previous county information
+    # (only use on edit forms not create forms)
     # object_toinit = kwargs['instance'] pass this in
     def county_initialize(self, object_toinit):
 
@@ -53,7 +54,8 @@ class Counties_For_Forms(ModelForm):
             x.pk for x in object_toinit.counties.filter(state="NY")
         ]
 
-    # referred to with self.county_fieldset to be used when you require county fieldset
+    # referred to with self.county_fieldset to be used when you require
+    #  county fieldset
     @property
     def county_fieldset(self):
         return Fieldset(
@@ -81,7 +83,7 @@ class Counties_For_Forms(ModelForm):
                 return saved
             else:
                 saved.save(args, kwargs)
-                return saved          
+                return saved
         except:
             saved.save(args, kwargs)
             return saved
@@ -110,11 +112,11 @@ class County_For_Forms(ModelForm):
     )
 
     county_fieldset = Fieldset(HTML("<h3 class='lbl'>County of Operation"
-                               " <small>(select One)</small></h3>"),
+                                    " <small>(select One)</small></h3>"),
                                Div(InlineCheckboxes("vt_counties_single"),
-                               InlineCheckboxes("ny_counties_single"),
-                               css_class="form-checkboxes",
-                               style="width: 460px;"))
+                                   InlineCheckboxes("ny_counties_single"),
+                                   css_class="form-checkboxes",
+                                   style="width: 460px;"))
 
     def county_initialize(self, object_toinit):
         self.initial["vt_counties_single"] = [object_toinit.counties]
@@ -135,7 +137,7 @@ class County_For_Forms(ModelForm):
                 return saved
             else:
                 saved.save(args, kwargs)
-                return saved           
+                return saved
         except:
             saved.save(args, kwargs)
             return saved
