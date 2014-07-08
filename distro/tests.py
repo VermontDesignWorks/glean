@@ -76,25 +76,3 @@ class DistroEntryTesting(TestCase):
         # Test my_view() as if it were deployed at /customer/details
         response = NewFarm.as_view()(request)
         self.assertEqual(response.status_code, 200)
-
-    def test_distro_entry_form(self):
-        form = DistroEntryForm(data={"date_d": "2014-06-24",
-                                     "del_or_pick": 'd',
-                                     "recipient": RecipientSite.objects.first().pk,
-                                     "field_or_farm": 'p',
-                                     "date": "2014-06-20",
-                                     "farm": Farm.objects.first().pk,
-                                     "crops": "raddishes",
-                                     "pounds": "123",
-                                     "other": "123",
-                                     "containers": "123",
-                                     "member_organization": self.user.profile.member_organization.pk
-                                     })
-        form.is_valid()
-        form.errors
-        response = form.save(commit=False)
-        response.member_organization = self.user.profile.member_organization
-        response.save()
-        self.assertEqual(form.is_valid(), True)
-        thisdistro = Distro.objects.get(field_or_farm='p')
-        self.assertEqual(thisdistro.field_or_farm, 'p')
