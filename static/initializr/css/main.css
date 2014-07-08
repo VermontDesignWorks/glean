@@ -14,7 +14,7 @@ body{
 }
 
 .body-container {
-   width:1170px;
+   width:1300px;
 }
 
 
@@ -1046,6 +1046,41 @@ input[type="checkbox"]:checked:after {
    font-style: italic;
 }
 
+.formset-row {
+   display: inline-block;
+}
+
+.formset-row select {
+   font-size: 10px;
+   line-height: 10px;
+   width: 100px;
+}
+
+.formset-row input {
+   font-size: 10px;
+   line-height: 10px;
+   width: 100px;
+}
+
+.formset-label div {
+   font-size: 10px;
+   line-height: 10px;
+   width: 106px;
+   font-weight: bold;
+   display: inline-block;
+   text-align: center;
+}
+
+.control-group .checkboxinput {
+   width: 20px;
+   vertical-align: middle;
+   top: -7px;
+}
+
+.control-group .checkbox {
+   vertical-align: middle;
+}
+
 .farm-form-icons {
    position: relative;
    right: 75px;
@@ -1055,4 +1090,10 @@ input[type="checkbox"]:checked:after {
    margin: 0px;
    padding: 0px;
    line-height: 15px;
+}
+
+.delete-format {
+   height: 5px;
+   margin: 0px;
+   margin-bottom: 10px;
 }

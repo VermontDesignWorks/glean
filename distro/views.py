@@ -1,26 +1,30 @@
 # Create your views here.
-import time
-import datetime
 import csv
-
-import django.forms
-from django.forms.widgets import TextInput
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse
-from django.views import generic
-from django import forms
+import datetime
+import time
+import sys
 
 from django.contrib.auth.decorators import permission_required
+from django.core.urlresolvers import reverse, reverse_lazy
+from django import forms
+from django.forms.models import modelformset_factory, formset_factory
+from django.forms.widgets import TextInput
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.views import generic
 
-from django.forms.models import modelformset_factory
+from extra_views import ModelFormSetView, FormSetView
 
-from farms.models import Farm
-from distro.models import Distro, WorkEvent
 from distro.forms import (WorkEventFormHelper,
                           WorkEventFormSet,
-                          EditWorkEventFormSet)
+                          EditWorkEventFormSet,
+                          )
+from distro.models import Distro, WorkEvent
+from memberorgs.models import MemOrg
+from farms.models import Farm
 from generic.views import DateFilterMixin
+from recipientsite.models import RecipientSite
+from generic.mixins import SimpleLoginCheckForGenerics, DynamicDateFilterMixin
 from recipientsite.models import RecipientSite
 
 
@@ -68,116 +72,55 @@ def index(request):
     )
 
 
-@permission_required('distro.auth')
-def entry(request):
-    DistroFormSet = modelformset_factory(Distro, extra=int(10))
-    member_organization = request.user.profile.member_organization
-    sites = RecipientSite.objects.filter(
-        member_organization=member_organization)
-    if request.method == 'POST':
-        formset = DistroFormSet(request.POST)
-        if formset.is_valid():
-            instances = formset.save(commit=False)
-        #   pass
-        #else:
-    #       return HttpResponse(formset.errors)
-            count = 0
-            for instance in instances:
+class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
 
-                instance.member_organization = member_organization
-                instance.save()
-                count += 1
-            form = DistroFormSet(queryset=Distro.objects.none())
-            return render(
-                request,
-                "distribution/entry.html",
-                {
-                    "formset": form,
-                    "range": range(50),
-                    "message": str(count) + " Items Saved To the Database",
-                    "sites": sites,
-                }
-            )
-        else:
-            return render(
-                request,
-                "distribution/entry.html",
-                {
-                    "formset": formset,
-                    "range": range(50),
-                    "sites": sites,
-                    "error": "Form Error. Empty rows must be completely blank."
-                }
-            )
+    template_name = 'distribution/entry.html'
+    success_url = reverse_lazy("distro:index")
+    extra = 10
+    model = Distro
+    queryset = Distro.objects.none()
 
-    else:
-        form = DistroFormSet(queryset=Distro.objects.none())
-        if not request.user.has_perm('distro.uniauth'):
-            for fo in form.forms:
-                fo.fields['farm'].queryset = Farm.objects.filter(
-                    member_organization=member_organization)
-                #fo.fields['recipient'] = TextInput
-        debug = dir(form)
-        return render(
-            request,
-
-            'distribution/entry.html',
-            {
-                'formset': form,
-                'range': range(50),
-                'sites': sites,
-                'debug': debug,
-            }
-        )
+    def construct_formset(self):
+        formset = super(Entry, self).construct_formset()
+        memorg = self.request.user.profile.member_organization
+        permission = 'distro.uniauth'
+        for i in range(0, len(formset)):
+            for f in formset[i].fields:
+                formset[i].fields[f].label = ""
+            if not self.request.user.has_perm(permission):
+                formset[i].fields['recipient'].queryset = RecipientSite.objects.filter(member_organization=memorg)
+                formset[i].fields['farm'].queryset = Farm.objects.filter(member_organization=memorg)
+                formset[i].fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg.pk)
+                formset[i].fields['member_organization'].initial = MemOrg.objects.get(pk=memorg.pk)
+                formset[i].fields['member_organization'].widget = forms.HiddenInput()
+        return formset
 
 
-@permission_required('distro.auth')
-def edit(request):
-    date_from = request.GET.get('date_from', '')
-    date_until = request.GET.get('date_until', '')
-    mo = request.user.profile.member_organization
-    if date_from:
-        date_from = "{0}-{1}-{2}".format(
-            date_from[6:],
-            date_from[:2],
-            date_from[3:5],
-        )
-    else:
-        date_from = '2013-01-01'
-    if date_until:
-        date_until = "{0}-{1}-{2}".format(
-            date_until[6:],
-            date_until[:2],
-            date_until[3:5],
-        )
-    else:
-        date_until = '3013-01-01'
-    DistroFormSet = modelformset_factory(Distro, extra=0, can_delete=True)
-    if request.method == 'POST':
-        formset = DistroFormSet(request.POST)
-        if formset.is_valid():
-            instances = formset.save()
-            queryset = Distro.objects.all()
-            if not request.user.has_perm('distro.uniauth'):
-                queryset = queryset.filter(member_organization=mo)
-            form = DistroFormSet(queryset=queryset)
-            return render(
-                request,
-                'distribution/edit.html',
-                {'form': form})
-    else:
-        queryset = Distro.objects.filter(
-            date__gte=date_from,
-            date__lte=date_until
-        )
-        if not request.user.has_perm('distro.uniauth'):
-            queryset = queryset.filter(
-                date__gte=date_from,
-                date__lte=date_until,
-                member_organization=mo
-            )
-        form = DistroFormSet(queryset=queryset.order_by('-date_d'))
-        return render(request, 'distribution/edit.html', {'formset': form})
+class Edit(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelFormSetView):
+
+    template_name = 'distribution/edit.html'
+    success_url = reverse_lazy("distro:index")
+    model = Distro
+    can_delete = True
+    can_order = False
+    extra = 0
+    queryset = Distro.objects.all()
+    uniauth_string = "distro.uniauth"
+
+    def construct_formset(self):
+        formset = super(Edit, self).construct_formset()
+        memorg = self.request.user.profile.member_organization
+        permission = 'distro.uniauth'
+        for i in range(0, len(formset)):
+            for f in formset[i].fields:
+                formset[i].fields[f].label = ""
+            if not self.request.user.has_perm(permission):
+                formset[i].fields['recipient'].queryset = RecipientSite.objects.filter(member_organization=memorg)
+                formset[i].fields['farm'].queryset = Farm.objects.filter(member_organization=memorg)
+                formset[i].fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg.pk)
+                formset[i].fields['member_organization'].initial = MemOrg.objects.get(pk=memorg.pk)
+                formset[i].fields['member_organization'].widget = forms.HiddenInput()
+        return formset
 
 
 @permission_required('distro.auth')

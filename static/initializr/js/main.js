@@ -2,6 +2,23 @@
 /* ==========================================================================
                                   -----Forms-----
    ========================================================================== */
+
+formcount = 0
+$($('#wrapper').find('form').get().reverse()).each(function(){
+  if (!($(this).attr("id")))
+  {
+      a_string = formcount.toString()
+      console.log(a_string)
+      $(this).attr("id","form-id-"+a_string)
+      formcount++
+  }
+});
+
+$('.control-group .dateinput').each(function(){
+    $(this).addClass('datepicker')
+});
+
+
 $('#div_id_vt_counties_single :checkbox').each(function(){
   $(this).click(function(){
     box=$(this).attr('id');
@@ -108,7 +125,7 @@ $('#physical_is_mailing-button').popover({
    'content':"This information is optional and for reference use only."
 });
 
-$(".datepicker").datepicker();
+$(".datepicker").datepicker({"format": "yyyy-mm-dd"});
 
 /* fix for bottom */
 $(document).ready(function(){
