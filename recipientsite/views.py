@@ -4,11 +4,12 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 
 from django.contrib.auth.decorators import permission_required
-
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from recipientsite.models import RecipientSite, SiteForm
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from generic.mixins import SimpleLoginCheckForGenerics
+from recipientsite.forms import NewRecipientSiteForm
 
 
 @permission_required('recipientsite.auth')
