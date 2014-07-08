@@ -23,7 +23,6 @@ from farms.forms import *
 from constants import STATES, COLORS, LINE_TYPE
 from recipientsite.models import RecipientSite
 from distro.models import Distro
-from distro.forms import DistroEntryForm
 import datetime
 
 
