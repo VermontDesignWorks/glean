@@ -5,11 +5,12 @@ $(document).ready(function(){
 	    htmlString = htmlString.replace('Delete', '');
 	    $(this).html(htmlString);
 	});
-	form_delete = false
+	form_delete = false;
 	$('.control-group').each(function(){
 	  if ($(this).attr('id').substring(14,21) == 'DELETE')
 	  {
-	    form_delete = true
+	    form_delete = true;
+	    $(this).addClass('delete-format');
 	  }
 	});
 	$('.control-group').each(function(){

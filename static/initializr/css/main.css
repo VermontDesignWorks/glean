@@ -14,7 +14,7 @@ body{
 }
 
 .body-container {
-   width:1250px;
+   width:1300px;
 }
 
 
@@ -1074,7 +1074,7 @@ input[type="checkbox"]:checked:after {
 .control-group .checkboxinput {
    width: 20px;
    vertical-align: middle;
-   top: 15px;
+   top: -7px;
 }
 
 .control-group .checkbox {
@@ -1090,4 +1090,8 @@ input[type="checkbox"]:checked:after {
    margin: 0px;
    padding: 0px;
    line-height: 15px;
+}
+
+.delete-format {
+   height: 5px;
 }
