@@ -58,6 +58,14 @@ class GleanForm(forms.ModelForm):
                  "class='glean-button green-button' "
                  "style='clear:both;' name='submit' value=\"Ok, It's Ready\">")
         )
+        if self.instance:
+            glean = self.instance
+            self.initial["vt_counties_single"] = [
+                glean.counties
+            ]
+            self.initial["ny_counties_single"] = [
+                glean.counties
+            ]
 
     time_of_day = forms.ChoiceField(label="&nbsp;",
                                     choices=TIME_OF_DAY,

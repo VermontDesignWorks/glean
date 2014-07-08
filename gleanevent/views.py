@@ -81,7 +81,6 @@ class NewGlean(generic.CreateView):
         self.object = form.save(commit=False)
         self.object.member_organization = user.profile.member_organization
         self.object.created_by = user
-        self.object.counties = form.get_county()
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
@@ -106,7 +105,6 @@ class UpdateGlean(generic.UpdateView):
         self.object = form.save(commit=False)
         self.object.member_organization = user.profile.member_organization
         self.object.created_by = user
-        self.object.counties = form.get_county()
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
