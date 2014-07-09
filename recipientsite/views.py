@@ -4,12 +4,13 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 
 from django.contrib.auth.decorators import permission_required
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
+from django.views.generic.detail import DetailView
 from recipientsite.models import RecipientSite, SiteForm
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from generic.mixins import SimpleLoginCheckForGenerics
-from recipientsite.forms import NewRecipientSiteForm
+from recipientsite.forms import RecipientSiteForm
 
 
 @permission_required('recipientsite.auth')
@@ -24,7 +25,7 @@ def index(request):
 class NewSite(CreateView):
     model = RecipientSite
     template_name = 'recipientsite/new_site.html'
-    form_class = NewRecipientSiteForm
+    form_class = RecipientSiteForm
     success_url = reverse_lazy('site:index')
 
     def form_valid(self, form):
@@ -32,10 +33,29 @@ class NewSite(CreateView):
         If the form is valid, save the associated model.
         """
         new_save = form.save(commit=False)
-        new_save.member_organization.add(
-            self.request.user.profile.member_organization)
+        memorg = self.request.user.profile.member_organization
+        new_save.member_organization = memorg
         new_save.save()
         return super(NewSite, self).form_valid(form)
+
+
+class EditSite(UpdateView):
+    model = RecipientSite
+    template_name = 'recipientsite/edit_site.html'
+    form_class = RecipientSiteForm
+    success_url = reverse_lazy('site:index')
+
+
+class DeleteSite(DeleteView):
+    model = RecipientSite
+    template_name = 'recipientsite/delete_site.html'
+    success_url = reverse_lazy('site:index')
+
+
+class DetailSite(DetailView):
+    model = RecipientSite
+    template_name = 'recipientsite/detail_site.html'
+    success_url = reverse_lazy('site:index')
 
 
 @permission_required('recipientsite.auth')

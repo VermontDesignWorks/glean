@@ -5,19 +5,20 @@ Recipient Site Index
 {% endblock title %}
 
 {% block body %}
-<div class="row-fluid index-header">
-	<div class="span6" style="text-align:center;">
-		<h1>Recipient Site Index</h1>
-		<a href="{% url 'site:newsite' %}" class="btn btn-success">Create a New Site</a>
 
-	</div>
-	<div class="span6">
-		<p>Click on a recipient site to view details – or click edit to edit.</p>
 
-		<p>Adding in recipient sites is necessary for entering in distribution data (since the form for entering data links to names that are already entered into the Interface), so make sure you create a profile for each recipient site you work with. 
-		</p>
-	</div>
+
+<div style="width: 1070px; height: 50px;">
+<h1 style="float:left;">Recipient Site Index</h1>
+	<a href="{% url 'site:newsite' %}" style="float: right;"><button class="glean-button green-button" >Create a New Site</button></a>
 </div>
+<div class="glean-index-red red" style="width: 1030px; margin: 20px 0px;">
+	<h3>Vermont Needs Food!!!</h3>
+    	<h4><p>Click on a recipient site to view details – or click edit to edit.</p>
+
+		<p>Adding in recipient sites is necessary for entering in distribution data (since the form for entering data links to names that are already entered into the Interface), so make sure you create a profile for each recipient site you work with. </p></h4>
+</div>
+
 <div class="index-table">
 <div class="row-fluid">
 	<div class="span12">
