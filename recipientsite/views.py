@@ -13,6 +13,7 @@ from generic.mixins import SimpleLoginCheckForGenerics
 from recipientsite.forms import RecipientSiteForm
 import re
 
+
 @permission_required('recipientsite.auth')
 def index(request):
     if request.user.has_perm('recipientsite.uniauth'):
