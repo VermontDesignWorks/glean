@@ -1,5 +1,5 @@
 $(document).ready(function(){ 
-	warnMessage = "You have unsaved changes.  You should save before leaving!!";
+	warnMessage = "You may have unsaved changes.  You should save before leaving!!";
     $(window).bind("beforeunload", function(){
     	if (warnMessage != null) return warnMessage;
     });
