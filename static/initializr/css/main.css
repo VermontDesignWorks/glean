@@ -43,11 +43,14 @@ body{
 
 #footer-container{
    margin:73px 0 0 0;
-   height:30px;
+   height:230px;
    background-color: #6e9614;
    text-align: left;
    padding: 5px 0px 5px 25px;
    color: #444;
+   border-top-style: solid;
+   border-top-width: 5px;
+   border-top-color: #6e8614;
    position: relative;
    z-index:-1;
    /*width: 100%;*/
@@ -56,11 +59,56 @@ body{
    margin: 0px;
 }
 
+#footer-container > div > div {
+   display: inline-block;
+   float: left;
+   width: 260px;
+   margin: 0px 20px;
+
+}
+
+#footer-container ul {
+   list-style-type: none;
+}
+
+#footer-container a:link {
+   color: #444;
+}
+
+#footer-container a:visited {
+   color: #444;
+}
+
+#footer-container a:hover {
+   color: #6e6614;
+}
+
+#footer-container a:active {
+   color: #444;
+}
+
+#footer-container > div {
+   height: 200px;
+}
+
 .header-title {
    margin: 24px 5px;
    font-family:'Kameron', serif;
    letter-spacing: 4px;
    font-weight:bold;
+}
+
+#link-section li {
+    border-top-style: dotted;
+    border-top-color: #ffc64a;
+    border-top-width: 2px;
+    padding: 5px 0px;
+}
+
+#link-section li:nth-of-type(1){
+    border-top-style: solid;
+    border-top-color: #ffc64a;
+    border-top-width: 0px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -129,7 +177,7 @@ h3 {
 #gleaners{
    float: right;
    position: relative;
-   top: -294px; /*-249px*/
+   top: -495px; /*-249px*/
    z-index:-1;
    right: 0;
    bottom: auto; /*40px*/

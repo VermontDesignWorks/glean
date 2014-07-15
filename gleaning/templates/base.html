@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load url from future %}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -72,10 +73,36 @@
               {% endblock body %}
          </div>
         </div>
-        <!-- <div class="push"></div> Added by Josh for sticky footer -->
       </div>
   <div id="footer-container">
-    Ⓒ Salvation Farms | Site by Great Big Graphics &amp; Tim Clifford
+    <div id="sections-container">
+      <div id="about-section">
+      <h4>About</h4>
+      <p>The Vermont Gleaning Collective, an initiative of Salvation Farms,
+is a network of professionally organized community-based gleaning programs.  The Gleaning interface is the central tool of the Vermont Gleaning Collective for coordinating gleaning activities.</p>
+      </div>
+      <div id="contact-section">
+        <h4>Contact Us</h4>
+        <ul>
+          <li>Salvation Farms</li>
+          <li>PO Box 1174</li>
+          <li>Morrisville, VT 05661</li>
+          <li>Email: <a href="mailto:info@salvationfarms.org">info@salvationfarms.org</a></li>
+        </ul>
+      </div>
+      <div id="link-section">
+        <h4>Links</h4>
+        <ul>
+          <li><a href="{% url "home" %}">Home Page</a></li>
+          <li><a href="{% url "gleanevent:index" %}">Glean Index</a></li>
+          <li><a href="{% url "userprofile:selfedit" %}">Profile Settings</a></li>
+          <li><a href="{% url 'auth_logout' %}">Logout</a></li>
+        </ul>
+      </div>
+      <div id="processing-section">
+        <img src="/static/images/salvations-farms-circle.png">
+      </div>
+    </div>
     <img src="/static/images/gleaners.png" id="gleaners">
   </div>
 
