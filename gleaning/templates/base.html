@@ -74,6 +74,10 @@
          </div>
         </div>
       </div>
+<div id="footer-overall">
+     <div id="gleaners-container">
+      <img src="/static/images/gleaners.png" id="gleaners">
+     </div>
   <div id="footer-container">
     <div id="sections-container">
       <div id="about-section">
@@ -81,7 +85,7 @@
       <p>The Vermont Gleaning Collective, an initiative of Salvation Farms,
 is a network of professionally organized community-based gleaning programs.  The Gleaning interface is the central tool of the Vermont Gleaning Collective for coordinating gleaning activities.</p>
       </div>
-      <div id="contact-section">
+      <div id="contact-section-container">
         <h4>Contact Us</h4>
         <ul>
           <li>Salvation Farms</li>
@@ -90,7 +94,7 @@ is a network of professionally organized community-based gleaning programs.  The
           <li>Email: <a href="mailto:info@salvationfarms.org">info@salvationfarms.org</a></li>
         </ul>
       </div>
-      <div id="link-section">
+      <div id="link-section-container">
         <h4>Links</h4>
         <ul>
           <li><a href="{% url "home" %}">Home Page</a></li>
@@ -99,13 +103,12 @@ is a network of professionally organized community-based gleaning programs.  The
           <li><a href="{% url 'auth_logout' %}">Logout</a></li>
         </ul>
       </div>
-      <div id="processing-section">
+      <div id="processing-section-container">
         <img src="/static/images/salvations-farms-circle.png">
       </div>
     </div>
-    <img src="/static/images/gleaners.png" id="gleaners">
   </div>
-
+</div>
 <script src="{% static '/static/initializr/js/main.js' %}"></script>
 {% block javascript %}
 {% endblock javascript %}

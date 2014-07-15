@@ -41,6 +41,15 @@ body{
    padding:0;
 }
 
+#footer-overall {
+   position: relative;
+}
+
+#gleaners-container{
+    height: 289px;
+    z-index: -1;
+}
+
 #footer-container{
    margin:73px 0 0 0;
    height:230px;
@@ -52,18 +61,18 @@ body{
    border-top-width: 5px;
    border-top-color: #6e8614;
    position: relative;
-   z-index:-1;
    /*width: 100%;*/
-   top: 279px; /*279px*/
    bottom: auto;
    margin: 0px;
+   width: 1240px;
 }
 
 #footer-container > div > div {
    display: inline-block;
    float: left;
-   width: 260px;
+   width: 250px;
    margin: 0px 20px;
+   height: 200px;
 
 }
 
@@ -88,7 +97,8 @@ body{
 }
 
 #footer-container > div {
-   height: 200px;
+   height: 230px;
+   width: 1240px;
 }
 
 .header-title {
@@ -98,14 +108,14 @@ body{
    font-weight:bold;
 }
 
-#link-section li {
+#link-section-container li {
     border-top-style: dotted;
     border-top-color: #ffc64a;
     border-top-width: 2px;
-    padding: 5px 0px;
+    padding: 2px 0px;
 }
 
-#link-section li:nth-of-type(1){
+#link-section-container li:nth-of-type(1){
     border-top-style: solid;
     border-top-color: #ffc64a;
     border-top-width: 0px;
@@ -177,10 +187,7 @@ h3 {
 #gleaners{
    float: right;
    position: relative;
-   top: -495px; /*-249px*/
    z-index:-1;
-   right: 0;
-   bottom: auto; /*40px*/
    
 }
 
