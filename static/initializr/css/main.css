@@ -64,7 +64,6 @@ body{
    /*width: 100%;*/
    bottom: auto;
    margin: 0px;
-   width: 1240px;
 }
 
 #footer-container > div > div {
@@ -98,7 +97,9 @@ body{
 
 #footer-container > div {
    height: 230px;
-   width: 1240px;
+   width: 1160px;
+   margin-left: auto;
+   margin-right: auto;
 }
 
 .header-title {
