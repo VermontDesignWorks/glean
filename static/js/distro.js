@@ -1,5 +1,11 @@
 $(document).ready(function(){ 
-
+	warnMessage = "You may have unsaved changes.  You should save before leaving!!";
+    $(window).bind("beforeunload", function(){
+    	if (warnMessage != null) return warnMessage;
+    });
+    $('input').click(function(){
+        warnMessage = null;
+    });
 	$('.control-group .checkbox').each(function(){
 	    htmlString = $(this).html();
 	    htmlString = htmlString.replace('Delete', '');
