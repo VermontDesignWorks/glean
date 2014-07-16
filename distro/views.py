@@ -185,6 +185,9 @@ def hours_entry(request):
                 instance.save()
                 count += 1
             form = WorkEventFormSet(queryset=Distro.objects.none())
+            for i in range(0, len(form)):
+                for f in form[i].fields:
+                    form[i].fields[f].label = ""
             return render(
                 request,
                 "distribution/hours_create.html",
@@ -196,6 +199,9 @@ def hours_entry(request):
                 }
             )
         else:
+            for i in range(0, len(formset)):
+                for f in formset[i].fields:
+                    formset[i].fields[f].label = ""
             return render(
                 request,
                 "distribution/hours_create.html",
@@ -239,6 +245,9 @@ def hours_entry(request):
 
         if GET.get("filter") != "Download":
             form = form(queryset=queryset)
+            for i in range(0, len(form)):
+                for f in form[i].fields:
+                    form[i].fields[f].label = ""
             return render(
                 request,
 
