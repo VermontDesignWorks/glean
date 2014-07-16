@@ -9,4 +9,9 @@ Detail for Template - {{template.template_name}}
 <a href="{% url 'announce:deletetemplate' template.id %}" class="btn btn-danger">Delete Template</a>
 <h5>HTML Email is tricky buisness! What you see is not necessarily what you get!</h5>
 	<div style="min-width:400px; min-height:800px; border:#e5e5e5 solid 1px;">{{template.body | safe}}</div>
+    <style>
+#footer-overall {
+    top: 800px;
+}
+</style>
 {% endblock content %}

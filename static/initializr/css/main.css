@@ -42,7 +42,10 @@ body{
 }
 
 #footer-overall {
-   position: relative;
+   position: absolute;
+   width: 100%;
+   min-width: 1160px;
+   z-index: -1;
 }
 
 #gleaners-container{

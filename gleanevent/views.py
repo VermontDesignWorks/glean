@@ -112,8 +112,7 @@ def deleteGlean(request, glean_id):
     glean = get_object_or_404(GleanEvent, pk=glean_id)
     profile = request.user.profile
     if (glean.member_organization != profile.member_organization and
-            u'gleanevent.uniauth' not in
-            request.user.groups.get().permissions.all()):
+            not request.user.has_perm('gleanevent.uniauth')):
         return HttpResponseRedirect(reverse('gleanevent:index'))
     if request.method == 'POST':
         announces = Announcement.objects.filter(glean=glean)
