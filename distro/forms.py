@@ -56,10 +56,3 @@ class WorkEventFormHelper(FormHelper):
                 "notes"
                 )
         )
-        self.add_input(
-            Submit(
-                "Save",
-                "Save",
-                css_class="glean-button red-button no-margin"
-            )
-        )

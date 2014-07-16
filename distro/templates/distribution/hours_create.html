@@ -10,12 +10,12 @@
 <div id="glean-index-header" style="width: 1070px; margin-left:auto; margin-right:auto;">
     <h1 class="pull-left">Volunteer Hours</h1>
     <div id="glean-buttons">
-        <a href="{% url 'gleanevent:newglean' %}">
+        <a href="{% url 'userprofile:newuser' %}">
             <button class="glean-button green-button no-margin">
                 New Volunteer
             </button>
         </a>
-        <a href="{% url 'gleanevent:newglean' %}">
+        <a href="{% url 'userprofile:userlists' %}">
             <button class="glean-button yellow-button no-margin">
                 Volunteer List
             </button>
@@ -32,16 +32,19 @@
 <div class="span12">
     <h4 class="text-success text-center">{{message}}</h4>
 </div>
+<div>
     <h4 class="text-error text-center">{{error}}</h4>
 </div>
 <div class="label-row">
     <div>First Name</div><div>Last Name</div><div>Date</div><div>Total Time</div><div>Group Name</br><small>(if applicable)</small></div><div># of Members</br><small>(if applicable)</small></div><div>Task</div><div>Miles</div><div>Notes</div>
 </div>
         {% crispy formset helper %}
-<div id="glean-index" class="yellow-box yellow-top">
+<input type='submit' class='glean-button green-button' form="form-id-0" name='submit' value='Save Changes'>
+<div id="glean-index" class="glean-index-yellow yellow" style="width: 1030px;">
 <h3>All their work, easy to see</h3>
 <p>This tool allows you to view and/or download a spreadsheet detailing all volunteer hours logged by your organization.</p>
 <p>Select a range of dates (or leave blank to select all dates) and press the "View/Edit" to view a spreadsheet. Or press "Download" to save a document that can be opened with Excel.</p>
+</div>
 <form id="glean-index-form" method="get" class="form-inline">
     <label for="date_from">From</label>
     <input id="date_from" maxlength=200 name="date_from" type="text" value="{{date_from}}" class="datepicker"></input>
@@ -50,7 +53,6 @@
     <input type="submit" name="filter" class="glean-button green-button no-margin" value="View Edit">
     <input type="submit" name="download" class="glean-button yellow-button no-margin" value="Download">
 </form>
-</div>
 {% endblock body %}
 
 {% block style %}
@@ -96,6 +98,10 @@ form {
     text-align: center;
     height: 40px;
     font-weight: bold;
+}
+#glean-index {
+    min-height: 100px !important;
+    margin-bottom: 30px !important;
 }
 </style>
 {% endblock style %}
