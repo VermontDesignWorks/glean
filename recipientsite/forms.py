@@ -69,11 +69,11 @@ class RecipientSiteForm(ModelForm):
         widget=forms.Textarea(
             attrs={'cols': '100', 'rows': '10', 'style': 'width: 460px'}),
         required=False)
-    address_one = forms.CharField(max_length=20)
+    address_one = forms.CharField(max_length=20, required=False)
     address_two = forms.CharField(max_length=20, required=False)
-    city = forms.CharField(max_length=20)
-    state = forms.ChoiceField(choices=STATES)
-    zipcode = forms.CharField(max_length=10)
+    city = forms.CharField(max_length=20, required=False)
+    state = forms.ChoiceField(choices=STATES, required=False)
+    zipcode = forms.CharField(max_length=10, required=False)
     member_organization = forms.ModelMultipleChoiceField(queryset=MemOrg.objects.all(), required=False)
 
     physical_is_mailing = forms.BooleanField(label='Physical Address is Mailing Address', required=False)
