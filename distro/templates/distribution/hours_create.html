@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-<div id="glean-index-header">
+<div id="glean-index-header" style="width: 1070px; margin-left:auto; margin-right:auto;">
     <h1 class="pull-left">Volunteer Hours</h1>
     <div id="glean-buttons">
         <a href="{% url 'gleanevent:newglean' %}">
@@ -23,18 +23,20 @@
     </div>
 </div>
 
-<div class="glean-index-red red">
+<div class="glean-index-red red" style="width: 1030px; margin-left: auto; margin-right: auto;">
     <h3>Who's Helping Out?</h3>
     <p>Enter your volunteers' here. Don't worry about extra lines, the system rightfully ignores them :D</p>
-    <p>If you need to register more volunteers, you can acces it on the navbar above!</p>
-    <p><small><i>Note: Please enter dates in YYYY-MM-DD format.</i></small></p>
+    <p>If you need to register more volunteers, you can acces it on the navbar above!</br>
+    <small><i>Note: Please enter dates in YYYY-MM-DD format.</i></small></p>
 </div>
 <div class="span12">
     <h4 class="text-success text-center">{{message}}</h4>
 </div>
     <h4 class="text-error text-center">{{error}}</h4>
 </div>
-
+<div class="label-row">
+    <div>First Name</div><div>Last Name</div><div>Date</div><div>Total Time</div><div>Group Name</br><small>(if applicable)</small></div><div># of Members</br><small>(if applicable)</small></div><div>Task</div><div>Miles</div><div>Notes</div>
+</div>
         {% crispy formset helper %}
 <div id="glean-index" class="yellow-box yellow-top">
 <h3>All their work, easy to see</h3>
@@ -58,6 +60,42 @@
 }
 .table-striped tbody>tr:nth-child(odd)>td, .table-striped tbody>tr:nth-child(odd)>th {
     background-color: #ffc64a !important;
+}
+.body-container {
+    width: 1030px;
+    margin-left: auto;
+    margin-right: auto;
+}
+form {
+    margin-left: auto;
+    margin-right: auto;
+}
+.row > .control-group {
+    width: 100px;
+    margin: 0px;
+    padding: 0px;
+    margin-left: 0px !important;
+}
+.row {
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+}
+.label-row {
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+.label-row > div {
+    float: left;
+    display: inline-block;
+    margin: 0px;
+    width: 100px;
+    text-align: center;
+    height: 40px;
+    font-weight: bold;
 }
 </style>
 {% endblock style %}
