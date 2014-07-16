@@ -86,7 +86,9 @@ class NewFarmForm(FarmLocBase, ModelForm):
                     Row("zipcode"),
                     "directions",
                     "instructions",
-                    HTML('<h4 class="h4-label" style="position: relative; top: 20px;"><label for="id_county">County of operations:</label></h4>'),
+                    HTML('<h4 class="h4-label" style="position: relative; top:'
+                         ' 20px;"><label for="id_county">County of operations:'
+                         '</label></h4>'),
                     self.county_fieldset,
                     css_class="crispy_column_left"),
                 Div(
@@ -105,9 +107,9 @@ class NewFarmForm(FarmLocBase, ModelForm):
             HTML("</div>"),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "name='submit' value='Add Farm'> <input type='submit'"
+                 "name='submit' value='Save'> <input type='submit'"
                  "class='glean-button red-button' "
-                 "name='submit' value='Add Farm and Add Contact'>"),
+                 "name='submit' value='Save and Add Contact'>"),
             HTML("</div>")
         )
 
@@ -153,7 +155,9 @@ class EditFarmForm(FarmLocBase, ModelForm):
                     Row("zipcode"),
                     "directions",
                     "instructions",
-                    HTML('<h4 class="h4-label" style="position: relative; top: 20px;"><label for="id_county">County of operations:</label></h4>'),
+                    HTML('<h4 class="h4-label" style="position: relative; top:'
+                         ' 20px;"><label for="id_county">County of operations:'
+                         '</label></h4>'),
                     self.county_fieldset,
                     css_class="crispy_column_left"),
                 Div(
