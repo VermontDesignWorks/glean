@@ -31,7 +31,6 @@ from farms.models import Farm
 from recipientsite.models import RecipientSite
 from django.forms.widgets import TextInput
 from django.forms import extras
-from django import forms
 
 
 WorkEventFormSet = modelformset_factory(WorkEvent, extra=10)
