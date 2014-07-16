@@ -24,6 +24,11 @@ class Template(models.Model):
     def __unicode__(self):
         return self.member_organization.name + ' - ' + self.template_name
 
+    def save(self, *args, **kwargs):
+        if self.default is True:
+            Template.objects.filter(member_organization=self.member_organization).update(default=False)
+        return super(Template, self).save(*args, **kwargs)
+
     class Meta:
         permissions = (
             ("auth", "Member Organization Level Permissions"),
