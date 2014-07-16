@@ -59,7 +59,7 @@ body{
    background-color: #6e9614;
    text-align: left;
    padding: 5px 0px 5px 25px;
-   color: #444;
+   color: #222;
    border-top-style: solid;
    border-top-width: 5px;
    border-top-color: #6e8614;
@@ -83,11 +83,11 @@ body{
 }
 
 #footer-container a:link {
-   color: #444;
+   color: #77313C;
 }
 
 #footer-container a:visited {
-   color: #444;
+   color: #77313C;
 }
 
 #footer-container a:hover {
@@ -95,7 +95,7 @@ body{
 }
 
 #footer-container a:active {
-   color: #444;
+   color: #77313C;
 }
 
 #footer-container > div {
@@ -114,7 +114,7 @@ body{
 
 #link-section-container li {
     border-top-style: dotted;
-    border-top-color: #ffc64a;
+    border-top-color: #6e8614;
     border-top-width: 2px;
     padding: 2px 0px;
 }

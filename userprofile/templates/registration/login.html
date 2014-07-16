@@ -6,11 +6,6 @@
 
 <div class="red login-page-box">
 	<p class="error no-margin">
-	{% if form.errors %}
-		Please correct the errors below:
-	{% else %}
-		&nbsp; 
-	{% endif %}
 	</p>
 	<div class="form-row">
 		<form method="post" class="no-margin" action="?next={{ next|default:"/" }}">
@@ -44,8 +39,14 @@
 	</div>
 
 	<div class="login-span">
+			{% if form.errors %}
+				Wrong username/password combination.
+			{% else %}
+				&nbsp; 
+			{% endif %}
 		<h4> <a class="login-link" href="{% url 'auth_password_reset' %}">Forgot your password?</a></h4>
 		<p>Not a gleaner yet? <a class="login-link" href="{% url 'registration_register' %}">Sign Up Now</a></p>
+		<p>Having Trouble Signing In? Contact Us at <a class="login-link" href="mailto:theresa@salvationfarms.org">theresa@salvationfarms.org</a></p>
 	</div>
 </div>
 <div class="yellow-bar short-bar">
