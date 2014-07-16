@@ -1,4 +1,4 @@
-{% extends 'base_old.html' %}
+{% extends 'base.html' %}
 {% load comments %}
 {% load url from future %}
 {% block title %}
@@ -33,7 +33,11 @@ Welcome to the Gleaning Interface!
 {% include "about_box.html" %}
 {% include "partners.html" %}
 </div>
-
+<style>
+#footer-overall {
+    top: 800px;
+}
+</style>
 {% endblock %}
 
 {% block javascript %}

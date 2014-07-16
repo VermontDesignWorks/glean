@@ -41,19 +41,68 @@ body{
    padding:0;
 }
 
+#footer-overall {
+   position: absolute;
+   width: 100%;
+   min-width: 1160px;
+   z-index: -1;
+}
+
+#gleaners-container{
+    height: 289px;
+    z-index: -1;
+}
+
 #footer-container{
    margin:73px 0 0 0;
-   height:30px;
+   height:230px;
    background-color: #6e9614;
    text-align: left;
    padding: 5px 0px 5px 25px;
-   color: #444;
+   color: #222;
+   border-top-style: solid;
+   border-top-width: 5px;
+   border-top-color: #6e8614;
    position: relative;
-   z-index:-1;
    /*width: 100%;*/
-   top: 279px; /*279px*/
    bottom: auto;
    margin: 0px;
+}
+
+#footer-container > div > div {
+   display: inline-block;
+   float: left;
+   width: 250px;
+   margin: 0px 20px;
+   height: 200px;
+
+}
+
+#footer-container ul {
+   list-style: none;
+}
+
+#footer-container a:link {
+   color: #77313C;
+}
+
+#footer-container a:visited {
+   color: #77313C;
+}
+
+#footer-container a:hover {
+   color: #6e6614;
+}
+
+#footer-container a:active {
+   color: #77313C;
+}
+
+#footer-container > div {
+   height: 230px;
+   width: 1160px;
+   margin-left: auto;
+   margin-right: auto;
 }
 
 .header-title {
@@ -61,6 +110,19 @@ body{
    font-family:'Kameron', serif;
    letter-spacing: 4px;
    font-weight:bold;
+}
+
+#link-section-container li {
+    border-top-style: dotted;
+    border-top-color: #6e8614;
+    border-top-width: 2px;
+    padding: 2px 0px;
+}
+
+#link-section-container li:nth-of-type(1){
+    border-top-style: solid;
+    border-top-color: #ffc64a;
+    border-top-width: 0px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -129,10 +191,7 @@ h3 {
 #gleaners{
    float: right;
    position: relative;
-   top: -294px; /*-249px*/
    z-index:-1;
-   right: 0;
-   bottom: auto; /*40px*/
    
 }
 
