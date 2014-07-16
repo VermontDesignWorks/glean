@@ -1,31 +1,24 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load url from future %}
 {% block title %}
-Edit {{site.name}}
+Edit {{object.name}}
 {% endblock title %}
 
-
 {% block heading %}
-<h3>Edit Recipient Site</h3>
+<h1>Edit {{object.name}} Recipient Site</h1>
 {% endblock heading %}
 
 
-{% block content %}
-	<form method="post" action="">
-		{% csrf_token %}
-		{% include 'recipientsite/siteform.html' %}
-		<span class="pull-left"><span class="text-error">*</span>Denotes A Required Field</span>
-			<div class="pull-right">
-				<input type="submit" class="btn btn-success" name='action' value="Save">
-			
-			</div>
-	</form>
-	<style>
-#footer-overall {
-    top: 700px;
-}
-</style>
-{% endblock content %}
-{% block related %}
-<p>Edit information about your recipient sites here. Remember that when you enter distribution data for a particular recipient site, that exact name is what links the data to the site – so be sure to keep the name consistent (limit any edits to this field).</p>
-{% endblock related %}
+{% block body %}
+<div class="glean-index-red red" style="width: 1030px;">
+	<h3>Vermont Needs Food!!!</h3>
+	    <h4>Edit information about your recipient sites here. Remember that when you enter distribution data for a particular recipient site, that exact name is what links the data to the site – so be sure to keep the name consistent (limit any edits to this field).</h4>
+</div>
+<div class="form-errors">
+	{{form.errors}}
+</div>
+<div class="crispy_form_tag">
+	{% crispy form %}
+</div>
+{% endblock body %}
