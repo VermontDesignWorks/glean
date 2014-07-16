@@ -40,10 +40,12 @@
 </div>
         {% crispy formset helper %}
 <input type='submit' class='glean-button green-button' form="form-id-0" name='submit' value='Save Changes'>
-<div id="glean-index" class="glean-index-yellow yellow" style="width: 1030px;">
-<h3>All their work, easy to see</h3>
-<p>This tool allows you to view and/or download a spreadsheet detailing all volunteer hours logged by your organization.</p>
-<p>Select a range of dates (or leave blank to select all dates) and press the "View/Edit" to view a spreadsheet. Or press "Download" to save a document that can be opened with Excel.</p>
+<div id="glean-index" class="glean-index-yellow yellow" style="width: 1050px; padding: 0px 20px;">
+    <div class="glean-index-yellow-child" style="width: 1010px; padding: 0px;">
+        <h3 style="padding-top: 0px; margin-top: 0px;">All their work, easy to see</h3>
+        <p>This tool allows you to view and/or download a spreadsheet detailing all volunteer hours logged by your organization.</p>
+        <p>Select a range of dates (or leave blank to select all dates) and press the "View/Edit" to view a spreadsheet. Or press "Download" to save a document that can be opened with Excel.</p>
+    </div>
 </div>
 <form id="glean-index-form" method="get" class="form-inline">
     <label for="date_from">From</label>
@@ -99,9 +101,16 @@ form {
     height: 40px;
     font-weight: bold;
 }
+#glean-index p {
+    font-size: 18px;
+    margin: 0 0 10px;
+}
 #glean-index {
-    min-height: 100px !important;
-    margin-bottom: 30px !important;
+    height: 140px !important;
+    min-height: 140px !important;
+}
+.glean-index-yellow-child {
+    height: 140px !important;
 }
 </style>
 {% endblock style %}
