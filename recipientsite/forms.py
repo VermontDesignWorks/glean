@@ -23,13 +23,13 @@ from memberorgs.models import MemOrg
 from recipientsite.models import RecipientSite
 
 
-class NewRecipientSiteForm(ModelForm):
+class RecipientSiteForm(ModelForm):
     'A crispyform class for creating a new recipient site object'
 
     version = '0.1'
 
     def __init__(self, *args, **kwargs):
-        super(NewRecipientSiteForm, self).__init__(*args, **kwargs)
+        super(RecipientSiteForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_errors = False
         self.helper.form_id = "id-New-Farm-Form"
@@ -59,7 +59,7 @@ class NewRecipientSiteForm(ModelForm):
             HTML("</div>"),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "name='submit' value='Add Recipient Site'>"),
+                 "name='submit' value='Save Recipient Site'>"),
             HTML("</div>")
         )
 
@@ -69,11 +69,11 @@ class NewRecipientSiteForm(ModelForm):
         widget=forms.Textarea(
             attrs={'cols': '100', 'rows': '10', 'style': 'width: 460px'}),
         required=False)
-    address_one = forms.CharField(max_length=20)
-    address_two = forms.CharField(max_length=20)
-    city = forms.CharField(max_length=20)
-    state = forms.ChoiceField(choices=STATES)
-    zipcode = forms.CharField(max_length=10)
+    address_one = forms.CharField(max_length=20, required=False)
+    address_two = forms.CharField(max_length=20, required=False)
+    city = forms.CharField(max_length=20, required=False)
+    state = forms.ChoiceField(choices=STATES, required=False)
+    zipcode = forms.CharField(max_length=10, required=False)
     member_organization = forms.ModelMultipleChoiceField(queryset=MemOrg.objects.all(), required=False)
 
     physical_is_mailing = forms.BooleanField(label='Physical Address is Mailing Address', required=False)

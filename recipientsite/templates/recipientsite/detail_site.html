@@ -4,12 +4,32 @@
 {{site.name}} Details
 {% endblock %}
 {% block body %}
-<h1>{{site.name}} Details</h1>
-<a href="{% url 'site:editsite' site.id %}" class="btn btn-warning">edit</a> - <a href="{% url 'site:deletesite' site.id %}"><small>(delete)</small></a>
-<p>{{site.description}}</p>
-<p>{{site.address_one}}</p>
-<p>{{site.address_two}}</p>
-<p>{{site.city}}, {{site.state}} {{site.zip}}</p>
-<ul>
-</ul>
+<div id="heading">
+<h1>{{object.name}} Details</h1>
+    <span style="float: right;">
+		<a href="{% url 'site:editsite' object.pk %}"><button class="glean-button yellow-button">edit</button></a><a href="{% url 'site:deletesite' object.pk %}"><button class="glean-button red-button">delete</button></a>
+	</span>
+</div>
+<div class="glean-index-red red" style="width: 1030px; margin: 30px 0px;">
+	<h3>Vermont Needs Food!!!</h3>
+</div>
+<div class="yellow-box yellow-top" style="width: 1070px;">
+	<h3>Description</h3><p>{{object.description}}</p>
+	<h3>Address One</h3><p>{{object.address_one}}</p>
+	<h3>Address Two</h3><p>{{object.address_two}}</p>
+	<h3>City</h3><p>{{object.city}}</p>,<h3>State</h3> <p>{{object.state}}</p> <h3>Zip</h3><p>{{object.zip}}</p>
+</div>
+<style>
+#heading{
+	height: 30px;
+	width: 1073px;
+}
+p {
+	padding-left: 30px;
+}
+h1 {
+	display: inline-block;
+	float: left;
+}
+</style>
 {% endblock body %}

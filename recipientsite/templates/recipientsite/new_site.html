@@ -1,31 +1,24 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load url from future %}
 {% block title %}
 New Recipient Site
 {% endblock title %}
 
-
 {% block heading %}
-<h3>New Recipient Site</h3>
+<h1>New Recipient Site</h1>
 {% endblock heading %}
 
 
-{% block content %}
-<h3 class="text-success">{{notice}}</h3>
-	<form method="post" action="">
-		{% csrf_token %}
-		{% include 'recipientsite/custom_recipient.html' %}
-		<div class="form-actions">
-			<span class="pull-left"><span class="text-error">*</span>Denotes A Required Field</span>
-			<div class="pull-right">
-				<input type="submit" class="btn btn-success" name='action' value="Save">
-				<input type="submit" class="btn btn-danger" name='action' value="Save and Create Another">
-			</div>
-		</div>
-	</form>
-{% endblock content %}
-{% block related %}
-<p>Add information about your recipient sites here.</p>
-
-<p>Adding in recipient sites is necessary for entering in distribution data (since the form for entering data links to names that are already entered into the Interface), so make sure you create a profile for each recipient site you work with.</p>
-{% endblock related %}
+{% block body %}
+<div class="glean-index-red red" style="width: 1030px;">
+	<h3>Vermont Needs Food!!!</h3>
+	    <h4>Submit information about your recipient sites here. Remember that when you enter distribution data for a particular recipient site, that exact name is what links the data to the site – so be sure to keep the name consistent (limit any edits to this field).</h4>
+</div>
+<div class="form-errors">
+	{{form.errors}}
+</div>
+<div class="crispy_form_tag">
+	{% crispy form %}
+</div>
+{% endblock body %}
