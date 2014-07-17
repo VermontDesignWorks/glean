@@ -186,10 +186,6 @@ class Hours_Entry(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelForm
         for i in range(0, len(formset)):
             for f in formset[i].fields:
                 formset[i].fields[f].label = ""
-            if not self.request.user.has_perm(self.uniauth_string):
-                formset[i].fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg.pk)
-                formset[i].fields['member_organization'].initial = MemOrg.objects.get(pk=memorg.pk)
-                formset[i].fields['member_organization'].widget = forms.HiddenInput()
         return formset
 
     def get_queryset(self):
