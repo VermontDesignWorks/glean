@@ -81,7 +81,19 @@ class WorkEvent(models.Model):
     time = models.CharField(max_length=10, blank=True, null=True)
     group = models.CharField(max_length=25, blank=True, null=True)
     members = models.CharField(max_length=10, blank=True, null=True)
-    task = models.CharField(max_length=50, blank=True, null=True)
+
+    TASK_CHOICES = (
+        ("Field Gleaning", "Field Gleaning"),
+        ("Farmers Market/Farm Pick-ups", "Farmers Market/Farm Pick-ups"),
+        ("Delivery/Distribution", "Delivery/Distribution"),
+        ("Administrative Support", "Administrative Support"),
+        ("Processing", "Processing")
+    )
+    task = models.CharField(
+        max_length=50,
+        choices=TASK_CHOICES,
+        blank=True,
+        null=True)
     miles = models.CharField(max_length=10, blank=True, null=True)
     notes = models.CharField(max_length=50, blank=True, null=True)
 

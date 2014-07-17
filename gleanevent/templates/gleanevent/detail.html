@@ -16,7 +16,7 @@ Gleaning Details
         {% if user.profile.member_organization == object.member_organization or perms.gleanevent.uniauth %}
       <div id="glean-buttons" class="pull-right">
         <a href="{% url "gleanevent:printglean" object.id %}"><button class="glean-button yellow-button nomargin">Print Field Sheet</button></a>
-        <a href="{% url 'announce:announceglean' object.id %}"><button class="glean-button red-button nomargin">Send Announcement</button></a>
+        <a href="{% url 'announce:announceglean' object.id %}"><button class="glean-button red-button nomargin">View Announcement</button></a>
         <a href="{% url 'gleanevent:editglean' object.id %}"><button class="glean-button no-margin green-button" href="{% url 'gleanevent:editglean' object.id %}">Edit Glean</button></a>
         <a href="{% url 'gleanevent:deleteglean' object.id %}"><button class="glean-button no-margin red-button">Delete</button></a>
       </div>

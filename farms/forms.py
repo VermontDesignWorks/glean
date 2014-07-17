@@ -86,28 +86,18 @@ class NewFarmForm(FarmLocBase, ModelForm):
                     Row("zipcode"),
                     "directions",
                     "instructions",
-                    HTML('<h4 class="h4-label" style="position: relative; top: 20px;"><label for="id_county">County of operations:</label></h4>'),
+                    HTML('<h4 class="h4-label" style="position: relative; top:'
+                         ' 20px;"><label for="id_county">County of operations:'
+                         '</label></h4>'),
                     self.county_fieldset,
                     css_class="crispy_column_left"),
-                Div(
-                    HTML("<p class='red-emphasized'>Information in this"
-                         " column is visible only by administrators</p>"),
-                    "physical_is_mailing",
-                    Row("mailing_address_one", "mailing_address_two"),
-                    Row("mailing_city", "mailing_state"),
-                    "mailing_zip",
-                    "description",
-                    Row("phone_1", "phone_1_type"),
-                    Row("phone_2", "phone_2_type"),
-                    "email",
-                    css_class="crispy_column_left yellow-left")
             ),
             HTML("</div>"),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "name='submit' value='Add Farm'> <input type='submit'"
+                 "name='submit' value='Save'> <input type='submit'"
                  "class='glean-button red-button' "
-                 "name='submit' value='Add Farm and Add Contact'>"),
+                 "name='submit' value='Save and Add Contact'>"),
             HTML("</div>")
         )
 
@@ -153,21 +143,11 @@ class EditFarmForm(FarmLocBase, ModelForm):
                     Row("zipcode"),
                     "directions",
                     "instructions",
-                    HTML('<h4 class="h4-label" style="position: relative; top: 20px;"><label for="id_county">County of operations:</label></h4>'),
+                    HTML('<h4 class="h4-label" style="position: relative; top:'
+                         ' 20px;"><label for="id_county">County of operations:'
+                         '</label></h4>'),
                     self.county_fieldset,
                     css_class="crispy_column_left"),
-                Div(
-                    HTML("<p class='red-emphasized'>Information in this"
-                         " column is visible only by administrators</p>"),
-                    "physical_is_mailing",
-                    Row("mailing_address_one", "mailing_address_two"),
-                    Row("mailing_city", "mailing_state"),
-                    "mailing_zip",
-                    "description",
-                    Row("phone_1", "phone_1_type"),
-                    Row("phone_2", "phone_2_type"),
-                    "email",
-                    css_class="crispy_column_left yellow-left")
             ),
             HTML("</div>"),
             HTML("<input type='submit' "
