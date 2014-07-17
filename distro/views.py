@@ -210,10 +210,3 @@ class Hours_Entry(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelForm
                 self.extra = 10
                 return queryset
 
-    def formset_valid(self, formset):
-        memorg = self.request.user.profile.member_organization
-        self.object_list = formset.save(commit=False)
-        for instance in self.object_list:
-            instance.member_organization = memorg
-            instance.save()
-        return HttpResponseRedirect(self.get_success_url())
