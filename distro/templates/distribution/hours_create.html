@@ -35,10 +35,12 @@
 <div>
     <h4 class="text-error text-center">{{error}}</h4>
 </div>
-<div class="label-row">
+<div class="label-row" style="height: 40px;">
     <div>First Name</div><div>Last Name</div><div>Date</div><div>Total Time</div><div>Group Name</br><small>(if applicable)</small></div><div># of Members</br><small>(if applicable)</small></div><div>Task</div><div>Miles</div><div>Notes</div>
 </div>
+<div>
         {% crispy formset %}
+</div>
 <input type='submit' class='glean-button green-button' form="form-id-0" name='submit' value='Save Changes'>
 <div id="glean-index" class="glean-index-yellow yellow" style="width: 1050px; padding: 0px 20px;">
     <div class="glean-index-yellow-child" style="width: 1010px; padding: 0px;">
@@ -55,6 +57,7 @@
     <input type="submit" name="filter" class="glean-button green-button no-margin" value="View Edit">
     <!--input type="submit" name="download" class="glean-button yellow-button no-margin" value="Download"-->
 </form>
+<script src="/static/js/work_hours.js"></script>
 {% endblock body %}
 
 {% block style %}
@@ -86,15 +89,16 @@ form {
     display: inline-block;
 }
 #form-id-0 {
-    width: 910px;
+    width: 920px;
     margin-left: auto;
     margin-right: auto;
 
 }
 .label-row {
-    width: 910px;
+    width: 920px;
     margin-left: auto;
     margin-right: auto;
+    height: 40px;
 
 }
 .label-row > div {
