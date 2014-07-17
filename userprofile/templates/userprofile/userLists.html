@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load url from future %}
+{% load staticfiles %}
+{% load url from future %}
 {% block title %}
 Volunteer Index
 {% endblock title %}
@@ -53,11 +55,8 @@ Volunteer Index
 	<span>No users :(</span>
 	{% endif %}
 </div>
-<style>
-#footer-overall {
-    top: 1300px;
-}
-</style>
+<script src="{% static '/static/js/footer-fix.js' %}">
+</script>
 {% include "about_box.html" %}
 {% include "partners.html" %}
 {% endblock body %}

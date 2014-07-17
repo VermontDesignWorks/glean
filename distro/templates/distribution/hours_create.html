@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+{% load url from future %}
 {% load crispy_forms_tags %}
 {% block title %}Volunteers
 {% endblock title %}
@@ -55,6 +57,8 @@
     <input type="submit" name="filter" class="glean-button green-button no-margin" value="View Edit">
     <!--input type="submit" name="download" class="glean-button yellow-button no-margin" value="Download"-->
 </form>
+<script src="{% static '/static/js/footer-fix.js' %}">
+</script>
 {% endblock body %}
 
 {% block style %}
@@ -114,6 +118,10 @@ form {
 }
 .glean-index-yellow-child {
     height: 140px !important;
+}
+</style>
+<style>
+#footer-overall {
 }
 </style>
 {% endblock style %}
