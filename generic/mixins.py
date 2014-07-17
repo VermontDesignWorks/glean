@@ -83,5 +83,6 @@ class DynamicDateFilterMixin(object):
                 date__lte=date_until,
                 member_organization=mo
             )
-
+        import sys
+        print >> sys.stderr, queryset
         return queryset

@@ -172,6 +172,52 @@ def download(request):
     return response
 
 
+class Hours_Entry(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelFormSetView):
+
+    template_name = 'distribution/hours_create.html'
+    success_url = reverse_lazy("distro:hours")
+    extra = 10
+    model = WorkEvent
+    queryset = WorkEvent.objects.all()
+    uniauth_string = 'userprofile.uniauth'
+
+    def construct_formset(self):
+        formset = super(Hours_Entry, self).construct_formset()
+        for i in range(0, len(formset)):
+            for f in formset[i].fields:
+                formset[i].fields[f].label = ""
+            if not self.request.user.has_perm(self.uniauth_string):
+                formset[i].fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg.pk)
+                formset[i].fields['member_organization'].initial = MemOrg.objects.get(pk=memorg.pk)
+                formset[i].fields['member_organization'].widget = forms.HiddenInput()
+        return formset
+
+    def get_queryset(self):
+        if self.request.method == 'post':
+            self.extra = 0
+            return super(Hours_Entry, self).get_queryset()
+        else:
+            GET = self.request.GET
+            if "date_from" in GET or "date_until" in GET:
+                self.extra = 0
+                return super(Hours_Entry, self).get_queryset()
+            else:
+                queryset = WorkEvent.objects.none()
+                self.extra = 10
+                return queryset
+
+    def formset_valid(self, formset):
+        memorg = self.request.user.profile.member_organization
+        self.object_list = formset.save(commit=False)
+        for instance in self.object_list:
+            instance.member_organization = memorg
+            instance.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+
+
+
 @permission_required('distro.auth')
 def hours_entry(request):
     member_organization = request.user.profile.member_organization

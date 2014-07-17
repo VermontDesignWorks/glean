@@ -44,6 +44,7 @@ class WorkEventFormHelper(FormHelper):
         self.form_method = 'post'
         self.layout = Layout(
             Row(
+                "member_organization",
                 "first_name",
                 "last_name",
                 "date",

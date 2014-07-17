@@ -38,7 +38,7 @@
 <div class="label-row">
     <div>First Name</div><div>Last Name</div><div>Date</div><div>Total Time</div><div>Group Name</br><small>(if applicable)</small></div><div># of Members</br><small>(if applicable)</small></div><div>Task</div><div>Miles</div><div>Notes</div>
 </div>
-        {% crispy formset helper %}
+        {% crispy formset %}
 <input type='submit' class='glean-button green-button' form="form-id-0" name='submit' value='Save Changes'>
 <div id="glean-index" class="glean-index-yellow yellow" style="width: 1050px; padding: 0px 20px;">
     <div class="glean-index-yellow-child" style="width: 1010px; padding: 0px;">
@@ -77,20 +77,22 @@ form {
     margin-left: auto;
     margin-right: auto;
 }
-.row > .control-group {
+.control-group {
     width: 100px;
     margin: 0px;
     padding: 0px;
     margin-left: 0px !important;
+    margin-bottom: 5px;
+    display: inline-block;
 }
-.row {
-    width: 900px;
+#form-id-0 {
+    width: 910px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 5px;
+
 }
 .label-row {
-    width: 900px;
+    width: 910px;
     margin-left: auto;
     margin-right: auto;
 
