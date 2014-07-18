@@ -22,6 +22,17 @@ Entry
 	    <p>If you need to register more distribution sites, use the Distribution Site area of this website, you can access it on the navbar above!</p>
 	    <em>Note: Please enter dates in YYYY-MM-DD format</em>
 </div>
+{% if messages %}
+<div class="glean-index-red">
+{% for message in messages %}
+	<h3>{{message}}</h3>
+{% endfor %}
+</div>
+{% else %}
+<div class="glean-index-red">
+<h3>&nbsp;</h3>
+</div>
+{% endif %}
 <div class="formset-label" style="margin-top: 15px;">
 	<div>Date of<br> Distribution</div><div>Distribution<br> Method</div><div>Recipient Site</div><div>Collection<br> Method</div><div>Harvest Date</div><div>Farm</div><div>Crop/Item</div><div>Pounds</div><div>Count</div><div>Containers</div>
 	</div>

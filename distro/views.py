@@ -5,6 +5,7 @@ import time
 import sys
 
 from django.contrib.auth.decorators import permission_required
+from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy
 from django import forms
 from django.forms.models import modelformset_factory, formset_factory
@@ -75,7 +76,7 @@ def index(request):
 class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
 
     template_name = 'distribution/entry.html'
-    success_url = reverse_lazy("distro:index")
+    success_url = reverse_lazy("distro:entry")
     extra = 10
     model = Distro
     queryset = Distro.objects.none()
@@ -95,11 +96,18 @@ class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
                 formset[i].fields['member_organization'].widget = forms.HiddenInput()
         return formset
 
+    def form_valid(self, form):
+        import pdb
+        pdb.set_trace()
+        messages.add_message(
+            self.request, messages.INFO, "Password Reset.")
+        return super(Entry, self).form_valid(form)
+
 
 class Edit(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelFormSetView):
 
     template_name = 'distribution/edit.html'
-    success_url = reverse_lazy("distro:index")
+    success_url = reverse_lazy("distro:entry")
     model = Distro
     can_delete = True
     can_order = False
