@@ -1,9 +1,17 @@
 $(document).ready(function(){ 
-	warnMessage = "You may have unsaved changes.  You should save before leaving!!";
+    warnMessage = null;
     $(window).bind("beforeunload", function(){
     	if (warnMessage != null) return warnMessage;
     });
-    $('input').click(function(){
+    $('input').change(function(){
+    	console.log("Change made")
+		warnMessage = "You may have unsaved changes.  You should save before leaving!!";
+    });
+    $('select').change(function(){
+    	console.log("Change made")
+		warnMessage = "You may have unsaved changes.  You should save before leaving!!";
+    });
+    $('input[type="submit"]').click(function(){
         warnMessage = null;
     });
 	$('.control-group .checkbox').each(function(){
