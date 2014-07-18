@@ -54,7 +54,7 @@ class NewFarm(SimpleLoginCheckForGenerics, CreateView):
             return HttpResponseRedirect(
                 reverse_lazy(
                     'farms:newcontact', kwargs={"farm_id": self.object.pk}))
-        return super(NewFarm, self).form_valid(form)
+        return HttpResponseRedirect(reverse_lazy("farms:index"))
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.has_perm('farms.auth'):
@@ -67,10 +67,7 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
     model = Farm
     template_name = 'farms/edit.html'
     form_class = EditFarmForm
-
-    def get_success_url(self):
-        return reverse_lazy(
-            "farms:editfarm", kwargs={"pk": int(self.object.pk)})
+    success_url = reverse_lazy("farms:index")
 
     def dispatch(self, *args, **kwargs):
         text = re.search('/farms/(.+?)/edit/', self.request.path)
@@ -84,15 +81,6 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
             return super(EditFarm, self).dispatch(*args, **kwargs)
         else:
             raise Http404
-
-    def form_valid(self, form):
-        self.object = form.save()
-        submission = self.request.POST.get("submit")
-        if submission == 'Save Farm and Add Contact':
-            return HttpResponseRedirect(
-                reverse_lazy(
-                    'farms:newcontact', kwargs={"farm_id": self.object.pk}))
-        return super(EditFarm, self).form_valid(form)
 
 
 @permission_required('farms.auth')

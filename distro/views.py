@@ -5,6 +5,7 @@ import time
 import sys
 
 from django.contrib.auth.decorators import permission_required
+from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy
 from django import forms
 from django.forms.models import modelformset_factory, formset_factory
@@ -75,7 +76,7 @@ def index(request):
 class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
 
     template_name = 'distribution/entry.html'
-    success_url = reverse_lazy("distro:index")
+    success_url = reverse_lazy("distro:entry")
     extra = 10
     model = Distro
     queryset = Distro.objects.none()
@@ -88,18 +89,43 @@ class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
             for f in formset[i].fields:
                 formset[i].fields[f].label = ""
             if not self.request.user.has_perm(permission):
-                formset[i].fields['recipient'].queryset = RecipientSite.objects.filter(member_organization=memorg)
-                formset[i].fields['farm'].queryset = Farm.objects.filter(member_organization=memorg)
-                formset[i].fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg.pk)
-                formset[i].fields['member_organization'].initial = MemOrg.objects.get(pk=memorg.pk)
-                formset[i].fields['member_organization'].widget = forms.HiddenInput()
+                formset[i].fields[
+                    'recipient'
+                ].queryset = RecipientSite.objects.filter(
+                    member_organization=memorg)
+                formset[i].fields[
+                    'farm'
+                ].queryset = Farm.objects.filter(member_organization=memorg)
+                formset[i].fields[
+                    'member_organization'
+                ].queryset = MemOrg.objects.filter(pk=memorg.pk)
+                formset[i].fields[
+                    'member_organization'
+                ].initial = MemOrg.objects.get(pk=memorg.pk)
+                formset[i].fields[
+                    'member_organization'
+                ].widget = forms.HiddenInput()
         return formset
 
+    def formset_valid(self, form):
+        count = 0
+        for f in form.forms:
+            if f.has_changed():
+                count += 1
+        messages.add_message(
+            self.request,
+            messages.INFO,
+            "{0} New Item(s) saved to the database".format(count)
+        )
+        return super(Entry, self).formset_valid(form)
 
-class Edit(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelFormSetView):
+
+class Edit(DynamicDateFilterMixin,
+           SimpleLoginCheckForGenerics,
+           ModelFormSetView):
 
     template_name = 'distribution/edit.html'
-    success_url = reverse_lazy("distro:index")
+    success_url = reverse_lazy("distro:entry")
     model = Distro
     can_delete = True
     can_order = False
@@ -115,11 +141,22 @@ class Edit(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelFormSetView
             for f in formset[i].fields:
                 formset[i].fields[f].label = ""
             if not self.request.user.has_perm(permission):
-                formset[i].fields['recipient'].queryset = RecipientSite.objects.filter(member_organization=memorg)
-                formset[i].fields['farm'].queryset = Farm.objects.filter(member_organization=memorg)
-                formset[i].fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg.pk)
-                formset[i].fields['member_organization'].initial = MemOrg.objects.get(pk=memorg.pk)
-                formset[i].fields['member_organization'].widget = forms.HiddenInput()
+                formset[i].fields[
+                    'recipient'
+                ].queryset = RecipientSite.objects.filter(
+                    member_organization=memorg)
+                formset[i].fields[
+                    'farm'
+                ].queryset = Farm.objects.filter(member_organization=memorg)
+                formset[i].fields[
+                    'member_organization'
+                ].queryset = MemOrg.objects.filter(pk=memorg.pk)
+                formset[i].fields[
+                    'member_organization'
+                ].initial = MemOrg.objects.get(pk=memorg.pk)
+                formset[i].fields[
+                    'member_organization'
+                ].widget = forms.HiddenInput()
         return formset
 
 
@@ -172,125 +209,42 @@ def download(request):
     return response
 
 
-@permission_required('distro.auth')
-def hours_entry(request):
-    member_organization = request.user.profile.member_organization
-    if request.method == 'POST':
-        formset = WorkEventFormSet(request.POST)
-        if formset.is_valid():
-            instances = formset.save(commit=False)
-            count = 0
-            for instance in instances:
-                instance.member_organization = member_organization
-                instance.save()
-                count += 1
-            form = WorkEventFormSet(queryset=Distro.objects.none())
-            for i in range(0, len(form)):
-                for f in form[i].fields:
-                    form[i].fields[f].label = ""
-            return render(
-                request,
-                "distribution/hours_create.html",
-                {
-                    "formset": form,
-                    "range": range(50),
-                    "message": str(count) + " Items Saved To the Database",
-                    "helper": WorkEventFormHelper()
-                }
-            )
+class Hours_Entry(DynamicDateFilterMixin,
+                  SimpleLoginCheckForGenerics,
+                  ModelFormSetView):
+
+    template_name = 'distribution/hours_create.html'
+    success_url = reverse_lazy("distro:hours")
+    extra = 10
+    model = WorkEvent
+    queryset = WorkEvent.objects.all()
+    uniauth_string = 'userprofile.uniauth'
+
+    def construct_formset(self):
+        formset = super(Hours_Entry, self).construct_formset()
+        for i in range(0, len(formset)):
+            for f in formset[i].fields:
+                formset[i].fields[f].label = ""
+        return formset
+
+    def get_queryset(self):
+        if self.request.method == 'post':
+            self.extra = 0
+            return super(Hours_Entry, self).get_queryset()
         else:
-            for i in range(0, len(formset)):
-                for f in formset[i].fields:
-                    formset[i].fields[f].label = ""
-            return render(
-                request,
-                "distribution/hours_create.html",
-                {
-                    "formset": formset,
-                    "range": range(50),
-                    "helper": WorkEventFormHelper(),
-                    "error": "Valid dates required for filled out lines."
-                }
-            )
+            GET = self.request.GET
+            if "date_from" in GET or "date_until" in GET:
+                self.extra = 0
+                return super(Hours_Entry, self).get_queryset()
+            else:
+                queryset = WorkEvent.objects.none()
+                self.extra = 10
+                return queryset
 
-    else:
-        form = WorkEventFormSet
-        queryset = WorkEvent.objects.none()
-        GET = request.GET
-
-        if "date_from" in GET or "date_until" in GET:
-            form = EditWorkEventFormSet
-            queryset = WorkEvent.objects.all()
-            has_from = False
-            has_until = False
-            if not request.user.has_perm("distro.uniauth"):
-                queryset = queryset.filter(
-                    member_organization=member_organization)
-                date_from = datetime.datetime.strptime(
-                    GET.get("date_from"),
-                    "%m/%d/%Y").date()
-                has_from = True
-                date_until = datetime.datetime.strptime(
-                    GET.get("date_until"),
-                    "%m/%d/%Y").date()
-                has_until = True
-            if has_from and has_until:
-                queryset = queryset.filter(
-                    date__gte=date_from,
-                    date__lte=date_until)
-            elif has_from:
-                queryset = queryset.filter(date__gte=date_from)
-            elif has_until:
-                queryset = queryset.filter(date__lte=date_until)
-
-        if GET.get("filter") != "Download":
-            form = form(queryset=queryset)
-            for i in range(0, len(form)):
-                for f in form[i].fields:
-                    form[i].fields[f].label = ""
-            return render(
-                request,
-
-                'distribution/hours_create.html',
-                {
-                    'formset': form,
-                    'range': range(50),
-                    "helper": WorkEventFormHelper()
-                }
-            )
-
-        else:
-            response = HttpResponse(mimetype='text/csv')
-            response['Content-Disposition'] = '{0}; filename="{1}"'.format(
-                "attachment",
-                "volunteer_hours.csv",
-                )
-
-            # Create the CSV writer using the HttpResponse as the "file."
-            writer = csv.writer(response)
-            writer.writerow([
-                "first_name",
-                "last_name",
-                "date",
-                "time",
-                "group",
-                "members",
-                "task",
-                "miles",
-                "notes"
-            ])
-
-            for event in queryset:
-                writer.writerow([
-                    event.first_name,
-                    event.last_name,
-                    event.date,
-                    event.time,
-                    event.group,
-                    event.members,
-                    event.task,
-                    event.miles,
-                    event.notes
-                    ])
-
-            return response
+    def formset_valid(self, formset):
+        memorg = self.request.user.profile.member_organization
+        self.object_list = formset.save(commit=False)
+        for instance in self.object_list:
+            instance.member_organization = memorg
+            instance.save()
+        return HttpResponseRedirect(self.get_success_url())
