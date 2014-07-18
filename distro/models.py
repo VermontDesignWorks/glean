@@ -72,7 +72,6 @@ admin.site.register(Distro)
 class WorkEvent(models.Model):
     member_organization = models.ForeignKey(
         MemOrg,
-        editable=False,
         related_name="hours"
     )
     first_name = models.CharField(max_length=25, blank=True, null=True)
