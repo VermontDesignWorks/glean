@@ -89,22 +89,40 @@ class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
             for f in formset[i].fields:
                 formset[i].fields[f].label = ""
             if not self.request.user.has_perm(permission):
-                formset[i].fields['recipient'].queryset = RecipientSite.objects.filter(member_organization=memorg)
-                formset[i].fields['farm'].queryset = Farm.objects.filter(member_organization=memorg)
-                formset[i].fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg.pk)
-                formset[i].fields['member_organization'].initial = MemOrg.objects.get(pk=memorg.pk)
-                formset[i].fields['member_organization'].widget = forms.HiddenInput()
+                formset[i].fields[
+                    'recipient'
+                ].queryset = RecipientSite.objects.filter(
+                    member_organization=memorg)
+                formset[i].fields[
+                    'farm'
+                ].queryset = Farm.objects.filter(member_organization=memorg)
+                formset[i].fields[
+                    'member_organization'
+                ].queryset = MemOrg.objects.filter(pk=memorg.pk)
+                formset[i].fields[
+                    'member_organization'
+                ].initial = MemOrg.objects.get(pk=memorg.pk)
+                formset[i].fields[
+                    'member_organization'
+                ].widget = forms.HiddenInput()
         return formset
 
-    def form_valid(self, form):
-        import pdb
-        pdb.set_trace()
+    def formset_valid(self, form):
+        count = 0
+        for f in form.forms:
+            if f.has_changed():
+                count += 1
         messages.add_message(
-            self.request, messages.INFO, "Password Reset.")
-        return super(Entry, self).form_valid(form)
+            self.request,
+            messages.INFO,
+            "{0} New Item(s) saved to the database".format(count)
+        )
+        return super(Entry, self).formset_valid(form)
 
 
-class Edit(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelFormSetView):
+class Edit(DynamicDateFilterMixin,
+           SimpleLoginCheckForGenerics,
+           ModelFormSetView):
 
     template_name = 'distribution/edit.html'
     success_url = reverse_lazy("distro:entry")
@@ -123,11 +141,22 @@ class Edit(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelFormSetView
             for f in formset[i].fields:
                 formset[i].fields[f].label = ""
             if not self.request.user.has_perm(permission):
-                formset[i].fields['recipient'].queryset = RecipientSite.objects.filter(member_organization=memorg)
-                formset[i].fields['farm'].queryset = Farm.objects.filter(member_organization=memorg)
-                formset[i].fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg.pk)
-                formset[i].fields['member_organization'].initial = MemOrg.objects.get(pk=memorg.pk)
-                formset[i].fields['member_organization'].widget = forms.HiddenInput()
+                formset[i].fields[
+                    'recipient'
+                ].queryset = RecipientSite.objects.filter(
+                    member_organization=memorg)
+                formset[i].fields[
+                    'farm'
+                ].queryset = Farm.objects.filter(member_organization=memorg)
+                formset[i].fields[
+                    'member_organization'
+                ].queryset = MemOrg.objects.filter(pk=memorg.pk)
+                formset[i].fields[
+                    'member_organization'
+                ].initial = MemOrg.objects.get(pk=memorg.pk)
+                formset[i].fields[
+                    'member_organization'
+                ].widget = forms.HiddenInput()
         return formset
 
 
@@ -180,7 +209,9 @@ def download(request):
     return response
 
 
-class Hours_Entry(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelFormSetView):
+class Hours_Entry(DynamicDateFilterMixin,
+                  SimpleLoginCheckForGenerics,
+                  ModelFormSetView):
 
     template_name = 'distribution/hours_create.html'
     success_url = reverse_lazy("distro:hours")
@@ -190,31 +221,30 @@ class Hours_Entry(DynamicDateFilterMixin, SimpleLoginCheckForGenerics, ModelForm
     uniauth_string = 'userprofile.uniauth'
 
     def construct_formset(self):
-        memorg = self.request.user.profile.member_organization
         formset = super(Hours_Entry, self).construct_formset()
         for i in range(0, len(formset)):
             for f in formset[i].fields:
                 formset[i].fields[f].label = ""
-            if not self.request.user.has_perm(self.uniauth_string):
-                formset[i].fields['member_organization'].queryset = MemOrg.objects.filter(pk=memorg.pk)
-                formset[i].fields['member_organization'].initial = MemOrg.objects.get(pk=memorg.pk)
-                formset[i].fields['member_organization'].widget = forms.HiddenInput()
         return formset
 
     def get_queryset(self):
         if self.request.method == 'post':
-            self.can_delete = True
             self.extra = 0
             return super(Hours_Entry, self).get_queryset()
         else:
             GET = self.request.GET
             if "date_from" in GET or "date_until" in GET:
-                self.can_delete = True
                 self.extra = 0
                 return super(Hours_Entry, self).get_queryset()
             else:
                 queryset = WorkEvent.objects.none()
-                self.can_delete = False
                 self.extra = 10
                 return queryset
 
+    def formset_valid(self, formset):
+        memorg = self.request.user.profile.member_organization
+        self.object_list = formset.save(commit=False)
+        for instance in self.object_list:
+            instance.member_organization = memorg
+            instance.save()
+        return HttpResponseRedirect(self.get_success_url())
