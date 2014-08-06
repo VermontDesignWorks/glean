@@ -200,8 +200,18 @@ def download(request):
         attributes = ['member_organization'] + attributes
     else:
         query = Distro.objects.filter(member_organization=mo)
+    params = {}
+    if "date_from" in request.GET and request.GET["date_from"]:
+        params["date_d__gte"] = datetime.datetime.strptime(
+            request.GET["date_from"], "%Y-%m-%d")
+    if "date_until" in request.GET and request.GET["date_until"]:
+        params["date_d__lte"] = datetime.datetime.strptime(
+            request.GET["date_until"], "%Y-%m-%d")
+    if params:
+        query = query.filter(**params)
 
     data = tablib.Dataset(headers=headings)
+
     for distro in query:
         data.append([getattr(distro, attr, "") for attr in attributes])
     response.write(data.xlsx)
