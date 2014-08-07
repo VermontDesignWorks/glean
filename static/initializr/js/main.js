@@ -126,8 +126,3 @@ $('#physical_is_mailing-button').popover({
 });
 
 $(".datepicker").datepicker({"format": "yyyy-mm-dd"});
-
-/* fix for bottom */
-$(document).ready(function(){
-
-});
