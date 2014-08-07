@@ -27,6 +27,9 @@
                       {% if 'distro.auth' in perms %}
                       <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'distro:entry' %}">H&amp;D Database</a></li>
                       {% endif %}
+                      {% if 'recipientsite.auth' in perms %}
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'site:index' %}">Recipient Sites</a></li>
+                      {% endif %}
                     </ul>
 
                     <ul class="nav pull-right">

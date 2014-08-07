@@ -15,6 +15,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views import generic
 
 from extra_views import ModelFormSetView, FormSetView
+import tablib
 
 from distro.forms import (WorkEventFormHelper,
                           WorkEventFormSet,
@@ -162,13 +163,12 @@ class Edit(DynamicDateFilterMixin,
 
 @permission_required('distro.auth')
 def download(request):
+    request.POST
     mo = request.user.profile.member_organization
-    response = HttpResponse(mimetype='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=distribution.csv'
+    response = HttpResponse(mimetype='application/xlsx')
+    response['Content-Disposition'] = 'attachment; filename=distribution.xlsx'
 
     # Create the CSV writer using the HttpResponse as the "file."
-    writer = csv.writer(response)
-
     headings = [
         'Distribution Date',
         'Recipient Site',
@@ -181,7 +181,6 @@ def download(request):
         'Farm Delivery/Field Glean/Farmers Market',
         'Pickup/DropOff'
     ]
-
     attributes = [
         'date_d',
         'recipient',
@@ -194,17 +193,28 @@ def download(request):
         'field_or_farm',
         'del_or_pick'
     ]
+
     if request.user.has_perm('distro.uniauth'):
-        group = Distro.objects.all()
+        query = Distro.objects.all()
         headings = ["Member Organization"] + headings
         attributes = ['member_organization'] + attributes
     else:
-        group = Distro.objects.filter(member_organization=mo)
+        query = Distro.objects.filter(member_organization=mo)
+    params = {}
+    if "date_from" in request.GET and request.GET["date_from"]:
+        params["date_d__gte"] = datetime.datetime.strptime(
+            request.GET["date_from"], "%Y-%m-%d")
+    if "date_until" in request.GET and request.GET["date_until"]:
+        params["date_d__lte"] = datetime.datetime.strptime(
+            request.GET["date_until"], "%Y-%m-%d")
+    if params:
+        query = query.filter(**params)
 
-    writer.writerow(headings)
+    data = tablib.Dataset(headers=headings)
 
-    for line in group:
-        writer.writerow([getattr(line, attr, "") for attr in attributes])
+    for distro in query:
+        data.append([getattr(distro, attr, "") for attr in attributes])
+    response.write(data.xlsx)
 
     return response
 
