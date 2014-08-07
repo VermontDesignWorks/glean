@@ -53,7 +53,6 @@ class RecipientSiteForm(ModelForm):
                     "mailing_zip",
                     Row("primary_contact"),
                     Row("phone", "email"),
-                    "email",
                     css_class="crispy_column_left yellow-left")
             ),
             HTML("</div>"),
@@ -74,18 +73,28 @@ class RecipientSiteForm(ModelForm):
     city = forms.CharField(max_length=20, required=False)
     state = forms.ChoiceField(choices=STATES, required=False)
     zipcode = forms.CharField(max_length=10, required=False)
-    member_organization = forms.ModelMultipleChoiceField(queryset=MemOrg.objects.all(), required=False)
+    member_organization = forms.ModelMultipleChoiceField(
+        queryset=MemOrg.objects.all(), required=False)
 
-    physical_is_mailing = forms.BooleanField(label='Physical Address is Mailing Address', required=False)
-    mailing_address_one = forms.CharField(label='Mailing Address (line one)', max_length=200, required=False)
-    mailing_address_two = forms.CharField(label='Mailing Address (line two)', max_length=200, required=False)
-    mailing_city = forms.CharField(label='Mailing Address (City)', max_length=200, required=False)
-    mailing_state = forms.ChoiceField(label='Mailing Address (State)', choices=STATES, required=False)
-    mailing_zip = forms.CharField(label='Mailing Address Zipcode', max_length=11, required=False)
+    physical_is_mailing = forms.BooleanField(
+        label='Physical Address is Mailing Address', required=False)
+    mailing_address_one = forms.CharField(
+        label='Mailing Address (line one)', max_length=200, required=False)
+    mailing_address_two = forms.CharField(
+        label='Mailing Address (line two)', max_length=200, required=False)
+    mailing_city = forms.CharField(
+        label='Mailing Address (City)', max_length=200, required=False)
+    mailing_state = forms.ChoiceField(
+        label='Mailing Address (State)', choices=STATES, required=False)
+    mailing_zip = forms.CharField(
+        label='Mailing Address Zipcode', max_length=11, required=False)
 
-    primary_contact = forms.CharField(label='Primary Contact First Name', max_length=30, required=False)
-    phone = forms.CharField(label='Primary Phone', max_length=20, required=False)
-    email = forms.CharField(label='Email', max_length=40, required=False)
+    primary_contact = forms.CharField(
+        label='Primary Contact First Name', max_length=30, required=False)
+    phone = forms.CharField(
+        label='Primary Phone', max_length=20, required=False)
+    email = forms.CharField(
+        label='Email', max_length=40, required=False)
     
     class Meta:
         model = RecipientSite
