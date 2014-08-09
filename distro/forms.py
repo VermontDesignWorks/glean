@@ -35,7 +35,8 @@ from django.forms import extras
 
 WorkEventFormSet = modelformset_factory(WorkEvent, extra=10)
 
-EditWorkEventFormSet = modelformset_factory(WorkEvent, extra=0)
+EditWorkEventFormSet = modelformset_factory(
+    WorkEvent, extra=0, can_delete=True)
 
 
 class WorkEventFormHelper(FormHelper):
