@@ -325,7 +325,7 @@ class NewMemOrgForm(Counties_For_Forms, forms.ModelForm):
             Fieldset(
                 "",
                 Row("notify"),
-                Row("notification_email")
+                Row("notification_email"),
                 Row("testing"),
                 Row("testing_email")
             ),
