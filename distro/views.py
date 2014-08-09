@@ -235,6 +235,7 @@ class Hours_Entry(DynamicDateFilterMixin,
         for i in range(0, len(formset)):
             for f in formset[i].fields:
                 formset[i].fields[f].label = ""
+        formset.helper = WorkEventFormHelper()
         return formset
 
     def get_queryset(self):

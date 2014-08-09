@@ -39,4 +39,20 @@ $(document).ready(function(){
 	    $(".label-row").css("width", width);
 	    $("#form-id-0").css("width", width);
     }
+    
+    warnMessage = null;
+    $(window).bind("beforeunload", function(){
+        if (warnMessage != null) return warnMessage;
+    });
+    $('input').change(function(){
+        console.log("Change made")
+        warnMessage = "You may have unsaved changes.  You should save before leaving!!";
+    });
+    $('select').change(function(){
+        console.log("Change made")
+        warnMessage = "You may have unsaved changes.  You should save before leaving!!";
+    });
+    $('input[type="submit"]').click(function(){
+        warnMessage = null;
+    });
 });
