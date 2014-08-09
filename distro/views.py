@@ -259,3 +259,58 @@ class Hours_Entry(DynamicDateFilterMixin,
             instance.member_organization = memorg
             instance.save()
         return HttpResponseRedirect(self.get_success_url())
+
+
+@permission_required('distro.auth')
+def download_workevents(request):
+    mo = request.user.profile.member_organization
+    response = HttpResponse(mimetype='application/xlsx')
+    response['Content-Disposition'] = 'attachment; filename=Hours.xlsx'
+
+    # Create the CSV writer using the HttpResponse as the "file."
+    headings = [
+        "First Name",
+        "Last Name",
+        "Date",
+        "Time",
+        "Group",
+        "Members",
+        "Task",
+        "Miles",
+        "Notes",
+    ]
+    attributes = [
+        "first_name",
+        "last_name",
+        "date",
+        "time",
+        "group",
+        "members",
+        "task",
+        "miles",
+        "notes",
+    ]
+
+    if request.user.has_perm('distro.uniauth'):
+        query = WorkEvent.objects.all()
+        headings = ["Member Organization"] + headings
+        attributes = ['member_organization'] + attributes
+    else:
+        query = WorkEvent.objects.filter(member_organization=mo)
+    params = {}
+    if "date_from" in request.GET and request.GET["date_from"]:
+        params["date_d__gte"] = datetime.datetime.strptime(
+            request.GET["date_from"], "%Y-%m-%d")
+    if "date_until" in request.GET and request.GET["date_until"]:
+        params["date_d__lte"] = datetime.datetime.strptime(
+            request.GET["date_until"], "%Y-%m-%d")
+    if params:
+        query = query.filter(**params)
+
+    data = tablib.Dataset(headers=headings)
+
+    for workevent in query:
+        data.append([getattr(workevent, attr, "") for attr in attributes])
+    response.write(data.xlsx)
+
+    return response
