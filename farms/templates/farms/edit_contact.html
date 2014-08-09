@@ -4,12 +4,18 @@
 Edit This Contact for {{farm.name}}
 {% endblock title %}
 
-{% block heading %}
-<h3>Edit Contact</h3>
-{% endblock heading %}
-
-
 {% block content %}
+<div id="glean-index-header" style="width:1068px">
+    <h1 class="pull-left">Edit This Location</h1>
+    <div id="glean-buttons">
+        <a href="{% url "farms:deletecontact" object.farm.id object.id %}">
+            <button class="glean-button red-button">
+                Delete
+            </button>
+        </a>
+    </div>
+</div>
+
 	<form method="post" action="">
 		{% csrf_token %}
 		{% include 'farms/farmform.html' %}

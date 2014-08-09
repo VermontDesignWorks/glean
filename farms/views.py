@@ -207,14 +207,26 @@ class EditLocation(SimpleLoginCheckForGenerics, UpdateView):
         return super(EditLocation, self).form_valid(form)
 
 
-class DeleteContact(DeleteView):
+class DeleteContact(SimpleLoginCheckForGenerics, DeleteView):
     model = Contact
     template_name = "farms/delete_object.html"
 
+    def get_success_url(self):
+        return reverse_lazy(
+            "farms:detailfarm",
+            kwargs={"farm_id": self.kwargs["farm_id"]}
+        )
 
-class DeleteLocation(DeleteView):
-    model = Contact
+
+class DeleteLocation(SimpleLoginCheckForGenerics, DeleteView):
+    model = FarmLocation
     template_name = "farms/delete_object.html"
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "farms:detailfarm",
+            kwargs={"farm_id": self.kwargs["farm_id"]}
+        )
 
 
 @permission_required('farms.auth')
@@ -280,7 +292,7 @@ def editContact(request, farm_id, contact_id):
         form = ContactForm(instance=contact)
         return render(
             request, 'farms/edit_contact.html',
-            {'form': form, 'farm': farm, })
+            {'form': form, 'farm': farm, "object": contact})
 
 
 @permission_required('farms.auth')

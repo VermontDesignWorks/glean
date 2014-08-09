@@ -23,6 +23,6 @@ urlpatterns = patterns(
         views.newContact, name='newcontact'),
     url(r'^(?P<farm_id>\d+)/contact/edit/(?P<contact_id>\d+)/$',
         views.editContact, name='editcontact'),
-    url(r'^(?P<farm_id>\d+)/contact/delete/(?P<contact_id>\d+)/$',
-        views.DeleteContact, name='deletecontact'),
+    url(r'^(?P<farm_id>\d+)/contact/delete/(?P<pk>\d+)/$',
+        views.DeleteContact.as_view(), name='deletecontact'),
 )

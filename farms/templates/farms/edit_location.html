@@ -5,13 +5,21 @@
 Edit {{Location.name}}
 {% endblock title %}
 
-{% block heading %}
-<h3>Edit This Location</h3>
-{% endblock heading %}
-
-
 {% block body %}
-<div class="glean-index-red red" style="width: 1030px;">
+<div id="glean-index-header" style="width:1068px">
+    <h1 class="pull-left">Edit This Location</h1>
+    <div id="glean-buttons">
+        <a href="{% url "farms:deletelocation" object.farm.id object.id %}">
+            <button class="glean-button red-button">
+                Delete
+            </button>
+        </a>
+    </div>
+</div>
+
+
+</div>
+<div class="glean-index-red red" style="width: 1030px; clear:both;">
 	<div class="glean-index-red-child">
 	    <h4>More Locations, More Food!!</h4>
 	</div>

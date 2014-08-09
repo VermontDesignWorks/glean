@@ -67,7 +67,6 @@ class Farm(models.Model):
         return self.contact_set.filter(glean_contact=False)
 
 
-
 class FarmForm(ModelForm):
     class Meta:
         model = Farm
@@ -117,15 +116,24 @@ class Contact(models.Model):
     relation = models.CharField("Title", max_length=20, blank=True)
     email = models.EmailField("Email", blank=True, null=True)
     phone = models.CharField("Primary Phone", max_length=20, blank=True)
-    phone_type = models.CharField("Phone Type", choices=PHONE_TYPE, max_length=2, blank=True)
-    glean_contact = models.BooleanField("Should this person be contacted about gleans?", default=False)
-    preferred = models.CharField("How Does this person Prefer to be Contacted?",choices=PREFERRED_CONTACT, max_length=1, blank=True, default='1')
-    
+    phone_type = models.CharField(
+        "Phone Type", choices=PHONE_TYPE, max_length=2, blank=True)
+    glean_contact = models.BooleanField(
+        "Should this person be contacted about gleans?", default=False)
+    preferred = models.CharField(
+        "How Does this person Prefer to be Contacted?",
+        choices=PREFERRED_CONTACT,
+        max_length=1, blank=True, default='1')
+
     class Meta:
         permissions = (
             ("auth", "Member Organization Level Permissions"),
             ("uniauth", "Universal Permission Level"),
         )
+
+    def __unicode__(self):
+        return "{0} {1}".format(self.first_name, self.last_name)
+
 
 
 class ContactForm(ModelForm):
