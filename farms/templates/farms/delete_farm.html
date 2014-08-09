@@ -15,6 +15,6 @@ Confirm Farm Delete - {{farm.name}}
 <h5>This action is IRREVERSIBLE! Think carefully before you delete this farm!</h5>
 	<form method="post" action="">
 		{% csrf_token %}
-		<input type="submit" class="btn btn-danger" value="Permanently Delete">
+		<input type="submit" class="glean-button red-button" value="Permanently Delete">
 	</form>
 {% endblock content %}

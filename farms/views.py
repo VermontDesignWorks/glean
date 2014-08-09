@@ -38,7 +38,9 @@ class NewFarm(SimpleLoginCheckForGenerics, CreateView):
     model = Farm
     template_name = 'farms/new.html'
     form_class = NewFarmForm
-    success_url = reverse_lazy('farms:index')
+
+    def get_success_url(self):
+        return reverse_lazy('farms:detailfarm', kwargs={"farm_id": self.object.pk})
 
     def form_valid(self, form):
         """
@@ -54,7 +56,7 @@ class NewFarm(SimpleLoginCheckForGenerics, CreateView):
             return HttpResponseRedirect(
                 reverse_lazy(
                     'farms:newcontact', kwargs={"farm_id": self.object.pk}))
-        return HttpResponseRedirect(reverse_lazy("farms:index"))
+        return HttpResponseRedirect(self.get_success_url())
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.has_perm('farms.auth'):
