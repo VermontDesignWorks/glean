@@ -47,7 +47,7 @@ class Announcement(models.Model):
     template = models.ForeignKey(
         Template, null=True, verbose_name="Template")
     title = models.CharField(
-        "Change Email Subject line", max_length=50, null=True, blank=True)
+        "Change Email Subject line", max_length=100, null=True, blank=True)
     message = models.TextField(
         "Add Custom Message", null=True, blank=True)
     sent = models.BooleanField(default=False, editable=False)
