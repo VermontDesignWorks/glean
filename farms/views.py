@@ -67,7 +67,10 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
     model = Farm
     template_name = 'farms/edit.html'
     form_class = EditFarmForm
-    success_url = reverse_lazy("farms:index")
+
+    def get_success_url(self):
+        return reverse_lazy(
+                    'farms:detailfarm', kwargs={"farm_id": self.object.pk})
 
     def dispatch(self, *args, **kwargs):
         text = re.search('/farms/(.+?)/edit/', self.request.path)

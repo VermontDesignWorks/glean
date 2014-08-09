@@ -107,9 +107,7 @@ class NewFarmForm(FarmLocBase, ModelForm):
             HTML("</div>"),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "name='submit' value='Save'> <input type='submit'"
-                 "class='glean-button red-button' "
-                 "name='submit' value='Save and Add Contact'>"),
+                 "name='submit' value='Save'>"),
             HTML("</div>")
         )
 
@@ -176,9 +174,7 @@ class EditFarmForm(FarmLocBase, ModelForm):
             HTML("</div>"),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
-                 "name='submit' value='Save Changes'> <input type='submit'"
-                 "class='glean-button red-button' "
-                 "name='submit' value='Save Farm and Add Contact'>"),
+                 "name='submit' value='Save Changes'>"),
             HTML("</div>")
         )
         farm = self.instance
