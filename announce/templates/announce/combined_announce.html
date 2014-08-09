@@ -10,7 +10,7 @@
 	<h1 class="pull-left">Send an Announcement</h1>
 </div>
 
-<div class="glean-index-red red">
+<div class="glean-index-red red" style="width:978px">
 	<h3>Get the word out!</h3>
 	<p>Send a message to your volunteers about an upcoming glean. Use any template you've designed, set yoru email's subject line and add a custom message if you'd like and decide below if you want to send it to all or just a small group of your gleaners.</p>
 </div>
@@ -28,7 +28,7 @@
 			<form method="post" action="">
 				{% csrf_token %}
 					{{form}}
-					<input type="submit" class="glean-button red-button no-margin">
+					<input type="submit" class="glean-button red-button no-margin" value="Insert Changes">
 			</form>
 		{% endif %}
 		<h4 style="text-align:center;"><small>{% if not announcement.sent %}Intended {% endif %}Recipients</small></h4>
