@@ -325,6 +325,7 @@ class NewMemOrgForm(Counties_For_Forms, forms.ModelForm):
             Fieldset(
                 "",
                 Row("notify"),
+                Row("notification_email")
                 Row("testing"),
                 Row("testing_email")
             ),
@@ -382,6 +383,9 @@ class NewMemOrgForm(Counties_For_Forms, forms.ModelForm):
 
     notify = forms.BooleanField(
         label='Notify on New Volunteer Signup?', required=False)
+
+    notification_email = forms.CharField(
+        label="Notification Email Address", max_length="200", required=False)
 
     testing = forms.BooleanField(
         label="Relay Announcement Emails to Testing Address", required=False)
