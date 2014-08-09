@@ -208,7 +208,7 @@ def download(request):
         params["date_d__lte"] = datetime.datetime.strptime(
             request.GET["date_until"], "%Y-%m-%d")
     if params:
-        query = query.filter(**params)
+        query = query.filter(**params).order_by("date_d")
 
     data = tablib.Dataset(headers=headings)
 
