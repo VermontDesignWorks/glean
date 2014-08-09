@@ -17,8 +17,12 @@ urlpatterns = patterns(
         views.NewLocation.as_view(), name='newlocation'),
     url(r'^(?P<farm_id>\d+)/location/edit/(?P<pk>\d+)/$',
         views.EditLocation.as_view(), name='editlocation'),
+    url(r'^(?P<farm_id>\d+)/location/delete/(?P<pk>\d+)/$',
+        views.DeleteLocation.as_view(), name='deletelocation'),
     url(r'^(?P<farm_id>\d+)/contact/new/$',
         views.newContact, name='newcontact'),
     url(r'^(?P<farm_id>\d+)/contact/edit/(?P<contact_id>\d+)/$',
         views.editContact, name='editcontact'),
+    url(r'^(?P<farm_id>\d+)/contact/delete/(?P<contact_id>\d+)/$',
+        views.DeleteContact, name='deletecontact'),
 )

@@ -40,7 +40,8 @@ class NewFarm(SimpleLoginCheckForGenerics, CreateView):
     form_class = NewFarmForm
 
     def get_success_url(self):
-        return reverse_lazy('farms:detailfarm', kwargs={"farm_id": self.object.pk})
+        return reverse_lazy(
+            'farms:detailfarm', kwargs={"farm_id": self.object.pk})
 
     def form_valid(self, form):
         """
@@ -72,7 +73,7 @@ class EditFarm(SimpleLoginCheckForGenerics, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy(
-                    'farms:detailfarm', kwargs={"farm_id": self.object.pk})
+            'farms:detailfarm', kwargs={"farm_id": self.object.pk})
 
     def dispatch(self, *args, **kwargs):
         text = re.search('/farms/(.+?)/edit/', self.request.path)
@@ -110,7 +111,9 @@ class DeleteFarm(SimpleLoginCheckForGenerics, SingleObjectMixin, View):
             return HttpResponseForbidden()
         self.object = self.get_object()
         farm = get_object_or_404(Farm, pk=self.object.pk)
-        if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+        memorg = request.user.profile.member_organization
+        permitted = request.user.has_perm('farms.uniauth')
+        if memorg not in farm.member_organization.all() and not permitted:
             return HttpResponseRedirect(reverse('farms:index'))
         return render(request, 'farms/delete_farm.html', {'farm': farm})
 
@@ -119,7 +122,9 @@ class DeleteFarm(SimpleLoginCheckForGenerics, SingleObjectMixin, View):
             return HttpResponseForbidden()
         self.object = self.get_object()
         farm = get_object_or_404(Farm, pk=self.object.pk)
-        if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+        memorg = request.user.profile.member_organization
+        permitted = request.user.has_perm('farms.uniauth')
+        if memorg not in farm.member_organization.all() and not permitted:
             return HttpResponseRedirect(reverse('farms:index'))
         contacts = Contact.objects.filter(farm=farm)
         if contacts.exists():
@@ -202,10 +207,22 @@ class EditLocation(SimpleLoginCheckForGenerics, UpdateView):
         return super(EditLocation, self).form_valid(form)
 
 
+class DeleteContact(DeleteView):
+    model = Contact
+    template_name = "farms/delete_object.html"
+
+
+class DeleteLocation(DeleteView):
+    model = Contact
+    template_name = "farms/delete_object.html"
+
+
 @permission_required('farms.auth')
 def newContact(request, farm_id):
     farm = get_object_or_404(Farm, pk=farm_id)
-    if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+    memo = request.user.profile.member_organization
+    permitted = request.user.has_perm('farms.uniauth')
+    if memo not in farm.member_organization.all() and not permitted:
         return HttpResponseRedirect(reverse('farms:index'))
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -218,7 +235,8 @@ def newContact(request, farm_id):
                     reverse('farms:detailfarm', args=(farm_id,)))
             else:
                 form = ContactForm()
-                notice = 'Contact %s %s has been saved' % (new_contact.first_name, new_contact.last_name)
+                notice = 'Contact {0}, {1} has been saved'.format(
+                    new_contact.first_name, new_contact.last_name)
                 return render(
                     request, 'farms/new_contact.html',
                     {'form': form, 'farm': farm, 'notice': notice})
@@ -226,7 +244,10 @@ def newContact(request, farm_id):
         else:
             return render(
                 request, 'farms/new_contact.html',
-                {'form': form, 'farm': farm, 'error': 'Form was incorrectly filled out'})
+                {'form': form,
+                 'farm': farm,
+                 'error': 'Form was incorrectly filled out'}
+            )
     else:
         form = ContactForm()
         return render(
@@ -237,7 +258,9 @@ def newContact(request, farm_id):
 @permission_required('farms.auth')
 def editContact(request, farm_id, contact_id):
     farm = get_object_or_404(Farm, pk=farm_id)
-    if request.user.profile.member_organization not in farm.member_organization.all() and not request.user.has_perm('farms.uniauth'):
+    memo = request.user.profile.member_organization
+    permitted = request.user.has_perm('farms.uniauth')
+    if memo not in farm.member_organization.all() and not permitted:
         return HttpResponseRedirect(reverse('farms:index'))
     contact = get_object_or_404(Contact, pk=contact_id)
     if request.method == 'POST':
