@@ -143,6 +143,13 @@
         </div>
         <div class="farm-third">
             <h2>Additional Information:</h2>
+            <p>User is Active:
+                    {% if object.user.is_active %}
+                    <span class="yes-text">Yes</span>
+                    {% else %}
+                    <span class="no-text">No</span>
+                    {% endif %}
+            </p>
             <p>{{object.notes|linebreaks}}</p>
 
         </div>
