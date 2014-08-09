@@ -229,16 +229,8 @@ class NewLocationForm(FarmLocBase, ModelForm):
                     "directions",
                     "instructions",
                     self.county_fieldset,
-                    css_class="crispy_column_left"),
-                Div(
-                    HTML("<p class='red-emphasized'>Information in this"
-                         " column is visible only by administrators</p>"),
-                    "physical_is_mailing",
-                    Row("mailing_address_one", "mailing_address_two"),
-                    Row("mailing_city", "mailing_state"),
-                    "mailing_zip",
-                    "description",
-                    css_class="crispy_column_left yellow-left")),
+                    css_class="crispy_column_left")
+                ),
             HTML("</div>"),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
@@ -273,16 +265,8 @@ class EditLocationForm(FarmLocBase, ModelForm):
                     "directions",
                     "instructions",
                     self.county_fieldset,
-                    css_class="crispy_column_left"),
-                Div(
-                    HTML("<p class='red-emphasized'>Information in this"
-                         " column is visible only by administrators</p>"),
-                    "physical_is_mailing",
-                    Row("mailing_address_one", "mailing_address_two"),
-                    Row("mailing_city", "mailing_state"),
-                    "mailing_zip",
-                    "description",
-                    css_class="crispy_column_left yellow-left")),
+                    css_class="crispy_column_left")
+                ),
             HTML("</div>"),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
