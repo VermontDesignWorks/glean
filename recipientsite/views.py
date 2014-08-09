@@ -16,11 +16,17 @@ import re
 
 @permission_required('recipientsite.auth')
 def index(request):
+    memo = request.user.profile.member_organization
     if request.user.has_perm('recipientsite.uniauth'):
-        sites_list = RecipientSite.objects.all().order_by('member_organization', 'name')
+        sites_list = RecipientSite.objects.all().order_by('name')
     else:
-        sites_list = RecipientSite.objects.filter(member_organization=request.user.profile.member_organization).order_by('name')
-    return render(request, 'recipientsite/index.html', {'sites':sites_list})
+        sites_list = RecipientSite.objects.filter(
+            member_organization=memo).order_by('name')
+    return render(
+        request,
+        'recipientsite/index.html',
+        {'sites': sites_list}
+    )
 
 
 class NewSite(SimpleLoginCheckForGenerics, CreateView):

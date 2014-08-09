@@ -26,7 +26,7 @@ Recipient Sites
 		<ul>
 		{% for site in sites %}
 		<li>
-			<a href="{% url 'site:detailsite' site.id %}">{% if 'distro.auth' in perms %}{{site.member_organization}} - {% endif %}{{ site.name }}</a>
+			<a href="{% url 'site:detailsite' site.id %}">{{ site.name }}</a>
 		</li>
 		{% endfor %}
 		</ul>
