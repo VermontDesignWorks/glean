@@ -14,7 +14,8 @@ class MemOrgModelTests(TestCase):
             name="member organization 1",
             testing_email="memo@example.com",
             notification_email="memo@example.com",
-            notify=True
+            notify=True,
+            testing=False
         )
 
     def test_notify_admin_method_sends_mail(self):
@@ -36,19 +37,19 @@ class MemOrgModelTests(TestCase):
         self.assertEqual(
             result,
             0,
-            "Member Org notification logic didn't deny it sent mail"
+            "Member Org notification logic didn't deny it sent mail with notifications turned off"
         )
 
     def test_notify_admin_method_gracefully_fails_if_no_testing_email(self):
         user = User.objects.create(username="test", email="user@example.com")
         profile = Profile.objects.create(user=user)
-        self.memo.testing_email = None
+        self.memo.notification_email = None
         self.memo.save()
         result = self.memo.notify_admin(user)
         self.assertEqual(
             result,
             0,
-            "Member Org notificiation logic didn't deny it sent mail")
+            "Member Org notificiation logic didn't deny it sent mail in the case of no notification email")
 
     def test_create_default_template(self):
         template = self.memo.create_default_template()
