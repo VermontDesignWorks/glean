@@ -5,12 +5,12 @@
 {% endblock %}
 {% block body %}
 <div id="heading">
-<h1>{{object.name}} Details</h1>
+<h1 style="width:900px">{{object.name}}</h1>
     <span style="float: right;">
 		<a href="{% url 'site:editsite' object.pk %}"><button class="glean-button yellow-button">edit</button></a><a href="{% url 'site:deletesite' object.pk %}"><button class="glean-button red-button">delete</button></a>
 	</span>
 </div>
-<div class="glean-index-red red" style="width: 1030px; margin: 30px 0px;">
+<div class="glean-index-red red" style="width: 1030px; margin: 30px 0px; clear:both;">
 	<h3>Vermont Needs Food!!!</h3>
 	<p>Recipient site names and information is important to all distribution, data tracking, and future reporting.</p>
 </div>
