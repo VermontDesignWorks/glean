@@ -38,7 +38,7 @@ class RecipientSiteForm(ModelForm):
             Fieldset(
                 "",
                 Div(
-                    Row("name"),
+                    Row("name", "website"),
                     Row("address_one", "address_two"),
                     Row("city", "state"),
                     Row("zipcode"),

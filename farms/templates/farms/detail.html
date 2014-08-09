@@ -100,16 +100,23 @@ Details of {{ farm.name }}
 	</div>
 
 	<div class="yellow-box green-top">
-	<div style="margin:20px">
-		<h3>Recent Gleans</h3>
-		<ul class="no-list">
-			{% for glean in farm.gleanevent_set.all|slice:"5" %}
-			<li class=""><a href="{% url 'gleanevent:detailglean' glean.id %}">{{glean.title}}</a></li>
-			{% empty %}
-			<li>No Gleans At This Farm yet</li>
-			{% endfor %}
-		</ul>
-	</div>
+
+		<div class="farm-third">
+			<h3>Recent Gleans</h3>
+			<ul class="no-list">
+				{% for glean in farm.gleanevent_set.all|slice:"5" %}
+				<li class=""><a href="{% url 'gleanevent:detailglean' glean.id %}">{{glean.title}}</a></li>
+				{% empty %}
+				<li>No Gleans At This Farm yet</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="farm-third">
+			<h3>Website</h3>
+			<ul>
+				<li>{{farm.website}}</li>
+			</ul>
+		</div>		
 	</div>
 
 </div>

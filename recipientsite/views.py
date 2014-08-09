@@ -56,7 +56,11 @@ class EditSite(SimpleLoginCheckForGenerics, UpdateView):
     model = RecipientSite
     template_name = 'recipientsite/edit_site.html'
     form_class = RecipientSiteForm
-    success_url = reverse_lazy('site:index')
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "site:detailsite",
+            kwargs={"pk": self.kwargs["pk"]})
 
     def dispatch(self, *args, **kwargs):
         text = re.search('/recipientsite/(.+?)/edit/', self.request.path)

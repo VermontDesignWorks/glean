@@ -9,6 +9,7 @@ from memberorgs.models import MemOrg
 
 class RecipientSite(models.Model):
 	name = models.CharField("Name", max_length=200)
+	website = models.CharField(max_length=200, blank=True, null=True)
 	description = models.TextField(blank=True, null=True)
 	address_one = models.CharField(max_length=20, blank=True, null=True)
 	address_two = models.CharField(max_length=20, blank=True, null=True)

@@ -23,6 +23,8 @@ from memberorgs.models import MemOrg
 # Create your models here.
 class Farm(models.Model):
     name = models.CharField(max_length=200)
+    website = models.CharField(
+        "Website", max_length=200, blank=True, null=True)
     description = models.TextField(blank=True)
 
     address_one = models.CharField('Physical Address (line one)', max_length=200, blank=True)
