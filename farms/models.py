@@ -60,6 +60,13 @@ class Farm(models.Model):
     def __unicode__(self):
         return self.name
 
+    def primary_contacts(self):
+        return self.contact_set.filter(glean_contact=True)
+
+    def additional_contacts(self):
+        return self.contact_set.filter(glean_contact=False)
+
+
 
 class FarmForm(ModelForm):
     class Meta:
@@ -107,7 +114,7 @@ class Contact(models.Model):
     farm = models.ForeignKey(Farm, blank=True, editable=False, null=True)
     first_name = models.CharField("First Name", max_length=20, blank=True)
     last_name = models.CharField("Last Name", max_length=20, blank=True)
-    relation = models.CharField("Relationship to Farm", max_length=20, blank=True)
+    relation = models.CharField("Title", max_length=20, blank=True)
     email = models.EmailField("Email", blank=True, null=True)
     phone = models.CharField("Primary Phone", max_length=20, blank=True)
     phone_type = models.CharField("Phone Type", choices=PHONE_TYPE, max_length=2, blank=True)
