@@ -38,6 +38,7 @@ class RecipientSite(models.Model):
 			("auth", "Member Organization Level Permissions"),
 			("uniauth", "Universal Permission Level"),
 		)
+		ordering = ["name"]
 
 class SiteForm(ModelForm):
 	class Meta:

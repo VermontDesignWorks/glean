@@ -93,7 +93,7 @@ class Entry(SimpleLoginCheckForGenerics, ModelFormSetView):
                 formset[i].fields[
                     'recipient'
                 ].queryset = RecipientSite.objects.filter(
-                    member_organization=memorg)
+                    member_organization=memorg).order_by("name")
                 formset[i].fields[
                     'farm'
                 ].queryset = Farm.objects.filter(member_organization=memorg)
@@ -145,7 +145,7 @@ class Edit(DynamicDateFilterMixin,
                 formset[i].fields[
                     'recipient'
                 ].queryset = RecipientSite.objects.filter(
-                    member_organization=memorg)
+                    member_organization=memorg).order_by("name")
                 formset[i].fields[
                     'farm'
                 ].queryset = Farm.objects.filter(member_organization=memorg)
