@@ -72,6 +72,9 @@ class MemOrg(models.Model):
     testing_email = models.CharField(
         "Primary Email Address", max_length="200", blank=True, null=True)
 
+    notification_email = models.CharField(
+        "Primary Email Address", max_length="200", blank=True, null=True)
+
     def __unicode__(self):
         return self.name
 
