@@ -61,6 +61,7 @@ class Distro(models.Model):
             ("auth", "Member Organization Level Permissions"),
             ("uniauth", "Universal Permission Level"),
         )
+        ordering = ["date_d"]
 
     def __unicode__(self):
         return self.member_organization.name + ' ' + self.date.strftime(
@@ -101,3 +102,4 @@ class WorkEvent(models.Model):
             ("auth", "Member Organization Level Permissions"),
             ("uniauth", "Universal Permission Level"),
         )
+        ordering = ["date"]
