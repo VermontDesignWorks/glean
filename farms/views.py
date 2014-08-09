@@ -50,7 +50,7 @@ class NewFarm(SimpleLoginCheckForGenerics, CreateView):
         new_save.save()
         self.object = new_save
         submission = self.request.POST.get("submit")
-        if submission == 'Add Farm and Add Contact':
+        if submission == 'Save and Add Contact':
             return HttpResponseRedirect(
                 reverse_lazy(
                     'farms:newcontact', kwargs={"farm_id": self.object.pk}))
