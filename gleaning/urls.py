@@ -47,7 +47,7 @@ urlpatterns = patterns(
         MyRegistrationView.as_view(),
         name='registration_register'),
     # #url(r'^accounts/', include('userprofile.registration.MyBackEnd.urls')),
-    url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
 
     # Examples:
     # url(r'^$', 'gleaning.views.home', name='home'),

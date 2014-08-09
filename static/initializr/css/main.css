@@ -616,7 +616,7 @@ a.day-name {
    ========================================================================== */
 .login-page-box {
    width:788px;
-   height:253px;
+   min-height:287px;
    padding: 5px 20px;
    overflow:auto;
    font-size: 18px;

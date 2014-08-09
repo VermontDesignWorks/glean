@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib import messages
+from django.core.urlresolvers import reverse_lazy
 from django.template.loader import render_to_string
 
 from crispy_forms.bootstrap import (FieldWithButtons,
@@ -242,12 +244,21 @@ class AdminExtendedRegistrationForm(RegistrationForm):
 class MyRegistrationView(RegistrationView):
     form_class = ExtendedRegistrationForm
 
+    def get_success_url(self, request, user):
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            "Your Account Has been Created! Login Below:"
+        )
+        return reverse_lazy("auth_login")
+
     def register(self, request, **cleaned_data):
         user = super(MyRegistrationView, self).register(
             request,
             **cleaned_data
         )
-
+        user.is_active = True
+        user.save()
         profile = Profile.objects.create(
             first_name=cleaned_data['first_name'],
             last_name=cleaned_data['last_name'],

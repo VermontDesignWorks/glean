@@ -1,11 +1,5 @@
 {% load url from future %}
 {% load humanize %}
 
-Thank you for your interest in gleaning in Vermont.
-By clicking the link below you will complete your volunteer registration. (If necessary copy and paste the link into your browser address bar). This will ensure that you receive invitations to participate in gleaning activities in your region plus view gleans occurring around the state.
-
-
-http://www.vermontgleaningcollective.org/accounts/activate/{{ activation_key }}/
-
-
-Ignore this email if this request did not come from you. You will receive no further email correspondence from us. If not activated, the account will expire in {{ expiration_days|apnumber }} days.
+Thank you for your signing up with the Vermont Gleaning Collective!
+Your registration is complete.
