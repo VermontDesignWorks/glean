@@ -31,9 +31,9 @@ class FarmLocBase(County_For_Forms, ModelForm):
         widget=forms.Textarea(
             attrs={'cols': '100', 'rows': '10', 'style': 'width: 460px'}),
         required=False)
-    address_one = forms.CharField(label='Address:', max_length=200)
+    address_one = forms.CharField(label='Physical Address:', max_length=200)
     address_two = forms.CharField(
-        label='Address (line two):',
+        label='Physical Address (line two):',
         max_length=200,
         required=False)
     city = forms.CharField(label='City:', max_length=200)
@@ -44,9 +44,9 @@ class FarmLocBase(County_For_Forms, ModelForm):
     physical_is_mailing = forms.BooleanField(
         label='Physical Address is Mailing Address', required=False)
     mailing_address_one = forms.CharField(
-        label='Address: ', max_length=200, required=False)
+        label='Mailing Address: ', max_length=200, required=False)
     mailing_address_two = forms.CharField(
-        label='Address (line two):', max_length=200, required=False)
+        label='Mailing Address (line two):', max_length=200, required=False)
     mailing_city = forms.CharField(
         label='City:', max_length=200, required=False)
     mailing_state = forms.ChoiceField(
