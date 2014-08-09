@@ -79,13 +79,13 @@ class MemOrg(models.Model):
         return self.name
 
     def notify_admin(self, user):
-        if self.notify and self.testing_email:
+        if self.notify and self.notification_email:
             subject = "New User Notification"
             text = render_to_string(
                 "registration/notify.html",
                 {"object": user.profile, "member_organization": self}
             )
-            quick_mail(subject, text, self.testing_email)
+            quick_mail(subject, text, self.notification_email)
             return 1
         else:
             return 0

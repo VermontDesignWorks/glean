@@ -73,11 +73,16 @@ class AdminMemOrgForm(forms.ModelForm):
             ),
             Fieldset(
                 "",
-                Row("notify"),
+                HTML("<h3>Administrative Email Updates</h3>"),
                 Row("testing"),
-                HTML("<h4>All test or notification emails will go to"
-                     " the address specificed below:"),
-                Row("testing_email")
+                HTML("<h4>All test emails will go to"
+                     " the address specificed below:</h4>"),
+                Row("testing_email"),
+                HTML("<h4>&nbsp;</h4>"),
+                Row("notify"),
+                HTML("<h4>All notification emails will go to"
+                     " the address specificed below:</h4>"),
+                Row("notification_email")
             ),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
@@ -156,7 +161,12 @@ class AdminMemOrgForm(forms.ModelForm):
         label="Relay Announcement Emails to Testing Address", required=False)
 
     testing_email = forms.CharField(
-        label="Member Organization Email Address",
+        label="Member Organization Test (beta mode) Email Address",
+        max_length="200",
+        required=False)
+
+    notification_email = forms.CharField(
+        label="Member Organization New Member Notification Email Address",
         max_length="200",
         required=False)
 

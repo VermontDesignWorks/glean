@@ -13,6 +13,7 @@ class MemOrgModelTests(TestCase):
         self.memo = MemOrg.objects.create(
             name="member organization 1",
             testing_email="memo@example.com",
+            notification_email="memo@example.com",
             notify=True
         )
 
