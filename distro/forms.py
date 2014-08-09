@@ -41,6 +41,7 @@ EditWorkEventFormSet = modelformset_factory(WorkEvent, extra=0)
 class WorkEventFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super(WorkEventFormHelper, self).__init__(*args, **kwargs)
+        self.form_show_errors = False
         self.form_method = 'post'
         self.layout = Layout(
             Row(
