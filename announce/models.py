@@ -26,7 +26,9 @@ class Template(models.Model):
 
     def save(self, *args, **kwargs):
         if self.default is True:
-            Template.objects.filter(member_organization=self.member_organization).update(default=False)
+            Template.objects.filter(
+                member_organization=self.member_organization
+            ).update(default=False)
         return super(Template, self).save(*args, **kwargs)
 
     class Meta:
@@ -80,7 +82,7 @@ class Announcement(models.Model):
         self.email_recipients.clear()
         self.phone_recipients.clear()
         source = primary_source(self.glean)
-        for recipient in source.counties.people.all():
+        for recipient in source.counties.people.all().distinct():
             if recipient.accepts_email and recipient.tasks_gleaning:
                 if recipient.preferred_method == '1':
                     self.email_recipients.add(recipient.user)
