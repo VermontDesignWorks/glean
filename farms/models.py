@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib import admin
 
-from django.utils import timezone
 import datetime
 from django.forms.fields import ChoiceField, Select
 from constants import (VERMONT_COUNTIES,

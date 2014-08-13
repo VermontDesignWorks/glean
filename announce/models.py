@@ -1,5 +1,4 @@
 import datetime
-from django.utils import timezone
 
 from django.db import models
 
@@ -73,7 +72,8 @@ class Announcement(models.Model):
             '%y:%m:%d %H:%M:%S') + self.member_organization.name
 
     def active(self):
-        if self.datetime + datetime.timedelta(hours=3) >= timezone.now():
+        if (self.datetime + datetime.timedelta(hours=3) >=
+                datetime.datetime.now()):
             return True
         else:
             return False

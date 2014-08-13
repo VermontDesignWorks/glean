@@ -6,7 +6,6 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
-from django.utils import timezone
 import datetime
 
 from django.contrib.auth.models import User
@@ -67,7 +66,7 @@ def create_farm_location(farm, **kwargs):
 
 class GleanEventTests(TestCase):
     def test_happened(self):
-        now = timezone.now().date()
+        now = datetime.datetime.now().date()
         upcomming_glean = create_glean(
             date=now + datetime.timedelta(days=5))
         upcomming_glean.save()

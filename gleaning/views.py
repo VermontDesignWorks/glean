@@ -1,6 +1,5 @@
 import datetime
 import time
-from django.utils import timezone
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
@@ -33,7 +32,7 @@ def home(request):
             query = query[:9]
             more = True
         l.append([
-            timezone.now()+datetime.timedelta(days=i),
+            datetime.datetime.now()+datetime.timedelta(days=i),
             query,
             more,
             i])

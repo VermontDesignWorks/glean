@@ -1,7 +1,6 @@
 import unittest
 import random
 import datetime
-#from django.utils import timezone
 
 
 from selenium import webdriver

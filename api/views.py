@@ -13,7 +13,6 @@ from django.core import serializers
 
 from django.views import generic
 from django import forms
-from django.utils import timezone
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required

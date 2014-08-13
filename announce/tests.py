@@ -154,6 +154,7 @@ class MailSystemTests(TestCase):
         user.profile.counties.add(county)
         user = create_user_and_profile(tasks_gleaning=True)
         user.profile.counties.add(county)
+        announce.populate_recipients()
         self.assertEqual(mail_from_source(announce), 3)
 
 
