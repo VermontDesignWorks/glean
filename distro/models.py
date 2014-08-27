@@ -18,6 +18,65 @@ class Distro(models.Model):
         (delivery, 'delivery'),
         (pickup, 'pickup')
     )
+    crop_list = (
+        ('Apples', 'Apples'),
+        ('Arugula', 'Arugula'),
+        ('Beans', 'Beans'),
+        ('Beet Greens/Chard', 'Beet Greens/Chard'),
+        ('Beets', 'Beets'),
+        ('Blueberries', 'Blueberries'),
+        ('Bread', 'Bread'),
+        ('Broccoli', 'Broccoli'),
+        ('Brussel Sprouts', 'Brussel Sprouts'),
+        ('Cabbage', 'Cabbage'),
+        ('Carrots', 'Carrots'),
+        ('Cauliflower', 'Cauliflower'),
+        ('Celeriac', 'Celeriac'),
+        ('Celery', 'Celery'),
+        ('Chard', 'Chard'),
+        ('Chinese Cabbage', 'Chinese Cabbage'),
+        ('Collards', 'Collards'),
+        ('Cooking Greens', 'Cooking Greens'),
+        ('Corn', 'Corn'),
+        ('CSA Share', 'CSA Share'),
+        ('Cucumbers', 'Cucumbers'),
+        ('Eggs', 'Eggs'),
+        ('Eggplant', 'Eggplant'),
+        ('Fennel', 'Fennel'),
+        ('Flowers', 'Flowers'),
+        ('Garlic/Garlic Scapes', 'Garlic/Garlic Scapes'),
+        ('Head Lettuce', 'Head Lettuce'),
+        ('Herbs', 'Herbs'),
+        ('Kale', 'Kale'),
+        ('Kohlrabi', 'Kohlrabi'),
+        ('Leeks', 'Leeks'),
+        ('Lettuce Mix', 'Lettuce Mix'),
+        ('Melons', 'Melons'),
+        ('Mesclun', 'Mesclun'),
+        ('Mixed Roots', 'Mixed Roots'),
+        ('Mixed Veggies', 'Mixed Veggies'),
+        ('Mushrooms', 'Mushrooms'),
+        ('Onions', 'Onions'),
+        ('Pac Choy', 'Pac Choy'),
+        ('Parsnips', 'Parsnips'),
+        ('Peas', 'Peas'),
+        ('Peppers', 'Peppers'),
+        ('Plants/Starts', 'Plants/Starts'),
+        ('Potatoes', 'Potatoes'),
+        ('Pumpkins', 'Pumpkins'),
+        ('Radishes', 'Radishes'),
+        ('Raspberries', 'Raspberries'),
+        ('Rutabaga', 'Rutabaga'),
+        ('Scallions', 'Scallions'),
+        ('Seeds', 'Seeds'),
+        ('Spinach', 'Spinach'),
+        ('Summer Sq./Zucchini', 'Summer Sq./Zucchini'),
+        ('Tomatillos', 'Tomatillos'),
+        ('Tomatoes', 'Tomatoes'),
+        ('Turnips', 'Turnips'),
+        ('Watermelon', 'Watermelon'),
+        ('Winter Squash', 'Winter Squash'),
+    )
     field_glean = 'g'
     farm_pickup = 'p'
     farmers_market = 'f'
@@ -48,7 +107,8 @@ class Distro(models.Model):
     date = models.DateField("Harvest Date")
     farm = models.ForeignKey(Farm, null=True, blank=True)
     crops = models.CharField(max_length=50, blank=True, null=True,
-                             verbose_name="Crop/Item")
+                             verbose_name="Crop/Item",
+                             choices=crop_list)
     pounds = models.CharField(max_length=5, blank=True, null=True)
     other = models.CharField(max_length=50, blank=True, null=True,
                              verbose_name="Count")
