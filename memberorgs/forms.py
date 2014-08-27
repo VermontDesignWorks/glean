@@ -218,9 +218,16 @@ class MemOrgForm(forms.ModelForm):
             ),
             Fieldset(
                 "",
-                Row("notify"),
+                HTML("<h3>Administrative Email Updates</h3>"),
                 Row("testing"),
-                Row("testing_email")
+                HTML("<h4>All test emails will go to"
+                     " the address specificed below:</h4>"),
+                Row("testing_email"),
+                HTML("<h4>&nbsp;</h4>"),
+                Row("notify"),
+                HTML("<h4>All notification emails will go to"
+                     " the address specificed below:</h4>"),
+                Row("notification_email")
             ),
             HTML("<input type='submit' "
                  "class='glean-button green-button' "
