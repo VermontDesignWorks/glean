@@ -42,7 +42,7 @@ def apiFarm(request, farm_id):
         'city': farm.city,
         'state': farm.state,
         'zipcode': farm.zipcode,
-        'counties': farm.counties.id,
+        'counties': getattr(farm.counties, "id", None),
         'farm_locations': {'': "---------"},
     }
     for location in farm_locations:
