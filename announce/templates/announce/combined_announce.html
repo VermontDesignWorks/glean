@@ -41,13 +41,9 @@
 				<h4><small>Status: </small></h4>
 					<h4>Sent on {{announcement.datetime}}</h4>
 				{% else %}
-					<form method="POST" action="{% url 'announce:sendannounce' announcement.id %}">{% csrf_token %}
+					<form style="float:left" method="POST" action="{% url 'announce:sendannounce' announcement.id %}">{% csrf_token %}
 							<input type="submit" id="btn-send" class="glean-button green-button" data-loading-text="Sending..." value="Send" data-loading-text="Sending..." style="display:inline;">
-							<a href="{% url 'gleanevent:editglean' announcement.glean.id %}">
-								<button class="glean-button yellow-button">
-									Edit Glean
-								</button>
-							</a>
+
 						<script type="text/javascript">
 							$('#btn-send').button();
 							$('#btn-send').click(function () {
@@ -55,7 +51,11 @@
 							});
 						</script>
 					</form>
-
+					<a href="{% url 'gleanevent:editglean' announcement.glean.id %}">
+						<button class="glean-button yellow-button">
+							Edit Glean
+						</button>
+					</a>
 				{% endif %}
 	</div>
 </div>
