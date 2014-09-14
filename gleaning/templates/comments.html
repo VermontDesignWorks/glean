@@ -28,7 +28,7 @@
                         {{ form.timestamp }}
                         {{ form.security_hash }}
                         <input type="hidden" name="next" value="{% url 'gleanevent:detailglean' object.id %}" />
-                        <input type="submit" class="glean-button yellow-button" value="Post a Comment" id="id_submit" />
+                        <input type="submit" name="submit" class="glean-button yellow-button" value="Post a Comment" id="id_submit" />
                 </form>
             {% else %}
                 <p>Please <a href="{% url 'auth_login' %}">log in</a> to leave a comment.</p>

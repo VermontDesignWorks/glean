@@ -21,7 +21,7 @@ urlpatterns = patterns(
     url(r'^initialize/', include('initialize.urls', namespace="initialize")),
     url(r'^api/', include('api.urls', namespace="api")),
 
-    url(r'^omments/', include('django_comments.urls')),
+    url(r'^comments/', include('django_comments.urls')),
 
     url(r'^password/change/$',
         auth_views.password_change,
