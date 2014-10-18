@@ -13,7 +13,7 @@ from django.forms.widgets import TextInput
 
 class Distro(models.Model):
     delivery = 'd'
-    pickup = 'd'
+    pickup = 'p'
     d_or_p = (
         (delivery, 'delivery'),
         (pickup, 'pickup')
