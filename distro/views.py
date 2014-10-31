@@ -299,10 +299,10 @@ def download_workevents(request):
         query = WorkEvent.objects.filter(member_organization=mo)
     params = {}
     if "date_from" in request.GET and request.GET["date_from"]:
-        params["date_d__gte"] = datetime.datetime.strptime(
+        params["date__gte"] = datetime.datetime.strptime(
             request.GET["date_from"], "%Y-%m-%d")
     if "date_until" in request.GET and request.GET["date_until"]:
-        params["date_d__lte"] = datetime.datetime.strptime(
+        params["date__lte"] = datetime.datetime.strptime(
             request.GET["date_until"], "%Y-%m-%d")
     if params:
         query = query.filter(**params)
