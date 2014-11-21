@@ -171,27 +171,27 @@ def download(request):
     # Create the CSV writer using the HttpResponse as the "file."
     headings = [
         'Distribution Date',
+        'Pickup/DropOff'
         'Recipient Site',
+        'Farm Delivery/Field Glean/Farmers Market',
+        'Harvest Date',
+        'Farm',
         'Crops',
         'Pounds',
         'Containers',
-        'Farm',
         'Other (notes)',
-        'Harvest Date',
-        'Farm Delivery/Field Glean/Farmers Market',
-        'Pickup/DropOff'
     ]
     attributes = [
         'date_d',
+        'del_or_pick'
         'recipient',
+        'field_or_farm',
+        'date',
+        'farm',
         'crops',
         'pounds',
         'containers',
-        'farm',
         'other',
-        'date',
-        'field_or_farm',
-        'del_or_pick'
     ]
 
     if request.user.has_perm('distro.uniauth'):
