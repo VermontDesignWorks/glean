@@ -171,7 +171,7 @@ def download(request):
     # Create the CSV writer using the HttpResponse as the "file."
     headings = [
         'Distribution Date',
-        'Pickup/DropOff'
+        'Pickup/DropOff',
         'Recipient Site',
         'Farm Delivery/Field Glean/Farmers Market',
         'Harvest Date',
@@ -183,7 +183,7 @@ def download(request):
     ]
     attributes = [
         'date_d',
-        'del_or_pick'
+        'del_or_pick',
         'recipient',
         'field_or_farm',
         'date',
