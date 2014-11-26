@@ -19,3 +19,7 @@ class ExcludeMemOrgsMixin(object):
             instance.member_organization = memorg
             instance.save()
         return HttpResponseRedirect(self.get_success_url())
+
+    def get_queryset(self):
+        queryset = super(ExcludeMemOrgsMixin, self).get_queryset()
+        return queryset.order_by("-date")
