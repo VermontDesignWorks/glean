@@ -29,6 +29,8 @@ from recipientsite.models import RecipientSite
 from generic.mixins import SimpleLoginCheckForGenerics, DynamicDateFilterMixin
 from recipientsite.models import RecipientSite
 
+from .mixins import ExcludeMemOrgsMixin
+
 
 @permission_required('distro.auth')
 def index(request):
@@ -221,6 +223,7 @@ def download(request):
 
 class Hours_Entry(DynamicDateFilterMixin,
                   SimpleLoginCheckForGenerics,
+                  ExcludeMemOrgsMixin,
                   ModelFormSetView):
 
     template_name = 'distribution/hours_create.html'
@@ -252,13 +255,26 @@ class Hours_Entry(DynamicDateFilterMixin,
                 self.extra = 10
                 return queryset
 
-    def formset_valid(self, formset):
-        memorg = self.request.user.profile.member_organization
-        self.object_list = formset.save(commit=False)
-        for instance in self.object_list:
-            instance.member_organization = memorg
-            instance.save()
-        return HttpResponseRedirect(self.get_success_url())
+    def get_factory_kwargs(self):
+        factory_kwargs = super(Hours_Entry, self).get_factory_kwargs()
+        if self.request.user.has_perms("distro.uniauth"):
+            return factory_kwargs
+        else:
+            factory_kwargs["exclude"] = ("member_organization",)
+            return factory_kwargs
+
+
+class HoursEdit(DynamicDateFilterMixin,
+                SimpleLoginCheckForGenerics,
+                ExcludeMemOrgsMixin,
+                ModelFormSetView):
+    can_delete = True
+    template_name = 'distribution/hours_edit.html'
+    success_url = reverse_lazy("distro:hours")
+    extra = 0
+    model = WorkEvent
+    queryset = WorkEvent.objects.all()
+    uniauth_string = 'userprofile.uniauth'
 
 
 @permission_required('distro.auth')

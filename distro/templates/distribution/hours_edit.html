@@ -50,7 +50,7 @@
         <p>Select a range of dates (or leave blank to select all dates) and press the "View/Edit" to view and edit the Volunteer Hours for that range.</p>
     </div>
 </div>
-<form id="glean-index-form" method="get" class="form-inline" action="{% url 'distro:hours_edit' %}">
+<form id="glean-index-form" method="get" class="form-inline" target="{% url 'distro:hours_edit' %}">
     <label for="date_from">From</label>
     <input id="date_from" maxlength=200 name="date_from" type="text" value="{{date_from}}" class="datepicker"></input>
     <label for="date_until">Until</label>
@@ -64,6 +64,10 @@
 
 {% block style %}
 <style>
+.control-label{
+    display:none;
+    visibility:hidden;
+}
 .controls > input {
     width: 85%;
 }
