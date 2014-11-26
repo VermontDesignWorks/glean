@@ -84,5 +84,4 @@ class DynamicDateFilterMixin(object):
                 member_organization=mo
             )
         import sys
-        print >> sys.stderr, queryset
         return queryset
