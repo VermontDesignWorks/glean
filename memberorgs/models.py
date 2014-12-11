@@ -74,6 +74,8 @@ class MemOrg(models.Model):
 
     notification_email = models.CharField(
         "Primary Email Address", max_length="200", blank=True, null=True)
+    abbr = models.CharField(
+        "Abbreviation", max_length="254", blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -120,6 +122,14 @@ class MemOrg(models.Model):
             ("auth", "Member Organization Level Permissions"),
             ("uniauth", "Universal Permission Level"),
         )
+
+    def save(self, *args, **kwargs):
+        if not self.abbr:
+            output = ""
+            for y in self.name.split():
+                output += y[0].upper()
+            self.abbr = output
+        return super(MemOrg, self).save(*args, **kwargs)
 
 
 class MemOrgForm(forms.ModelForm):
