@@ -191,7 +191,8 @@ class AnnouncementListView(SimpleLoginCheckForGenerics,
     template_name = "announce/announcements.html"
 
     def get_queryset(self):
-        queryset = super(AnnouncementListView, self).get_queryset()
+        queryset = super(AnnouncementListView, self).get_queryset().filter(
+            sent=True)
         user = self.request.user
         if not user.has_perm('gleanevent.uniauth'):
             memo = user.profile.member_organization
