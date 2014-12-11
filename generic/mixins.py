@@ -77,7 +77,7 @@ class DynamicDateFilterMixin(object):
             date__lte=date_until
         )
         if queryset.count() > 40:
-            p = Paginator(queryset, 40)
+            p = Paginator(queryset.order_by("-date"), 40)
             queryset = p.page(1)
             queryset.ordered = True
         permission = self.uniauth_string
