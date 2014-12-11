@@ -78,7 +78,7 @@ class MemOrg(models.Model):
         "Abbreviation", max_length="254", blank=True, null=True)
 
     def __unicode__(self):
-        return self.name
+        return self.abbr
 
     def notify_admin(self, user):
         if self.notify and self.notification_email:
