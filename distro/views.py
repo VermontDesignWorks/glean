@@ -230,7 +230,7 @@ class Hours_Entry(DynamicDateFilterMixin,
     success_url = reverse_lazy("distro:hours")
     extra = 10
     model = WorkEvent
-    queryset = WorkEvent.objects.all()
+    queryset = WorkEvent.objects.none()
     uniauth_string = 'userprofile.uniauth'
 
     def construct_formset(self):
@@ -240,28 +240,6 @@ class Hours_Entry(DynamicDateFilterMixin,
                 formset[i].fields[f].label = ""
         formset.helper = WorkEventFormHelper()
         return formset
-
-    def get_queryset(self):
-        if self.request.method == 'post':
-            self.extra = 0
-            return super(Hours_Entry, self).get_queryset()
-        else:
-            GET = self.request.GET
-            if "date_from" in GET or "date_until" in GET:
-                self.extra = 0
-                return super(Hours_Entry, self).get_queryset()
-            else:
-                queryset = WorkEvent.objects.none()
-                self.extra = 10
-                return queryset
-
-    def get_factory_kwargs(self):
-        factory_kwargs = super(Hours_Entry, self).get_factory_kwargs()
-        if self.request.user.has_perms("distro.uniauth"):
-            return factory_kwargs
-        else:
-            factory_kwargs["exclude"] = ("member_organization",)
-            return factory_kwargs
 
 
 class HoursEdit(DynamicDateFilterMixin,

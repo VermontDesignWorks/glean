@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from django.core.paginator import Paginator
 
 
 class ExcludeMemOrgsMixin(object):
@@ -21,5 +22,15 @@ class ExcludeMemOrgsMixin(object):
         return HttpResponseRedirect(self.get_success_url())
 
     def get_queryset(self):
-        queryset = super(ExcludeMemOrgsMixin, self).get_queryset()
-        return queryset.order_by("-date")
+        if self.request.method == 'post':
+            self.extra = 0
+            return super(Hours_Entry, self).get_queryset()
+        else:
+            GET = self.request.GET
+            if "date_from" in GET or "date_until" in GET:
+                self.extra = 0
+                return super(Hours_Entry, self).get_queryset()
+            else:
+                queryset = WorkEvent.objects.none()
+                self.extra = 10
+                return queryset

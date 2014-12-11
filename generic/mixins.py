@@ -2,6 +2,7 @@ import datetime
 from datetime import date
 import string
 
+from django.core.paginator import Paginator
 from django.utils.decorators import method_decorator, classonlymethod
 from django.contrib.auth.decorators import login_required
 import re
@@ -43,7 +44,7 @@ class DynamicDateFilterMixin(object):
 
     version = '0.2'
     # self.queryset must be set as base queryset to filter from
-    # self.uniauth_string must be set to appropriate string to test uniauth rights
+    # self.uniauth_string must be set to appropriate string to test uniauth rig
 
     def get_queryset(self):
         date_from = self.request.GET.get('date_from', '')
@@ -75,7 +76,10 @@ class DynamicDateFilterMixin(object):
             date__gte=date_from,
             date__lte=date_until
         )
-        
+        if queryset.count() > 40:
+            p = Paginator(queryset, 40)
+            queryset = p.page(1)
+            queryset.ordered = True
         permission = self.uniauth_string
         if not self.request.user.has_perm(permission):
             queryset = queryset.filter(
@@ -83,5 +87,4 @@ class DynamicDateFilterMixin(object):
                 date__lte=date_until,
                 member_organization=mo
             )
-        import sys
         return queryset
