@@ -24,7 +24,7 @@ Volunteer Index
 
 <div id="index-controls">
 	<div class="more-buttons">
-		<a href="{% url 'userprofile:download' %}">
+		<a href="#warning-modal" data-toggle="modal">
 			<button id="download-list" class="glean-button red-button">
 				Download Volunteer List
 			</button>
@@ -61,4 +61,19 @@ Volunteer Index
 </style>
 {% include "about_box.html" %}
 {% include "partners.html" %}
+
+<div id="warning-modal" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Warning!</h3>
+  </div>
+  <div class="modal-body">
+    <p>You can download volunteer contact information here, so please respect it! <b>You must acquire volunteers' permission</b> before contacting them for non-glean-related reasons outside the Gleaners Interface (like additional mailings, etc).</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn">No Thanks!</a>
+    <a href="{% url 'userprofile:download' %}" class="btn btn-primary">I'm sure!</a>
+  </div>
+</div>
+
 {% endblock body %}
