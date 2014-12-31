@@ -44,6 +44,7 @@ class AdminMemOrgForm(forms.ModelForm):
             Fieldset(
                 "",
                 Row("name", "website"),
+                Row("abbr"),
                 Row("description"),
                 Row("phone_1", "phone_1_type"),
                 Row("phone_2", "phone_2_type"),
@@ -197,6 +198,7 @@ class MemOrgForm(forms.ModelForm):
             Fieldset(
                 "",
                 Row("name", "website"),
+                Row("abbr"),
                 Row("description"),
                 Row("phone_1", "phone_1_type"),
                 Row("phone_2", "phone_2_type"),
