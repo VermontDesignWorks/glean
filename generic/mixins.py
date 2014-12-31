@@ -76,13 +76,13 @@ class DynamicDateFilterMixin(object):
             date__gte=date_from,
             date__lte=date_until
         ).order_by("-date")
-        if queryset.count() > 40:
-            queryset = queryset[:40]
-        permission = self.uniauth_string
         if not self.request.user.has_perm(permission):
             queryset = queryset.filter(
                 date__gte=date_from,
                 date__lte=date_until,
                 member_organization=mo
             )
+        if queryset.count() > 40:
+            queryset = queryset[:40]
+        permission = self.uniauth_string
         return queryset
