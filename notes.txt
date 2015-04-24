@@ -1,0 +1,2 @@
+add glean and glean/gleanings to python path (also virtual env if using virtual env)
+remove the import * from local from gleaning/settings.py
