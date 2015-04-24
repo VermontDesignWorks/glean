@@ -1,2 +1,7 @@
 add glean and glean/gleanings to python path (also virtual env if using virtual env)
 remove the import * from local from gleaning/settings.py
+sudo apt-get install python-dev libxml2-dev libxslt1-dev libffi-dev
+export PYTHONPATH=$PYTHONPATH:$PWD
+cd gleaning
+export PYTHONPATH=$PYTHONPATH:$PWD
+./manage.py runserver 0.0.0.0:8000
