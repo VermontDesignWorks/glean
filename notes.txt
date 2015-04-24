@@ -5,3 +5,5 @@ export PYTHONPATH=$PYTHONPATH:$PWD
 cd gleaning
 export PYTHONPATH=$PYTHONPATH:$PWD
 ./manage.py runserver 0.0.0.0:8000
+
+Look at http://stackoverflow.com/questions/12410043/configuring-django-runserver-to-serve-static-files-in-a-non-app-directory with regard to servering static files
