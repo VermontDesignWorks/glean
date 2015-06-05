@@ -20,3 +20,4 @@ staticfiles
 *.sublime-workspace
 .sublime-workspace
 *.tmp
+*.sqlite3
