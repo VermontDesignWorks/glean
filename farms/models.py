@@ -53,6 +53,7 @@ class Farm(models.Model):
     member_organization = models.ManyToManyField(MemOrg, editable=False)
 
     class Meta:
+        ordering = ['name']
         permissions = (
             ("auth", "Member Organization Level Permissions"),
             ("uniauth", "Universal Permission Level"),
