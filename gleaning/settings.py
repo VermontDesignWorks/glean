@@ -3,7 +3,6 @@
 import os
 
 PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
-DEBUG = True
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -230,7 +229,7 @@ STATIC_URL = '/static/'
 
 ##heroku additions:
 
-#from local import *
+from local import *
 
     # import dj_database_url
     # DATABASES['default'] =  dj_database_url.config()
