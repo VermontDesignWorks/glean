@@ -187,6 +187,7 @@ INSTALLED_APPS = (
     'south',
     'django_comments',
     'django_extensions',
+    'debug_toolbar',
 
     # admin:
     #'django.contrib.admin',
